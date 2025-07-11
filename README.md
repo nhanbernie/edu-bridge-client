@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EduBridge
 
-## Getting Started
+EduBridge is a web project built with Next.js, TypeScript, and Redux Toolkit, providing a modern learning platform with authentication, multilingual support, and efficient state management.
 
-First, run the development server:
+## Main Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Login, registration, forgot password
+- State management with Redux Toolkit
+- Multilingual support (i18n)
+- Modular code organization (features, components, hooks, services, ...)
+- Performance optimization with Next.js
+
+## Folder Structure
+
+```
+edubridge/
+├── public/                # Static assets (images, icons, ...)
+├── src/
+│   ├── app/               # Next.js configuration (layout, page, css)
+│   ├── common/            # Shared constants, enums, types
+│   ├── components/        # UI components, layout, modal, form, ...
+│   ├── contexts/          # React Contexts (AuthContext, ...)
+│   ├── features/          # Main features (auth, home, ...)
+│   ├── hooks/             # Custom hooks
+│   ├── i18n/              # Internationalization
+│   ├── providers/         # AppProvider, other providers
+│   ├── redux/             # Store, slice, selector, ...
+│   ├── services/          # API communication
+│   └── utils/             # Shared utilities
+├── .env                   # Environment variables
+├── package.json           # Package info and scripts
+├── tsconfig.json          # TypeScript configuration
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the project:**
+   ```bash
+   git clone <repo-url>
+   cd edubridge
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Create a `.env` file and configure environment variables**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Run the project:**
+   ```bash
+   npm run dev
+   ```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run start`: Run production build
+- `npm run lint`: Lint code with ESLint
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [ESLint](https://eslint.org/)
+- [PostCSS](https://postcss.org/)
 
-## Deploy on Vercel
+## Contribution
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Pull requests and issues are always welcome!
+CODE WITH NHANBERNIE ❤️
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
