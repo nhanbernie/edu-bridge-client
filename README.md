@@ -41,7 +41,7 @@ edubridge/
    cd edubridge
    ```
 2. **Install dependencies:**
-   ```bash
+   ```bash  
    npm install
    ```
 3. **Create a `.env` file and configure environment variables**
