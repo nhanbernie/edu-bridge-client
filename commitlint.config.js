@@ -1,4 +1,4 @@
-export default {
+const configuration = {
   extends: ["@commitlint/config-conventional"],
   rules: {
     "type-enum": [
@@ -16,9 +16,13 @@ export default {
         "ci",
         "chore",
         "revert",
+        "merge",
+        "config",
       ],
     ],
     "subject-case": [2, "never", ["sentence-case", "start-case", "pascal-case", "upper-case"]],
     "header-max-length": [2, "always", 100],
   },
 };
+
+export default configuration;
