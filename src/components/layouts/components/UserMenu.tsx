@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { UserMenuProps } from "@/types/user.types";
 
-interface UserMenuProps {
-  user?: {
-    name?: string;
-    email?: string;
-    avatar?: string;
-  };
-}
-
-const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+const UserMenu = ({ user }: UserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -21,9 +15,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       >
         <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
           {user?.avatar ? (
-            <img
+            <Image
               src={user.avatar}
               alt={user.name || "User"}
+              width={32}
+              height={32}
               className="w-full h-full rounded-full object-cover"
             />
           ) : (
@@ -32,9 +28,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         </div>
         <ChevronDown
           size={16}
-          className={`text-gray-300 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`text-gray-300 transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -43,25 +37,23 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
           {user && (
             <div className="px-4 py-2 border-b border-gray-100">
-              <p className="text-sm font-medium text-gray-900">
-                {user.name || "User"}
-              </p>
+              <p className="text-sm font-medium text-gray-900">{user.name || "User"}</p>
               <p className="text-xs text-gray-500">{user.email}</p>
             </div>
           )}
-          
+
           <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
             <User size={16} />
             Profile
           </button>
-          
+
           <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
             <Settings size={16} />
             Settings
           </button>
-          
+
           <hr className="my-1" />
-          
+
           <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
             <LogOut size={16} />
             Sign Out
