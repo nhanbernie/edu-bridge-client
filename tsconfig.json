@@ -37,7 +37,8 @@
       "@/redux/*": ["./redux/*"],
       "@/slices/*": ["./redux/slices/*"],
       "@/features/*": ["./features/*"],
-      "@/ui/*": ["./components/ui/*"]
+      "@/ui/*": ["./components/ui/*"],
+      "@/commonUI/*": ["./components/common/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

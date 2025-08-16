@@ -1,6 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
-import LanguageSelector from "../../common/LanguageSelector";
+import LanguageSelector from "@/commonUI/LanguageSelector";
 
 interface NavItem {
   label: string;
