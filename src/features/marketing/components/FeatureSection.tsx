@@ -28,7 +28,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
   return (
     <div
-      className="relative bg-white p-8 hover:shadow-lg transition-all duration-300 rounded-3xl border border-transparent hover:border-current overflow-hidden"
+      className="relative shadow-lg bg-white p-8 hover:shadow-2xl transition-all duration-300 rounded-3xl border border-transparent hover:border-current overflow-hidden"
       style={{ borderColor: "transparent" }}
     >
       {/* Top-right corner arc (quarter-circle) */}
