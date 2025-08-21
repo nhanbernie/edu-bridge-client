@@ -12,6 +12,7 @@ export const navigationItems: NavItem[] = [
 
 export const navigateMarketItems: NavItem[] = [
   { label: "Home", href: "/", active: true },
-  { label: "About Us", href: "/about" },
+  { label: "Packages", href: "/packages" },
+  { label: "FAQ", href: "/faq" },
   { label: "Contact Us", href: "/contact" },
 ];

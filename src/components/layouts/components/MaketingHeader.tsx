@@ -30,7 +30,7 @@ const MaketingHeader = () => {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-200/50"
-            : "bg-transparent"
+            : "bg-white/90 backdrop-blur-sm"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,13 +44,7 @@ const MaketingHeader = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
-              <span
-                className={`text-xl font-bold transition-colors ${
-                  isScrolled ? "text-gray-900" : "text-white"
-                }`}
-              >
-                EduBridge
-              </span>
+              <span className="text-xl font-bold text-gray-900">Travel</span>
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -65,13 +59,7 @@ const MaketingHeader = () => {
                   <Link
                     href={item.href}
                     className={`relative text-sm font-medium transition-colors hover:text-emerald-600 ${
-                      isScrolled
-                        ? item.active
-                          ? "text-emerald-600"
-                          : "text-gray-700"
-                        : item.active
-                          ? "text-white"
-                          : "text-white/80"
+                      item.active ? "text-emerald-600" : "text-gray-700"
                     }`}
                   >
                     {item.label}
@@ -94,11 +82,7 @@ const MaketingHeader = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`p-2 rounded-lg transition-colors ${
-                  isScrolled
-                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
+                className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               >
                 {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </motion.button>
@@ -107,11 +91,7 @@ const MaketingHeader = () => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className={`p-2 rounded-lg transition-colors ${
-                  isScrolled
-                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
+                className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               >
                 <Globe className="w-5 h-5" />
               </motion.button>
@@ -122,13 +102,9 @@ const MaketingHeader = () => {
                   <EBButton
                     variant="ghost"
                     size="sm"
-                    className={`transition-colors ${
-                      isScrolled
-                        ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                        : "text-white hover:bg-white/10"
-                    }`}
+                    className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   >
-                    Đăng nhập
+                    Log in
                   </EBButton>
                 </Link>
                 <Link href="/register">
@@ -146,11 +122,7 @@ const MaketingHeader = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`md:hidden p-2 rounded-lg transition-colors ${
-                  isScrolled
-                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
+                className="md:hidden p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </motion.button>
