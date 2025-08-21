@@ -3,7 +3,7 @@ import { Search, MessageSquare, Menu } from "lucide-react";
 import UserMenu from "./components/UserMenu";
 import LanguageSelector from "../common/LanguageSelector";
 import MobileMenu from "./components/MobileMenu";
-import Logo from "../common/Logo";
+import Logo from "../common/EBLogo";
 import { navigationItems, NavItem } from "@/constants/navigate.constant";
 
 const Navigation = ({ items }: { items: NavItem[] }) => (
