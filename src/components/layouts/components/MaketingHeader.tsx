@@ -44,7 +44,7 @@ const MaketingHeader = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
                 <GraduationCap className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">Travel</span>
+              <span className="text-xl font-bold text-gray-900">Edu Bridge</span>
             </motion.div>
 
             {/* Desktop Navigation */}
