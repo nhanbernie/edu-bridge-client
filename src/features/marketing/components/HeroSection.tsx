@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin, BookOpen, Search, Star, GraduationCap } from "lucide-react";
+import { MapPin, BookOpen, Search, GraduationCap } from "lucide-react";
+import Image from "next/image";
 import EBButton from "@/components/common/EBButton";
 
 const HeroSection = () => {
@@ -11,12 +12,6 @@ const HeroSection = () => {
     location: "",
     budget: "",
   });
-
-  const tutors = [
-    { name: "Nguyễn Văn A", subject: "Toán học", rating: 4.9, experience: "5 năm kinh nghiệm" },
-    { name: "Trần Thị B", subject: "Tiếng Anh", rating: 4.8, experience: "3 năm kinh nghiệm" },
-    { name: "Lê Minh C", subject: "Vật lý", rating: 4.7, experience: "7 năm kinh nghiệm" },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 relative overflow-hidden pt-16">
@@ -33,11 +28,11 @@ const HeroSection = () => {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Kết Nối <span className="text-emerald-600">Giảng Viên</span>
+                  Enjoy The <span className="text-emerald-600">Trip</span>
                   <br />
-                  Và <span className="text-emerald-600">Gia Sư</span>
+                  With <span className="text-emerald-600">Good</span>
                   <br />
-                  Chất Lượng.
+                  Moments.
                 </h1>
                 <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
                   Tìm kiếm giảng viên và gia sư uy tín, chất lượng cao để nâng cao kiến thức và kỹ
@@ -129,58 +124,22 @@ const HeroSection = () => {
               </div>
             </div>
 
-            {/* Right Content - Top Tutors */}
-            <div className="space-y-6">
-              <div className="grid gap-4">
-                {tutors.map((tutor, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                  >
-                    <div className="flex items-center p-4 gap-4">
-                      <div className="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
-                        <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                          <GraduationCap className="w-10 h-10 text-white" />
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{tutor.name}</h3>
-                        <p className="text-gray-600 text-sm">{tutor.subject}</p>
-                        <p className="text-gray-500 text-xs">{tutor.experience}</p>
-                        <div className="flex items-center gap-1 mt-1">
-                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                          <span className="text-sm font-medium">{tutor.rating}</span>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            {/* Right Content - Hero Image */}
+            <div className="relative">
+              {/* Background Circle */}
+              <div className="absolute inset-0 flex justify-center items-center">
+                <div className="w-96 h-96 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full"></div>
               </div>
 
-              {/* Education Platform */}
-              <div className="relative">
-                <div className="bg-gradient-to-br from-emerald-400 to-teal-500 rounded-3xl p-8 text-center">
-                  <div className="w-32 h-32 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
-                      <BookOpen className="w-10 h-10 text-emerald-600" />
-                    </div>
-                  </div>
-                  <h3 className="text-white font-semibold text-lg mb-2">
-                    Nền Tảng Giáo Dục Hiện Đại
-                  </h3>
-                  <p className="text-white/80 text-sm mb-4">
-                    Kết nối học viên với giảng viên chất lượng cao một cách dễ dàng
-                  </p>
-                  <EBButton
-                    variant="outline"
-                    className="border-white text-white hover:bg-white hover:text-emerald-600"
-                  >
-                    Khám Phá Ngay
-                  </EBButton>
-                </div>
+              {/* Hero Image */}
+              <div className="relative z-10 flex justify-center items-center pt-8">
+                <Image
+                  src="/images/student.png"
+                  alt="Student with luggage"
+                  width={320}
+                  height={320}
+                  className="w-80 h-80 object-contain"
+                />
               </div>
             </div>
           </div>
