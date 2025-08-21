@@ -95,26 +95,26 @@ const FeatureSection = () => {
   const features = [
     {
       icon: MapPin,
-      title: "Unique Destinations",
+      title: "Giảng Viên Chất Lượng",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing elit. At gravida sed sed est. Ligula justo neque duis.",
-      linkText: "Read more",
+        "Đội ngũ giảng viên và gia sư được tuyển chọn kỹ lưỡng với trình độ chuyên môn cao và kinh nghiệm giảng dạy phong phú.",
+      linkText: "Tìm hiểu thêm",
       iconBg: "bg-gradient-to-br from-red-500 to-pink-500",
     },
     {
       icon: Award,
-      title: "Worth Of Money",
+      title: "Giá Cả Hợp Lý",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing elit. At gravida sed sed est. Ligula justo neque duis.",
-      linkText: "Read more",
+        "Mức học phí cạnh tranh và minh bạch, phù hợp với nhiều đối tượng học viên từ cơ bản đến nâng cao.",
+      linkText: "Xem bảng giá",
       iconBg: "bg-gradient-to-br from-purple-500 to-indigo-500",
     },
     {
       icon: DollarSign,
-      title: "Wonderful Places",
+      title: "Học Tập Linh Hoạt",
       description:
-        "Lorem ipsum dolor sit amet consectetur adipiscing elit. At gravida sed sed est. Ligula justo neque duis.",
-      linkText: "Read more",
+        "Hỗ trợ học trực tuyến và offline, thời gian linh hoạt theo nhu cầu của học viên và giảng viên.",
+      linkText: "Khám phá ngay",
       iconBg: "bg-gradient-to-br from-blue-500 to-cyan-500",
     },
   ];
@@ -124,11 +124,11 @@ const FeatureSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center space-y-6 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Why Choose Us</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Tại Sao Chọn Chúng Tôi</h2>
           <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            There are many variations of passages of Lorem Ipsum available,
+            Nền tảng kết nối giảng viên và gia sư hàng đầu với nhiều ưu điểm vượt trội,
             <br />
-            but the majority have suffered alterationThere are many
+            mang đến trải nghiệm học tập tốt nhất cho học viên
           </p>
         </div>
 

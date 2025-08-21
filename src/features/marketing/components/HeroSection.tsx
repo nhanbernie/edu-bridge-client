@@ -1,21 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin, Calendar, Users, Search, Star } from "lucide-react";
+import { MapPin, BookOpen, Search, Star, GraduationCap } from "lucide-react";
 import EBButton from "@/components/common/EBButton";
 
 const HeroSection = () => {
   const [searchForm, setSearchForm] = useState({
+    subject: "",
+    level: "",
     location: "",
-    duration: "",
-    people: "",
-    price: "",
+    budget: "",
   });
 
-  const destinations = [
-    { name: "Eiffel Tower", location: "Paris", rating: 4.8, image: "/api/placeholder/300/200" },
-    { name: "Taj Mahal", location: "India", rating: 4.9, image: "/api/placeholder/300/200" },
-    { name: "Ha Long Bay", location: "Vietnam", rating: 4.7, image: "/api/placeholder/300/200" },
+  const tutors = [
+    { name: "Nguyễn Văn A", subject: "Toán học", rating: 4.9, experience: "5 năm kinh nghiệm" },
+    { name: "Trần Thị B", subject: "Tiếng Anh", rating: 4.8, experience: "3 năm kinh nghiệm" },
+    { name: "Lê Minh C", subject: "Vật lý", rating: 4.7, experience: "7 năm kinh nghiệm" },
   ];
 
   return (
@@ -33,15 +33,15 @@ const HeroSection = () => {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Enjoy The <span className="text-emerald-600">Trip</span>
+                  Kết Nối <span className="text-emerald-600">Giảng Viên</span>
                   <br />
-                  With <span className="text-emerald-600">Good</span>
+                  Và <span className="text-emerald-600">Gia Sư</span>
                   <br />
-                  Moments.
+                  Chất Lượng.
                 </h1>
                 <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
-                  Khám phá những điểm đến tuyệt vời và tạo ra những kỷ niệm đáng nhớ cùng với dịch
-                  vụ du lịch chất lượng cao của chúng tôi.
+                  Tìm kiếm giảng viên và gia sư uy tín, chất lượng cao để nâng cao kiến thức và kỹ
+                  năng của bạn một cách hiệu quả nhất.
                 </p>
               </div>
 
@@ -50,66 +50,70 @@ const HeroSection = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-emerald-600" />
+                      Môn học
+                    </label>
+                    <select
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      value={searchForm.subject}
+                      onChange={(e) => setSearchForm({ ...searchForm, subject: e.target.value })}
+                    >
+                      <option value="">Chọn môn học</option>
+                      <option value="math">Toán học</option>
+                      <option value="english">Tiếng Anh</option>
+                      <option value="physics">Vật lý</option>
+                      <option value="chemistry">Hóa học</option>
+                      <option value="biology">Sinh học</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4 text-emerald-600" />
+                      Cấp độ
+                    </label>
+                    <select
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                      value={searchForm.level}
+                      onChange={(e) => setSearchForm({ ...searchForm, level: e.target.value })}
+                    >
+                      <option value="">Chọn cấp độ</option>
+                      <option value="elementary">Tiểu học</option>
+                      <option value="middle">THCS</option>
+                      <option value="high">THPT</option>
+                      <option value="university">Đại học</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-emerald-600" />
-                      Location
+                      Khu vực
                     </label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       value={searchForm.location}
                       onChange={(e) => setSearchForm({ ...searchForm, location: e.target.value })}
                     >
-                      <option value="">Chọn địa điểm</option>
-                      <option value="paris">Paris</option>
-                      <option value="india">India</option>
-                      <option value="vietnam">Vietnam</option>
+                      <option value="">Chọn khu vực</option>
+                      <option value="hanoi">Hà Nội</option>
+                      <option value="hcm">TP.HCM</option>
+                      <option value="danang">Đà Nẵng</option>
+                      <option value="online">Online</option>
                     </select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-emerald-600" />
-                      Duration
-                    </label>
+                    <label className="text-sm font-medium text-gray-700">Ngân sách</label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.duration}
-                      onChange={(e) => setSearchForm({ ...searchForm, duration: e.target.value })}
+                      value={searchForm.budget}
+                      onChange={(e) => setSearchForm({ ...searchForm, budget: e.target.value })}
                     >
-                      <option value="">Thời gian</option>
-                      <option value="3-days">3 ngày</option>
-                      <option value="7-days">7 ngày</option>
-                      <option value="14-days">14 ngày</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <Users className="w-4 h-4 text-emerald-600" />
-                      People
-                    </label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.people}
-                      onChange={(e) => setSearchForm({ ...searchForm, people: e.target.value })}
-                    >
-                      <option value="">Số người</option>
-                      <option value="1">1 người</option>
-                      <option value="2">2 người</option>
-                      <option value="4">4 người</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Price</label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.price}
-                      onChange={(e) => setSearchForm({ ...searchForm, price: e.target.value })}
-                    >
-                      <option value="">Giá tiền</option>
-                      <option value="budget">Tiết kiệm</option>
-                      <option value="mid">Trung bình</option>
-                      <option value="luxury">Cao cấp</option>
+                      <option value="">Chọn mức giá</option>
+                      <option value="100-200">100k - 200k/buổi</option>
+                      <option value="200-500">200k - 500k/buổi</option>
+                      <option value="500+">Trên 500k/buổi</option>
                     </select>
                   </div>
                 </div>
@@ -120,29 +124,32 @@ const HeroSection = () => {
                   icon={Search}
                   iconPosition="left"
                 >
-                  Search Now
+                  Tìm Gia Sư Ngay
                 </EBButton>
               </div>
             </div>
 
-            {/* Right Content - Destinations */}
+            {/* Right Content - Top Tutors */}
             <div className="space-y-6">
               <div className="grid gap-4">
-                {destinations.map((dest, index) => (
+                {tutors.map((tutor, index) => (
                   <div
                     key={index}
                     className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                   >
                     <div className="flex items-center p-4 gap-4">
                       <div className="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
-                        <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-500"></div>
+                        <div className="w-full h-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                          <GraduationCap className="w-10 h-10 text-white" />
+                        </div>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">{dest.name}</h3>
-                        <p className="text-gray-600 text-sm">{dest.location}</p>
+                        <h3 className="font-semibold text-gray-900">{tutor.name}</h3>
+                        <p className="text-gray-600 text-sm">{tutor.subject}</p>
+                        <p className="text-gray-500 text-xs">{tutor.experience}</p>
                         <div className="flex items-center gap-1 mt-1">
                           <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                          <span className="text-sm font-medium">{dest.rating}</span>
+                          <span className="text-sm font-medium">{tutor.rating}</span>
                         </div>
                       </div>
                       <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
@@ -153,25 +160,25 @@ const HeroSection = () => {
                 ))}
               </div>
 
-              {/* Traveler Image */}
+              {/* Education Platform */}
               <div className="relative">
                 <div className="bg-gradient-to-br from-emerald-400 to-teal-500 rounded-3xl p-8 text-center">
                   <div className="w-32 h-32 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
-                      <Users className="w-10 h-10 text-emerald-600" />
+                      <BookOpen className="w-10 h-10 text-emerald-600" />
                     </div>
                   </div>
                   <h3 className="text-white font-semibold text-lg mb-2">
-                    A New Way To Discover The World.
+                    Nền Tảng Giáo Dục Hiện Đại
                   </h3>
                   <p className="text-white/80 text-sm mb-4">
-                    Khám phá thế giới với cách thức hoàn toàn mới
+                    Kết nối học viên với giảng viên chất lượng cao một cách dễ dàng
                   </p>
                   <EBButton
                     variant="outline"
                     className="border-white text-white hover:bg-white hover:text-emerald-600"
                   >
-                    Explore Now
+                    Khám Phá Ngay
                   </EBButton>
                 </div>
               </div>

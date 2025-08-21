@@ -9,11 +9,11 @@ const CTASection = () => {
 
   const testimonials = [
     {
-      name: "Kevin Andrew",
+      name: "Nguyễn Minh Anh",
       rating: 5,
       comment:
-        "Amazing experience! The service was exceptional and the destinations were breathtaking. Highly recommend for anyone looking for adventure.",
-      avatar: "KA",
+        "Tôi đã tìm được gia sư Toán rất giỏi qua nền tảng này. Con tôi đã cải thiện điểm số đáng kể chỉ sau 2 tháng học.",
+      avatar: "MA",
     },
   ];
 
@@ -41,13 +41,13 @@ const CTASection = () => {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h3 className="text-4xl font-bold text-gray-900 leading-tight">
-                  What Our
+                  Phản Hồi Từ
                   <br />
-                  Happy Customers Says.
+                  Học Viên Của Chúng Tôi.
                 </h3>
                 <p className="text-lg text-gray-600 leading-relaxed">
-                  Hear from our satisfied customers who have experienced amazing journeys with us.
-                  Their stories inspire us to continue providing exceptional service.
+                  Nghe những chia sẻ từ học viên và phụ huynh đã có trải nghiệm tuyệt vời với các
+                  giảng viên và gia sư chất lượng cao của chúng tôi.
                 </p>
               </div>
 
@@ -85,7 +85,7 @@ const CTASection = () => {
                     </div>
                   ))}
                 </div>
-                <span className="text-gray-600 text-sm">+1000 happy customers</span>
+                <span className="text-gray-600 text-sm">+1000 học viên hài lòng</span>
               </div>
             </div>
           </div>
@@ -98,11 +98,11 @@ const CTASection = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h3 className="text-3xl lg:text-4xl font-bold text-white">
-                Subscribe for Our Food Update
+                Đăng Ký Nhận Thông Tin Mới Nhất
               </h3>
               <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                Get the latest updates on new destinations, special offers, and travel tips
-                delivered straight to your inbox.
+                Nhận thông tin về giảng viên mới, khóa học đặc biệt và các mẹo học tập hiệu quả được
+                gửi trực tiếp đến email của bạn.
               </p>
             </div>
 
@@ -113,7 +113,7 @@ const CTASection = () => {
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
-                    placeholder="Enter your email here"
+                    placeholder="Nhập email của bạn"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-4 rounded-xl border-0 focus:ring-2 focus:ring-white/50 focus:outline-none"
@@ -123,7 +123,7 @@ const CTASection = () => {
                   size="lg"
                   className="bg-white text-emerald-600 hover:bg-gray-50 font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  Subscribe
+                  Đăng Ký
                 </EBButton>
               </div>
             </div>
@@ -133,25 +133,25 @@ const CTASection = () => {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-white/80 text-sm">
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Travel</h4>
-                    <p>Your trusted travel companion</p>
+                    <h4 className="font-semibold text-white mb-2">EduBridge</h4>
+                    <p>Nền tảng kết nối giáo dục tin cậy</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">About Us</h4>
-                    <p>Learn more about our story</p>
+                    <h4 className="font-semibold text-white mb-2">Về Chúng Tôi</h4>
+                    <p>Tìm hiểu câu chuyện của chúng tôi</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Services</h4>
-                    <p>Explore our offerings</p>
+                    <h4 className="font-semibold text-white mb-2">Dịch Vụ</h4>
+                    <p>Khám phá các dịch vụ của chúng tôi</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Company</h4>
-                    <p>Join our mission</p>
+                    <h4 className="font-semibold text-white mb-2">Công Ty</h4>
+                    <p>Tham gia sứ mệnh của chúng tôi</p>
                   </div>
                 </div>
                 <div className="mt-6 pt-6 border-t border-white/20 text-center">
                   <p className="text-white/60 text-sm">
-                    © 2024 Travel Company. All rights reserved.
+                    © 2024 EduBridge. Tất cả quyền được bảo lưu.
                   </p>
                 </div>
               </div>
