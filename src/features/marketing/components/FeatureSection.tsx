@@ -148,14 +148,16 @@ const FeatureSection = () => {
 
         {/* Experience Section */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left - Image placeholder */}
+          {/* Left - Education Image */}
           <div className="relative">
-            <div className="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-3xl p-8 h-96 flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <div className="w-24 h-24 bg-emerald-500 rounded-full mx-auto flex items-center justify-center">
-                  <span className="text-white text-2xl font-bold">📸</span>
+            <div className="bg-gray-100 rounded-3xl overflow-hidden h-96">
+              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <div className="text-center space-y-4">
+                  <div className="w-24 h-24 bg-gray-400 rounded-full mx-auto flex items-center justify-center">
+                    <span className="text-white text-2xl font-bold">📚</span>
+                  </div>
+                  <p className="text-gray-600 font-medium">Education Experience Image</p>
                 </div>
-                <p className="text-emerald-700 font-medium">Travel Experience Image</p>
               </div>
             </div>
           </div>
@@ -164,25 +166,26 @@ const FeatureSection = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h3 className="text-4xl font-bold text-gray-900 leading-tight">
-                Our Experience
+                Kinh Nghiệm Của Chúng Tôi
                 <br />
-                Provide You Best Memory.
+                Mang Đến Kết Quả Tốt Nhất.
               </h3>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Travel with many destinations of Lorem Ipsum available, but the majority have
-                suffered alteration in some form, by injected humour, or randomised words.
+                Với nhiều năm kinh nghiệm trong lĩnh vực giáo dục, chúng tôi đã kết nối thành công
+                hàng nghìn học viên với các giảng viên chất lượng cao, tạo nên những câu chuyện
+                thành công đáng nhớ.
               </p>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-emerald-600 mb-2">22</div>
-                <div className="text-gray-600">Years Experience</div>
+              <div className="text-center bg-red-50 rounded-2xl p-6">
+                <div className="text-4xl font-bold text-red-500 mb-2">500+</div>
+                <div className="text-gray-600">Giảng Viên Chuyên Nghiệp</div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-600 mb-2">150K</div>
-                <div className="text-gray-600">Happy Customers</div>
+              <div className="text-center bg-blue-50 rounded-2xl p-6">
+                <div className="text-4xl font-bold text-blue-500 mb-2">4.9★</div>
+                <div className="text-gray-600">Đánh Giá Trung Bình</div>
               </div>
             </div>
           </div>

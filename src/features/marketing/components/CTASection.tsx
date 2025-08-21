@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { Star, Mail } from "lucide-react";
-import EBButton from "@/components/common/EBButton";
+import React from "react";
+import { Star } from "lucide-react";
 
 const CTASection = () => {
-  const [email, setEmail] = useState("");
-
   const testimonials = [
     {
       name: "Nguyễn Minh Anh",
@@ -86,74 +83,6 @@ const CTASection = () => {
                   ))}
                 </div>
                 <span className="text-gray-600 text-sm">+1000 học viên hài lòng</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-20 bg-emerald-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-3xl lg:text-4xl font-bold text-white">
-                Đăng Ký Nhận Thông Tin Mới Nhất
-              </h3>
-              <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                Nhận thông tin về giảng viên mới, khóa học đặc biệt và các mẹo học tập hiệu quả được
-                gửi trực tiếp đến email của bạn.
-              </p>
-            </div>
-
-            {/* Email Subscription Form */}
-            <div className="max-w-md mx-auto">
-              <div className="flex gap-3">
-                <div className="flex-1 relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="email"
-                    placeholder="Nhập email của bạn"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-4 rounded-xl border-0 focus:ring-2 focus:ring-white/50 focus:outline-none"
-                  />
-                </div>
-                <EBButton
-                  size="lg"
-                  className="bg-white text-emerald-600 hover:bg-gray-50 font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Đăng Ký
-                </EBButton>
-              </div>
-            </div>
-
-            {/* Footer Preview */}
-            <div className="pt-12 border-t border-white/20">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-white/80 text-sm">
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">EduBridge</h4>
-                    <p>Nền tảng kết nối giáo dục tin cậy</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">Về Chúng Tôi</h4>
-                    <p>Tìm hiểu câu chuyện của chúng tôi</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">Dịch Vụ</h4>
-                    <p>Khám phá các dịch vụ của chúng tôi</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-white mb-2">Công Ty</h4>
-                    <p>Tham gia sứ mệnh của chúng tôi</p>
-                  </div>
-                </div>
-                <div className="mt-6 pt-6 border-t border-white/20 text-center">
-                  <p className="text-white/60 text-sm">
-                    © 2024 EduBridge. Tất cả quyền được bảo lưu.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
