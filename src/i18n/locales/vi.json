@@ -1,6 +1,5 @@
 {
   "common": {
-    "loading": "Đang tải...",
     "error": "Có lỗi xảy ra",
     "success": "Thành công",
     "cancel": "Hủy",
@@ -23,7 +22,6 @@
     "copy": "Sao chép",
     "paste": "Dán",
     "cut": "Cắt",
-    "select": "Chọn",
     "selectAll": "Chọn tất cả",
     "clear": "Xóa",
     "reset": "Đặt lại",
@@ -70,7 +68,6 @@
     "passwordMismatch": "Mật khẩu không khớp",
     "required": "Bắt buộc",
     "optional": "Tùy chọn",
-    "recommended": "Khuyến nghị",
     "deprecated": "Không còn sử dụng",
     "beta": "Beta",
     "new": "Mới",
@@ -149,7 +146,6 @@
     "file": "Tệp",
     "document": "Tài liệu",
     "folder": "Thư mục",
-    "link": "Liên kết",
     "url": "URL",
     "email": "Email",
     "phone": "Điện thoại",
@@ -197,7 +193,6 @@
     "support": "Hỗ trợ",
     "help": "Trợ giúp",
     "faq": "Câu hỏi thường gặp",
-    "contact": "Liên hệ",
     "feedback": "Phản hồi",
     "review": "Đánh giá",
     "rating": "Xếp hạng",
