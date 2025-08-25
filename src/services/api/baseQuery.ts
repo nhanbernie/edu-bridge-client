@@ -4,11 +4,7 @@ import {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import {
-  API_CONFIG,
-  API_ENDPOINTS,
-  PUBLIC_ENDPOINTS,
-} from "@/constants/endpoint.constant";
+import { API_CONFIG, API_ENDPOINTS, PUBLIC_ENDPOINTS } from "@/common/constants/endpoint.constant";
 import { StorageService } from "@/services/storage/secureStorage.service";
 
 const getUrlFromArgs = (arg: any) => {
@@ -55,7 +51,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         {
           url: API_ENDPOINTS.AUTH.REFRESH,
           method: "POST",
-          body: { refresh_token: refreshToken },
+          body: { refreshToken: refreshToken },
         },
         api,
         extraOptions
@@ -63,8 +59,9 @@ export const baseQueryWithReauth: BaseQueryFn<
 
       if (refreshResult.data) {
         const responseData = refreshResult.data as any;
-        const newAccessToken = responseData.data?.access_token;
-        const newRefreshToken = responseData.data?.refresh_token;
+        // Handle new API format
+        const newAccessToken = responseData.data?.accessToken || responseData.data?.access_token;
+        const newRefreshToken = responseData.data?.refreshToken || responseData.data?.refresh_token;
 
         if (newAccessToken) {
           await StorageService.setTokenData({

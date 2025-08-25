@@ -1,44 +1,23 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../api/baseQuery";
-import { StoredUserData } from "../storage/secureStorage.service";
-
-interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-interface LoginResponse {
-  data: {
-    access_token: string;
-    refresh_token: string;
-    expires_in: number;
-    user: StoredUserData;
-  };
-}
+import { loginEndpoint, registerEndpoint, refreshTokenEndpoint } from "./endpoints/index";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Auth"],
+  tagTypes: ["User", "Auth"],
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginRequest>({
-      query: (credentials) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: credentials,
-      }),
-      invalidatesTags: ["Auth"],
-    }),
-    logout: builder.mutation<void, void>({
-      query: () => ({
-        url: "/auth/logout",
-        method: "POST",
-      }),
-      invalidatesTags: ["Auth"],
-    }),
-    getProfile: builder.query<{ data: StoredUserData }, void>({
-      query: () => "/auth/profile",
-      providesTags: ["Auth"],
-    }),
+    login: loginEndpoint(builder),
+    register: registerEndpoint(builder),
+    refreshToken: refreshTokenEndpoint(builder),
+    // TODO: Implement these endpoints when needed
+    // createOtp: createOtpEndpoint(builder),
+    // verifyOtp: verifyOtpEndpoint(builder),
+    // forgotPassword: forgotPasswordEndpoint(builder),
+    // resetPassword: resetPasswordEndpoint(builder),
+    // changePassword: changePasswordEndpoint(builder),
+    // logout: logoutEndpoint(builder),
   }),
 });
+
+export const { useLoginMutation, useRegisterMutation, useRefreshTokenMutation } = authApi;
