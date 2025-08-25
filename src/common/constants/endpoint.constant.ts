@@ -2,16 +2,16 @@ import { ENV } from "@/utils/env";
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    REFRESH: "/auth/refresh",
-    LOGOUT: "/auth/logout",
-    PROFILE: "/auth/profile",
-    FORGOT_PASSWORD: "/auth/forgot-password",
-    VERIFY_OTP: "/auth/verify-otp",
-    RESET_PASSWORD: "/auth/reset-password",
-    CHANGE_PASSWORD: "/auth/change-password",
-    CREATE_OTP: "/auth/create-otp",
+    LOGIN: "/api/Auth/login",
+    REGISTER: "/api/Auth/register",
+    REFRESH: "/api/Auth/refresh-token",
+    LOGOUT: "/api/Auth/logout",
+    PROFILE: "/api/Auth/profile",
+    FORGOT_PASSWORD: "/api/Auth/forgot-password",
+    VERIFY_OTP: "/api/Auth/verify-otp",
+    RESET_PASSWORD: "/api/Auth/reset-password",
+    CHANGE_PASSWORD: "/api/Auth/change-password",
+    CREATE_OTP: "/api/Auth/create-otp",
   },
   USER: {},
 } as const;
