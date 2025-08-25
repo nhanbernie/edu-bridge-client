@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import FormProvider from "../FormProvider";
 import { TextField } from "../TextField";
@@ -164,7 +166,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         {type === "login" && (
           <div className="mt-4 text-center">
             <span className="text-gray-600 text-sm">
-              Chưa có tài khoản?{" "}
+              Chưa có tài khoản?
               <button
                 type="button"
                 onClick={() => router.push("/register")}
