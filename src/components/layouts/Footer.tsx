@@ -14,7 +14,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-emerald-50 py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Newsletter Section */}
         <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-3xl p-8 mb-16 relative overflow-hidden">
           {/* Background decorative elements */}

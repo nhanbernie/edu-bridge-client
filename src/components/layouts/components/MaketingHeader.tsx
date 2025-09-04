@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { GraduationCap, Menu, X, Sun, Moon, Globe } from "lucide-react";
-import { navigateMarketItems } from "@/common/constants/navigate.constant";
+import { navigateMarketItems } from "@/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
 import Link from "next/link";
 

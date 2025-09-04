@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import AuthLayout from "@/components/layout/AuthLayout";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
 
 const ForgotPasswordFeature = () => {

@@ -4,7 +4,7 @@ export interface ApiResponse<T = any> {
   data: T | null;
   message: string;
   errors: Array<{ field: string; message: string }>;
-  statusCode: number;
+  statusCode?: number;
 }
 
 export interface ApiError {
