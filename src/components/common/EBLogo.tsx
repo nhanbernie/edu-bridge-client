@@ -1,10 +1,16 @@
-import Image from "next/image";
-
-const Logo = () => (
-  <div className="flex items-center gap-2">
-    <Image src="/logo.svg" alt="EduBridge" width={100} height={100} />
-    <h1 className="text-white font-bold text-sm">EduBridge</h1>
-  </div>
+import { motion } from "motion/react";
+import { GraduationCap } from "lucide-react";
+const EBLogo = () => (
+  <motion.div
+    className="flex items-center space-x-3"
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+  >
+    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+      <GraduationCap className="w-6 h-6 text-white" />
+    </div>
+    <span className="text-xl font-bold text-gray-900">Edu Bridge</span>
+  </motion.div>
 );
 
-export default Logo;
+export default EBLogo;

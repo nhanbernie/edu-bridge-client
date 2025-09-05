@@ -6,7 +6,7 @@ import { GraduationCap, Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { navigateMarketItems } from "@/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
 import Link from "next/link";
-
+import { EBThemeToggle, EBLogo } from "@/components/common/";
 const MaketingHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,17 +35,7 @@ const MaketingHeader = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <motion.div
-              className="flex items-center space-x-3"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">Edu Bridge</span>
-            </motion.div>
+            <EBLogo />
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -78,14 +68,7 @@ const MaketingHeader = () => {
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
               {/* Theme Toggle */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </motion.button>
+              <EBThemeToggle />
 
               {/* Language Selector */}
               <motion.button
