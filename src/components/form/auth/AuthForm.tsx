@@ -19,14 +19,14 @@ const INPUT_FIELDS = {
     },
   ],
   register: [
-    { name: "name", type: "text" as const, placeholder: "Full Name", label: "Full Name" },
+    { name: "name", type: "text" as const, placeholder: "Họ và tên", label: "Họ và tên" },
     { name: "email", type: "email" as const, placeholder: "Email", label: "Email" },
-    { name: "password", type: "password" as const, placeholder: "Password", label: "Password" },
+    { name: "password", type: "password" as const, placeholder: "Mật khẩu", label: "Mật khẩu" },
     {
       name: "confirmPassword",
       type: "password" as const,
-      placeholder: "Confirm Password",
-      label: "Confirm Password",
+      placeholder: "Xác nhận mật khẩu",
+      label: "Xác nhận mật khẩu",
     },
   ],
   forgotPassword: [{ name: "email", type: "email" as const, placeholder: "Email", label: "Email" }],
@@ -34,22 +34,22 @@ const INPUT_FIELDS = {
     {
       name: "code",
       type: "text" as const,
-      placeholder: "Enter verification code",
-      label: "Verification Code",
+      placeholder: "Nhập mã xác thực",
+      label: "Mã xác thực",
     },
   ],
   resetPassword: [
     {
       name: "password",
       type: "password" as const,
-      placeholder: "New Password",
-      label: "New Password",
+      placeholder: "Mật khẩu mới",
+      label: "Mật khẩu mới",
     },
     {
       name: "confirmPassword",
       type: "password" as const,
-      placeholder: "Confirm Password",
-      label: "Confirm Password",
+      placeholder: "Xác nhận mật khẩu",
+      label: "Xác nhận mật khẩu",
     },
   ],
 };
@@ -111,7 +111,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         {/* Display email when in verifyOTP mode */}
         {type === "verifyOTP" && email && (
           <div className="mt-2">
-            <p className="text-gray-500 text-center text-sm">Code sent to {email}</p>
+            <p className="text-gray-500 text-center text-sm">Mã đã được gửi đến {email}</p>
           </div>
         )}
 
@@ -127,21 +127,21 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
                 <div
                   className={cn(
                     "w-5 h-5 border border-gray-300 rounded mr-2 flex items-center justify-center",
-                    rememberMe && "bg-emerald-600 border-emerald-600"
+                    rememberMe && "bg-primary border-primary"
                   )}
                 >
                   {rememberMe && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
-                <span className="text-gray-700 text-sm">Remember me</span>
+                <span className="text-gray-700 text-sm">Ghi nhớ đăng nhập</span>
               </button>
 
               <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={() => router.push("/forgot-password")}
-                  className="text-orange-500 hover:text-orange-600 text-sm"
+                  className="text-primary hover:text-primary/80 text-sm"
                 >
-                  Forgot Password?
+                  Quên mật khẩu?
                 </button>
               </div>
             </div>
@@ -153,10 +153,10 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
             className={cn(
               "w-full py-4 px-6 rounded-xl font-semibold text-base transition-all duration-200",
               isValid && !isSubmitting
-                ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
+                ? "bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-xl"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             )}
-            disabled={!isSubmitting}
+            disabled={!isValid || isSubmitting}
           >
             {isSubmitting ? "Đang xử lý..." : BUTTON_TITLES[type]}
           </button>
@@ -170,9 +170,25 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
               <button
                 type="button"
                 onClick={() => router.push("/register")}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-primary hover:text-primary/80 font-medium ml-1"
               >
                 Đăng ký
+              </button>
+            </span>
+          </div>
+        )}
+
+        {/* Footer text for register */}
+        {type === "register" && (
+          <div className="mt-4 text-center">
+            <span className="text-gray-600 text-sm">
+              Đã có tài khoản?
+              <button
+                type="button"
+                onClick={() => router.push("/login")}
+                className="text-primary hover:text-primary/80 font-medium ml-1"
+              >
+                Đăng nhập
               </button>
             </span>
           </div>
