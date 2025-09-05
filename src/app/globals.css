@@ -41,13 +41,25 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Marketing colors */
+  --color-emerald-50: oklch(0.98 0.02 155);
+  --color-emerald-400: oklch(0.7 0.13 155);
+  --color-emerald-500: oklch(0.6 0.15 155);
+  --color-emerald-600: oklch(0.5 0.15 155);
+  --color-teal-50: oklch(0.97 0.02 180);
+  --color-teal-400: oklch(0.7 0.12 180);
+  --color-teal-500: oklch(0.6 0.14 180);
+  --color-green-100: oklch(0.95 0.04 140);
+  --color-green-400: oklch(0.75 0.14 140);
+  --color-red-500: oklch(0.6 0.2 25);
+  --color-pink-500: oklch(0.65 0.15 350);
+  --color-purple-500: oklch(0.6 0.15 280);
+  --color-indigo-500: oklch(0.55 0.15 270);
+  --color-blue-500: oklch(0.55 0.12 240);
+  --color-cyan-500: oklch(0.65 0.12 200);
+  --color-yellow-400: oklch(0.85 0.15 85);
+  --color-orange-500: oklch(0.65 0.15 60);
 }
 
 :root {
@@ -58,7 +70,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.6 0.15 155); /* emerald-500 */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -69,7 +81,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: oklch(0.6 0.15 155); /* emerald-500 */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -92,7 +104,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.6 0.15 155); /* emerald-500 */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -103,7 +115,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.6 0.15 155); /* emerald-500 */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);

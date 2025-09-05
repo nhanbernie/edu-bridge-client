@@ -1,6 +1,6 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query/react";
 import { RefreshTokenRequest, ApiResponse, TokenResponse } from "@/services/api/type";
-import { API_ENDPOINTS } from "@/common/constants/endpoint.constant";
+import { API_ENDPOINTS } from "@/constants/endpoint.constant";
 
 export const refreshTokenEndpoint = (builder: EndpointBuilder<any, any, any>) =>
   builder.mutation<ApiResponse<TokenResponse>, RefreshTokenRequest>({

@@ -1,21 +1,12 @@
 "use client";
 
 import React from "react";
-import AuthLayout from "@/components/layout/AuthLayout";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
+import useForgotPasswordSubmit from "./hooks/useForgotPasswordSubmit";
 
 const ForgotPasswordFeature = () => {
-  const handleForgotPasswordSubmit = async (data: any) => {
-    console.log("Forgot password submitted:", data);
-    // TODO: Implement forgot password API call here
-    try {
-      // Example: await forgotPasswordAPI(data.email);
-      // Handle success: show success message, redirect to check email
-    } catch (error) {
-      // Handle error: show error message
-      console.error("Forgot password failed:", error);
-    }
-  };
+  const handleForgotPasswordSubmit = useForgotPasswordSubmit();
 
   return (
     <AuthLayout>

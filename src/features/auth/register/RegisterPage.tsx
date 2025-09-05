@@ -1,21 +1,12 @@
 "use client";
 
 import React from "react";
-import AuthLayout from "@/components/layout/AuthLayout";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
+import useRegisterSubmit from "./hooks/useRegisterSubmit";
 
 const RegisterFeature = () => {
-  const handleRegisterSubmit = async (data: any) => {
-    console.log("Register submitted:", data);
-    // TODO: Implement register API call here
-    try {
-      // Example: await registerAPI(data.name, data.email, data.password);
-      // Handle success: redirect to verify email or login
-    } catch (error) {
-      // Handle error: show error message
-      console.error("Register failed:", error);
-    }
-  };
+  const handleRegisterSubmit = useRegisterSubmit();
 
   return (
     <AuthLayout>

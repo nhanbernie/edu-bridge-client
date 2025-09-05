@@ -1,21 +1,12 @@
 "use client";
 
 import React from "react";
-import AuthLayout from "@/components/layout/AuthLayout";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
+import useLoginSubmit from "./hooks/useLoginSubmit";
 
 const LoginFeature = () => {
-  const handleLoginSubmit = async (data: any) => {
-    console.log("Login submitted:", data);
-    // TODO: Implement login API call here
-    try {
-      // Example: await loginAPI(data.email, data.password);
-      // Handle success: redirect to dashboard
-    } catch (error) {
-      // Handle error: show error message
-      console.error("Login failed:", error);
-    }
-  };
+  const handleLoginSubmit = useLoginSubmit();
 
   return (
     <AuthLayout>

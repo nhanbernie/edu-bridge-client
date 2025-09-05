@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, forwardRef } from "react";
 import { useController, useFormContext } from "react-hook-form";
@@ -33,7 +33,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             type={type === "password" ? (showPassword ? "text" : "password") : type}
             className={cn(
-              "w-full border rounded-xl px-4 py-4 text-gray-900 bg-gray-50 text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200",
+              "w-full border rounded-xl px-4 py-4 text-gray-900 bg-gray-50 text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent focus:bg-white transition-all duration-200",
               error ? "border-red-500 bg-red-50" : "border-gray-200 hover:border-gray-300",
               type === "password" && "pr-12",
               className

@@ -1,8 +1,5 @@
 import LandingLayout from "@/layouts/LandingLayout";
-import HeroSection from "./components/HeroSection";
-import FeatureSection from "./components/FeatureSection";
-import CTASection from "./components/CTASection";
-
+import { CTASection, FeatureSection, HeroSection } from "./components";
 const MarketingFeature = () => {
   return (
     <LandingLayout>
