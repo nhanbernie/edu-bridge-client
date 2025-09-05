@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
-import useForgotPasswordSubmit from "./hooks/useForgotPasswordSubmit";
+// import useForgotPasswordSubmit from "./hooks/useForgotPasswordSubmit";
 
 const ForgotPasswordFeature = () => {
-  const handleForgotPasswordSubmit = useForgotPasswordSubmit();
-
+  // const handleForgotPasswordSubmit = useForgotPasswordSubmit();
+  const handleForgotPasswordSubmit = {};
   return (
     <AuthLayout>
       <div className="w-full max-w-md">
