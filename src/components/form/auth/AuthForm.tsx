@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import FormProvider from "../FormProvider";
@@ -19,7 +19,7 @@ const INPUT_FIELDS = {
     },
   ],
   register: [
-    { name: "name", type: "text" as const, placeholder: "Họ và tên", label: "Họ và tên" },
+    { name: "fullName", type: "text" as const, placeholder: "Họ và tên", label: "Họ và tên" },
     { name: "email", type: "email" as const, placeholder: "Email", label: "Email" },
     { name: "password", type: "password" as const, placeholder: "Mật khẩu", label: "Mật khẩu" },
     {

@@ -14,10 +14,15 @@ const useRegisterSubmit = () => {
     async (data: { email: string; password: string; fullName: string }) => {
       try {
         dispatch(setLoading(true));
-        const result = await registerMutation(data).unwrap();
+        const { email, password, fullName } = data;
+        const registerPayload = {
+          email,
+          password,
+          fullName,
+        };
+        const result = await registerMutation(registerPayload).unwrap();
         if (result.success && result.data) {
           toast.success(result.message || "Registration successful");
-          // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
           router.push("/login");
         } else {
           throw new Error(result.message || "Registration failed");
