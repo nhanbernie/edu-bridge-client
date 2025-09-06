@@ -6,67 +6,14 @@ import { TextField } from "../TextField";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
-
-// Define form field configurations
-const INPUT_FIELDS = {
-  login: [
-    { name: "email", type: "email" as const, placeholder: "Nhập email của bạn", label: "Email" },
-    {
-      name: "password",
-      type: "password" as const,
-      placeholder: "Nhập mật khẩu",
-      label: "Mật khẩu",
-    },
-  ],
-  register: [
-    { name: "fullName", type: "text" as const, placeholder: "Họ và tên", label: "Họ và tên" },
-    { name: "email", type: "email" as const, placeholder: "Email", label: "Email" },
-    { name: "password", type: "password" as const, placeholder: "Mật khẩu", label: "Mật khẩu" },
-    {
-      name: "confirmPassword",
-      type: "password" as const,
-      placeholder: "Xác nhận mật khẩu",
-      label: "Xác nhận mật khẩu",
-    },
-  ],
-  forgotPassword: [{ name: "email", type: "email" as const, placeholder: "Email", label: "Email" }],
-  verifyOTP: [
-    {
-      name: "code",
-      type: "text" as const,
-      placeholder: "Nhập mã xác thực",
-      label: "Mã xác thực",
-    },
-  ],
-  resetPassword: [
-    {
-      name: "password",
-      type: "password" as const,
-      placeholder: "Mật khẩu mới",
-      label: "Mật khẩu mới",
-    },
-    {
-      name: "confirmPassword",
-      type: "password" as const,
-      placeholder: "Xác nhận mật khẩu",
-      label: "Xác nhận mật khẩu",
-    },
-  ],
-};
-
-const BUTTON_TITLES = {
-  login: "Tiếp tục",
-  register: "Đăng ký",
-  forgotPassword: "Gửi liên kết đặt lại",
-  verifyOTP: "Xác thực",
-  resetPassword: "Đặt lại mật khẩu",
-};
+import validatorSchema from "@/lib/authValidator";
+import { INPUT_FIELDS, BUTTON_TITLES } from "@/constants/form.constant";
 
 export interface IAuthFormProps {
   type: "login" | "register" | "forgotPassword" | "verifyOTP" | "resetPassword";
-  onSubmit?: (data: any) => void | Promise<void>;
-  email?: string; // For passing email to verify step
-  token?: string; // For passing token to reset step
+  onSubmit?: (data: any, formMethods?: any) => void | Promise<void>;
+  email?: string;
+  token?: string;
 }
 
 const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormProps) => {
@@ -78,10 +25,14 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
     console.log("Form submitted:", data);
   };
 
-  // Enhanced handleSubmit that includes email for verifyOTP
-  const handleSubmit = async (data: any) => {
+  // Enhanced handleSubmit with validation
+  const handleSubmit = async (data: any, formMethods?: any) => {
     setIsSubmitting(true);
     try {
+      // Validate data using appropriate schema
+      const schema = validatorSchema[type];
+      await schema.validate(data, { abortEarly: false });
+
       // For verifyOTP, combine the email from props with the code from form
       if (type === "verifyOTP" && email) {
         await (customOnSubmit?.({ email, otp: data.code }) || defaultOnSubmit(data));
@@ -89,8 +40,20 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         // For other form types, pass data as is
         await (customOnSubmit?.(data) || defaultOnSubmit(data));
       }
-    } catch (error) {
-      console.error("Form submission error:", error);
+    } catch (error: any) {
+      if (error.name === "ValidationError" && formMethods?.setError) {
+        // Set validation errors to respective fields
+        error.inner?.forEach((err: any) => {
+          if (err.path) {
+            formMethods.setError(err.path, {
+              type: "manual",
+              message: err.message,
+            });
+          }
+        });
+      } else {
+        console.error("Form submission error:", error);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -198,7 +161,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
   };
 
   return (
-    <FormProvider onSubmit={handleSubmit}>
+    <FormProvider onSubmit={handleSubmit} validationSchema={validatorSchema[type]} formType={type}>
       <AuthFormContent />
     </FormProvider>
   );
