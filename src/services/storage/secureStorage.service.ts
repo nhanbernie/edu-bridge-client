@@ -18,20 +18,35 @@ export interface StoredUserData {
   roles: string[];
   firstName?: string;
   lastName?: string;
+  fullName?: string;
   avatar?: string;
 }
 
-// Browser storage utility functions
+// Browser storag
 class BrowserStorage {
   static setItem(key: string, value: string): void {
     if (typeof window !== "undefined") {
       localStorage.setItem(key, value);
+
+      // Set cookie
+      const secure = window.location.protocol === "https:";
+      document.cookie = `${key}=${value}; path=/; ${secure ? "secure;" : ""} SameSite=Strict; max-age=${60 * 60 * 24 * 7}`; // 7 days
     }
   }
 
   static getItem(key: string): string | null {
     if (typeof window !== "undefined") {
-      return localStorage.getItem(key);
+      // Try localStorage first
+      const localValue = localStorage.getItem(key);
+      if (localValue) return localValue;
+
+      // Fallback to cookies
+      const cookieValue = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(`${key}=`))
+        ?.split("=")[1];
+
+      return cookieValue || null;
     }
     return null;
   }
@@ -39,6 +54,8 @@ class BrowserStorage {
   static removeItem(key: string): void {
     if (typeof window !== "undefined") {
       localStorage.removeItem(key);
+      // Remove cookie
+      document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     }
   }
 }
@@ -83,10 +100,7 @@ export class StorageService {
   static async setTokenData(tokenData: TokenData): Promise<void> {
     try {
       BrowserStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokenData.access_token);
-      BrowserStorage.setItem(
-        STORAGE_KEYS.REFRESH_TOKEN,
-        tokenData.refresh_token
-      );
+      BrowserStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokenData.refresh_token);
       BrowserStorage.setItem(
         STORAGE_KEYS.EXPIRES_AT,
         (Date.now() + tokenData.expires_in * 1000).toString()
@@ -107,13 +121,8 @@ export class StorageService {
         return null;
       }
 
-      const expiresAtMs = expires_at
-        ? parseInt(expires_at)
-        : Date.now() + 3600000; // Default 1 hour
-      const expires_in = Math.max(
-        0,
-        Math.floor((expiresAtMs - Date.now()) / 1000)
-      );
+      const expiresAtMs = expires_at ? parseInt(expires_at) : Date.now() + 3600000; // Default 1 hour
+      const expires_in = Math.max(0, Math.floor((expiresAtMs - Date.now()) / 1000));
 
       return {
         access_token,

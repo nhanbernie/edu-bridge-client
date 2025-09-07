@@ -13,6 +13,12 @@ const getUrlFromArgs = (arg: any) => {
   return "";
 };
 
+const redirectToLogin = () => {
+  if (typeof window !== "undefined") {
+    window.location.href = "/login";
+  }
+};
+
 // Base query with keychain
 const baseQuery = fetchBaseQuery({
   baseUrl: API_CONFIG.BASE_URL,
@@ -59,7 +65,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 
       if (refreshResult.data) {
         const responseData = refreshResult.data as any;
-        // Handle new API format
         const newAccessToken = responseData.data?.accessToken || responseData.data?.access_token;
         const newRefreshToken = responseData.data?.refreshToken || responseData.data?.refresh_token;
 
@@ -72,13 +77,17 @@ export const baseQueryWithReauth: BaseQueryFn<
 
           result = await baseQuery(args, api, extraOptions);
         } else {
+          // Clear auth data and redirect to login
           await StorageService.clearAuthData();
+          redirectToLogin();
         }
       } else {
         await StorageService.clearAuthData();
+        redirectToLogin();
       }
     } else {
       await StorageService.clearAuthData();
+      redirectToLogin();
     }
   }
 

@@ -2,14 +2,14 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useLoginMutation } from "@/services/auth/auth.service";
 import { setLoading, setUser } from "@/redux/slices/auth.slice";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
 
 const useLoginSubmit = () => {
   const dispatch = useAppDispatch();
   const [loginMutation] = useLoginMutation();
-  const router = useRouter();
+  const { login } = useAuth();
 
   return useCallback(
     async (data: { email: string; password: string }) => {
@@ -32,9 +32,14 @@ const useLoginSubmit = () => {
             fullName: result.data.user.fullName || undefined,
           };
 
+          // Save user data to storage
+          await StorageService.setUserData(storedUserData);
+
           toast.success(result.message || "Login successful");
           dispatch(setUser(storedUserData));
-          router.push("/"); // Redirect to home page
+
+          // Use AuthContext login method for routing
+          login(storedUserData);
         } else {
           throw new Error(result.message || "Login failed");
         }
@@ -47,7 +52,7 @@ const useLoginSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, loginMutation, router]
+    [dispatch, loginMutation, login]
   );
 };
 
