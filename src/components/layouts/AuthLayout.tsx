@@ -4,7 +4,7 @@ import { GraduationCap, Users, Star, BookOpen } from "lucide-react";
 import { StatsCard } from "@/features/marketing/components";
 import React from "react";
 import Link from "next/link";
-import { EBThemeToggle } from "@/components/common";
+import { EBLogo, EBThemeToggle } from "@/components/common";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,15 +19,9 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Marketing Content */}
-            <div className="space-y-8">
-              {/* Logo and Brand */}
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-teal-600 rounded-xl flex items-center justify-center">
-                  <GraduationCap className="w-7 h-7 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900">EduBridge</h1>
-              </div>
 
+            <div className="space-y-8">
+              <EBLogo />
               {/* Main Headline */}
               <div className="space-y-4">
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
