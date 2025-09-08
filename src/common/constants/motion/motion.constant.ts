@@ -1,4 +1,4 @@
-import { Variants } from "framer-motion";
+import { Variants } from "motion/react";
 
 // Card animation variants
 export const cardVariants: Variants = {

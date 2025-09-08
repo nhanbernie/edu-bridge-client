@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import { motion, type Variants, type TargetAndTransition } from "framer-motion";
+import { motion, type Variants, type TargetAndTransition } from "motion/react";
 import { cn } from "@/lib/utils";
 import { DEFAULT_CARD_ANIMATION } from "@/common/constants/motion/motion.constant";
 

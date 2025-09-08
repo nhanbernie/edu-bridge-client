@@ -4,7 +4,7 @@ import React, { useState, forwardRef } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {

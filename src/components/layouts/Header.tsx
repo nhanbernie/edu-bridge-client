@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { Search, MessageSquare, Menu, Globe } from "lucide-react";
 import UserMenu from "./components/UserMenu";
@@ -7,7 +8,7 @@ import MobileMenu from "./components/MobileMenu";
 import Logo from "../common/EBLogo";
 import { navigationItems, NavItem } from "@/constants/navigate.constant";
 import Navigation from "./components/Navigation";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
 
 // Action buttons component

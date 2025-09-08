@@ -1,5 +1,5 @@
-import React from "react";
-import { motion, type Variants } from "framer-motion";
+"use client";
+import { motion, type Variants } from "motion/react";
 import { cn } from "@/lib/utils";
 import { containerVariants, slideUpVariants } from "@/common/constants/motion/motion.constant";
 
