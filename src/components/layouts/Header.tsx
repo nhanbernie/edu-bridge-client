@@ -7,7 +7,7 @@ import MobileMenu from "./components/MobileMenu";
 import Logo from "../common/EBLogo";
 import { navigationItems, NavItem } from "@/constants/navigate.constant";
 import Navigation from "./components/Navigation";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
 
 // Action buttons component
