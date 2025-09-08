@@ -6,8 +6,7 @@ import { toast } from "sonner";
 
 const useForgotPasswordSubmit = () => {
   const dispatch = useAppDispatch();
-  const toast = useToast();
-
+  const router = useRouter();
   return useCallback(
     async (data: { email: string }) => {
       try {
