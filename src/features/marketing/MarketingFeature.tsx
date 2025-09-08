@@ -1,5 +1,3 @@
-"use client";
-
 import { LandingLayout } from "@/components/layouts";
 import { CTASection, FeatureSection, HeroSection } from "./components";
 const MarketingFeature = () => {
