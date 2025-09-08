@@ -6,7 +6,7 @@ import AuthForm from "@/components/form/auth/AuthForm";
 
 const ForgotPasswordFeature = () => {
   // const handleForgotPasswordSubmit = useForgotPasswordSubmit();
-  const handleForgotPasswordSubmit = {};
+
   return (
     <AuthLayout>
       <div className="w-full max-w-md">
@@ -20,7 +20,7 @@ const ForgotPasswordFeature = () => {
           </div>
 
           {/* Auth Form with forgotPassword type */}
-          <AuthForm type="forgotPassword" onSubmit={handleForgotPasswordSubmit} />
+          <AuthForm type="forgotPassword" onSubmit={() => {}} />
         </div>
       </div>
     </AuthLayout>
