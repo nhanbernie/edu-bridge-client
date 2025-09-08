@@ -8,6 +8,7 @@ import Logo from "../common/EBLogo";
 import { navigationItems, NavItem } from "@/constants/navigate.constant";
 import Navigation from "./components/Navigation";
 import { motion } from "motion/react";
+import { EBThemeToggle, EBLogo } from "@/components/common/";
 
 // Action buttons component
 const ActionButtons = ({ onMobileMenuToggle }: { onMobileMenuToggle: () => void }) => (
@@ -40,6 +41,8 @@ const ActionButtons = ({ onMobileMenuToggle }: { onMobileMenuToggle: () => void 
       <Globe className="w-5 h-5" />
     </motion.button>
     {/* User Menu */}
+
+    <EBThemeToggle />
 
     <UserMenu />
     {/* Mobile menu button */}

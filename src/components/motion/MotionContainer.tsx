@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { containerVariants, slideUpVariants } from "@/common/constants/motion.constant";
+import { containerVariants, slideUpVariants } from "@/common/constants/motion/motion.constant";
 
 interface MotionContainerProps {
   children: React.ReactNode;

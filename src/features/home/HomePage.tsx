@@ -2,63 +2,113 @@
 
 import { MainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
-
+import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
+import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
+import { EBLogo } from "@/components/common";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
 
   return (
-    <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 relative overflow-hidden pt-16">
-        <div className="max-w-4xl mx-auto p-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold text-gray-900">Chào mừng đến với EduBridge</h1>
-              <button
-                onClick={logout}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-              >
-                Đăng xuất
-              </button>
+    <MainLayout footer={true}>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden pt-32">
+        {/* Logo and Title Section */}
+        <div className="max-w-6xl mx-auto p-8 text-center">
+          <div className="mb-16">
+            <div className="flex justify-center mb-6">
+              <EBLogo imageSize={60} textClassName="text-2xl" />
             </div>
-
-            {user && (
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h2 className="text-xl font-semibold mb-2">Thông tin người dùng</h2>
-                <p>
-                  <strong>ID:</strong> {user.id}
-                </p>
-                <p>
-                  <strong>Email:</strong> {user.email}
-                </p>
-                <p>
-                  <strong>Họ và tên:</strong> {user.fullName}
-                </p>
-                <p>
-                  <strong>Vai trò:</strong> {user.roles?.join(", ")}
-                </p>
-              </div>
-            )}
-
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold mb-4">Tính năng</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h4 className="font-medium text-blue-900">Tìm gia sư</h4>
-                  <p className="text-blue-700 text-sm">
-                    Tìm kiếm gia sư phù hợp với nhu cầu của bạn
-                  </p>
-                </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h4 className="font-medium text-green-900">Đặt lịch học</h4>
-                  <p className="text-green-700 text-sm">Đặt lịch học với gia sư yêu thích</p>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h4 className="font-medium text-purple-900">Quản lý khóa học</h4>
-                  <p className="text-purple-700 text-sm">Theo dõi tiến độ học tập của bạn</p>
-                </div>
-              </div>
-            </div>
+            <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
+              How would you like to use EduBridge?
+            </h2>
           </div>
+
+          {/* Choice Cards */}
+          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            {/* I want to learn Card */}
+            <MotionItem>
+              <MotionCard
+                variants={choiceCardVariants}
+                onClick={() => console.log("Learn clicked")}
+                className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
+                          hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
+                          transition-all duration-500 ease-out"
+              >
+                <div
+                  className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-2xl w-24 h-24 mx-auto mb-6 flex items-center justify-center
+                               shadow-lg group-hover:shadow-xl group-hover:shadow-blue-500/25 transition-all duration-500 group-hover:scale-110"
+                >
+                  <BookOpen size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                  I want to learn
+                </h3>
+                <p className="text-muted-foreground mb-6 group-hover:text-foreground/80 transition-colors duration-300">
+                  Find qualified tutors and book personalized lessons
+                </p>
+                <div className="flex items-center justify-center text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">
+                  <Users size={16} className="mr-2" />
+                  <span className="text-sm font-medium">10,000+ Students</span>
+                </div>
+              </MotionCard>
+            </MotionItem>
+
+            {/* I want to teach Card */}
+            <MotionItem>
+              <MotionCard
+                variants={choiceCardVariants}
+                onClick={() => console.log("Teach clicked")}
+                className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
+                          hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
+                          transition-all duration-500 ease-out"
+              >
+                <div
+                  className="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-2xl w-24 h-24 mx-auto mb-6 flex items-center justify-center
+                               shadow-lg group-hover:shadow-xl group-hover:shadow-purple-500/25 transition-all duration-500 group-hover:scale-110"
+                >
+                  <GraduationCap size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                  I want to teach
+                </h3>
+                <p className="text-muted-foreground mb-6 group-hover:text-foreground/80 transition-colors duration-300">
+                  Share your knowledge and earn money teaching students
+                </p>
+                <div className="flex items-center justify-center text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">
+                  <Eye size={16} className="mr-2" />
+                  <span className="text-sm font-medium">500+ Expert Tutors</span>
+                </div>
+              </MotionCard>
+            </MotionItem>
+          </MotionContainer>
+
+          {/* User Info Section (if logged in) */}
+          {user && (
+            <MotionCard className="max-w-2xl mx-auto mb-8">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-semibold text-foreground">Thông tin người dùng</h3>
+                <button
+                  onClick={logout}
+                  className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+              <div className="space-y-2 text-left">
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">ID:</strong> {user.id}
+                </p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Email:</strong> {user.email}
+                </p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Họ và tên:</strong> {user.fullName}
+                </p>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Vai trò:</strong> {user.roles?.join(", ")}
+                </p>
+              </div>
+            </MotionCard>
+          )}
         </div>
       </div>
     </MainLayout>

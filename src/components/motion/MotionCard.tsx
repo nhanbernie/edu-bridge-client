@@ -1,7 +1,7 @@
 import React from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion, type Variants, type TargetAndTransition } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { DEFAULT_CARD_ANIMATION } from "@/common/constants/motion.constant";
+import { DEFAULT_CARD_ANIMATION } from "@/common/constants/motion/motion.constant";
 
 export interface MotionCardProps {
   children: React.ReactNode;
@@ -9,8 +9,8 @@ export interface MotionCardProps {
   variants?: Variants;
   initial?: string;
   animate?: string;
-  whileHover?: string;
-  whileTap?: string;
+  whileHover?: string | TargetAndTransition;
+  whileTap?: string | TargetAndTransition;
   layout?: boolean;
   layoutId?: string;
   onClick?: () => void;
@@ -35,7 +35,7 @@ export const MotionCard: React.FC<MotionCardProps> = ({
     <motion.div
       className={cn(
         // Base card styles using CSS variables (auto theme support)
-        "bg-card text-card-foreground border border-border rounded-lg p-6 shadow-sm",
+        "bg-card text-card-foreground border border-border rounded-3xl p-6 shadow-sm",
         // Hover effects
         "transition-shadow duration-200 hover:shadow-md",
         // Interactive cursor if clickable
