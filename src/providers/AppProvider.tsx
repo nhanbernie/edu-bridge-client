@@ -1,20 +1,24 @@
 "use client";
 
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { store } from "@/redux";
 import { Provider } from "react-redux";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Toaster } from "@/components/ui/toaster";
-import { store } from "@/redux/store";
 
-const AppProvider = ({ children }: { children: React.ReactNode }) => {
+interface AppProviderProps {
+  children: React.ReactNode;
+}
+
+export default function AppProvider({ children }: AppProviderProps) {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <Toaster />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </AuthProvider>
     </Provider>
   );
-};
-
-export default AppProvider;
+}
