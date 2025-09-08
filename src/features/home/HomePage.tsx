@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
+import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
 
@@ -83,7 +84,7 @@ const HomeFeature = () => {
 
           {/* User Info Section (if logged in) */}
           {user && (
-            <MotionCard className="max-w-2xl mx-auto mb-8">
+            <MotionCard className="max-w-2xl mx-auto mb-8" variants={simpleCardVariants}>
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-foreground">Thông tin người dùng</h3>
                 <button
@@ -94,9 +95,6 @@ const HomeFeature = () => {
                 </button>
               </div>
               <div className="space-y-2 text-left">
-                <p className="text-muted-foreground">
-                  <strong className="text-foreground">ID:</strong> {user.id}
-                </p>
                 <p className="text-muted-foreground">
                   <strong className="text-foreground">Email:</strong> {user.email}
                 </p>
