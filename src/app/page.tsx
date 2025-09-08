@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import MarketingPage from "./(unauthenticated)/(marketing)/page";
+import MarketingPage from "./(unauthenticated)/marketing/page";
 
 export default function MainPage() {
   const { isAuthenticated, isLoading } = useAuth();
