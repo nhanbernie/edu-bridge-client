@@ -1,19 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import * as Yup from "yup";
 import EBButton from "@/components/common/EBButton";
+import FormProvider from "@/components/form/FormProvider";
+import SelectField from "@/components/form/SelectField";
+import TextAreaField from "@/components/form/TextAreaField";
+
+interface StudentFormData {
+  grade: string;
+  learningGoal: string;
+}
 
 const StudentOnboardingPage = () => {
-  const [formData, setFormData] = useState({
-    grade: "",
-    learningGoal: "",
+  const handleSubmit = (data: StudentFormData) => {
+    const payload = {
+      role: "STUDENT",
+      student: data,
+    };
+    console.log("Student onboarding:", payload);
+    // TODO: Call API to submit the data
+  };
+
+  const gradeOptions = [
+    { value: "6", label: "Lớp 6" },
+    { value: "7", label: "Lớp 7" },
+    { value: "8", label: "Lớp 8" },
+    { value: "9", label: "Lớp 9" },
+    { value: "10", label: "Lớp 10" },
+    { value: "11", label: "Lớp 11" },
+    { value: "12", label: "Lớp 12" },
+  ];
+
+  const validationSchema = Yup.object().shape({
+    grade: Yup.string().required("Vui lòng chọn lớp học"),
+    learningGoal: Yup.string()
+      .min(10, "Mục tiêu học tập phải có ít nhất 10 ký tự")
+      .max(300, "Mục tiêu học tập không được quá 300 ký tự")
+      .required("Trường này là bắt buộc"),
   });
 
-  const handleSubmit = () => {
-    console.log("Student onboarding:", {
-      role: "STUDENT",
-      student: formData,
-    });
+  const defaultValues: StudentFormData = {
+    grade: "",
+    learningGoal: "",
   };
 
   return (
@@ -25,53 +53,28 @@ const StudentOnboardingPage = () => {
         </div>
 
         <div className="bg-card rounded-lg p-6 shadow-lg">
-          <div className="space-y-6">
-            {/* Grade Selection */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Lớp học hiện tại
-              </label>
-              <select
-                value={formData.grade}
-                onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="">Chọn lớp</option>
-                <option value="6">Lớp 6</option>
-                <option value="7">Lớp 7</option>
-                <option value="8">Lớp 8</option>
-                <option value="9">Lớp 9</option>
-                <option value="10">Lớp 10</option>
-                <option value="11">Lớp 11</option>
-                <option value="12">Lớp 12</option>
-              </select>
-            </div>
+          <FormProvider<StudentFormData>
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+            defaultValues={defaultValues}
+          >
+            <div className="space-y-6">
+              <SelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} />
 
-            {/* Learning Goal */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Mục tiêu học tập
-              </label>
-              <textarea
-                value={formData.learningGoal}
-                onChange={(e) => setFormData({ ...formData, learningGoal: e.target.value })}
+              <TextAreaField
+                name="learningGoal"
+                label="Mục tiêu học tập"
                 placeholder="Ví dụ: Cải thiện điểm toán và lý, chuẩn bị thi đại học..."
                 rows={4}
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
               />
-            </div>
 
-            {/* Submit Button */}
-            <div className="pt-4">
-              <EBButton
-                onClick={handleSubmit}
-                disabled={!formData.grade || !formData.learningGoal}
-                className="w-full"
-              >
-                Hoàn thành thiết lập
-              </EBButton>
+              <div className="pt-4">
+                <EBButton type="submit" className="w-full">
+                  Hoàn thành thiết lập
+                </EBButton>
+              </div>
             </div>
-          </div>
+          </FormProvider>
         </div>
       </div>
     </div>

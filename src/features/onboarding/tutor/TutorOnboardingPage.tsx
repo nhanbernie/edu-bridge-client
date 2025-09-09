@@ -1,27 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import * as Yup from "yup";
 import EBButton from "@/components/common/EBButton";
+import FormProvider from "@/components/form/FormProvider";
+import SelectField from "@/components/form/SelectField";
+import TextAreaField from "@/components/form/TextAreaField";
+import TextField from "@/components/form/TextField";
+
+interface TutorFormData {
+  educationLevel: string;
+  yearsOfExperience: number;
+  bio: string;
+  subjects: string;
+  languages: string;
+  hourlyRate: number;
+}
 
 const TutorOnboardingPage = () => {
-  const [formData, setFormData] = useState({
+  const handleSubmit = (data: TutorFormData) => {
+    const payload = {
+      role: "TUTOR",
+      tutor: {
+        ...data,
+        verifiedStatus: "PENDING", // Hidden field as requested
+      },
+    };
+    console.log("Tutor onboarding:", payload);
+    // TODO: Call API to submit the data
+  };
+
+  const educationOptions = [
+    { value: "High School", label: "Tốt nghiệp THPT" },
+    { value: "Bachelor", label: "Cử nhân" },
+    { value: "Master", label: "Thạc sĩ" },
+    { value: "PhD", label: "Tiến sĩ" },
+  ];
+
+  const validationSchema = Yup.object().shape({
+    educationLevel: Yup.string().required("Vui lòng chọn trình độ học vấn"),
+    yearsOfExperience: Yup.number()
+      .min(0, "Số năm kinh nghiệm phải lớn hơn 0")
+      .max(50, "Số năm kinh nghiệm không thể quá 50")
+      .required("Trường này là bắt buộc"),
+    bio: Yup.string()
+      .min(20, "Giới thiệu bản thân phải có ít nhất 20 ký tự")
+      .max(500, "Giới thiệu bản thân không được quá 500 ký tự")
+      .required("Trường này là bắt buộc"),
+    subjects: Yup.string()
+      .min(2, "Vui lòng nhập ít nhất một môn học")
+      .required("Trường này là bắt buộc"),
+    languages: Yup.string()
+      .min(2, "Vui lòng nhập ít nhất một ngôn ngữ")
+      .required("Trường này là bắt buộc"),
+    hourlyRate: Yup.number()
+      .min(50000, "Học phí tối thiểu là 50,000 VNĐ/giờ")
+      .max(5000000, "Học phí tối đa là 5,000,000 VNĐ/giờ")
+      .required("Trường này là bắt buộc"),
+  });
+  const defaultValues: TutorFormData = {
     educationLevel: "",
-    yearsOfExperience: "",
+    yearsOfExperience: 0,
     bio: "",
     subjects: "",
     languages: "",
-    hourlyRate: "",
-  });
-
-  const handleSubmit = () => {
-    console.log("Tutor onboarding:", {
-      role: "TUTOR",
-      tutor: {
-        ...formData,
-        yearsOfExperience: parseInt(formData.yearsOfExperience),
-        hourlyRate: parseInt(formData.hourlyRate),
-      },
-    });
+    hourlyRate: 0,
   };
 
   return (
@@ -33,104 +75,58 @@ const TutorOnboardingPage = () => {
         </div>
 
         <div className="bg-card rounded-lg p-6 shadow-lg">
-          <div className="space-y-6">
-            {/* Education Level */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Trình độ học vấn
-              </label>
-              <select
-                value={formData.educationLevel}
-                onChange={(e) => setFormData({ ...formData, educationLevel: e.target.value })}
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="">Chọn trình độ</option>
-                <option value="High School">Tốt nghiệp THPT</option>
-                <option value="Bachelor">Cử nhân</option>
-                <option value="Master">Thạc sĩ</option>
-                <option value="PhD">Tiến sĩ</option>
-              </select>
-            </div>
-
-            {/* Experience */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Số năm kinh nghiệm dạy học
-              </label>
-              <input
-                type="number"
-                value={formData.yearsOfExperience}
-                onChange={(e) => setFormData({ ...formData, yearsOfExperience: e.target.value })}
-                placeholder="Ví dụ: 3"
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+          <FormProvider<TutorFormData>
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+            defaultValues={defaultValues}
+          >
+            <div className="space-y-6">
+              <SelectField
+                name="educationLevel"
+                label="Trình độ học vấn"
+                options={educationOptions}
               />
-            </div>
 
-            {/* Bio */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Giới thiệu bản thân
-              </label>
-              <textarea
-                value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              <TextField
+                name="yearsOfExperience"
+                label="Số năm kinh nghiệm dạy học"
+                type="number"
+                placeholder="Ví dụ: 3"
+              />
+
+              <TextAreaField
+                name="bio"
+                label="Giới thiệu bản thân"
                 placeholder="Ví dụ: Gia sư toán lý với 3 năm kinh nghiệm dạy học..."
                 rows={4}
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
               />
-            </div>
 
-            {/* Subjects */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Môn học dạy</label>
-              <input
-                type="text"
-                value={formData.subjects}
-                onChange={(e) => setFormData({ ...formData, subjects: e.target.value })}
+              <TextField
+                name="subjects"
+                label="Môn học dạy"
                 placeholder="Ví dụ: Toán, Vật lý, Hóa học"
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-            </div>
 
-            {/* Languages */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Ngôn ngữ giảng dạy
-              </label>
-              <input
-                type="text"
-                value={formData.languages}
-                onChange={(e) => setFormData({ ...formData, languages: e.target.value })}
+              <TextField
+                name="languages"
+                label="Ngôn ngữ giảng dạy"
                 placeholder="Ví dụ: Tiếng Việt, Tiếng Anh"
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-            </div>
 
-            {/* Hourly Rate */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Học phí (VNĐ/giờ)
-              </label>
-              <input
+              <TextField
+                name="hourlyRate"
+                label="Học phí (VNĐ/giờ)"
                 type="number"
-                value={formData.hourlyRate}
-                onChange={(e) => setFormData({ ...formData, hourlyRate: e.target.value })}
                 placeholder="Ví dụ: 200000"
-                className="w-full p-3 border border-border rounded-lg bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-            </div>
 
-            {/* Submit Button */}
-            <div className="pt-4">
-              <EBButton
-                onClick={handleSubmit}
-                disabled={!formData.educationLevel || !formData.bio || !formData.subjects}
-                className="w-full"
-              >
-                Hoàn thành thiết lập
-              </EBButton>
+              <div className="pt-4">
+                <EBButton type="submit" className="w-full">
+                  Hoàn thành thiết lập
+                </EBButton>
+              </div>
             </div>
-          </div>
+          </FormProvider>
         </div>
       </div>
     </div>
