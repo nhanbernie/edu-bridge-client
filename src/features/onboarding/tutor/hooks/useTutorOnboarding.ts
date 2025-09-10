@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
 import { useSelectRoleMutation } from "@/services/user";
 import { TutorOnboardingRequest } from "@/services/api/type";
+import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
-import { useAppSelector } from "@/redux/hooks";
 
-interface TutorFormData {
+export interface TutorFormData {
   educationLevel: string;
   yearsOfExperience: number;
   bio: string;
@@ -15,26 +15,28 @@ interface TutorFormData {
 
 export const useTutorOnboarding = () => {
   const router = useRouter();
-  const user = useAppSelector((state) => state.auth.user);
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
 
   const submitOnboarding = async (data: TutorFormData) => {
-    if (!user?.userId) {
-      toast.error("Không tìm thấy thông tin người dùng");
-      return;
-    }
-
     try {
+      const userData = await StorageService.getUserData();
+
+      if (!userData?.id) {
+        toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
+        router.push("/login");
+        return;
+      }
+
       const payload: TutorOnboardingRequest = {
         role: "TUTOR",
         tutor: {
           ...data,
-          verifiedStatus: "PENDING", // Hidden field as requested
+          verifiedStatus: "PENDING", // Hidden field
         },
       };
 
       const result = await selectRole({
-        userId: user.userId,
+        userId: userData.id,
         data: payload,
       }).unwrap();
 

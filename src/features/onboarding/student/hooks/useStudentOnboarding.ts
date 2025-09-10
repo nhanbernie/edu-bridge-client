@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useSelectRoleMutation } from "@/services/user";
 import { StudentOnboardingRequest } from "@/services/api/type";
-import { useAppSelector } from "@/redux/hooks";
+import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
 
 interface StudentFormData {
@@ -12,12 +12,14 @@ interface StudentFormData {
 export const useStudentOnboarding = () => {
   const router = useRouter();
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
-  const { user } = useAppSelector((state) => state.auth);
 
   const submitOnboarding = async (data: StudentFormData) => {
     try {
-      if (!user?.userId) {
-        toast.error("Không tìm thấy thông tin người dùng");
+      const userData = await StorageService.getUserData();
+
+      if (!userData?.id) {
+        toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
+        router.push("/login");
         return;
       }
 
@@ -27,7 +29,7 @@ export const useStudentOnboarding = () => {
       };
 
       const result = await selectRole({
-        userId: user.userId,
+        userId: userData.id,
         data: payload,
       }).unwrap();
 

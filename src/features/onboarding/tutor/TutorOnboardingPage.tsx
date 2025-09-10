@@ -6,16 +6,7 @@ import FormProvider from "@/components/form/FormProvider";
 import SelectField from "@/components/form/SelectField";
 import TextAreaField from "@/components/form/TextAreaField";
 import TextField from "@/components/form/TextField";
-import { useTutorOnboarding } from "./hooks/useTutorOnboarding";
-
-interface TutorFormData {
-  educationLevel: string;
-  yearsOfExperience: number;
-  bio: string;
-  subjects: string;
-  languages: string;
-  hourlyRate: number;
-}
+import { useTutorOnboarding, TutorFormData } from "./hooks/useTutorOnboarding";
 
 const TutorOnboardingPage = () => {
   const { submitOnboarding, isLoading } = useTutorOnboarding();
