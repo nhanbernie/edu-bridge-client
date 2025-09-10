@@ -6,6 +6,7 @@ import FormProvider from "@/components/form/FormProvider";
 import SelectField from "@/components/form/SelectField";
 import TextAreaField from "@/components/form/TextAreaField";
 import TextField from "@/components/form/TextField";
+import { useTutorOnboarding } from "./hooks/useTutorOnboarding";
 
 interface TutorFormData {
   educationLevel: string;
@@ -17,16 +18,10 @@ interface TutorFormData {
 }
 
 const TutorOnboardingPage = () => {
-  const handleSubmit = (data: TutorFormData) => {
-    const payload = {
-      role: "TUTOR",
-      tutor: {
-        ...data,
-        verifiedStatus: "PENDING", // Hidden field as requested
-      },
-    };
-    console.log("Tutor onboarding:", payload);
-    // TODO: Call API to submit the data
+  const { submitOnboarding, isLoading } = useTutorOnboarding();
+
+  const handleSubmit = async (data: TutorFormData) => {
+    await submitOnboarding(data);
   };
 
   const educationOptions = [
@@ -121,8 +116,12 @@ const TutorOnboardingPage = () => {
               />
 
               <div className="pt-4">
-                <EBButton type="submit" className="w-full">
-                  Hoàn thành thiết lập
+                <EBButton
+                  type="submit"
+                  className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Đang xử lý..." : "Hoàn thành thiết lập"}
                 </EBButton>
               </div>
             </div>

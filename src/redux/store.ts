@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "@/services/auth";
+import { userApi } from "@/services/user";
 import { authReducer } from "@/slices/auth.slice";
 // import { apiErrorHandler } from "@/services/api/apiErrorHandler";
 
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authReducer,
     // RTK Query APIs
     [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -18,7 +20,8 @@ export const store = configureStore({
       },
     }).concat(
       // Add RTK Query middleware
-      authApi.middleware
+      authApi.middleware,
+      userApi.middleware
     ),
   // devTools: __DEV__,
 });

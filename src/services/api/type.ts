@@ -78,3 +78,33 @@ export interface User extends UserDto {
   updatedAt: string;
   avatar?: string;
 }
+
+// Onboarding Request types
+export interface StudentOnboardingRequest {
+  role: "STUDENT";
+  student: {
+    grade: string;
+    learningGoal: string;
+  };
+}
+
+export interface TutorOnboardingRequest {
+  role: "TUTOR";
+  tutor: {
+    educationLevel: string;
+    yearsOfExperience: number;
+    bio: string;
+    subjects: string;
+    languages: string;
+    hourlyRate: number;
+    verifiedStatus: "PENDING";
+  };
+}
+
+export type OnboardingRequest = StudentOnboardingRequest | TutorOnboardingRequest;
+
+// Onboarding Response types
+export interface OnboardingResponse {
+  user: UserDto;
+  message: string;
+}

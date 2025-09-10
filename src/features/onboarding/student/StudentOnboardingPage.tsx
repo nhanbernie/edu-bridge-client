@@ -5,6 +5,7 @@ import EBButton from "@/components/common/EBButton";
 import FormProvider from "@/components/form/FormProvider";
 import SelectField from "@/components/form/SelectField";
 import TextAreaField from "@/components/form/TextAreaField";
+import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
 
 interface StudentFormData {
   grade: string;
@@ -12,13 +13,10 @@ interface StudentFormData {
 }
 
 const StudentOnboardingPage = () => {
-  const handleSubmit = (data: StudentFormData) => {
-    const payload = {
-      role: "STUDENT",
-      student: data,
-    };
-    console.log("Student onboarding:", payload);
-    // TODO: Call API to submit the data
+  const { submitOnboarding, isLoading } = useStudentOnboarding();
+
+  const handleSubmit = async (data: StudentFormData) => {
+    await submitOnboarding(data);
   };
 
   const gradeOptions = [
@@ -69,8 +67,12 @@ const StudentOnboardingPage = () => {
               />
 
               <div className="pt-4">
-                <EBButton type="submit" className="w-full">
-                  Hoàn thành thiết lập
+                <EBButton
+                  type="submit"
+                  className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Đang xử lý..." : "Hoàn thành thiết lập"}
                 </EBButton>
               </div>
             </div>
