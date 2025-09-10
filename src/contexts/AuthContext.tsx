@@ -1,7 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUser, clearUser, setLoading } from "@/redux/slices/auth.slice";
 import { StorageService } from "@/services/storage/secureStorage.service";
 
 interface AuthContextType {
@@ -27,15 +29,33 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const dispatch = useAppDispatch();
+  const { user, isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const pathname = usePathname();
 
   // Public routes that don't require authentication
   const publicRoutes = ["/login", "/register", "/forgot-password", "/"];
   const isPublicRoute = publicRoutes.includes(pathname);
+
+  const checkAuthStatus = React.useCallback(async () => {
+    try {
+      dispatch(setLoading(true));
+      const accessToken = await StorageService.getAccessToken();
+      const userData = await StorageService.getUserData();
+
+      if (accessToken && userData) {
+        dispatch(setUser(userData));
+      } else {
+        dispatch(clearUser());
+      }
+    } catch (error) {
+      console.error("Error checking auth status:", error);
+      dispatch(clearUser());
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }, [dispatch]);
 
   const handleRouting = React.useCallback(() => {
     if (isAuthenticated) {
@@ -53,7 +73,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     checkAuthStatus();
-  }, []);
+  }, [checkAuthStatus]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -61,38 +81,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [isAuthenticated, isLoading, pathname, handleRouting]);
 
-  const checkAuthStatus = async () => {
-    try {
-      const accessToken = await StorageService.getAccessToken();
-      const userData = await StorageService.getUserData();
-
-      if (accessToken && userData) {
-        setIsAuthenticated(true);
-        setUser(userData);
-      } else {
-        setIsAuthenticated(false);
-        setUser(null);
-      }
-    } catch (error) {
-      console.error("Error checking auth status:", error);
-      setIsAuthenticated(false);
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const login = async (userData: any) => {
-    setIsAuthenticated(true);
-    setUser(userData);
+    dispatch(setUser(userData));
     router.replace("/home");
   };
 
   const logout = async () => {
     try {
       await StorageService.clearAuthData();
-      setIsAuthenticated(false);
-      setUser(null);
+      dispatch(clearUser());
       router.replace("/login");
     } catch (error) {
       console.error("Error during logout:", error);

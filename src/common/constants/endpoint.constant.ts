@@ -13,7 +13,9 @@ export const API_ENDPOINTS = {
     CHANGE_PASSWORD: "/api/Auth/change-password",
     CREATE_OTP: "/api/Auth/create-otp",
   },
-  USER: {},
+  USER: {
+    SELECT_ROLE: "/api/user/{id}/select-role",
+  },
 } as const;
 
 export const API_CONFIG = {

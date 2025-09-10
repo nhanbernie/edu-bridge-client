@@ -2,12 +2,14 @@
 
 import { MainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
 import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
+  const router = useRouter();
 
   return (
     <MainLayout footer={true}>
@@ -29,7 +31,7 @@ const HomeFeature = () => {
             <MotionItem>
               <MotionCard
                 variants={choiceCardVariants}
-                onClick={() => console.log("Learn clicked")}
+                onClick={() => router.push("/onboarding/student")}
                 className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
                           hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
                           transition-all duration-500 ease-out"
@@ -57,7 +59,7 @@ const HomeFeature = () => {
             <MotionItem>
               <MotionCard
                 variants={choiceCardVariants}
-                onClick={() => console.log("Teach clicked")}
+                onClick={() => router.push("/onboarding/tutor")}
                 className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
                           hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
                           transition-all duration-500 ease-out"
