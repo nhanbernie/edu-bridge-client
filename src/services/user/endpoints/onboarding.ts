@@ -10,7 +10,7 @@ export const selectRoleEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       body: data,
     }),
 
-    invalidatesTags: ["User"],
+    invalidatesTags: ["UserProfile"],
     transformResponse: (response: ApiResponse<OnboardingResponse>) => {
       return response;
     },

@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   },
   USER: {
     SELECT_ROLE: "/api/user/{id}/select-role",
+    UPLOAD_VERIFICATION_DOC: "/api/user/{tutorId}/upload-verification-doc",
   },
 } as const;
 

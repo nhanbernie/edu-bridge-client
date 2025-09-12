@@ -97,14 +97,43 @@ export interface TutorOnboardingRequest {
     subjects: string;
     languages: string;
     hourlyRate: number;
-    verifiedStatus: "PENDING";
   };
 }
 
 export type OnboardingRequest = StudentOnboardingRequest | TutorOnboardingRequest;
 
-// Onboarding Response types
-export interface OnboardingResponse {
-  user: UserDto;
+// Document upload types
+export type DocumentType =
+  | "CCCD"
+  | "CERTIFICATE"
+  | "SELFIE"
+  | "STUDENT_CARD"
+  | "TRANSCRIPT"
+  | "ENROLLMENT_CONFIRMATION";
+
+export interface UploadDocumentRequest {
+  tutorId: string;
+  docType: DocumentType;
+  file: File;
+}
+
+export interface UploadDocumentData {
+  documentId: string;
+  docType: DocumentType;
+  filePath: string;
+  uploadedAt: string;
+}
+
+export interface UploadDocumentResponse {
+  success: boolean;
   message: string;
+  data: UploadDocumentData;
+  errors: any[];
+}
+
+// Onboarding Response types
+// Onboarding Response
+export interface OnboardingResponse {
+  message: string;
+  userData: any;
 }

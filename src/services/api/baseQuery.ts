@@ -22,16 +22,25 @@ const redirectToLogin = () => {
 // Base query with keychain
 const baseQuery = fetchBaseQuery({
   baseUrl: API_CONFIG.BASE_URL,
-  prepareHeaders: async (headers, { ...rest }) => {
+  prepareHeaders: async (headers, { endpoint, ...rest }) => {
     const url = getUrlFromArgs(rest.arg);
     const isPublic = PUBLIC_ENDPOINTS.some((ep) => url.includes(ep));
+
     if (!isPublic) {
       const token = await StorageService.getAccessToken();
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
     }
-    headers.set("Content-Type", "application/json");
+
+    // Check if body is FormData, don't set Content-Type for FormData
+    const isFormData =
+      rest.arg && typeof rest.arg === "object" && rest.arg.body instanceof FormData;
+
+    if (!isFormData) {
+      headers.set("Content-Type", "application/json");
+    }
+
     headers.set("Accept", "application/json");
     return headers;
   },
