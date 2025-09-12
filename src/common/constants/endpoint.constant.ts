@@ -17,8 +17,13 @@ export const API_ENDPOINTS = {
     CREATE_OTP: `${AUTH_ENDPOINT}/create-otp`,
   },
   USER: {
+    GET_ALL_USERS: "/api/user",
+    GET_USER: "/api/user/{id}",
+    DELETE_USER: "/api/user/{id}",
     SELECT_ROLE: "/api/user/{id}/select-role",
     UPLOAD_VERIFICATION_DOC: "/api/user/{tutorId}/upload-verification-doc",
+    GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
+    VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
   },
 } as const;
 

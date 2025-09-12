@@ -15,14 +15,27 @@ export interface ApiError {
 }
 
 // User types
+export type UserRole = "PENDING" | "ADMIN" | "TUTOR" | "STUDENT" | "PARENT";
+export type UserStatus = "PENDING" | "APPROVED" | "REJECTED";
+export type TutorType = "VERIFIED" | "TRUSTED_BEGINNER";
+
 export interface UserDto {
   userId: string;
   email: string;
-  role: "PENDING" | "ADMIN" | "TUTOR" | "STUDENT" | "PARENT";
+  role: UserRole;
   fullName?: string | null;
   phone?: string | null;
-  status?: string | null;
-  tutor?: any | null;
+  status?: UserStatus | null;
+  tutor?: {
+    tutorId?: string;
+    educationLevel?: string;
+    yearsOfExperience?: number;
+    bio?: string;
+    subjects?: string;
+    languages?: string;
+    hourlyRate?: number;
+    verificationType?: TutorType;
+  } | null;
   student?: any | null;
 }
 
@@ -128,6 +141,64 @@ export interface UploadDocumentResponse {
   success: boolean;
   message: string;
   data: UploadDocumentData;
+  errors: any[];
+}
+
+// Verification documents types
+export interface VerificationDocument {
+  docId: string;
+  docType: DocumentType;
+  filePath: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+}
+
+export interface GetVerificationDocsRequest {
+  tutorId: string;
+}
+
+export interface GetVerificationDocsResponse {
+  success: boolean;
+  message: string;
+  data: VerificationDocument[];
+  errors: any[];
+}
+
+// Verify all documents types
+export interface VerifyAllDocumentsRequest {
+  tutorId: string;
+  approved: boolean;
+  rejectType?: "INVALID" | "INCOMPLETE" | "EXPIRED" | "OTHER";
+}
+
+export interface VerifyAllDocumentsResponse {
+  success: boolean;
+  message: string | null;
+  data: string;
+  errors: any[] | null;
+}
+
+// Get all users types
+export interface GetAllUsersRequest {
+  role?: 0 | 1 | 2 | 3 | 4; // STUDENT=0, TUTOR=1, PARENT=2, ADMIN=3, PENDING=4
+  status?: 0 | 1 | 2; // PENDING=0, APPROVED=1, REJECTED=2
+}
+
+export interface GetAllUsersResponse {
+  success: boolean;
+  message: string;
+  data: UserDto[];
+  errors: any[] | null;
+}
+
+// Delete user types
+export interface DeleteUserRequest {
+  userId: string;
+}
+
+export interface DeleteUserResponse {
+  success: boolean;
+  message: string;
+  data: null;
   errors: any[];
 }
 
