@@ -26,7 +26,7 @@ export const useTutorOnboarding = () => {
       const userData = await StorageService.getUserData();
       const isTokenExpired = await StorageService.isTokenExpired();
 
-      if (!userData?.id) {
+      if (!userData?.userId) {
         toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
         router.push("/login");
         return { success: false, message: "User not found" };
@@ -43,7 +43,7 @@ export const useTutorOnboarding = () => {
         tutor: data,
       };
       const result = await selectRole({
-        userId: userData.id,
+        userId: userData.userId,
         data: payload,
       }).unwrap();
 

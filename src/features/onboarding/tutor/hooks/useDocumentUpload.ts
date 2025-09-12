@@ -15,7 +15,7 @@ export const useDocumentUpload = () => {
     try {
       const userData = await StorageService.getUserData();
 
-      if (!userData?.id) {
+      if (!userData?.userId) {
         toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
         return { success: false };
       }
@@ -26,7 +26,7 @@ export const useDocumentUpload = () => {
       for (const doc of documents) {
         try {
           const result = await uploadDocument({
-            tutorId: userData.id,
+            tutorId: userData.userId,
             docType: doc.docType,
             file: doc.file,
           }).unwrap();
@@ -58,13 +58,13 @@ export const useDocumentUpload = () => {
     try {
       const userData = await StorageService.getUserData();
 
-      if (!userData?.id) {
+      if (!userData?.userId) {
         toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
         return { success: false };
       }
 
       const result = await uploadDocument({
-        tutorId: userData.id,
+        tutorId: userData.userId,
         docType: document.docType,
         file: document.file,
       }).unwrap();

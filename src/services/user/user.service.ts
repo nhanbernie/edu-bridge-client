@@ -4,6 +4,7 @@ import {
   selectRoleEndpoint,
   uploadDocumentEndpoint,
   getUserProfileEndpoint,
+  getUserEndpoint,
   getVerificationDocsEndpoint,
   verifyAllDocumentsEndpoint,
   getAllUsersEndpoint,
@@ -16,6 +17,7 @@ export const userApi = createApi({
   tagTypes: ["UserProfile", "UserOnboarding"],
   endpoints: (builder) => ({
     getAllUsers: getAllUsersEndpoint(builder),
+    getUser: getUserEndpoint(builder),
     getUserProfile: getUserProfileEndpoint(builder),
     selectRole: selectRoleEndpoint(builder),
     uploadDocument: uploadDocumentEndpoint(builder),
@@ -31,6 +33,7 @@ export const userApi = createApi({
 
 export const {
   useGetAllUsersQuery,
+  useGetUserQuery,
   useGetUserProfileQuery,
   useSelectRoleMutation,
   useUploadDocumentMutation,

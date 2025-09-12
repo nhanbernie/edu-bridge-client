@@ -104,7 +104,7 @@ const HomeFeature = () => {
                   <strong className="text-foreground">Họ và tên:</strong> {user.fullName}
                 </p>
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">Vai trò:</strong> {user.roles?.join(", ")}
+                  <strong className="text-foreground">Vai trò:</strong> {user.role}
                 </p>
               </div>
             </MotionCard>

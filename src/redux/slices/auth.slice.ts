@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { StoredUserData } from "@/services/storage/secureStorage.service";
+import { UserDto } from "@/services/api/type";
 
 interface AuthState {
-  user: StoredUserData | null;
+  user: UserDto | null;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -17,7 +17,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<StoredUserData>) => {
+    setUser: (state, action: PayloadAction<UserDto>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
     },

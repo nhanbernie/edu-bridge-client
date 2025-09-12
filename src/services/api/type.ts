@@ -19,6 +19,23 @@ export type UserRole = "PENDING" | "ADMIN" | "TUTOR" | "STUDENT" | "PARENT";
 export type UserStatus = "PENDING" | "APPROVED" | "REJECTED";
 export type TutorType = "VERIFIED" | "TRUSTED_BEGINNER";
 
+export interface TutorDto {
+  tutorId?: string;
+  educationLevel?: string;
+  yearsOfExperience?: number;
+  bio?: string;
+  subjects?: string;
+  languages?: string;
+  hourlyRate?: number;
+  verificationType?: TutorType;
+}
+
+export interface StudentDto {
+  studentId?: string;
+  grade?: string;
+  learningGoal?: string;
+}
+
 export interface UserDto {
   userId: string;
   email: string;
@@ -26,17 +43,8 @@ export interface UserDto {
   fullName?: string | null;
   phone?: string | null;
   status?: UserStatus | null;
-  tutor?: {
-    tutorId?: string;
-    educationLevel?: string;
-    yearsOfExperience?: number;
-    bio?: string;
-    subjects?: string;
-    languages?: string;
-    hourlyRate?: number;
-    verificationType?: TutorType;
-  } | null;
-  student?: any | null;
+  tutor?: TutorDto | null;
+  student?: StudentDto | null;
 }
 
 // Auth Request types

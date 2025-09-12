@@ -35,12 +35,14 @@ export const useAuthStorage = () => {
 
         // Create StoredUserData from UserDto
         const storedUserData = {
-          id: loginData.user.userId,
+          userId: loginData.user.userId,
           username: loginData.user.email,
           email: loginData.user.email,
-          roles: [loginData.user.role],
+          role: loginData.user.role,
           fullName: loginData.user.fullName || undefined,
           status: loginData.user.status,
+          tutor: loginData.user.tutor,
+          student: loginData.user.student,
         };
 
         // Save user data to storage
@@ -71,6 +73,35 @@ export const useAuthStorage = () => {
     }
   }, []);
 
+  const saveUserDataOnly = useCallback(
+    async (userData: UserDto) => {
+      try {
+        const storedUserData = {
+          userId: userData.userId,
+          username: userData.email,
+          email: userData.email,
+          role: userData.role,
+          fullName: userData.fullName || undefined,
+          status: userData.status,
+          tutor: userData.tutor,
+          student: userData.student,
+        };
+
+        // Save user data to storage
+        await StorageService.setUserData(storedUserData);
+
+        // Update Redux state
+        dispatch(setUser(storedUserData));
+
+        return storedUserData;
+      } catch (error) {
+        console.error("Failed to save user data:", error);
+        throw error;
+      }
+    },
+    [dispatch]
+  );
+
   const clearAuthData = useCallback(async () => {
     try {
       await StorageService.clearAuthData();
@@ -84,6 +115,7 @@ export const useAuthStorage = () => {
   return {
     saveAuthData,
     saveTokenOnly,
+    saveUserDataOnly,
     clearAuthData,
   };
 };
