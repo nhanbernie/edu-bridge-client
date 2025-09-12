@@ -1,6 +1,6 @@
 ﻿import { useRouter } from "next/navigation";
 import { useSelectRoleMutation } from "@/services/user";
-import { useRefreshTokenMutation } from "@/services/auth";
+import { useRefreshToken } from "@/hooks/useRefreshToken";
 import { TutorOnboardingRequest } from "@/services/api/type";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
@@ -17,7 +17,7 @@ export interface TutorFormData {
 export const useTutorOnboarding = () => {
   const router = useRouter();
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
-  const [refreshToken] = useRefreshTokenMutation();
+  const { refreshToken } = useRefreshToken();
 
   const submitOnboarding = async (
     data: TutorFormData
@@ -50,38 +50,13 @@ export const useTutorOnboarding = () => {
       if (result.success) {
         toast.success("Thiết lập hồ sơ gia sư thành công!");
 
-        try {
-          const currentRefreshToken = await StorageService.getRefreshToken();
+        const refreshSuccess = await refreshToken();
 
-          if (currentRefreshToken) {
-            const refreshResult = await refreshToken({
-              refreshToken: currentRefreshToken,
-            }).unwrap();
-
-            if (refreshResult.success && refreshResult.data) {
-              await StorageService.setAccessToken(refreshResult.data.accessToken);
-              await StorageService.setRefreshToken(refreshResult.data.refreshToken);
-            }
-
-            return {
-              success: true,
-              message: result.message,
-              needsRefresh: true,
-            };
-          } else {
-            return {
-              success: true,
-              message: result.message,
-              needsRefresh: false,
-            };
-          }
-        } catch (refreshError) {
-          return {
-            success: true,
-            message: result.message,
-            needsRefresh: false,
-          };
-        }
+        return {
+          success: true,
+          message: result.message,
+          needsRefresh: refreshSuccess,
+        };
       } else {
         toast.error(result.message || "Có lỗi xảy ra khi thiết lập hồ sơ");
         return { success: false, message: result.message };
