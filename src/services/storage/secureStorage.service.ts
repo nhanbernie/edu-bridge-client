@@ -1,3 +1,4 @@
+import { UserDto } from "../api/type";
 const STORAGE_KEYS = {
   ACCESS_TOKEN: "access_token",
   REFRESH_TOKEN: "refresh_token",
@@ -11,16 +12,16 @@ export interface TokenData {
   expires_in: number;
 }
 
-export interface StoredUserData {
-  id: string;
-  username: string;
-  email: string;
-  roles: string[];
-  firstName?: string;
-  lastName?: string;
-  fullName?: string;
-  avatar?: string;
-}
+// export interface UserDto {
+//   id: string;
+//   username: string;
+//   email: string;
+//   roles: string[];
+//   firstName?: string;
+//   lastName?: string;
+//   fullName?: string;
+//   avatar?: string;
+// }
 
 // Browser storag
 class BrowserStorage {
@@ -135,7 +136,7 @@ export class StorageService {
     }
   }
 
-  static async setUserData(userData: StoredUserData): Promise<void> {
+  static async setUserData(userData: UserDto): Promise<void> {
     try {
       BrowserStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
     } catch (error) {
@@ -144,7 +145,7 @@ export class StorageService {
     }
   }
 
-  static async getUserData(): Promise<StoredUserData | null> {
+  static async getUserData(): Promise<UserDto | null> {
     try {
       const userData = BrowserStorage.getItem(STORAGE_KEYS.USER_DATA);
       return userData ? JSON.parse(userData) : null;

@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { UserMenuProps } from "@/types/user.types";
-
+import { useAuth } from "@/contexts/AuthContext";
 const UserMenu = ({ user }: UserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   return (
     <div className="relative">
@@ -56,7 +57,10 @@ const UserMenu = ({ user }: UserMenuProps) => {
 
           <hr className="my-1" />
 
-          <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+          <button
+            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+            onClick={logout}
+          >
             <LogOut size={16} />
             Sign Out
           </button>

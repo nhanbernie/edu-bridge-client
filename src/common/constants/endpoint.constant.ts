@@ -1,20 +1,29 @@
 import { ENV } from "@/utils/env";
 
+export const API_VERSION = "api";
+export const AUTH_ENDPOINT = `${API_VERSION}/auth`;
+
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: "/api/Auth/login",
-    REGISTER: "/api/Auth/register",
-    REFRESH: "/api/Auth/refresh-token",
-    LOGOUT: "/api/Auth/logout",
-    PROFILE: "/api/Auth/profile",
-    FORGOT_PASSWORD: "/api/Auth/forgot-password",
-    VERIFY_OTP: "/api/Auth/verify-otp",
-    RESET_PASSWORD: "/api/Auth/reset-password",
-    CHANGE_PASSWORD: "/api/Auth/change-password",
-    CREATE_OTP: "/api/Auth/create-otp",
+    LOGIN: `${AUTH_ENDPOINT}/login`,
+    REGISTER: `${AUTH_ENDPOINT}/register`,
+    REFRESH: `${AUTH_ENDPOINT}/refresh-token`,
+    LOGOUT: `${AUTH_ENDPOINT}/logout`,
+    PROFILE: `${AUTH_ENDPOINT}/profile`,
+    FORGOT_PASSWORD: `${AUTH_ENDPOINT}/forgot-password`,
+    VERIFY_OTP: `${AUTH_ENDPOINT}/verify-otp`,
+    RESET_PASSWORD: `${AUTH_ENDPOINT}/reset-password`,
+    CHANGE_PASSWORD: `${AUTH_ENDPOINT}/change-password`,
+    CREATE_OTP: `${AUTH_ENDPOINT}/create-otp`,
   },
   USER: {
+    GET_ALL_USERS: "/api/user",
+    GET_USER: "/api/user/{id}",
+    DELETE_USER: "/api/user/{id}",
     SELECT_ROLE: "/api/user/{id}/select-role",
+    UPLOAD_VERIFICATION_DOC: "/api/user/{tutorId}/upload-verification-doc",
+    GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
+    VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
   },
 } as const;
 

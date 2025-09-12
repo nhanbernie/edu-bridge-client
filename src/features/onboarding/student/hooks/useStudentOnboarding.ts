@@ -17,7 +17,7 @@ export const useStudentOnboarding = () => {
     try {
       const userData = await StorageService.getUserData();
 
-      if (!userData?.id) {
+      if (!userData?.userId) {
         toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
         router.push("/login");
         return;
@@ -29,7 +29,7 @@ export const useStudentOnboarding = () => {
       };
 
       const result = await selectRole({
-        userId: userData.id,
+        userId: userData.userId,
         data: payload,
       }).unwrap();
 

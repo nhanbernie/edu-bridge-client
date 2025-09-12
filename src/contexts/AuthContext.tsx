@@ -33,8 +33,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user, isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const pathname = usePathname();
+  const [hasInitialized, setHasInitialized] = React.useState(false);
 
-  // Public routes that don't require authentication
   const publicRoutes = ["/login", "/register", "/forgot-password", "/"];
   const isPublicRoute = publicRoutes.includes(pathname);
 
@@ -54,10 +54,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dispatch(clearUser());
     } finally {
       dispatch(setLoading(false));
+      setHasInitialized(true);
     }
   }, [dispatch]);
 
   const handleRouting = React.useCallback(() => {
+    if (!hasInitialized || isLoading) return;
+
     if (isAuthenticated) {
       if (isPublicRoute && pathname !== "/") {
         router.replace("/home");
@@ -69,17 +72,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         router.replace("/login");
       }
     }
-  }, [isAuthenticated, isPublicRoute, pathname, router]);
+  }, [isAuthenticated, isLoading, isPublicRoute, pathname, router, hasInitialized]);
 
   useEffect(() => {
-    checkAuthStatus();
-  }, [checkAuthStatus]);
+    if (!hasInitialized) {
+      checkAuthStatus();
+    }
+  }, [checkAuthStatus, hasInitialized]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (hasInitialized && !isLoading) {
       handleRouting();
     }
-  }, [isAuthenticated, isLoading, pathname, handleRouting]);
+  }, [isAuthenticated, isLoading, handleRouting, hasInitialized]);
 
   const login = async (userData: any) => {
     dispatch(setUser(userData));
