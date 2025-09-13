@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setUser, clearUser, setLoading } from "@/redux/slices/auth.slice";
 import { StorageService } from "@/services/storage/secureStorage.service";
+import { useRoleGuard, UserRole, UserStatus } from "@/hooks/useRoleGuard";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -34,6 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [hasInitialized, setHasInitialized] = React.useState(false);
+  const { getDefaultRouteForRole } = useRoleGuard();
 
   const publicRoutes = ["/login", "/register", "/forgot-password", "/"];
   const isPublicRoute = publicRoutes.includes(pathname);
@@ -61,18 +63,37 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const handleRouting = React.useCallback(() => {
     if (!hasInitialized || isLoading) return;
 
-    if (isAuthenticated) {
+    if (isAuthenticated && user) {
       if (isPublicRoute && pathname !== "/") {
-        router.replace("/home");
+        // Redirect to appropriate route based on user role and status
+        const defaultRoute = getDefaultRouteForRole(
+          user.role as UserRole,
+          user.status as UserStatus
+        );
+        router.replace(defaultRoute);
       } else if (pathname === "/") {
-        router.replace("/home");
+        // Redirect to appropriate route based on user role and status
+        const defaultRoute = getDefaultRouteForRole(
+          user.role as UserRole,
+          user.status as UserStatus
+        );
+        router.replace(defaultRoute);
       }
     } else {
       if (!isPublicRoute) {
         router.replace("/login");
       }
     }
-  }, [isAuthenticated, isLoading, isPublicRoute, pathname, router, hasInitialized]);
+  }, [
+    isAuthenticated,
+    isLoading,
+    isPublicRoute,
+    pathname,
+    router,
+    hasInitialized,
+    user,
+    getDefaultRouteForRole,
+  ]);
 
   useEffect(() => {
     if (!hasInitialized) {
@@ -88,7 +109,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (userData: any) => {
     dispatch(setUser(userData));
-    router.replace("/home");
+    // Redirect to appropriate route based on user role and status
+    const defaultRoute = getDefaultRouteForRole(
+      userData.role as UserRole,
+      userData.status as UserStatus
+    );
+    router.replace(defaultRoute);
   };
 
   const logout = async () => {
