@@ -4,11 +4,15 @@ import { API_ENDPOINTS } from "@/common/constants/endpoint.constant";
 
 export const verifyAllDocumentsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
   builder.mutation<VerifyAllDocumentsResponse, VerifyAllDocumentsRequest>({
-    query: ({ tutorId, approved, rejectType }) => {
-      const body: { approved: boolean; rejectType?: string } = { approved };
+    query: ({ tutorId, isApproved, rejectType, tutorType }) => {
+      const body: { isApproved: boolean; rejectType?: string; tutorType?: string } = { isApproved };
 
       if (rejectType) {
         body.rejectType = rejectType;
+      }
+
+      if (tutorType) {
+        body.tutorType = tutorType;
       }
 
       return {

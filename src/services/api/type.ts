@@ -174,8 +174,9 @@ export interface GetVerificationDocsResponse {
 // Verify all documents types
 export interface VerifyAllDocumentsRequest {
   tutorId: string;
-  approved: boolean;
+  isApproved: boolean;
   rejectType?: "INVALID" | "INCOMPLETE" | "EXPIRED" | "OTHER";
+  tutorType?: string;
 }
 
 export interface VerifyAllDocumentsResponse {
