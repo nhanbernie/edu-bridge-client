@@ -26,14 +26,12 @@ export const useAuthStorage = () => {
   const saveAuthData = useCallback(
     async (loginData: LoginResponseData) => {
       try {
-        // Save token data to storage
         await StorageService.setTokenData({
           access_token: loginData.accessToken,
           refresh_token: loginData.refreshToken,
           expires_in: 900, // 15 minutes default
         });
 
-        // Create StoredUserData from UserDto
         const storedUserData = {
           userId: loginData.user.userId,
           username: loginData.user.email,
@@ -45,10 +43,8 @@ export const useAuthStorage = () => {
           student: loginData.user.student,
         };
 
-        // Save user data to storage
         await StorageService.setUserData(storedUserData);
 
-        // Update Redux state
         dispatch(setUser(storedUserData));
 
         return storedUserData;
@@ -87,10 +83,8 @@ export const useAuthStorage = () => {
           student: userData.student,
         };
 
-        // Save user data to storage
         await StorageService.setUserData(storedUserData);
 
-        // Update Redux state
         dispatch(setUser(storedUserData));
 
         return storedUserData;
