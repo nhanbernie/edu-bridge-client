@@ -11,7 +11,7 @@ const HomeFeature = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
 
-  const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "PENDING";
+  const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
   const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR";
 
