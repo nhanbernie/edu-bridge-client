@@ -51,7 +51,7 @@ const TutorOnboardingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 mt-16">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-32">
       {/* Form Content */}
       <div className="py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

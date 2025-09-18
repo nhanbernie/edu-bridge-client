@@ -5,7 +5,7 @@ import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
 import LanguageSelector from "@/components/common/LanguageSelector";
 import { User } from "lucide-react";
-
+import UserMenu from "./components/UserMenu";
 interface AdminLayoutProps {
   children: ReactNode;
 }
@@ -67,9 +67,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
           <div className="flex items-center gap-4">
             {/* User avatar placeholder */}
-            <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <User className="w-5 h-5 text-gray-500 dark:text-gray-300" />
-            </div>
+            <UserMenu />
           </div>
         </header>
         <main className="flex-1 p-8">{children}</main>

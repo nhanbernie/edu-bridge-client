@@ -6,7 +6,7 @@ import { TextField } from "../TextField";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
-import validatorSchema from "@/lib/authValidator";
+import validatorSchema from "@/lib/validator/authValidator";
 import { INPUT_FIELDS, BUTTON_TITLES } from "@/constants/form.constant";
 
 export interface IAuthFormProps {
