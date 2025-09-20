@@ -24,9 +24,6 @@ const tutorStep1Schema = Yup.object().shape({
     .required("Vui lòng nhập mô tả về bản thân"),
   subjects: Yup.string().required("Vui lòng nhập môn học dạy"),
   languages: Yup.string().required("Vui lòng nhập ngôn ngữ"),
-  hourlyRate: Yup.number()
-    .min(10000, "Mức phí tối thiểu là 10,000 VNĐ/giờ")
-    .required("Vui lòng nhập mức phí dạy"),
 });
 
 const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoading = false }) => {
@@ -36,7 +33,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
     bio: "",
     subjects: "",
     languages: "",
-    hourlyRate: 0,
     ...initialData,
   };
 
@@ -99,16 +95,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             name="languages"
             label="Ngôn ngữ"
             placeholder="Ví dụ: Tiếng Việt, Tiếng Anh..."
-          />
-
-          {/* Hourly Rate */}
-          <TextField
-            name="hourlyRate"
-            label="Mức phí dạy (VNĐ/giờ)"
-            type="number"
-            placeholder="Nhập mức phí mong muốn"
-            min="10000"
-            step="1000"
           />
 
           {/* Submit Button */}

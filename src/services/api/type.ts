@@ -26,7 +26,6 @@ export interface TutorDto {
   bio?: string;
   subjects?: string;
   languages?: string;
-  hourlyRate?: number;
   verificationType?: TutorType;
 }
 
@@ -117,7 +116,6 @@ export interface TutorOnboardingRequest {
     bio: string;
     subjects: string;
     languages: string;
-    hourlyRate: number;
   };
 }
 

@@ -7,6 +7,8 @@ import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/c
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
 import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
+import { useEffect } from "react";
+import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
@@ -14,6 +16,9 @@ const HomeFeature = () => {
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
   const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR";
+
+  // Call the hook at the top level
+  useGetAndStoreUser({ userId: user?.userId });
 
   return (
     <MainLayout footer={true}>

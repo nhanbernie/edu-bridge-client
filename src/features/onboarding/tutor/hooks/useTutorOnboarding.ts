@@ -11,7 +11,6 @@ export interface TutorFormData {
   bio: string;
   subjects: string;
   languages: string;
-  hourlyRate: number;
 }
 
 export const useTutorOnboarding = () => {
