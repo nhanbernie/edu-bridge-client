@@ -1,9 +1,12 @@
-import React from 'react'
-
-const page = () => {
+import React from "react";
+import StudentDashboardPage from "@/features/student/dashboard/StudentDashboardPage";
+import { RoleGuard } from "@/components/guards";
+const StudentDashboard = () => {
   return (
-    <div>page</div>
-  )
-}
+    <RoleGuard allowedRoles={["STUDENT"]} requiredStatus={["APPROVED"]}>
+      <StudentDashboardPage />
+    </RoleGuard>
+  );
+};
 
-export default page
+export default StudentDashboard;

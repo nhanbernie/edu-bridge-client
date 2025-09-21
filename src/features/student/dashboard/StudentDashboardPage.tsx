@@ -1,5 +1,5 @@
 
-const StudentHomePage = () => {
+const StudentDashboardPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32 px-8">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -59,4 +59,4 @@ const StudentHomePage = () => {
   )
 }
 
-export default StudentHomePage
+export default StudentDashboardPage

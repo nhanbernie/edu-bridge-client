@@ -1,9 +1,12 @@
-import React from 'react'
-
+import React from "react";
+import { RoleGuard } from "@/components/guards";
+import TutorDashboardPage from "@/features/tutor/dashboard/TutorDashboardPage";
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <RoleGuard allowedRoles={["TUTOR"]} requiredStatus={["APPROVED"]}>
+      <TutorDashboardPage />
+    </RoleGuard>
+  );
+};
 
-export default page
+export default page;

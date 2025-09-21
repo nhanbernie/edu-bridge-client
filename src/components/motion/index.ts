@@ -16,5 +16,10 @@ export {
   EASE_CONFIG,
 } from "@/common/constants/motion/motion.constant";
 
+export {
+  simpleCardVariants,
+  tutorCardVariants,
+} from "@/common/constants/motion/cardMotion.constant";
+
 // Types
 export type { MotionCardProps } from "./MotionCard";
