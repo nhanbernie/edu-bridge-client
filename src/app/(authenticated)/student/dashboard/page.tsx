@@ -1,11 +1,11 @@
 import React from "react";
 import StudentDashboardPage from "@/features/student/dashboard/StudentDashboardPage";
-import { RoleGuard } from "@/components/guards";
+import MainLayout from "@/components/layouts/MainLayout";
 const StudentDashboard = () => {
   return (
-    <RoleGuard allowedRoles={["STUDENT"]} requiredStatus={["APPROVED"]}>
+    <MainLayout footer={true}>
       <StudentDashboardPage />
-    </RoleGuard>
+    </MainLayout>
   );
 };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import TutorCard from "./components/TutorCard";
@@ -106,6 +107,7 @@ const mockTutors = [
 ];
 
 const StudentHomePage = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Tất cả");
   const [favoritedTutors, setFavoritedTutors] = useState<Set<string>>(new Set());
@@ -121,7 +123,7 @@ const StudentHomePage = () => {
 
   const handleViewDetails = (tutorId: string) => {
     console.log("View details for tutor:", tutorId);
-    // Navigate to tutor details page
+    router.push(`/student/tutor/${tutorId}`);
   };
 
   const handleContact = (tutorId: string) => {
