@@ -10,37 +10,45 @@ import { navigationItems, NavItem } from "@/constants/navigate.constant";
 import Navigation from "./components/Navigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
+import { ButtonAction } from "../motion/ButtonMotion";
+
+interface AcitonButtonProps {
+  onMobileMenuToggle: () => void;
+  showMessage?: boolean;
+}
+
+interface HeaderProps {
+  showMessage?: boolean;
+}
+
+const actionButtonItems = {
+  icon: <Search size={20} />,
+  message: <MessageSquare size={20} />,
+  globe: <Globe size={20} />,
+  user: <UserMenu />,
+  menu: <Menu size={20} />,
+};
 
 // Action buttons component
-const ActionButtons = ({ onMobileMenuToggle }: { onMobileMenuToggle: () => void }) => (
+const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonProps) => (
   <div className="flex items-center gap-3">
+
     {/* Search button */}
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-    >
+    <ButtonAction>
       <Search size={20} />
-    </motion.button>
+    </ButtonAction>
 
     {/* Messages button */}
-
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-    >
-      <MessageSquare size={20} />
-    </motion.button>
+    {showMessage && (
+      <ButtonAction>
+        <MessageSquare size={20} />
+      </ButtonAction>
+    )}
 
     {/* Language selector */}
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-    >
+    <ButtonAction>
       <Globe className="w-5 h-5" />
-    </motion.button>
+    </ButtonAction>
     {/* User Menu */}
 
     <EBThemeToggle />
@@ -57,7 +65,7 @@ const ActionButtons = ({ onMobileMenuToggle }: { onMobileMenuToggle: () => void 
 );
 
 // Main Header component
-const Header = () => {
+const Header = ({ showMessage }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -97,7 +105,7 @@ const Header = () => {
             </nav>
 
             {/* Right side - Actions */}
-            <ActionButtons onMobileMenuToggle={handleMobileMenuToggle} />
+            <ActionButtons showMessage={showMessage} onMobileMenuToggle={handleMobileMenuToggle} />
           </div>
         </div>
       </motion.header>
