@@ -12,6 +12,10 @@ interface ScheduleSelectorProps {
   selectedTime: string | null;
   onDateChange: (date: Date | null) => void;
   onTimeChange: (time: string | null) => void;
+  onAddSession: () => void;
+  currentSessionCount: number;
+  totalSessions: number;
+  isDisabled: boolean;
 }
 
 const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
@@ -19,6 +23,10 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   selectedTime,
   onDateChange,
   onTimeChange,
+  onAddSession,
+  currentSessionCount,
+  totalSessions,
+  isDisabled,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -96,11 +104,14 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   };
 
   return (
-    <MotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
+    <MotionCard
+      className={cn("bg-card text-card-foreground", isDisabled && "opacity-50 pointer-events-none")}
+      variants={slideUpVariants}
+    >
       <div className="pb-4">
         <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
           <Calendar className="w-5 h-5" />
-          Chọn lịch học (3/4 buổi)
+          Chọn lịch học ({currentSessionCount}/{totalSessions} buổi)
         </h3>
         <div className="flex justify-between items-center text-sm mt-2">
           <span className="text-muted-foreground">Chọn ngày học</span>
@@ -191,7 +202,17 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
         {/* Right Column - Time Selection */}
         <div>
           <div className="mb-4">
-            <h4 className="font-medium text-foreground mb-2">Chọn giờ học</h4>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-medium text-foreground">Chọn giờ học</h4>
+              <Button
+                onClick={onAddSession}
+                disabled={!selectedDate || !selectedTime || isDisabled}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
+                size="sm"
+              >
+                Thêm buổi học
+              </Button>
+            </div>
             {selectedDate && (
               <div className="text-sm text-muted-foreground mb-3">
                 Thứ {selectedDate.getDay() === 0 ? "CN" : selectedDate.getDay() + 1},{" "}

@@ -1,13 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  TutorInfo,
-  PackageSelector,
-  ScheduleSelector,
-  BookingButton,
-  SelectedSchedule,
-} from "./components";
+import { TutorInfo, PackageSelector, ScheduleSelector, SelectedSchedule } from "./components";
+import { Button } from "@/components/ui/button";
 
 interface BookingPageProps {
   tutorId: string;
@@ -26,8 +21,23 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedSessions, setSelectedSessions] = useState<SelectedSession[]>([]);
 
+  // Get total sessions from package
+  const getPackageSessions = (packageId: string | null) => {
+    const packages = {
+      basic: 1,
+      standard: 4,
+      premium: 8,
+      intensive: 12,
+    };
+    return packageId ? packages[packageId as keyof typeof packages] || 0 : 0;
+  };
+
+  const totalSessions = getPackageSessions(selectedPackage);
+  const currentSessionCount = selectedSessions.length;
+  const isScheduleDisabled = currentSessionCount >= totalSessions;
+
   const handleAddSession = () => {
-    if (selectedDate && selectedTime) {
+    if (selectedDate && selectedTime && currentSessionCount < totalSessions) {
       const newSession: SelectedSession = {
         date: selectedDate,
         timeSlot: selectedTime,
@@ -77,19 +87,11 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
               selectedTime={selectedTime}
               onDateChange={setSelectedDate}
               onTimeChange={setSelectedTime}
+              onAddSession={handleAddSession}
+              currentSessionCount={currentSessionCount}
+              totalSessions={totalSessions}
+              isDisabled={isScheduleDisabled}
             />
-
-            {/* Add Session Button */}
-            {selectedDate && selectedTime && (
-              <div className="flex justify-center">
-                <button
-                  onClick={handleAddSession}
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  Thêm buổi học
-                </button>
-              </div>
-            )}
 
             {/* Selected Sessions */}
             {selectedSessions.length > 0 && (
@@ -101,17 +103,27 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
             )}
 
             {/* Booking Button */}
-            <BookingButton
-              disabled={selectedSessions.length === 0 || !selectedPackage}
-              onBook={() => {
-                console.log("Booking:", {
-                  tutorId,
-                  courseId,
-                  selectedSessions,
-                  selectedPackage,
-                });
-              }}
-            />
+            <div className="flex justify-center">
+              <Button
+                onClick={() => {
+                  console.log("Booking:", {
+                    tutorId,
+                    courseId,
+                    selectedSessions,
+                    selectedPackage,
+                  });
+                }}
+                disabled={
+                  currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
+                }
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground py-3 text-base font-medium"
+                size="lg"
+              >
+                {currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
+                  ? "Vui lòng chọn đầy đủ thông tin"
+                  : "Đặt lịch ngay"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

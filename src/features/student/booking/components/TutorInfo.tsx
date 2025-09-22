@@ -26,7 +26,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
   };
 
   return (
-    <MotionCard className="bg-card text-card-foreground"  variants={slideUpVariants}>
+    <MotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
       <div className="flex flex-col items-center text-center space-y-4">
         {/* Avatar */}
         <div className="relative">
