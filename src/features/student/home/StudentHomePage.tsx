@@ -122,13 +122,11 @@ const StudentHomePage = () => {
   ];
 
   const handleViewDetails = (tutorId: string) => {
-    console.log("View details for tutor:", tutorId);
     router.push(`/student/tutor/${tutorId}`);
   };
 
   const handleContact = (tutorId: string) => {
     console.log("Contact tutor:", tutorId);
-    // Open contact modal or navigate to chat
   };
 
   const handleFavorite = (tutorId: string) => {
@@ -236,7 +234,7 @@ const StudentHomePage = () => {
         </div>
 
         {/* Tutors Grid */}
-        <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {filteredTutors.map((tutor) => (
             <MotionItem key={tutor.id}>
               <TutorCard
