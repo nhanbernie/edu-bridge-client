@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import TutorCard from "./components/TutorCard";
@@ -106,6 +107,7 @@ const mockTutors = [
 ];
 
 const StudentHomePage = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Tất cả");
   const [favoritedTutors, setFavoritedTutors] = useState<Set<string>>(new Set());
@@ -120,13 +122,11 @@ const StudentHomePage = () => {
   ];
 
   const handleViewDetails = (tutorId: string) => {
-    console.log("View details for tutor:", tutorId);
-    // Navigate to tutor details page
+    router.push(`/student/tutor/${tutorId}`);
   };
 
   const handleContact = (tutorId: string) => {
     console.log("Contact tutor:", tutorId);
-    // Open contact modal or navigate to chat
   };
 
   const handleFavorite = (tutorId: string) => {
@@ -234,7 +234,7 @@ const StudentHomePage = () => {
         </div>
 
         {/* Tutors Grid */}
-        <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {filteredTutors.map((tutor) => (
             <MotionItem key={tutor.id}>
               <TutorCard
