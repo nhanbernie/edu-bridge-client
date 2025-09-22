@@ -56,7 +56,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8 shadow-xl">
           <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
@@ -197,13 +197,13 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
           </div>
         </div>
 
-        {/* Tabs Section */}
-        <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl shadow-xl overflow-hidden">
-          <div className="px-8 pt-6">
-            <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-          </div>
-          <div className="p-8">{renderTabContent()}</div>
+        {/* Tabs Navigation */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-10">
+          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
         </div>
+
+        {/* Tab Content */}
+        <div className="rounded-2xl">{renderTabContent()}</div>
       </div>
     </div>
   );
