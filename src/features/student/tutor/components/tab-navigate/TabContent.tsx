@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Clock, Calendar, Award, BookOpen, Users } from "lucide-react";
-
+import EBTutorCard from "@/components/common/EBTutorCard";
 interface TabContentProps {
   activeTab: string;
 }
@@ -14,34 +14,7 @@ const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
   const renderCoursesTab = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {[1, 2, 3, 4].map((course) => (
-        <Card key={course} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
-          <CardHeader className="pb-3">
-            <div className="flex justify-between items-start">
-              <CardTitle className="text-lg">Toán học cơ bản {course}</CardTitle>
-              <Badge variant="secondary">Phổ biến</Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <BookOpen className="h-4 w-4" />
-                <span>12 bài học</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Users className="h-4 w-4" />
-                <span>25 học sinh đã đăng ký</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>2 giờ/buổi</span>
-              </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-lg font-semibold text-primary">200,000 VNĐ/buổi</span>
-                <Button size="sm">Đăng ký</Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <EBTutorCard key={course} course={course} />
       ))}
     </div>
   );

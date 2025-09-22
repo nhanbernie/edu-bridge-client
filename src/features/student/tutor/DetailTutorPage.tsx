@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Star, MapPin, Users, Clock, Award, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import TabNavigation from "./components/tab-navigate/TabNavigation";
+import TabNavigation from "@/components/common/EBTabNavigation";
 import TabContent from "./components/tab-navigate/TabContent";
-import { Button } from "@/components/ui/button";
 
 interface DetailTutorPageProps {
   tutorId?: string;
