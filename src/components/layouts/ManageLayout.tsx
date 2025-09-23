@@ -17,7 +17,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden">
+    <div className="h-screen flex relative overflow-hidden">
       {/* Background with gradient - lighter colors */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900">
         {/* Enhanced blur pattern overlay */}
@@ -32,11 +32,11 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
       </div>
 
       {/* Main glassmorphism container */}
-      <div className="relative z-10 flex w-full min-h-screen bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-gray-700/20  overflow-hidden shadow-2xl shadow-black/10">
-        {/* Sidebar */}
+      <div className="relative z-10 flex w-full h-screen bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-gray-700/20 overflow-hidden shadow-2xl shadow-black/10">
+        {/* Sidebar - Fixed */}
         <aside
           className={`
-          relative flex flex-col bg-transparent transition-all duration-300 py-6 px-4
+          relative flex flex-col bg-transparent transition-all duration-300 py-6 px-4 h-screen overflow-y-auto
           ${sidebarExpanded ? "w-64" : "w-20"}
         `}
         >
@@ -174,9 +174,9 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
         </aside>
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col min-h-screen">
-          {/* Header */}
-          <header className="h-20 flex items-center justify-end px-6 lg:px-8 bg-transparent">
+        <div className="flex-1 flex flex-col h-screen">
+          {/* Header - Fixed */}
+          <header className="h-20 flex items-center justify-end px-6 lg:px-8 bg-transparent flex-shrink-0">
             {/* Right side - Search, Notifications, User */}
             <div className="flex items-center gap-3">
               {/* Search */}
@@ -200,9 +200,9 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
             </div>
           </header>
 
-          {/* Main Content */}
-          <main className="flex-1 overflow-auto">
-            <div className="max-w-8xl mx-auto">{children}</div>
+          {/* Main Content - Scrollable */}
+          <main className="flex-1 overflow-y-auto overflow-x-hidden">
+            <div className="max-w-8xl mx-auto p-6">{children}</div>
           </main>
         </div>
       </div>

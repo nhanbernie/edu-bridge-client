@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useWatch } from "react-hook-form";
 import * as Yup from "yup";
 import FormProvider from "@/components/form/FormProvider";
 import TextField from "@/components/form/TextField";
@@ -88,19 +87,6 @@ const CreateCoursePage: React.FC = () => {
     }
   };
 
-  // Component to watch form changes
-  const FormWatcher: React.FC = () => {
-    const watchedData = useWatch() as CourseFormData;
-
-    React.useEffect(() => {
-      if (watchedData) {
-        setFormData(watchedData);
-      }
-    }, [watchedData]);
-
-    return null;
-  };
-
   const handleBack = () => {
     router.back();
   };
@@ -139,7 +125,6 @@ const CreateCoursePage: React.FC = () => {
                 defaultValues={defaultValues}
                 onSubmit={handleSubmit}
               >
-                <FormWatcher />
                 <div className="space-y-6">
                   {/* Course Title */}
                   <TextField
