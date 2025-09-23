@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { RoleGuard } from "@/components/guards";
-import AdminLayout from "@/components/layouts/AdminLayout";
+import AdminLayout from "@/components/layouts/ManageLayout";
 import {
   useGetAllUsersQuery,
   useGetUserQuery,

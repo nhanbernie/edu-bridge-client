@@ -4,6 +4,7 @@ import React from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { motion } from "motion/react";
 import { Sun, Moon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const EBThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
