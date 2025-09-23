@@ -201,7 +201,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-6 lg:p-8 overflow-auto">
+          <main className="flex-1 overflow-auto">
             <div className="max-w-8xl mx-auto">{children}</div>
           </main>
         </div>

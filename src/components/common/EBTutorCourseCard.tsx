@@ -4,10 +4,12 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Clock, Users, Info } from "lucide-react";
+import EBActionsMenu, { type ActionItem } from "./EBActionsMenu";
 
-interface TutorCourseCard {
+// Types
+interface CourseData {
   id: string;
   title: string;
   tutorId: string;
@@ -18,11 +20,23 @@ interface TutorCourseCard {
   popular?: boolean;
 }
 
-const EBTutorCourseCard = ({ course }: { course: number }) => {
+interface EBTutorCourseCardProps {
+  course: number;
+  mode?: "user" | "tutor";
+  courseData?: CourseData;
+  actions?: ActionItem[];
+}
+
+const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
+  course,
+  mode = "user",
+  courseData: propCourseData,
+  actions = [],
+}) => {
   const router = useRouter();
 
   // Mock data - trong thực tế sẽ nhận từ props
-  const courseData: TutorCourseCard = {
+  const courseData: CourseData = propCourseData || {
     id: `course-${course}`,
     title: `Toán học cơ bản ${course}`,
     tutorId: "tutor-1",
@@ -38,11 +52,14 @@ const EBTutorCourseCard = ({ course }: { course: number }) => {
     router.push(`/student/booking/${courseData.tutorId}?courseId=${courseData.id}`);
   };
   return (
-    <Card key={course} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
+    <Card className="hover:shadow-lg transition-shadow border-0 shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{courseData.title}</CardTitle>
-          {courseData.popular && <Badge variant="secondary">Phổ biến</Badge>}
+          <div className="flex items-center gap-2">
+            {courseData.popular && <Badge variant="secondary">Phổ biến</Badge>}
+            {mode === "tutor" && actions.length > 0 && <EBActionsMenu actions={actions} />}
+          </div>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -66,9 +83,11 @@ const EBTutorCourseCard = ({ course }: { course: number }) => {
                 <span>Học phí dựa trên số buổi</span>
               </div>
             </div>
-            <Button size="sm" onClick={handleBooking}>
-              Đăng ký
-            </Button>
+            {mode === "user" && (
+              <Button size="sm" onClick={handleBooking}>
+                Đăng ký
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>
@@ -77,3 +96,4 @@ const EBTutorCourseCard = ({ course }: { course: number }) => {
 };
 
 export default EBTutorCourseCard;
+export type { CourseData, EBTutorCourseCardProps };
