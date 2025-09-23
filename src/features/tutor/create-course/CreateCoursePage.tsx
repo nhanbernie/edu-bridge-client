@@ -8,6 +8,7 @@ import FormProvider from "@/components/form/FormProvider";
 import TextField from "@/components/form/TextField";
 import TextAreaField from "@/components/form/TextAreaField";
 import SelectField from "@/components/form/SelectField";
+import SwitchField from "@/components/form/SwitchField";
 import EBButton from "@/components/common/EBButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, BookOpen } from "lucide-react";
@@ -40,6 +41,7 @@ const createCourseSchema = Yup.object().shape({
     .min(50000, "Giá/buổi phải ít nhất 50,000 VNĐ")
     .max(2000000, "Giá/buổi không được vượt quá 2,000,000 VNĐ")
     .required("Vui lòng nhập giá/buổi"),
+  isPublished: Yup.boolean(),
 });
 
 const CreateCoursePage: React.FC = () => {
@@ -100,14 +102,19 @@ const CreateCoursePage: React.FC = () => {
   };
 
   const handleBack = () => {
-    router.push("/tutor/courses");
+    router.back();
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-6 px-4">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <BookOpen className="h-6 w-6 text-emerald-600" />
+            <h1 className="text-2xl font-bold text-gray-900">Tạo khóa học mới</h1>
+          </div>
+          <p className="text-gray-600 mb-4">Khóa học được xuất bản, chi tiết có thể thay đổi sau</p>
           <button
             onClick={handleBack}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
@@ -115,10 +122,6 @@ const CreateCoursePage: React.FC = () => {
             <ArrowLeft className="h-5 w-5" />
             Quay lại
           </button>
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">Tạo khóa học mới</h1>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -178,6 +181,13 @@ const CreateCoursePage: React.FC = () => {
                     step="10000"
                   />
 
+                  {/* Publish Switch */}
+                  <SwitchField
+                    name="isPublished"
+                    label="Xuất bản khóa học"
+                    description="Khóa học được xuất bản, chi tiết có thể thay đổi sau"
+                  />
+
                   {/* Submit Button */}
                   <div className="pt-4">
                     <EBButton
@@ -185,7 +195,7 @@ const CreateCoursePage: React.FC = () => {
                       variant="default"
                       size="lg"
                       loading={isLoading}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       {isLoading ? "Đang tạo khóa học..." : "Tạo khóa học"}
                     </EBButton>

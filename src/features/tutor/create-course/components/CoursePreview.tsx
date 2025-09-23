@@ -25,7 +25,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   const getSubjectLabel = (value: string) => {
     const subjectMap: { [key: string]: string } = {
       math: "Toán",
-      physics: "Vật lý", 
+      physics: "Vật lý",
       chemistry: "Hóa học",
       biology: "Sinh học",
       english: "Tiếng Anh",
@@ -63,9 +63,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
           <CardContent className="pt-0">
             <div className="space-y-3">
               {/* Description */}
-              <p className="text-sm text-gray-600 line-clamp-3">
-                {previewData.description}
-              </p>
+              <p className="text-sm text-gray-600 line-clamp-3">{previewData.description}</p>
 
               {/* Stats */}
               <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -82,7 +80,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               {/* Price */}
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <div className="flex flex-col">
-                  <span className="text-lg font-semibold text-blue-600">
+                  <span className="text-lg font-semibold text-emerald-600">
                     {previewData.pricePerSession.toLocaleString()} VNĐ
                   </span>
                   <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
@@ -98,7 +96,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
         {/* Pricing Packages Preview */}
         <div className="mt-6">
           <h4 className="font-medium text-gray-900 mb-3">Gói học tự động</h4>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {[
               { sessions: 4, discount: 0, label: "Gói 4 buổi" },
               { sessions: 8, discount: 10, label: "Gói 8 buổi" },
@@ -106,24 +104,24 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
             ].map((pkg) => {
               const originalPrice = previewData.pricePerSession * pkg.sessions;
               const discountedPrice = originalPrice * (1 - pkg.discount / 100);
-              
+
               return (
                 <div
                   key={pkg.sessions}
-                  className="flex justify-between items-center p-3 bg-gray-50 rounded-lg text-sm"
+                  className="flex justify-between items-center p-4 bg-gray-50 rounded-lg text-sm min-h-[60px]"
                 >
-                  <div>
+                  <div className="flex flex-col justify-center">
                     <span className="font-medium text-gray-900">{pkg.label}</span>
                     {pkg.discount > 0 && (
-                      <Badge variant="secondary" className="ml-2 text-xs">
+                      <Badge variant="secondary" className="mt-1 text-xs w-fit">
                         -{pkg.discount}%
                       </Badge>
                     )}
                   </div>
-                  <div className="text-right">
+                  <div className="text-right flex flex-col justify-center">
                     {pkg.discount > 0 ? (
                       <>
-                        <div className="text-blue-600 font-semibold">
+                        <div className="text-emerald-600 font-semibold">
                           {discountedPrice.toLocaleString()} VNĐ
                         </div>
                         <div className="text-xs text-gray-500 line-through">
@@ -143,10 +141,10 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
         </div>
 
         {/* Note */}
-        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-          <p className="text-sm text-blue-700">
+        <div className="mt-4 p-3 bg-emerald-50 rounded-lg">
+          <p className="text-sm text-emerald-700">
             <Info className="h-4 w-4 inline mr-1" />
-            Đây là bản xem trước khóa học của bạn. Học sinh sẽ thấy thông tin này khi tìm kiếm.
+            Đây là bản xem trước khóa học của bạn.
           </p>
         </div>
       </CardContent>
