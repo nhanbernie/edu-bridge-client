@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-interface TutorCourse {
+interface TutorCourseCard {
   id: string;
   title: string;
   tutorId: string;
@@ -18,11 +18,11 @@ interface TutorCourse {
   popular?: boolean;
 }
 
-const EBTutorCard = ({ course }: { course: number }) => {
+const EBTutorCourseCard = ({ course }: { course: number }) => {
   const router = useRouter();
 
   // Mock data - trong thực tế sẽ nhận từ props
-  const courseData: TutorCourse = {
+  const courseData: TutorCourseCard = {
     id: `course-${course}`,
     title: `Toán học cơ bản ${course}`,
     tutorId: "tutor-1",
@@ -76,4 +76,4 @@ const EBTutorCard = ({ course }: { course: number }) => {
   );
 };
 
-export default EBTutorCard;
+export default EBTutorCourseCard;

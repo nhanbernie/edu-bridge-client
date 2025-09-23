@@ -49,7 +49,7 @@ export const sidebarItems: SidebarItem[] = [
   {
     label: "Lịch rảnh",
     icon: <Calendar className="w-5 h-5" />,
-    href: "/tutor/schedule",
+    href: "/tutor/schedules",
     active: false,
   },
   {

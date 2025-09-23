@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Clock, Calendar, Award, BookOpen, Users } from "lucide-react";
-import EBTutorCard from "@/components/common/EBTutorCard";
+import EBTutorCard from "@/components/common/EBTutorCourseCard";
 interface TabContentProps {
   activeTab: string;
 }
