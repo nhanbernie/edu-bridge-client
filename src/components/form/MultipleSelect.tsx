@@ -27,6 +27,7 @@ interface MultipleSelectProps {
   allowCustom?: boolean;
   customInputPlaceholder?: string;
   onCreateOption?: (label: string) => MultipleSelectOption;
+  disabled?: boolean;
 }
 
 const MultipleSelect: React.FC<MultipleSelectProps> = ({
@@ -39,6 +40,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   allowCustom = false,
   customInputPlaceholder = "Bạn có thể nhập môn học khác ở đây",
   onCreateOption,
+  disabled = false,
 }) => {
   const { control } = useFormContext();
   const {
@@ -96,6 +98,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
               error ? "border-red-500 bg-red-50 focus:ring-red-200" : "border-gray-200 hover:border-gray-300 focus:ring-primary/20",
               triggerClassName,
             )}
+            disabled={disabled}
           >
             <MultiSelectValue placeholder={placeholder} />
           </MultiSelectTrigger>

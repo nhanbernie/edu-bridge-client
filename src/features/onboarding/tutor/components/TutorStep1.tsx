@@ -1,5 +1,4 @@
 import React from "react";
-import * as Yup from "yup";
 import FormProvider from "@/components/form/FormProvider";
 import TextField from "@/components/form/TextField";
 import TextAreaField from "@/components/form/TextAreaField";
@@ -7,30 +6,13 @@ import SelectField from "@/components/form/SelectField";
 import EBButton from "@/components/common/EBButton";
 import { TutorFormData } from "../hooks/useTutorOnboarding";
 import MultipleSelect from "@/components/form/MultipleSelect";
+import roleSelectValidatorSchema from "@/lib/validator/roleSelectValidator";
 
 interface TutorStep1Props {
   onNext: (data: TutorFormData) => void;
   initialData?: Partial<TutorFormData>;
   isLoading?: boolean;
 }
-
-const tutorStep1Schema = Yup.object().shape({
-  educationLevel: Yup.string().required("Vui lòng chọn trình độ học vấn"),
-  yearsOfExperience: Yup.number()
-    .min(0, "Số năm kinh nghiệm không được âm")
-    .required("Vui lòng nhập số năm kinh nghiệm"),
-  bio: Yup.string()
-    .min(50, "Mô tả cần ít nhất 50 ký tự")
-    .max(500, "Mô tả không được vượt quá 500 ký tự")
-    .required("Vui lòng nhập mô tả về bản thân"),
-  subjects: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 môn học"),
-  languages: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 ngôn ngữ"),
-  hourlyRate: Yup.number().min(0, "Không được âm").required("Nhập giá theo giờ"),
-  hoursPerSession: Yup.number()
-    .min(0.5, "Tối thiểu 0.5 giờ")
-    .max(8, "Tối đa 8 giờ")
-    .required("Nhập số giờ mỗi buổi"),
-});
 
 const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoading = false }) => {
   const defaultValues: TutorFormData = {
@@ -56,7 +38,8 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
       </div>
 
       <FormProvider
-        validationSchema={tutorStep1Schema}
+        validationSchema={roleSelectValidatorSchema.tutorStep1Schema}
+        formType="tutorStep1Schema"
         defaultValues={defaultValues}
         onSubmit={handleSubmit}
       >
