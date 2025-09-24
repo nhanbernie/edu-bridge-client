@@ -25,6 +25,12 @@ export const API_ENDPOINTS = {
     GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
     VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
   },
+  COURSE: {
+    GET_COURSE: "/api/course",
+    CREATE_COURSE: "/api/course",
+    UPDATE_COURSE: "/api/course/{courseId}",
+    GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
+  },
 } as const;
 
 export const API_CONFIG = {
