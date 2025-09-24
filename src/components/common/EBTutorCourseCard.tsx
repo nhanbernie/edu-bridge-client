@@ -35,17 +35,63 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
 }) => {
   const router = useRouter();
 
-  // Mock data - trong thực tế sẽ nhận từ props
-  const courseData: CourseData = propCourseData || {
-    id: `course-${course}`,
-    title: `Toán học cơ bản ${course}`,
-    tutorId: "tutor-1",
-    tutorName: "Nguyễn Văn An",
-    price: { min: 200000, max: 1000000 },
-    duration: "2 giờ/buổi",
-    students: 25,
-    popular: true,
-  };
+  // Hard coded data - dễ dàng thêm trường mới
+  const hardCodedCourses: CourseData[] = [
+    {
+      id: "course-1",
+      title: "Toán học cơ bản lớp 10",
+      tutorId: "tutor-1",
+      tutorName: "Nguyễn Văn An",
+      price: { min: 200000, max: 500000 },
+      duration: "2 giờ/buổi",
+      students: 25,
+      popular: true,
+    },
+    {
+      id: "course-2",
+      title: "Vật lý nâng cao lớp 11",
+      tutorId: "tutor-1",
+      tutorName: "Trần Thị Bình",
+      price: { min: 300000, max: 800000 },
+      duration: "1.5 giờ/buổi",
+      students: 18,
+      popular: false,
+    },
+    {
+      id: "course-3",
+      title: "Hóa học hữu cơ lớp 12",
+      tutorId: "tutor-1",
+      tutorName: "Lê Minh Cường",
+      price: { min: 250000, max: 600000 },
+      duration: "2.5 giờ/buổi",
+      students: 32,
+      popular: true,
+    },
+    {
+      id: "course-4",
+      title: "Tiếng Anh giao tiếp",
+      tutorId: "tutor-1",
+      tutorName: "Phạm Thu Hà",
+      price: { min: 180000, max: 400000 },
+      duration: "1 giờ/buổi",
+      students: 45,
+      popular: true,
+    },
+    {
+      id: "course-5",
+      title: "Lập trình Python cơ bản",
+      tutorId: "tutor-1",
+      tutorName: "Ngô Đức Thành",
+      price: { min: 400000, max: 1000000 },
+      duration: "3 giờ/buổi",
+      students: 12,
+      popular: false,
+    },
+  ];
+
+  // Sử dụng data từ props hoặc hard coded data
+  const courseData: CourseData =
+    propCourseData || hardCodedCourses[(course - 1) % hardCodedCourses.length];
 
   const handleBooking = () => {
     // Navigate to booking page với tutor ID và course ID

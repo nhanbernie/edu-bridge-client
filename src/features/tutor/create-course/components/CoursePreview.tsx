@@ -4,7 +4,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Info, Eye } from "lucide-react";
-import { CourseFormData } from "../hooks/useCreateCourse";
+import { CourseFormData } from "@/components/form/course";
 
 interface CoursePreviewProps {
   formData: CourseFormData | null;
@@ -16,7 +16,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
     title: formData?.title || "Tên khóa học",
     subjects: formData?.subjects || [],
     description: formData?.description || "Mô tả khóa học sẽ hiển thị ở đây...",
-    hoursPerSession: formData?.hoursPerSession || 2,
+    hoursPerSession: formData?.hoursPerSession || "2",
     hourlyRate: formData?.hourlyRate || 100000,
     students: 0, // New course, no students yet
     popular: false,
@@ -54,9 +54,11 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               </CardTitle>
               <div className="flex items-center gap-2">
                 {previewData.popular && <Badge variant="secondary">Phổ biến</Badge>}
-                <Badge variant="outline" className="text-xs">
-                  {getSubjectLabel(previewData.subjects.join(", "))}
-                </Badge>{" "}
+                {previewData.subjects.length > 0 && (
+                  <Badge variant="outline" className="text-xs">
+                    {previewData.subjects.map(getSubjectLabel).join(", ")}
+                  </Badge>
+                )}
               </div>
             </div>
           </CardHeader>

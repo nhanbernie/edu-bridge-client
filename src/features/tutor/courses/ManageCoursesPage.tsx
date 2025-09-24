@@ -1,60 +1,32 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import EBTutorCourseCard from "@/components/common/EBTutorCourseCard";
 import EmptyState from "@/components/common/EmptyState";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Edit, Trash2 } from "lucide-react";
+import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
 import type { CourseData } from "@/components/common/EBTutorCourseCard";
 import type { ActionItem } from "@/components/common/EBActionsMenu";
+import { useManageCourses } from "./hooks/useManageCourses";
 
 const ManageCoursesPage: React.FC = () => {
-  const router = useRouter();
-  const [courses, setCourses] = useState<CourseData[]>([
-    {
-      id: "course-1",
-      title: "Toán học cơ bản lớp 10",
-      tutorId: "tutor-1",
-      tutorName: "Nguyễn Văn An",
-      price: { min: 200000, max: 500000 },
-      duration: "2 giờ/buổi",
-      students: 25,
-      popular: true,
-    },
-    {
-      id: "course-2",
-      title: "Vật lý nâng cao lớp 11",
-      tutorId: "tutor-1",
-      tutorName: "Nguyễn Văn An",
-      price: { min: 300000, max: 700000 },
-      duration: "1.5 giờ/buổi",
-      students: 18,
-      popular: false,
-    },
-    {
-      id: "course-3",
-      title: "Hóa học lớp 12",
-      tutorId: "tutor-1",
-      tutorName: "Nguyễn Văn An",
-      price: { min: 250000, max: 600000 },
-      duration: "2 giờ/buổi",
-      students: 32,
-      popular: true,
-    },
-  ]);
+  // For demo purposes, using a hardcoded tutor ID
+  // In real app, this would come from auth context or user session
+  const tutorId = "dd4eaa0c-5f90-44bb-b501-6da25154f646";
+
+  // Sử dụng hook để quản lý courses
+  const {
+    courses,
+    isLoading,
+    handleCreateCourse,
+    handleEditCourse,
+    handleDeleteCourse,
+    handleRefresh,
+  } = useManageCourses(tutorId);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
-
-  const handleCreateCourse = () => {
-    router.push("/tutor/courses/create");
-  };
-
-  const handleEditCourse = (courseId: string) => {
-    router.push(`/tutor/courses/edit/${courseId}`);
-  };
 
   const handleDeleteClick = (course: CourseData) => {
     setCourseToDelete(course);
@@ -63,7 +35,7 @@ const ManageCoursesPage: React.FC = () => {
 
   const handleDeleteConfirm = () => {
     if (courseToDelete) {
-      setCourses((prev) => prev.filter((course) => course.id !== courseToDelete.id));
+      handleDeleteCourse(courseToDelete.id);
     }
     setDeleteDialogOpen(false);
     setCourseToDelete(null);
@@ -91,14 +63,30 @@ const ManageCoursesPage: React.FC = () => {
           <h1 className="text-2xl font-bold">Quản lý khóa học</h1>
           <p className="text-muted-foreground">Quản lý tất cả khóa học của bạn</p>
         </div>
-        <Button onClick={handleCreateCourse} className="flex items-center gap-2">
-          <PlusCircle className="h-4 w-4" />
-          Tạo khóa học mới
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+            Làm mới
+          </Button>
+          <Button onClick={handleCreateCourse} className="flex items-center gap-2">
+            <PlusCircle className="h-4 w-4" />
+            Tạo khóa học mới
+          </Button>
+        </div>
       </div>
 
       {/* Content */}
-      {courses.length === 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải khóa học...</span>
+        </div>
+      ) : courses.length === 0 ? (
         <EmptyState
           title="Chưa có khóa học nào"
           description="Bạn chưa tạo khóa học nào. Hãy tạo khóa học đầu tiên để bắt đầu dạy học."
