@@ -11,10 +11,13 @@ const courseValidatorSchema = {
       .min(20, "Mô tả khóa học cần ít nhất 20 ký tự")
       .max(500, "Mô tả không được vượt quá 500 ký tự")
       .required("Vui lòng nhập mô tả khóa học"),
-    hoursPerSession: Yup.number()
-      .min(1, "Thời gian/buổi phải ít nhất 1 giờ")
-      .max(8, "Thời gian/buổi không được vượt quá 8 giờ")
-      .required("Vui lòng nhập thời gian/buổi"),
+    hoursPerSession: Yup.string()
+      .required("Vui lòng nhập thời gian/buổi")
+      .test("is-valid-number", "Thời gian/buổi phải là số hợp lệ", (value) => {
+        if (!value) return false;
+        const num = parseFloat(value);
+        return !isNaN(num) && num >= 0.5 && num <= 8;
+      }),
     hourlyRate: Yup.number()
       .min(50000, "Giá/buổi phải ít nhất 50,000 VNĐ")
       .max(2000000, "Giá/buổi không được vượt quá 2,000,000 VNĐ")

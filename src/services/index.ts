@@ -2,7 +2,6 @@
 export * from "./auth";
 export * from "./user";
 export * from "./course";
-export * from "./schedule";
 
 // Export API types
 export * from "./api/type";

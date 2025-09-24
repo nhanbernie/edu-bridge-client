@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "@/services/auth";
 import { userApi } from "@/services/user";
 import { authReducer } from "@/slices/auth.slice";
+import { courseReducer } from "@/slices/course.slice";
 import { courseApi } from "@/services/course";
 // import { apiErrorHandler } from "@/services/api/apiErrorHandler";
 
@@ -10,6 +11,8 @@ export const store = configureStore({
   reducer: {
     // Auth slice
     auth: authReducer,
+    // Course slice
+    course: courseReducer,
     // RTK Query APIs
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,

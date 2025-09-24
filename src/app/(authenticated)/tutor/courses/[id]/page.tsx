@@ -1,7 +1,7 @@
 import React from "react";
-
+import EditCourePage from "@/features/tutor/edit-course/EditCoursePage";
 const ViewCourse = () => {
-  return <div>Edit page</div>;
+  return <EditCourePage />;
 };
 
 export default ViewCourse;

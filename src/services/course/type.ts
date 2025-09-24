@@ -6,7 +6,7 @@ export interface CourseDto {
   description: string;
   subjects: string[];
   isPublished: boolean;
-  hoursPerSession: number;
+  hoursPerSession: string;
   hourlyRate: number;
   createdAt: string;
   updatedAt: string | null;
@@ -38,7 +38,7 @@ export interface CreateCourseRequest {
   description: string;
   subjects: string[];
   isPublished: boolean;
-  hoursPerSession: number;
+  hoursPerSession: string;
   hourlyRate: number;
 }
 
@@ -47,7 +47,7 @@ export interface UpdateCourseRequest {
   description?: string;
   subjects?: string[];
   isPublished?: boolean;
-  hoursPerSession?: number;
+  hoursPerSession?: string;
   hourlyRate?: number;
 }
 
@@ -68,6 +68,13 @@ export interface CreateCourseResponse {
 }
 
 export interface GetCourseResponse {
+  success: boolean;
+  data: CourseDto;
+  message: string;
+  errors: any[] | null;
+}
+
+export interface UpdateCourseResponse {
   success: boolean;
   data: CourseDto;
   message: string;
