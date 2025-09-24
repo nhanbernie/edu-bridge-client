@@ -4,7 +4,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Info, Eye } from "lucide-react";
-import { CourseFormData } from "../CreateCoursePage";
+import { CourseFormData } from "../hooks/useCreateCourse";
 
 interface CoursePreviewProps {
   formData: CourseFormData | null;
@@ -14,10 +14,10 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   // Default preview data
   const previewData = {
     title: formData?.title || "Tên khóa học",
-    subject: formData?.subject || "Môn học",
+    subjects: formData?.subjects || [],
     description: formData?.description || "Mô tả khóa học sẽ hiển thị ở đây...",
-    duration: formData?.duration || 2,
-    pricePerSession: formData?.pricePerSession || 100000,
+    hoursPerSession: formData?.hoursPerSession || 2,
+    hourlyRate: formData?.hourlyRate || 100000,
     students: 0, // New course, no students yet
     popular: false,
   };
@@ -55,8 +55,8 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               <div className="flex items-center gap-2">
                 {previewData.popular && <Badge variant="secondary">Phổ biến</Badge>}
                 <Badge variant="outline" className="text-xs">
-                  {getSubjectLabel(previewData.subject)}
-                </Badge>
+                  {getSubjectLabel(previewData.subjects.join(", "))}
+                </Badge>{" "}
               </div>
             </div>
           </CardHeader>
@@ -73,7 +73,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  <span>{previewData.duration}h/buổi</span>
+                  <span>{previewData.hoursPerSession}h/buổi</span>
                 </div>
               </div>
 
@@ -81,7 +81,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <div className="flex flex-col">
                   <span className="text-lg font-semibold text-emerald-600">
-                    {previewData.pricePerSession.toLocaleString()} VNĐ
+                    {previewData.hourlyRate.toLocaleString()} VNĐ
                   </span>
                   <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
                     <Info className="h-3 w-3" />
@@ -102,7 +102,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               { sessions: 8, discount: 10, label: "Gói 8 buổi" },
               { sessions: 12, discount: 15, label: "Gói 12 buổi" },
             ].map((pkg) => {
-              const originalPrice = previewData.pricePerSession * pkg.sessions;
+              const originalPrice = previewData.hourlyRate * pkg.sessions;
               const discountedPrice = originalPrice * (1 - pkg.discount / 100);
 
               return (
