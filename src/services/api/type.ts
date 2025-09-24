@@ -24,8 +24,10 @@ export interface TutorDto {
   educationLevel?: string;
   yearsOfExperience?: number;
   bio?: string;
-  subjects?: string;
-  languages?: string;
+  subjects?: string[];
+  languages?: string[];
+  hourlyRate?: number;
+  hoursPerSession?: number;
   verificationType?: TutorType;
 }
 
@@ -114,8 +116,10 @@ export interface TutorOnboardingRequest {
     educationLevel: string;
     yearsOfExperience: number;
     bio: string;
-    subjects: string;
-    languages: string;
+    subjects: string[];
+    languages: string[];
+    hourlyRate: number;
+    hoursPerSession: number;
   };
 }
 

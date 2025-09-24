@@ -9,8 +9,10 @@ export interface TutorFormData {
   educationLevel: string;
   yearsOfExperience: number;
   bio: string;
-  subjects: string;
-  languages: string;
+  subjects: string[];
+  languages: string[];
+  hourlyRate: number;
+  hoursPerSession: number;
 }
 
 export const useTutorOnboarding = () => {
@@ -39,7 +41,15 @@ export const useTutorOnboarding = () => {
 
       const payload: TutorOnboardingRequest = {
         role: "TUTOR",
-        tutor: data,
+        tutor: {
+          educationLevel: data.educationLevel,
+          yearsOfExperience: data.yearsOfExperience,
+          bio: data.bio,
+          subjects: data.subjects,
+          languages: data.languages,
+          hourlyRate: data.hourlyRate,
+          hoursPerSession: data.hoursPerSession,
+        },
       };
       const result = await selectRole({
         userId: userData.userId,

@@ -6,6 +6,7 @@ import TextAreaField from "@/components/form/TextAreaField";
 import SelectField from "@/components/form/SelectField";
 import EBButton from "@/components/common/EBButton";
 import { TutorFormData } from "../hooks/useTutorOnboarding";
+import MultipleSelect from "@/components/form/MultipleSelect";
 
 interface TutorStep1Props {
   onNext: (data: TutorFormData) => void;
@@ -22,8 +23,13 @@ const tutorStep1Schema = Yup.object().shape({
     .min(50, "Mô tả cần ít nhất 50 ký tự")
     .max(500, "Mô tả không được vượt quá 500 ký tự")
     .required("Vui lòng nhập mô tả về bản thân"),
-  subjects: Yup.string().required("Vui lòng nhập môn học dạy"),
-  languages: Yup.string().required("Vui lòng nhập ngôn ngữ"),
+  subjects: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 môn học"),
+  languages: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 ngôn ngữ"),
+  hourlyRate: Yup.number().min(0, "Không được âm").required("Nhập giá theo giờ"),
+  hoursPerSession: Yup.number()
+    .min(0.5, "Tối thiểu 0.5 giờ")
+    .max(8, "Tối đa 8 giờ")
+    .required("Nhập số giờ mỗi buổi"),
 });
 
 const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoading = false }) => {
@@ -31,10 +37,12 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
     educationLevel: "",
     yearsOfExperience: 0,
     bio: "",
-    subjects: "",
-    languages: "",
+    subjects: [],
+    languages: [],
+    hourlyRate: 0,
+    hoursPerSession: 2,
     ...initialData,
-  };
+  } as TutorFormData;
 
   const handleSubmit = (data: TutorFormData) => {
     onNext(data);
@@ -65,7 +73,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
               { value: "DOCTORATE", label: "Tiến sĩ" },
             ]}
           />
-
           {/* Years of Experience */}
           <TextField
             name="yearsOfExperience"
@@ -74,7 +81,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             placeholder="Nhập số năm kinh nghiệm"
             min="0"
           />
-
           {/* Bio */}
           <TextAreaField
             name="bio"
@@ -83,20 +89,56 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             rows={4}
           />
 
-          {/* Subjects */}
-          <TextField
+          {/* Subjects (multiple) */}
+          <MultipleSelect
+            allowCustom
             name="subjects"
-            label="Môn học dạy"
-            placeholder="Ví dụ: Toán, Lý, Hóa, Tiếng Anh..."
+            label="Môn học dạy (có thể chọn nhiều)"
+            options={[
+              { value: "MATH", label: "Toán" },
+              { value: "PHYSICS", label: "Vật lý" },
+              { value: "CHEMISTRY", label: "Hóa học" },
+              { value: "BIOLOGY", label: "Sinh học" },
+              { value: "ENGLISH", label: "Tiếng Anh" },
+              { value: "LITERATURE", label: "Ngữ văn" },
+              { value: "HISTORY", label: "Lịch sử" },
+              { value: "GEOGRAPHY", label: "Địa lý" },
+              { value: "COMPUTER_SCIENCE", label: "Tin học" },
+            ]}
           />
-
-          {/* Languages */}
-          <TextField
+          {/* Languages (multiple) */}
+          <MultipleSelect
             name="languages"
-            label="Ngôn ngữ"
-            placeholder="Ví dụ: Tiếng Việt, Tiếng Anh..."
+            label="Ngôn ngữ (có thể chọn nhiều)"
+            options={[
+              { value: "VI", label: "Tiếng Việt" },
+              { value: "EN", label: "Tiếng Anh" },
+              { value: "FR", label: "Tiếng Pháp" },
+              { value: "JP", label: "Tiếng Nhật" },
+              { value: "KR", label: "Tiếng Hàn" },
+              { value: "ZH", label: "Tiếng Trung" },
+            ]}
           />
-
+          {/* Pricing */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <TextField
+              name="hourlyRate"
+              type="number"
+              label="Giá theo giờ (VNĐ)"
+              placeholder="VD: 150000"
+              min="0"
+              step="10000"
+            />
+            <TextField
+              name="hoursPerSession"
+              type="number"
+              label="Số giờ mỗi buổi"
+              placeholder="VD: 2"
+              min="0.5"
+              max="8"
+              step="0.5"
+            />
+          </div>
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
             <EBButton
