@@ -4,5 +4,6 @@ export {
   useGetCourseQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
+  useDeleteCourseMutation,
   useGetCoursePackagesQuery,
 } from "./course.service";

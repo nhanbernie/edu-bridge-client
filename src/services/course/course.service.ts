@@ -4,6 +4,7 @@ import {
   getCourseEndpoint,
   createCourseEndpoint,
   updateCourseEndpoint,
+  deleteCourseEndpoint,
   getCoursePackagesEndpoint,
 } from "./endpoints/index";
 
@@ -15,6 +16,7 @@ export const courseApi = createApi({
     getCourse: getCourseEndpoint(builder),
     createCourse: createCourseEndpoint(builder),
     updateCourse: updateCourseEndpoint(builder),
+    deleteCourse: deleteCourseEndpoint(builder),
     getCoursePackages: getCoursePackagesEndpoint(builder),
   }),
 });
@@ -23,5 +25,6 @@ export const {
   useGetCourseQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
+  useDeleteCourseMutation,
   useGetCoursePackagesQuery,
 } = courseApi;
