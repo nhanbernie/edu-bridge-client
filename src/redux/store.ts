@@ -3,6 +3,8 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "@/services/auth";
 import { userApi } from "@/services/user";
 import { tutorApi } from "@/services/tutor";
+import { bookingApi } from "@/services/booking";
+import { paymentApi } from "@/services/payment";
 import { authReducer } from "@/slices/auth.slice";
 import { courseReducer } from "@/slices/course.slice";
 import { availabilityBlockReducer } from "@/slices/availability-block.slice";
@@ -27,6 +29,8 @@ export const store = configureStore({
     [courseApi.reducerPath]: courseApi.reducer,
     [availabilityBlockApi.reducerPath]: availabilityBlockApi.reducer,
     [tutorApi.reducerPath]: tutorApi.reducer,
+    [bookingApi.reducerPath]: bookingApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -39,7 +43,9 @@ export const store = configureStore({
       userApi.middleware,
       courseApi.middleware,
       availabilityBlockApi.middleware,
-      tutorApi.middleware
+      tutorApi.middleware,
+      bookingApi.middleware,
+      paymentApi.middleware
     ),
   // devTools: __DEV__,
 });

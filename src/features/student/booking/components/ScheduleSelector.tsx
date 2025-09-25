@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { MotionCard } from "@/components/motion/MotionCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar, Loader2, Clock } from "lucide-react";
@@ -17,8 +17,9 @@ interface SelectedSession {
 interface ScheduleSelectorProps {
   selectedDate: Date | null;
   selectedTime: string | null;
+  selectedBlockId: string | null;
   onDateChange: (date: Date | null) => void;
-  onTimeChange: (time: string | null) => void;
+  onTimeChange: (time: string | null, blockId: string | null) => void;
   onAddSession: () => void;
   currentSessionCount: number;
   totalSessions: number;
@@ -33,6 +34,7 @@ interface ScheduleSelectorProps {
 const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   selectedDate,
   selectedTime,
+  selectedBlockId,
   onDateChange,
   onTimeChange,
   onAddSession,
@@ -46,6 +48,11 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   selectedSessions = [],
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Generate calendar days
   const generateCalendarDays = () => {
@@ -87,7 +94,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
 
   // Get available dates from API data
   const availableDates = useMemo(() => {
-    if (typeof window === "undefined" || !availabilityBlocks || availabilityBlocks.length === 0) {
+    if (!isClient || !availabilityBlocks || availabilityBlocks.length === 0) {
       return new Set<string>();
     }
 
@@ -101,16 +108,11 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
       }
     });
     return dates;
-  }, [availabilityBlocks]);
+  }, [isClient, availabilityBlocks]);
 
   // Transform availability blocks to time slots for selected date
   const timeSlots = useMemo(() => {
-    if (
-      typeof window === "undefined" ||
-      !selectedDate ||
-      !availabilityBlocks ||
-      availabilityBlocks.length === 0
-    ) {
+    if (!isClient || !selectedDate || !availabilityBlocks || availabilityBlocks.length === 0) {
       return [];
     }
 
@@ -128,6 +130,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
       end: string;
       startMinutes: number;
       endMinutes: number;
+      blockId: string;
     }[] = [];
 
     availabilityBlocks.forEach((block) => {
@@ -170,6 +173,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
               end: endTime,
               startMinutes,
               endMinutes,
+              blockId: block.blockId, // Add blockId to slot data
             });
           }
         });
@@ -178,11 +182,11 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
 
     // Sort by start time
     return availableSlots.sort((a, b) => a.startMinutes - b.startMinutes);
-  }, [selectedDate, availabilityBlocks]);
+  }, [isClient, selectedDate, availabilityBlocks]);
 
   // Get slots that should be disabled due to conflicts with selected sessions
   const disabledSlots = useMemo(() => {
-    if (typeof window === "undefined" || !selectedDate) return new Set<string>();
+    if (!isClient || !selectedDate) return new Set<string>();
 
     const selectedDateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
 
@@ -207,7 +211,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
     });
 
     return disabledSlotIds;
-  }, [selectedDate, selectedSessions, timeSlots]);
+  }, [isClient, selectedDate, selectedSessions, timeSlots]);
 
   const monthNames = [
     "January",
@@ -345,7 +349,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
               Ngày có lịch rảnh ({availableDates.size} ngày):
             </p>
             <div className="flex flex-wrap gap-2">
-              {typeof window !== "undefined" &&
+              {isClient &&
                 Array.from(availableDates)
                   .slice(0, 10)
                   .map((dateStr) => {
@@ -427,7 +431,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                 return (
                   <button
                     key={slot.id}
-                    onClick={() => !isDisabledSlot && onTimeChange(slot.id)}
+                    onClick={() => !isDisabledSlot && onTimeChange(slot.id, slot.blockId)}
                     disabled={isDisabledSlot}
                     className={cn(
                       "py-3 px-3 text-sm rounded-lg border transition-colors text-center relative",
