@@ -29,7 +29,7 @@ const mapCourseToCardData = (course: CourseDto, packages: PackageDto[] = []): Co
   };
 };
 
-export const useManageCourses = (tutorId: string) => {
+export const useManageCourses = (tutorId: string, courseId?: string) => {
   const router = useRouter();
 
   // API queries - skip if no tutorId
@@ -40,6 +40,14 @@ export const useManageCourses = (tutorId: string) => {
     refetch: refetchCourse,
   } = useGetCourseQuery({ tutorId }, { skip: !tutorId });
 
+  // Get course packages - skip if no courseId
+  const {
+    data: packagesResponse,
+    isLoading: isPackagesLoading,
+    error: packagesError,
+    refetch: refetchPackages,
+  } = useGetCoursePackagesQuery({ courseId: courseId || "" }, { skip: !courseId });
+
   const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation();
 
   // Transform course data
@@ -49,6 +57,10 @@ export const useManageCourses = (tutorId: string) => {
           (course: CourseDto) => mapCourseToCardData(course)
         )
       : [];
+
+  // Transform packages data
+  const packages: PackageDto[] =
+    packagesResponse?.success && packagesResponse.data ? packagesResponse.data : [];
 
   // Handle navigation
   const handleCreateCourse = useCallback(() => {
@@ -92,9 +104,11 @@ export const useManageCourses = (tutorId: string) => {
   return {
     // Data
     courses,
+    packages,
 
     // Loading states
     isLoading: isCourseLoading,
+    isPackagesLoading,
     isDeleting,
 
     // Actions
@@ -105,5 +119,10 @@ export const useManageCourses = (tutorId: string) => {
 
     // Utils
     refetch: refetchCourse,
+    refetchPackages,
+
+    // Errors
+    courseError,
+    packagesError,
   };
 };

@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { TutorInfo, PackageSelector, ScheduleSelector, SelectedSchedule } from "./components";
 import { Button } from "@/components/ui/button";
+import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
+import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 
 interface BookingPageProps {
   tutorId: string;
@@ -21,15 +23,19 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedSessions, setSelectedSessions] = useState<SelectedSession[]>([]);
 
-  // Get total sessions from package
+  // API hooks
+  const coursesHook = useManageCourses(tutorId, courseId);
+  const availabilityHook = useAvailabilityBlock({
+    tutorId,
+    courseId,
+  });
+
+  // Get total sessions from package using API data
   const getPackageSessions = (packageId: string | null) => {
-    const packages = {
-      basic: 1,
-      standard: 4,
-      premium: 8,
-      intensive: 12,
-    };
-    return packageId ? packages[packageId as keyof typeof packages] || 0 : 0;
+    if (!packageId || !coursesHook.packages) return 0;
+
+    const selectedPackage = coursesHook.packages.find((pkg) => pkg.packageId === packageId);
+    return selectedPackage ? selectedPackage.numberOfSessions : 0;
   };
 
   const totalSessions = getPackageSessions(selectedPackage);
@@ -76,6 +82,8 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
             <PackageSelector
               selectedPackage={selectedPackage}
               onPackageChange={setSelectedPackage}
+              packages={coursesHook.packages}
+              isLoading={coursesHook.isPackagesLoading}
             />
           </div>
 
@@ -91,6 +99,11 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
               currentSessionCount={currentSessionCount}
               totalSessions={totalSessions}
               isDisabled={isScheduleDisabled}
+              tutorId={tutorId}
+              courseId={courseId}
+              availabilityBlocks={availabilityHook.availabilityBlocks}
+              isLoadingAvailability={availabilityHook.isLoadingBlocks}
+              selectedSessions={selectedSessions}
             />
 
             {/* Selected Sessions */}

@@ -5,51 +5,82 @@ import { MotionCard } from "@/components/motion/MotionCard";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
+import { Loader2, Package } from "lucide-react";
+import type { PackageDto, PackageType } from "@/services/course/type";
 
 interface PackageSelectorProps {
   selectedPackage: string | null;
   onPackageChange: (packageId: string) => void;
+  packages?: PackageDto[];
+  isLoading?: boolean;
 }
 
-const PackageSelector: React.FC<PackageSelectorProps> = ({ selectedPackage, onPackageChange }) => {
-  const packages = [
-    {
-      id: "basic",
-      name: "Buổi học đơn lẻ",
-      description: "Học thử hoặc học ngắn hạn",
-      sessions: 1,
-      price: 550,
-      originalPrice: null,
-      popular: false,
-    },
-    {
-      id: "standard",
-      name: "Gói tháng",
-      description: "4 buổi học trong tháng",
-      sessions: 4,
-      price: 1980,
-      originalPrice: 2200,
-      popular: true,
-    },
-    {
-      id: "premium",
-      name: "Gói chuyên sâu",
-      description: "8 buổi học trong tháng",
-      sessions: 8,
-      price: 3520,
-      originalPrice: 4400,
-      popular: false,
-    },
-    {
-      id: "intensive",
-      name: "Gói chuyên sâu",
-      description: "12 buổi học trong tháng",
-      sessions: 12,
-      price: 4950,
-      originalPrice: 6600,
-      popular: false,
-    },
-  ];
+const PackageSelector: React.FC<PackageSelectorProps> = ({
+  selectedPackage,
+  onPackageChange,
+  packages: apiPackages,
+  isLoading,
+}) => {
+  // Helper function to get package type name
+  const getPackageTypeName = (packageType: number): string => {
+    const typeNames = {
+      0: "Buổi học thử",
+      1: "Gói cơ bản",
+      2: "Gói tiêu chuẩn",
+      3: "Gói cao cấp",
+      4: "Gói tùy chỉnh",
+    };
+    return typeNames[packageType as keyof typeof typeNames] || "Gói học";
+  };
+
+  // Transform API packages to display format
+  const packages =
+    apiPackages?.map((pkg) => ({
+      id: pkg.packageId,
+      name: getPackageTypeName(pkg.packageType),
+      description: `${pkg.numberOfSessions} buổi học`,
+      sessions: pkg.numberOfSessions,
+      price: pkg.price / 1000, // Convert to thousands
+      originalPrice: pkg.packageType === 2 ? (pkg.price * 1.2) / 1000 : null, // Add 20% as original price for popular packages
+      popular: pkg.packageType === 2, // Standard package is popular
+    })) || [];
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <MotionCard
+        className="text-card-foreground p-0 border-0 shadow-none hover:shadow-none"
+        variants={slideUpVariants}
+      >
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải gói học...</span>
+        </div>
+      </MotionCard>
+    );
+  }
+
+  // Empty state
+  if (!packages || packages.length === 0) {
+    return (
+      <MotionCard
+        className="text-card-foreground p-0 border-0 shadow-none hover:shadow-none"
+        variants={slideUpVariants}
+      >
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+        </div>
+        <div className="text-center py-12">
+          <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có gói học nào</h3>
+          <p className="text-gray-500">Khóa học này chưa có gói học nào được tạo.</p>
+        </div>
+      </MotionCard>
+    );
+  }
 
   return (
     <MotionCard

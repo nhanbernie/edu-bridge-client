@@ -4,9 +4,14 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Clock, Award, BookOpen, Users } from "lucide-react";
+import { Star, Clock, Award, BookOpen, Users, Loader2 } from "lucide-react";
 import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
+import type { CourseData } from "@/components/common/EBTutorCourseCard";
+import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
+import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
+import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
+
 interface TimeSlot {
   start: string;
   end: string;
@@ -21,19 +26,123 @@ interface DaySchedule {
 
 interface TabContentProps {
   activeTab: string;
+  tutorId?: string;
+  coursesData?: ReturnType<typeof useManageCourses>;
+  availabilityData?: ReturnType<typeof useAvailabilityBlock>;
+  selectedCourseId?: string;
+  onCourseSelect?: (courseId: string) => void;
   scheduleData?: DaySchedule[];
 }
 
-const TabContent: React.FC<TabContentProps> = ({ activeTab, scheduleData }) => {
-  const renderCoursesTab = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {[1, 2, 3, 4].map((course) => (
-        <EBTutorCard key={course} course={course} />
-      ))}
-    </div>
-  );
+const TabContent: React.FC<TabContentProps> = ({
+  activeTab,
+  tutorId,
+  coursesData,
+  availabilityData,
+  selectedCourseId,
+  onCourseSelect,
+  scheduleData,
+}) => {
+  // Debug logging
+  console.log("📋 TabContent render:", {
+    activeTab,
+    tutorId,
+    coursesCount: coursesData?.courses?.length || 0,
+    availabilityBlocksCount: availabilityData?.availabilityBlocks?.length || 0,
+    selectedCourseId,
+    isLoadingCourses: coursesData?.isLoading,
+    isLoadingAvailability: availabilityData?.isLoadingBlocks,
+  });
 
-  const renderScheduleTab = () => <EBSchedule scheduleData={scheduleData} />;
+  const renderCoursesTab = () => {
+    // Hiển thị loading state
+    if (coursesData?.isLoading) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải khóa học...</span>
+        </div>
+      );
+    }
+
+    // Hiển thị empty state nếu không có khóa học
+    if (!coursesData?.courses || coursesData.courses.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có khóa học nào</h3>
+          <p className="text-gray-500">Gia sư này chưa tạo khóa học nào.</p>
+        </div>
+      );
+    }
+
+    // Hiển thị danh sách khóa học
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {coursesData.courses.map((course, index) => (
+          <EBTutorCard
+            key={course.id}
+            course={index + 1}
+            mode="user"
+            courseData={course}
+            onClick={() => onCourseSelect?.(course.id)}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const renderScheduleTab = () => {
+    // Hiển thị loading state
+    if (availabilityData?.isLoadingBlocks) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải lịch rảnh...</span>
+        </div>
+      );
+    }
+
+    // Transform availability blocks to schedule format
+    const transformedSchedule = availabilityData?.availabilityBlocks
+      ? transformToCurrentWeekSchedule(availabilityData.availabilityBlocks)
+      : scheduleData;
+
+    // Hiển thị empty state nếu không có lịch
+    if (!transformedSchedule || transformedSchedule.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <Clock className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có lịch rảnh</h3>
+          <p className="text-gray-500">
+            {selectedCourseId
+              ? "Gia sư này chưa có lịch rảnh cho khóa học đã chọn."
+              : "Gia sư này chưa tạo lịch rảnh nào."}
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        {selectedCourseId && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <Clock className="h-4 w-4 inline mr-1" />
+              Hiển thị lịch rảnh cho khóa học đã chọn
+            </p>
+          </div>
+        )}
+        <EBSchedule
+          scheduleData={transformedSchedule}
+          title={selectedCourseId ? "Lịch rảnh cho khóa học" : "Lịch rảnh trong tuần"}
+          showHeader={true}
+          showDate={true}
+          mode="week"
+        />
+      </div>
+    );
+  };
 
   const renderReviewsTab = () => (
     <div className="flex gap-6">
