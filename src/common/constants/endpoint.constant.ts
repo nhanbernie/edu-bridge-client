@@ -25,6 +25,21 @@ export const API_ENDPOINTS = {
     GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
     VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
   },
+  TUTOR: {
+    GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",
+  },
+  COURSE: {
+    GET_COURSE: "/api/course",
+    CREATE_COURSE: "/api/course",
+    UPDATE_COURSE: "/api/course/{courseId}",
+    GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
+  },
+  AVAILABILITY_BLOCK: {
+    GET_AVAILABILITY_BLOCKS: "/api/availability-block/tutor/{tutorId}",
+    CREATE_AVAILABILITY_BLOCK: "/api/availability-block",
+    UPDATE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
+    DELETE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
+  },
 } as const;
 
 export const API_CONFIG = {

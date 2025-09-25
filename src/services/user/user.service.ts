@@ -10,6 +10,7 @@ import {
   getAllUsersEndpoint,
   deleteUserEndpoint,
 } from "./endpoints/index";
+import { getSubjectsEndpoint } from "@/services/common";
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -19,6 +20,7 @@ export const userApi = createApi({
     getAllUsers: getAllUsersEndpoint(builder),
     getUser: getUserEndpoint(builder),
     getUserProfile: getUserProfileEndpoint(builder),
+    getSubjects: getSubjectsEndpoint(builder),
     selectRole: selectRoleEndpoint(builder),
     uploadDocument: uploadDocumentEndpoint(builder),
     getVerificationDocs: getVerificationDocsEndpoint(builder),
@@ -35,6 +37,7 @@ export const {
   useGetAllUsersQuery,
   useGetUserQuery,
   useGetUserProfileQuery,
+  useGetSubjectsQuery,
   useSelectRoleMutation,
   useUploadDocumentMutation,
   useGetVerificationDocsQuery,
