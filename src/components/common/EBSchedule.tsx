@@ -7,13 +7,13 @@ import { Calendar } from "lucide-react";
 interface TimeSlot {
   start: string;
   end: string;
-  isBooked?: boolean; // true = có lịch dạy (màu cam), false/undefined = rảnh (màu xanh)
-  date?: string; // Ngày cụ thể (format: YYYY-MM-DD)
+  isBooked?: boolean;
+  date?: string;
 }
 
 interface DaySchedule {
   day: string;
-  date?: string; // Ngày cụ thể (format: DD/MM)
+  date?: string;
   timeSlots: TimeSlot[];
   isFullDay?: boolean;
 }
@@ -22,7 +22,7 @@ interface EBScheduleProps {
   scheduleData?: DaySchedule[];
   title?: string;
   showHeader?: boolean;
-  showDate?: boolean; // Hiển thị ngày tháng
+  showDate?: boolean;
   mode?: "week" | "list"; // week = hiển thị theo tuần, list = hiển thị theo danh sách
 }
 
@@ -39,14 +39,14 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
       day: "T2",
       timeSlots: [
         { start: "8:00", end: "10:00", isBooked: false },
-        { start: "14:00", end: "16:00", isBooked: true }, // Có lịch dạy
+        { start: "14:00", end: "16:00", isBooked: true },
         { start: "19:00", end: "21:00", isBooked: false },
       ],
     },
     {
       day: "T3",
       timeSlots: [
-        { start: "8:00", end: "10:00", isBooked: true }, // Có lịch dạy
+        { start: "8:00", end: "10:00", isBooked: true },
         { start: "14:00", end: "16:00", isBooked: false },
         { start: "19:00", end: "21:00", isBooked: false },
       ],
@@ -56,7 +56,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
       timeSlots: [
         { start: "8:00", end: "10:00", isBooked: false },
         { start: "14:00", end: "16:00", isBooked: false },
-        { start: "19:00", end: "21:00", isBooked: true }, // Có lịch dạy
+        { start: "19:00", end: "21:00", isBooked: true },
       ],
     },
     {
@@ -71,7 +71,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
       day: "T6",
       timeSlots: [
         { start: "8:00", end: "10:00", isBooked: false },
-        { start: "14:00", end: "16:00", isBooked: true }, // Có lịch dạy
+        { start: "14:00", end: "16:00", isBooked: true },
         { start: "19:00", end: "21:00", isBooked: false },
       ],
     },
@@ -91,9 +91,9 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
 
   const getTimeSlotStyle = (slot: TimeSlot) => {
     if (slot.isBooked) {
-      return "bg-orange-100 text-orange-800 border border-orange-200"; // Màu cam cho lịch dạy
+      return "bg-orange-100 text-orange-800 border border-orange-200";
     }
-    return "bg-green-100 text-green-800 border border-green-200"; // Màu xanh cho lịch rảnh
+    return "bg-green-100 text-green-800 border border-green-200";
   };
 
   const renderWeekMode = () => (

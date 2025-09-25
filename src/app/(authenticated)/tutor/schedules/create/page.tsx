@@ -1,7 +1,7 @@
 import React from "react";
-
+import CreateSchedulesPage from "@/features/tutor/create-schedules/CreateSchedulesPage";
 const CreateSchedule = () => {
-  return <div> CreateSchedule</div>;
+  return <CreateSchedulesPage />;
 };
 
 export default CreateSchedule;

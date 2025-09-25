@@ -37,6 +37,7 @@ export interface UpdateAvailabilityBlockRequest {
 
 export interface GetAvailabilityBlocksRequest {
   tutorId?: string;
+  courseId?: string;
 }
 
 export interface DeleteAvailabilityBlockRequest {

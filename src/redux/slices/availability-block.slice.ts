@@ -1,9 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AvailabilityBlockDto } from "@/services/availability-block/type";
 
+// Temporary slot interface for calendar
+interface TempSlot {
+  id: string;
+  start: string;
+  end: string;
+  title: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  isTemp?: boolean; // Make optional to match TimeSlot
+}
+
 interface AvailabilityBlockState {
   availabilityBlocks: AvailabilityBlockDto[];
   selectedAvailabilityBlock: AvailabilityBlockDto | null;
+  tempSlots: TempSlot[];
   isLoading: boolean;
   error: string | null;
 }
@@ -11,6 +23,7 @@ interface AvailabilityBlockState {
 const initialState: AvailabilityBlockState = {
   availabilityBlocks: [],
   selectedAvailabilityBlock: null,
+  tempSlots: [],
   isLoading: false,
   error: null,
 };
@@ -54,6 +67,25 @@ const availabilityBlockSlice = createSlice({
       state.selectedAvailabilityBlock = null;
       state.error = null;
     },
+    // Temp slots actions
+    addTempSlot: (state, action: PayloadAction<TempSlot>) => {
+      state.tempSlots.push(action.payload);
+    },
+    updateTempSlot: (state, action: PayloadAction<TempSlot>) => {
+      const index = state.tempSlots.findIndex((slot) => slot.id === action.payload.id);
+      if (index !== -1) {
+        state.tempSlots[index] = action.payload;
+      }
+    },
+    removeTempSlot: (state, action: PayloadAction<string>) => {
+      state.tempSlots = state.tempSlots.filter((slot) => slot.id !== action.payload);
+    },
+    clearTempSlots: (state) => {
+      state.tempSlots = [];
+    },
+    setTempSlots: (state, action: PayloadAction<TempSlot[]>) => {
+      state.tempSlots = action.payload;
+    },
   },
 });
 
@@ -66,16 +98,29 @@ export const {
   deleteAvailabilityBlock,
   setSelectedAvailabilityBlock,
   clearAvailabilityBlocks,
+  addTempSlot,
+  updateTempSlot,
+  removeTempSlot,
+  clearTempSlots,
+  setTempSlots,
 } = availabilityBlockSlice.actions;
 
 export const availabilityBlockReducer = availabilityBlockSlice.reducer;
 
 // Selectors
-export const selectAvailabilityBlocks = (state: { availabilityBlock: AvailabilityBlockState }) => 
+export const selectAvailabilityBlocks = (state: { availabilityBlock: AvailabilityBlockState }) =>
   state.availabilityBlock.availabilityBlocks;
-export const selectSelectedAvailabilityBlock = (state: { availabilityBlock: AvailabilityBlockState }) => 
-  state.availabilityBlock.selectedAvailabilityBlock;
-export const selectAvailabilityBlockLoading = (state: { availabilityBlock: AvailabilityBlockState }) => 
-  state.availabilityBlock.isLoading;
-export const selectAvailabilityBlockError = (state: { availabilityBlock: AvailabilityBlockState }) => 
-  state.availabilityBlock.error;
+export const selectSelectedAvailabilityBlock = (state: {
+  availabilityBlock: AvailabilityBlockState;
+}) => state.availabilityBlock.selectedAvailabilityBlock;
+export const selectAvailabilityBlockLoading = (state: {
+  availabilityBlock: AvailabilityBlockState;
+}) => state.availabilityBlock.isLoading;
+export const selectAvailabilityBlockError = (state: {
+  availabilityBlock: AvailabilityBlockState;
+}) => state.availabilityBlock.error;
+export const selectTempSlots = (state: { availabilityBlock: AvailabilityBlockState }) =>
+  state.availabilityBlock.tempSlots;
+
+// Export TempSlot type for use in components
+export type { TempSlot };
