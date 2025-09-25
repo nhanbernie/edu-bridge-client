@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import TutorCard from "./components/TutorCard";
+import AdvancedFilter from "./components/AdvancedFilter";
 import { useTutorSearch } from "./hooks/useTutorSearch";
-import type { TutorCardData } from "@/services/tutor/type";
+import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
 
 // Initial search params
 const initialSearchParams = {
@@ -17,7 +18,9 @@ const initialSearchParams = {
 const StudentHomePage = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("Tất cả");
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState<TutorSearchRequest>({});
 
   // Use tutor search hook
   const {
@@ -40,12 +43,12 @@ const StudentHomePage = () => {
   }, [searchTutors]);
 
   const filterOptions = [
-    "Tất cả",
-    "Đánh giá cao nhất",
-    "Mới nhất",
-    "Giá thấp nhất",
-    "Giá cao nhất",
-    "Online",
+    { label: "Tất cả", value: "all" },
+    { label: "Đánh giá cao nhất", value: "rating_desc" },
+    { label: "Giá thấp nhất", value: "price_asc" },
+    { label: "Giá cao nhất", value: "price_desc" },
+    { label: "Kinh nghiệm nhiều", value: "experience_desc" },
+    { label: "Online", value: "online" },
   ];
 
   const handleViewDetails = (tutorId: string) => {
@@ -60,33 +63,90 @@ const StudentHomePage = () => {
     toggleFavorite(tutorId);
   };
 
-  // Filter tutors based on search and selected filter
-  const filteredTutors: TutorCardData[] = tutors.filter((tutor: TutorCardData) => {
-    const matchesSearch =
-      tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tutor.subjects.some((subject: string) =>
-        subject.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+  // Filter and sort tutors based on search and selected filter
+  const filteredTutors: TutorCardData[] = tutors
+    .filter((tutor: TutorCardData) => {
+      const matchesSearch =
+        tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tutor.subjects.some((subject: string) =>
+          subject.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
-    if (selectedFilter === "Online") {
-      return matchesSearch && tutor.status === "Online";
-    }
+      if (selectedFilter === "online") {
+        return matchesSearch && tutor.status === "Online";
+      }
 
-    return matchesSearch;
-  });
+      return matchesSearch;
+    })
+    .sort((a: TutorCardData, b: TutorCardData) => {
+      switch (selectedFilter) {
+        case "rating_desc":
+          return b.rating - a.rating;
+        case "price_asc":
+          return a.price - b.price;
+        case "price_desc":
+          return b.price - a.price;
+        case "experience_desc":
+          // Assuming experience is a string like "5 năm", extract number
+          const aExp = parseInt(a.experience) || 0;
+          const bExp = parseInt(b.experience) || 0;
+          return bExp - aExp;
+        default:
+          return 0;
+      }
+    });
 
-  // Handle search input change
+  // Handle search input change with debounce
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-    // Optionally trigger API search with query
-    if (value.trim()) {
-      // Could implement server-side search here
-      console.log("Search query:", value);
+
+    // Trigger API search with debounce
+    const timeoutId = setTimeout(() => {
+      if (value.trim()) {
+        console.log("🔍 Searching for:", value);
+        // For now, we'll use client-side filtering
+        // In the future, we can add server-side search by calling:
+        // searchTutors({ ...initialSearchParams, SearchQuery: value });
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  };
+
+  // Handle filter change
+  const handleFilterChange = (filterValue: string) => {
+    setSelectedFilter(filterValue);
+    console.log("🎯 Filter changed to:", filterValue);
+
+    // For advanced filtering, we could trigger API search with specific parameters
+    if (filterValue === "rating_desc") {
+      // searchTutors({ ...initialSearchParams, MinRating: 4.0 });
+    } else if (filterValue === "online") {
+      // searchTutors({ ...initialSearchParams, OnlineOnly: true });
     }
   };
 
+  // Handle advanced filter apply
+  const handleAdvancedFilterApply = (filters: TutorSearchRequest) => {
+    setAdvancedFilters(filters);
+    console.log("🎯 Advanced filters applied:", filters);
+
+    // Trigger API search with advanced filters
+    const searchParams = {
+      ...initialSearchParams,
+      ...filters,
+    };
+
+    searchTutors(searchParams);
+  };
+
+  // Handle advanced filter open
+  const handleAdvancedFilterOpen = () => {
+    setIsAdvancedFilterOpen(true);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -127,14 +187,14 @@ const StudentHomePage = () => {
             <div className="relative">
               <select
                 value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.target.value)}
+                onChange={(e) => handleFilterChange(e.target.value)}
                 className="appearance-none bg-card border border-border rounded-lg px-4 py-3 pr-10
                            focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
                            transition-all duration-200 cursor-pointer"
               >
                 {filterOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -143,6 +203,7 @@ const StudentHomePage = () => {
 
             {/* Advanced Filter Button */}
             <button
+              onClick={handleAdvancedFilterOpen}
               className="flex items-center space-x-2 px-4 py-3 bg-card border border-border
                                rounded-lg hover:bg-secondary transition-colors duration-200"
             >
@@ -198,7 +259,7 @@ const StudentHomePage = () => {
             <button
               onClick={() => {
                 setSearchQuery("");
-                setSelectedFilter("Tất cả");
+                setSelectedFilter("all");
                 searchTutors(initialSearchParams);
               }}
               className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90"
@@ -252,6 +313,14 @@ const StudentHomePage = () => {
           </div>
         )}
       </div>
+
+      {/* Advanced Filter Modal */}
+      <AdvancedFilter
+        isOpen={isAdvancedFilterOpen}
+        onClose={() => setIsAdvancedFilterOpen(false)}
+        onApplyFilters={handleAdvancedFilterApply}
+        currentFilters={advancedFilters}
+      />
     </div>
   );
 };
