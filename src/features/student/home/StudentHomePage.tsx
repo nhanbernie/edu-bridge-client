@@ -1,116 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MotionContainer, MotionItem } from "@/components/motion";
-import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import TutorCard from "./components/TutorCard";
+import { useTutorSearch } from "./hooks/useTutorSearch";
+import type { TutorCardData } from "@/services/tutor/type";
 
-// Mock data for tutors
-const mockTutors = [
-  {
-    id: "1",
-    name: "Nguyễn Văn An",
-    avatar: "N",
-    rating: 4.9,
-    reviewCount: 127,
-    location: "Hà Nội",
-    subjects: ["Toán học", "Vật lý"],
-    experience: "5 năm kinh nghiệm",
-    studentCount: 89,
-    courseCount: 5,
-    price: 200000,
-    currency: "đ",
-    status: "Online" as const,
-    verified: true,
-  },
-  {
-    id: "2",
-    name: "Trần Thị Bình",
-    avatar: "T",
-    rating: 4.8,
-    reviewCount: 95,
-    location: "TP.HCM",
-    subjects: ["Tiếng Anh", "Văn học"],
-    experience: "7 năm kinh nghiệm",
-    studentCount: 67,
-    courseCount: 3,
-    price: 180000,
-    currency: "đ",
-    status: "Offline" as const,
-    verified: true,
-  },
-  {
-    id: "3",
-    name: "Lê Minh Châu",
-    avatar: "L",
-    rating: 4.7,
-    reviewCount: 78,
-    location: "Đà Nẵng",
-    subjects: ["Hóa học", "Sinh học"],
-    experience: "3 năm kinh nghiệm",
-    studentCount: 45,
-    courseCount: 4,
-    price: 150000,
-    currency: "đ",
-    status: "Online" as const,
-    verified: false,
-  },
-  {
-    id: "4",
-    name: "Phạm Quốc Duy",
-    avatar: "P",
-    rating: 4.9,
-    reviewCount: 156,
-    location: "Hà Nội",
-    subjects: ["Toán học", "Lý thuyết"],
-    experience: "8 năm kinh nghiệm",
-    studentCount: 112,
-    courseCount: 6,
-    price: 250000,
-    currency: "đ",
-    status: "Online" as const,
-    verified: true,
-  },
-  {
-    id: "5",
-    name: "Hoàng Thị Mai",
-    avatar: "H",
-    rating: 4.6,
-    reviewCount: 89,
-    location: "Cần Thơ",
-    subjects: ["Tiếng Anh", "IELTS"],
-    experience: "4 năm kinh nghiệm",
-    studentCount: 56,
-    courseCount: 3,
-    price: 170000,
-    currency: "đ",
-    status: "Offline" as const,
-    verified: true,
-  },
-  {
-    id: "6",
-    name: "Đỗ Văn Thành",
-    avatar: "Đ",
-    rating: 4.8,
-    reviewCount: 134,
-    location: "Hải Phòng",
-    subjects: ["Vật lý", "Toán học"],
-    experience: "6 năm kinh nghiệm",
-    studentCount: 78,
-    courseCount: 5,
-    price: 190000,
-    currency: "đ",
-    status: "Online" as const,
-    verified: true,
-  },
-];
+// Initial search params
+const initialSearchParams = {
+  PageNumber: 1,
+  PageSize: 10,
+};
 
 const StudentHomePage = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Tất cả");
-  const [favoritedTutors, setFavoritedTutors] = useState<Set<string>>(new Set());
+
+  // Use tutor search hook
+  const {
+    tutors,
+    totalCount,
+    isLoading,
+    error,
+    searchTutors,
+    updateFilters,
+    toggleFavorite,
+    isTutorFavorited,
+  } = useTutorSearch({
+    searchParams: initialSearchParams,
+    enabled: true,
+  });
+
+  // Load initial data
+  useEffect(() => {
+    searchTutors(initialSearchParams);
+  }, [searchTutors]);
 
   const filterOptions = [
     "Tất cả",
@@ -130,21 +57,16 @@ const StudentHomePage = () => {
   };
 
   const handleFavorite = (tutorId: string) => {
-    setFavoritedTutors((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(tutorId)) {
-        newSet.delete(tutorId);
-      } else {
-        newSet.add(tutorId);
-      }
-      return newSet;
-    });
+    toggleFavorite(tutorId);
   };
 
-  const filteredTutors = mockTutors.filter((tutor) => {
+  // Filter tutors based on search and selected filter
+  const filteredTutors: TutorCardData[] = tutors.filter((tutor: TutorCardData) => {
     const matchesSearch =
       tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tutor.subjects.some((subject) => subject.toLowerCase().includes(searchQuery.toLowerCase()));
+      tutor.subjects.some((subject: string) =>
+        subject.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
     if (selectedFilter === "Online") {
       return matchesSearch && tutor.status === "Online";
@@ -153,6 +75,16 @@ const StudentHomePage = () => {
     return matchesSearch;
   });
 
+  // Handle search input change
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    // Optionally trigger API search with query
+    if (value.trim()) {
+      // Could implement server-side search here
+      console.log("Search query:", value);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -160,7 +92,16 @@ const StudentHomePage = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Gia sư phù hợp</h1>
           <p className="text-muted-foreground text-lg">
-            Tìm thấy 3 gia sư phù hợp với yêu cầu của bạn
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Đang tìm kiếm gia sư...
+              </span>
+            ) : error ? (
+              <span className="text-red-500">Có lỗi xảy ra khi tải dữ liệu</span>
+            ) : (
+              `Tìm thấy ${filteredTutors.length} gia sư phù hợp với yêu cầu của bạn`
+            )}
           </p>
         </div>
 
@@ -175,7 +116,7 @@ const StudentHomePage = () => {
                 type="text"
                 placeholder="Tìm gia sư theo tên hoặc môn học..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-lg
                            focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
                            transition-all duration-200"
@@ -234,29 +175,82 @@ const StudentHomePage = () => {
         </div>
 
         {/* Tutors Grid */}
-        <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {filteredTutors.map((tutor) => (
-            <MotionItem key={tutor.id}>
-              <TutorCard
-                tutor={tutor}
-                onViewDetails={handleViewDetails}
-                onContact={handleContact}
-                onFavorite={handleFavorite}
-                isFavorited={favoritedTutors.has(tutor.id)}
-              />
-            </MotionItem>
-          ))}
-        </MotionContainer>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin mr-2" />
+            <span>Đang tải danh sách gia sư...</span>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button
+              onClick={() => searchTutors(initialSearchParams)}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+            >
+              Thử lại
+            </button>
+          </div>
+        ) : filteredTutors.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground mb-4">
+              Không tìm thấy gia sư phù hợp với tiêu chí tìm kiếm
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedFilter("Tất cả");
+                searchTutors(initialSearchParams);
+              }}
+              className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90"
+            >
+              Xóa bộ lọc
+            </button>
+          </div>
+        ) : (
+          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {filteredTutors.map((tutor) => (
+              <MotionItem key={tutor.id}>
+                <TutorCard
+                  tutor={tutor}
+                  onViewDetails={handleViewDetails}
+                  onContact={handleContact}
+                  onFavorite={handleFavorite}
+                  isFavorited={isTutorFavorited(tutor.id)}
+                />
+              </MotionItem>
+            ))}
+          </MotionContainer>
+        )}
 
         {/* Load More Section */}
-        <div className="text-center pb-12">
-          <button
-            className="px-8 py-3 bg-card border border-border rounded-lg
-                             hover:bg-secondary transition-colors duration-200 font-medium"
-          >
-            Xem thêm gia sư
-          </button>
-        </div>
+        {!isLoading && !error && filteredTutors.length > 0 && (
+          <div className="text-center pb-12">
+            <button
+              onClick={() => {
+                // Load more tutors with pagination
+                const nextPage = Math.floor(tutors.length / 10) + 1;
+                searchTutors({
+                  ...initialSearchParams,
+                  PageNumber: nextPage,
+                  PageSize: 10,
+                });
+              }}
+              disabled={isLoading}
+              className="px-8 py-3 bg-card border border-border rounded-lg
+                               hover:bg-secondary transition-colors duration-200 font-medium
+                               disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Đang tải...
+                </span>
+              ) : (
+                "Xem thêm gia sư"
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

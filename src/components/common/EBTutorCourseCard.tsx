@@ -25,6 +25,7 @@ interface EBTutorCourseCardProps {
   mode?: "user" | "tutor";
   courseData?: CourseData;
   actions?: ActionItem[];
+  onClick?: () => void;
 }
 
 const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
@@ -32,6 +33,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
   mode = "user",
   courseData: propCourseData,
   actions = [],
+  onClick,
 }) => {
   const router = useRouter();
 
@@ -97,14 +99,28 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
     // Navigate to booking page với tutor ID và course ID
     router.push(`/student/booking/${courseData.tutorId}?courseId=${courseData.id}`);
   };
+
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <Card className="hover:shadow-lg transition-shadow border-0 shadow-sm">
+    <Card
+      className="hover:shadow-lg transition-shadow border-0 shadow-sm cursor-pointer"
+      onClick={handleCardClick}
+    >
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{courseData.title}</CardTitle>
           <div className="flex items-center gap-2">
             {courseData.popular && <Badge variant="secondary">Phổ biến</Badge>}
-            {mode === "tutor" && actions.length > 0 && <EBActionsMenu actions={actions} />}
+            {mode === "tutor" && actions.length > 0 && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <EBActionsMenu actions={actions} />
+              </div>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -130,7 +146,13 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
               </div>
             </div>
             {mode === "user" && (
-              <Button size="sm" onClick={handleBooking}>
+              <Button
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent card click
+                  handleBooking();
+                }}
+              >
                 Đăng ký
               </Button>
             )}

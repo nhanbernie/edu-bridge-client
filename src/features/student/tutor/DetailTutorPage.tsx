@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Star, MapPin, Users, Clock, Award, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import TabNavigation from "@/components/common/EBTabNavigation";
 import TabContent from "./components/TabContent";
+import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
+import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 
 interface DetailTutorPageProps {
   tutorId?: string;
@@ -37,8 +39,27 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   const params = useParams();
   const [activeTab, setActiveTab] = useState("courses");
   const [isFavorited, setIsFavorited] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | undefined>();
 
-  const currentTutorId = tutorId || params?.id;
+  const currentTutorId = tutorId || (params?.id as string);
+
+  // API hooks
+  const coursesHook = useManageCourses(currentTutorId || "", selectedCourseId);
+  const availabilityHook = useAvailabilityBlock({
+    tutorId: currentTutorId,
+    courseId: selectedCourseId,
+  });
+
+  // Refetch availability data when selectedCourseId changes
+  useEffect(() => {
+    if (currentTutorId && availabilityHook.refetchBlocks) {
+      console.log("🔄 Refetching availability data for:", {
+        tutorId: currentTutorId,
+        courseId: selectedCourseId,
+      });
+      availabilityHook.refetchBlocks();
+    }
+  }, [selectedCourseId, currentTutorId, availabilityHook]);
 
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -50,7 +71,16 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   };
 
   const renderTabContent = () => {
-    return <TabContent activeTab={activeTab} />;
+    return (
+      <TabContent
+        activeTab={activeTab}
+        tutorId={currentTutorId}
+        coursesData={coursesHook}
+        availabilityData={availabilityHook}
+        selectedCourseId={selectedCourseId}
+        onCourseSelect={setSelectedCourseId}
+      />
+    );
   };
 
   return (

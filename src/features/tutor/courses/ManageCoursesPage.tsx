@@ -22,7 +22,7 @@ const ManageCoursesPage: React.FC = () => {
     handleEditCourse,
     handleDeleteCourse,
     handleRefresh,
-  } = useManageCourses(tutorId || "");
+  } = useManageCourses(tutorId || ""); // No courseId needed for listing all courses
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);

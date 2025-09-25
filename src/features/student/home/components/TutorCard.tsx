@@ -3,26 +3,12 @@
 import React from "react";
 import { MotionCard } from "@/components/motion";
 import { tutorCardVariants } from "@/common/constants/motion/cardMotion.constant";
-import { Star, MapPin, Clock, Users, Eye, Heart } from "lucide-react";
+import { Star, MapPin, Clock, Users, Eye, Heart, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { TutorCardData } from "@/services/tutor/type";
 
 interface TutorCardProps {
-  tutor: {
-    id: string;
-    name: string;
-    avatar: string;
-    rating: number;
-    reviewCount: number;
-    location: string;
-    subjects: string[];
-    experience: string;
-    studentCount: number;
-    courseCount: number;
-    price: number;
-    currency: string;
-    status: "Online" | "Offline";
-    verified?: boolean;
-  };
+  tutor: TutorCardData;
   onViewDetails?: (tutorId: string) => void;
   onContact?: (tutorId: string) => void;
   onFavorite?: (tutorId: string) => void;
@@ -47,6 +33,14 @@ const TutorCard: React.FC<TutorCardProps> = ({
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     onFavorite?.(tutor.id);
+  };
+
+  // Format price display
+  const formatPrice = (price: number, currency: string) => {
+    if (currency === "VND") {
+      return `${price.toLocaleString("vi-VN")}đ`;
+    }
+    return `${price.toLocaleString()}${currency}`;
   };
 
   return (
@@ -100,11 +94,14 @@ const TutorCard: React.FC<TutorCardProps> = ({
               {tutor.name}
             </h3>
             {tutor.verified && (
-              <div
-                className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-medium
-                              rounded-full border border-primary/20"
-              >
-                Verified
+              <div className="flex items-center space-x-1">
+                <CheckCircle className="w-4 h-4 text-primary" />
+                <span
+                  className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-medium
+                                rounded-full border border-primary/20"
+                >
+                  Verified
+                </span>
               </div>
             )}
           </div>
@@ -112,7 +109,9 @@ const TutorCard: React.FC<TutorCardProps> = ({
           {/* Rating */}
           <div className="flex items-center space-x-1 mb-2">
             <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-            <span className="font-medium text-foreground">{tutor.rating}</span>
+            <span className="font-medium text-foreground">
+              {tutor.rating > 0 ? tutor.rating.toFixed(1) : "Chưa có"}
+            </span>
             <span className="text-muted-foreground text-sm">({tutor.reviewCount} đánh giá)</span>
           </div>
 
@@ -175,8 +174,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
       <div className="flex items-center justify-between mb-4">
         <div>
           <span className="text-lg font-bold text-primary">
-            {tutor.price.toLocaleString()}
-            {tutor.currency}
+            {formatPrice(tutor.price, tutor.currency)}
           </span>
           <span className="text-muted-foreground text-sm">/buổi</span>
         </div>
