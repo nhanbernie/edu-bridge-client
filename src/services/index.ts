@@ -3,6 +3,9 @@ export * from "./auth";
 export * from "./user";
 export * from "./course";
 export * from "./availability-block";
+export * from "./booking";
+export * from "./payment";
+export * from "./tutor";
 
 // Export API types
 export * from "./api/type";
