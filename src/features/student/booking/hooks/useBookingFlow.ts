@@ -54,9 +54,12 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
       try {
         // Prepare slot requests with blockId (now directly from session)
         const slotRequests: SlotRequest[] = bookingData.selectedSessions.map((session) => {
-          // Format startTime as "YYYY-MM-DD HH:mm"
-          const sessionDate = session.date.toISOString().split("T")[0];
-          const [startTime] = session.timeSlot.split(" - ");
+          // Format startTime as "YYYY-MM-DD HH:mm" using local date to avoid timezone issues
+          const year = session.date.getFullYear();
+          const month = String(session.date.getMonth() + 1).padStart(2, "0");
+          const day = String(session.date.getDate()).padStart(2, "0");
+          const sessionDate = `${year}-${month}-${day}`;
+          const [startTime] = session.timeSlot.split("-"); // Split by "-" not " - "
           const formattedStartTime = `${sessionDate} ${startTime}`;
 
           return {
@@ -114,7 +117,6 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
         window.open(result.data.paymentUrl, "_blank");
 
         // Redirect to success page with booking info
-        router.push(`/student/booking/success?bookingId=${bookingId}`);
       } else {
         toast.error(result.message || "Có lỗi xảy ra khi tạo thanh toán.");
       }
@@ -124,7 +126,7 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
     } finally {
       setShowPaymentDialog(false);
     }
-  }, [bookingId, studentId, createPayment, router]);
+  }, [bookingId, studentId, createPayment]);
 
   // Cancel payment dialog
   const handleCancelPayment = useCallback(() => {
