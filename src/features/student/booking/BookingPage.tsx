@@ -1,10 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { TutorInfo, PackageSelector, ScheduleSelector, SelectedSchedule } from "./components";
+import {
+  TutorInfo,
+  PackageSelector,
+  ScheduleSelector,
+  SelectedSchedule,
+  PaymentConfirmDialog,
+} from "./components";
 import { Button } from "@/components/ui/button";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
+import { useBookingFlow } from "./hooks";
 
 interface BookingPageProps {
   tutorId: string;
@@ -15,11 +22,13 @@ interface SelectedSession {
   date: Date;
   timeSlot: string;
   sessionNumber: number;
+  blockId: string;
 }
 
 const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedSessions, setSelectedSessions] = useState<SelectedSession[]>([]);
 
@@ -29,6 +38,9 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
     tutorId,
     courseId,
   });
+
+  // Booking flow hook
+  const bookingFlow = useBookingFlow({ tutorId, courseId });
 
   // Get total sessions from package using API data
   const getPackageSessions = (packageId: string | null) => {
@@ -43,15 +55,17 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
   const isScheduleDisabled = currentSessionCount >= totalSessions;
 
   const handleAddSession = () => {
-    if (selectedDate && selectedTime && currentSessionCount < totalSessions) {
+    if (selectedDate && selectedTime && selectedBlockId && currentSessionCount < totalSessions) {
       const newSession: SelectedSession = {
         date: selectedDate,
         timeSlot: selectedTime,
         sessionNumber: selectedSessions.length + 1,
+        blockId: selectedBlockId,
       };
       setSelectedSessions([...selectedSessions, newSession]);
       setSelectedDate(null);
       setSelectedTime(null);
+      setSelectedBlockId(null);
     }
   };
 
@@ -68,6 +82,7 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
     if (session) {
       setSelectedDate(session.date);
       setSelectedTime(session.timeSlot);
+      setSelectedBlockId(session.blockId);
       handleRemoveSession(sessionNumber);
     }
   };
@@ -93,8 +108,12 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
             <ScheduleSelector
               selectedDate={selectedDate}
               selectedTime={selectedTime}
+              selectedBlockId={selectedBlockId}
               onDateChange={setSelectedDate}
-              onTimeChange={setSelectedTime}
+              onTimeChange={(time, blockId) => {
+                setSelectedTime(time);
+                setSelectedBlockId(blockId);
+              }}
               onAddSession={handleAddSession}
               currentSessionCount={currentSessionCount}
               totalSessions={totalSessions}
@@ -119,27 +138,41 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
             <div className="flex justify-center">
               <Button
                 onClick={() => {
-                  console.log("Booking:", {
-                    tutorId,
-                    courseId,
-                    selectedSessions,
-                    selectedPackage,
-                  });
+                  if (selectedPackage && selectedSessions.length === totalSessions) {
+                    bookingFlow.handleCreateBooking({
+                      selectedPackage,
+                      selectedSessions,
+                    });
+                  }
                 }}
                 disabled={
-                  currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
+                  currentSessionCount < totalSessions ||
+                  !selectedPackage ||
+                  totalSessions === 0 ||
+                  bookingFlow.isLoading
                 }
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground py-3 text-base font-medium"
                 size="lg"
               >
-                {currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
-                  ? "Vui lòng chọn đầy đủ thông tin"
-                  : "Đặt lịch ngay"}
+                {bookingFlow.isLoading
+                  ? "Đang xử lý..."
+                  : currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
+                    ? "Vui lòng chọn đầy đủ thông tin"
+                    : "Đặt lịch ngay"}
               </Button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Payment Confirmation Dialog */}
+      <PaymentConfirmDialog
+        open={bookingFlow.showPaymentDialog}
+        onConfirm={bookingFlow.handleConfirmPayment}
+        onCancel={bookingFlow.handleCancelPayment}
+        isLoading={bookingFlow.isLoading}
+        bookingId={bookingFlow.bookingId}
+      />
     </div>
   );
 };

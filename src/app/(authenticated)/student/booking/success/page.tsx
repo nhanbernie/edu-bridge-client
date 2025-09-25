@@ -15,67 +15,7 @@ import {
   Home,
 } from "lucide-react";
 import { MainLayout } from "@/components/layouts";
-import { MotionCard, MotionContainer, MotionItem } from "@/components/motion";
-
-// Animation variants
-const successVariants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.8,
-    y: 50,
-  },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-};
-
-const checkmarkVariants = {
-  hidden: {
-    pathLength: 0,
-    opacity: 0,
-  },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      delay: 0.3,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.4,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
+import { MotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
 
 const BookingSuccess = () => {
   const router = useRouter();
@@ -150,12 +90,12 @@ const BookingSuccess = () => {
         )}
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <MotionContainer variants={containerVariants}>
+          <MotionContainer>
             {/* Success Icon and Title */}
-            <MotionItem variants={itemVariants}>
+            <MotionItem variants={slideUpVariants}>
               <motion.div
                 className="text-center mb-8"
-                variants={successVariants}
+                variants={slideUpVariants}
                 initial="hidden"
                 animate="visible"
               >
@@ -179,7 +119,7 @@ const BookingSuccess = () => {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       className="text-green-600 dark:text-green-400"
-                      variants={checkmarkVariants}
+                      variants={slideUpVariants}
                     />
                   </motion.svg>
                 </div>
@@ -192,7 +132,7 @@ const BookingSuccess = () => {
             </MotionItem>
 
             {/* Booking Details Card */}
-            <MotionItem variants={itemVariants}>
+            <MotionItem variants={slideUpVariants}>
               <MotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-foreground mb-2">Chi tiết đặt lịch</h2>
@@ -262,7 +202,7 @@ const BookingSuccess = () => {
             </MotionItem>
 
             {/* Action Buttons */}
-            <MotionItem variants={itemVariants}>
+            <MotionItem variants={slideUpVariants}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <motion.button
                   onClick={handleViewBookings}
@@ -307,7 +247,7 @@ const BookingSuccess = () => {
             </MotionItem>
 
             {/* Next Steps */}
-            <MotionItem variants={itemVariants}>
+            <MotionItem variants={slideUpVariants}>
               <MotionCard className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-foreground mb-4">Bước tiếp theo</h3>
