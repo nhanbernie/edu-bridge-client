@@ -19,6 +19,7 @@ const courseValidatorSchema = {
         return !isNaN(num) && num >= 0.5 && num <= 8;
       }),
     hourlyRate: Yup.number()
+      .typeError("Giá/buổi phải là số")
       .min(50000, "Giá/buổi phải ít nhất 50,000 VNĐ")
       .max(2000000, "Giá/buổi không được vượt quá 2,000,000 VNĐ")
       .required("Vui lòng nhập giá/buổi"),

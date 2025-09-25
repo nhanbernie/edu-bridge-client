@@ -8,20 +8,21 @@ import { CourseForm, type CourseFormData } from "@/components/form/course";
 import { useSubjects } from "@/hooks/useSubjects";
 import courseValidatorSchema from "@/lib/validator/courseValidator";
 import { useEditCourse } from "./hooks/useEditCourse";
-
 const EditCoursePage: React.FC = () => {
   const params = useParams();
   const courseId = params.courseId as string;
-  
+
   const {
     initialData,
     isLoading,
     isLoadingCourse,
+    tutorId,
+    tutorLoading,
     handleUpdateCourse,
     handleCancel,
   } = useEditCourse(courseId);
 
-  const { options: subjectOptions, isLoading: isSubjectsLoading } = useSubjects("dd4eaa0c-5f90-44bb-b501-6da25154f646"); // TODO: Get from auth
+  const { options: subjectOptions, isLoading: isSubjectsLoading } = useSubjects(tutorId);
 
   const handleSubmit = async (data: CourseFormData) => {
     console.log("Check data form", data);
@@ -32,13 +33,15 @@ const EditCoursePage: React.FC = () => {
     handleCancel();
   };
 
-  // Show loading while fetching course data
-  if (isLoadingCourse || !initialData) {
+  // Show loading while fetching course data or tutor ID
+  if (isLoadingCourse || tutorLoading || !initialData || !tutorId) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang tải thông tin khóa học...</p>
+          <p className="text-gray-600">
+            {tutorLoading ? "Đang xác thực thông tin..." : "Đang tải thông tin khóa học..."}
+          </p>
         </div>
       </div>
     );
@@ -72,7 +75,7 @@ const EditCoursePage: React.FC = () => {
           <CourseForm
             subjectOptions={subjectOptions}
             isSubjectsLoading={isSubjectsLoading}
-            tutorLoading={false}
+            tutorLoading={tutorLoading}
             isLoading={isLoading}
             submitButtonText="Hoàn tất chỉnh sửa"
             showPreview={true}

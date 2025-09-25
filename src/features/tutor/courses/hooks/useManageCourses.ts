@@ -32,13 +32,13 @@ const mapCourseToCardData = (course: CourseDto, packages: PackageDto[] = []): Co
 export const useManageCourses = (tutorId: string) => {
   const router = useRouter();
 
-  // API queries
+  // API queries - skip if no tutorId
   const {
     data: courseResponse,
     isLoading: isCourseLoading,
     error: courseError,
     refetch: refetchCourse,
-  } = useGetCourseQuery({ tutorId });
+  } = useGetCourseQuery({ tutorId }, { skip: !tutorId });
 
   const [deleteCourse, { isLoading: isDeleting }] = useDeleteCourseMutation();
 

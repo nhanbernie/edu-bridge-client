@@ -9,13 +9,12 @@ import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
 import type { CourseData } from "@/components/common/EBTutorCourseCard";
 import type { ActionItem } from "@/components/common/EBActionsMenu";
 import { useManageCourses } from "./hooks/useManageCourses";
+import { useTutorId } from "@/hooks/useTutorId";
 
 const ManageCoursesPage: React.FC = () => {
-  // For demo purposes, using a hardcoded tutor ID
-  // In real app, this would come from auth context or user session
-  const tutorId = "dd4eaa0c-5f90-44bb-b501-6da25154f646";
+  const { tutorId, isLoading: tutorLoading } = useTutorId();
 
-  // Sử dụng hook để quản lý courses
+  // Sử dụng hook để quản lý courses - chỉ call khi có tutorId
   const {
     courses,
     isLoading,
@@ -23,10 +22,22 @@ const ManageCoursesPage: React.FC = () => {
     handleEditCourse,
     handleDeleteCourse,
     handleRefresh,
-  } = useManageCourses(tutorId);
+  } = useManageCourses(tutorId || "");
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
+
+  // Show loading if tutor ID is still loading
+  if (tutorLoading || !tutorId) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Đang xác thực thông tin...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleDeleteClick = (course: CourseData) => {
     setCourseToDelete(course);
