@@ -34,6 +34,12 @@ export const API_ENDPOINTS = {
     UPDATE_COURSE: "/api/course/{courseId}",
     GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
   },
+  AVAILABILITY_BLOCK: {
+    GET_AVAILABILITY_BLOCKS: "/api/availability-block/tutor/{tutorId}",
+    CREATE_AVAILABILITY_BLOCK: "/api/availability-block",
+    UPDATE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
+    DELETE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
+  },
 } as const;
 
 export const API_CONFIG = {
