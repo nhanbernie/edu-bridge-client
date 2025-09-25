@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
-import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
 import { useEffect } from "react";
+import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
@@ -97,76 +97,15 @@ const HomeFeature = () => {
 
           {/* User Info - Only show for PENDING status and TUTOR role */}
           {shouldShowUserInfo && (
-            <MotionCard
-              className="max-w-2xl mx-auto mb-8 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg"
-              variants={simpleCardVariants}
-            >
-              <div className="mb-6 text-center">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Hồ sơ gia sư
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Thông tin tài khoản của bạn
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</p>
-                  <p className="text-gray-900 dark:text-white">{user.email}</p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Họ và tên
-                  </p>
-                  <p className="text-gray-900 dark:text-white">
-                    {user.fullName || "Chưa cập nhật"}
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Vai trò
-                  </p>
-                  <span className="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
-                    {user.role}
-                  </span>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Trạng thái
-                  </p>
-                  <span
-                    className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${
-                      user.status === "PENDING"
-                        ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
-                        : user.status === "APPROVED"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
-                    }`}
-                  >
-                    {user.status === "PENDING"
-                      ? "Đang chờ duyệt"
-                      : user.status === "APPROVED"
-                        ? "Đã duyệt"
-                        : "Từ chối"}
-                  </span>
-                </div>
-              </div>
-
-              {user.status === "PENDING" && (
-                <div className="mt-6 p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30">
-                  <div className="flex items-start space-x-3">
-                    <Eye className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-amber-800 dark:text-amber-200">
-                      Hồ sơ của bạn đang được xem xét. Vui lòng chờ admin phê duyệt.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </MotionCard>
+            <div className="max-w-2xl mx-auto mb-8">
+              <ProfileUnderReview
+                title="Hồ sơ đang được xem xét"
+                description="Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn."
+                currentStep="review"
+                onGoToDashboard={() => router.push("/tutor/dashboard")}
+                className="bg-transparent p-0"
+              />
+            </div>
           )}
         </div>
       </div>

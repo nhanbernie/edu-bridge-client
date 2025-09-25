@@ -6,7 +6,7 @@ export const searchTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
     query: (params) => {
       // Build query string from params
       const searchParams = new URLSearchParams();
-      
+
       // Add simple params
       if (params.MinHourlyRate !== undefined) {
         searchParams.append("MinHourlyRate", params.MinHourlyRate.toString());
@@ -29,10 +29,10 @@ export const searchTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       if (params.PageSize !== undefined) {
         searchParams.append("PageSize", params.PageSize.toString());
       }
-      
+
       // Handle array params (Subjects)
       if (params.Subjects && params.Subjects.length > 0) {
-        params.Subjects.forEach(subject => {
+        params.Subjects.forEach((subject) => {
           searchParams.append("Subjects", subject);
         });
       }
@@ -44,11 +44,9 @@ export const searchTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
     },
     providesTags: ["Tutor"],
     transformResponse: (response: TutorSearchResponse) => {
-      console.log("🔍 Tutor search response:", response);
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("❌ Tutor search error:", response);
       return response;
     },
   });

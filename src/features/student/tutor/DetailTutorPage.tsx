@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Star, MapPin, Users, Clock, Award, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -50,23 +50,14 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
     courseId: selectedCourseId,
   });
 
-  // Refetch availability data when selectedCourseId changes
-  useEffect(() => {
-    if (currentTutorId && availabilityHook.refetchBlocks) {
-      console.log("🔄 Refetching availability data for:", {
-        tutorId: currentTutorId,
-        courseId: selectedCourseId,
-      });
-      availabilityHook.refetchBlocks();
-    }
-  }, [selectedCourseId, currentTutorId, availabilityHook]);
+  // RTK Query automatically refetches when tutorId or courseId changes
+  // No need for manual refetch in useEffect
 
   const handleFavorite = () => {
     setIsFavorited(!isFavorited);
   };
 
   const handleContact = () => {
-    console.log("Contact tutor:", currentTutorId);
     // Implement contact functionality
   };
 
@@ -177,7 +168,6 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   className="flex items-center justify-center space-x-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>Liên hệ ngay</span>
                 </button>
               </div>
             </div>

@@ -46,7 +46,6 @@ const BookingSuccess = () => {
 
   const handleDownloadReceipt = () => {
     // Implement download receipt functionality
-    console.log("Download receipt for booking:", bookingId);
   };
 
   const handleShareBooking = () => {

@@ -74,8 +74,6 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
           slotRequests,
         };
 
-        console.log("Creating booking with data:", bookingRequest);
-
         const result = await createBooking(bookingRequest).unwrap();
 
         if (result.success && result.data) {
@@ -105,8 +103,6 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
         bookingId,
         studentId,
       };
-
-      console.log("Creating payment with data:", paymentRequest);
 
       const result = await createPayment(paymentRequest).unwrap();
 

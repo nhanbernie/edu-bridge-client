@@ -43,19 +43,7 @@ const TabContent: React.FC<TabContentProps> = ({
   onCourseSelect,
   scheduleData,
 }) => {
-  // Debug logging
-  console.log("📋 TabContent render:", {
-    activeTab,
-    tutorId,
-    coursesCount: coursesData?.courses?.length || 0,
-    availabilityBlocksCount: availabilityData?.availabilityBlocks?.length || 0,
-    selectedCourseId,
-    isLoadingCourses: coursesData?.isLoading,
-    isLoadingAvailability: availabilityData?.isLoadingBlocks,
-  });
-
   const renderCoursesTab = () => {
-    // Hiển thị loading state
     if (coursesData?.isLoading) {
       return (
         <div className="flex items-center justify-center py-12">

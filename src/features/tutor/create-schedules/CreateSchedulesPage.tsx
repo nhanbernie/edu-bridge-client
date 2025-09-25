@@ -30,9 +30,7 @@ const CreateSchedulesPage = () => {
     router.push("/tutor/schedules");
   };
 
-  const handleSaveSuccess = () => {
-    console.log("Save successful - staying on create page");
-  };
+  const handleSaveSuccess = () => {};
 
   return (
     <div className="min-h-screen bg-gray-50">

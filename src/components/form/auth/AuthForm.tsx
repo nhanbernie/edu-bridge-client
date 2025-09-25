@@ -21,9 +21,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const defaultOnSubmit = (data: any) => {
-    console.log("Form submitted:", data);
-  };
+  const defaultOnSubmit = (data: any) => {};
 
   // Enhanced handleSubmit with validation
   const handleSubmit = async (data: any, formMethods?: any) => {
