@@ -40,7 +40,6 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
   // Sync with Redux store
   useEffect(() => {
     if (availabilityBlocksResponse?.success) {
-      console.log("🔄 Syncing to Redux:", availabilityBlocksResponse.data);
       dispatch(setAvailabilityBlocks(availabilityBlocksResponse.data));
     }
     dispatch(setLoading(isLoadingBlocks));
@@ -112,6 +111,11 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
     [deleteBlock]
   );
 
+  // Memoize refetchBlocks to prevent unnecessary re-renders
+  const memoizedRefetchBlocks = useCallback(() => {
+    return refetchBlocks();
+  }, [refetchBlocks]);
+
   return {
     // Data
     availabilityBlocks,
@@ -129,6 +133,6 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
     handleCreateBlock,
     handleUpdateBlock,
     handleDeleteBlock,
-    refetchBlocks,
+    refetchBlocks: memoizedRefetchBlocks,
   };
 };

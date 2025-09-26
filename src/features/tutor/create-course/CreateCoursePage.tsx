@@ -24,7 +24,6 @@ const CreateCoursePage: React.FC = () => {
   };
 
   const handleSubmit = async (data: CourseFormData) => {
-    console.log("Check data form", data);
     await handleCreateCourse(data);
   };
 

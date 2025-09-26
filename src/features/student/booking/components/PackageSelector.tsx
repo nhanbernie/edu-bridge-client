@@ -121,11 +121,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <div className="flex flex-col items-end gap-1">
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-primary">
-                      {pkg.price.toLocaleString()}đ
+                      {pkg.price.toLocaleString("vi-VN")}đ
                     </span>
                     {pkg.originalPrice && (
                       <span className="text-sm text-muted-foreground line-through">
-                        {pkg.originalPrice.toLocaleString()}đ
+                        {pkg.originalPrice.toLocaleString("vi-VN")}đ
                       </span>
                     )}
                   </div>

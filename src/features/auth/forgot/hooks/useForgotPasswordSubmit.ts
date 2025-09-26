@@ -25,7 +25,6 @@ const useForgotPasswordSubmit = () => {
         */
 
         // Temporary mock implementation
-        console.log("Forgot password submitted:", data);
         toast.success("Password reset link would be sent to your email");
         router.push("/check-email");
       } catch (error: any) {

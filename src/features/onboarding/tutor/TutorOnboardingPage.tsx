@@ -46,7 +46,6 @@ const TutorOnboardingPage = () => {
 
     // Documents uploaded successfully in TutorStep2
     // Redirect to home after completing all steps
-    console.log("All steps completed!", documents);
     router.push("/home");
   };
 

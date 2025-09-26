@@ -65,17 +65,8 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
     tutorId: tutorId || undefined,
   });
 
-  // Debug: Log when availabilityBlocks changes
   React.useEffect(() => {
-    console.log("🔄 availabilityBlocks updated:", availabilityBlocks);
-    console.log("📊 Blocks count:", availabilityBlocks.length);
-    availabilityBlocks.forEach((block, index) => {
-      console.log(`📋 Block ${index}:`, {
-        blockId: block.blockId,
-        slotsCount: block.slots?.length || 0,
-        slots: block.slots,
-      });
-    });
+    availabilityBlocks.forEach((block, index) => {});
   }, [availabilityBlocks]);
 
   // Dialog states
@@ -85,18 +76,11 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
   const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
   const [contextMenuEvent, setContextMenuEvent] = useState<any>(null);
 
-  // Transform availability blocks to FullCalendar events
-  // Lấy từng slot riêng biệt, mỗi slot = 1 event
   const existingEvents: TimeSlot[] = useMemo(() => {
-    console.log("🔍 Raw availabilityBlocks:", availabilityBlocks);
-
     const events: TimeSlot[] = [];
 
     // Duyệt qua từng block
     availabilityBlocks.forEach((block) => {
-      console.log(`📋 Processing block ${block.blockId}:`, block);
-
-      // Lấy từng slot trong block
       if (block.slots && block.slots.length > 0) {
         block.slots.forEach((slot, slotIndex) => {
           // Ensure proper ISO format for FullCalendar
@@ -123,25 +107,18 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
             },
           };
 
-          console.log(`📅 Slot ${slotIndex} → Event:`, event);
           events.push(event);
         });
       } else {
-        console.log(`⚠️ Block ${block.blockId} has no slots`);
       }
     });
 
-    console.log("✅ Final existingEvents:", events);
-    console.log("📊 Total events created:", events.length);
     return events;
   }, [availabilityBlocks]);
 
   // Combine existing and temporary events
   const allEvents = useMemo(() => {
     const combined = [...existingEvents, ...tempSlots];
-    console.log("🎯 Combined allEvents:", combined);
-    console.log("📊 existingEvents count:", existingEvents.length);
-    console.log("🔵 tempSlots count:", tempSlots.length);
 
     // Add test events for debugging
     const testEvents = [
@@ -156,7 +133,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
     ];
 
     const withTest = [...combined, ...testEvents];
-    console.log("🧪 With test events:", withTest);
 
     return withTest;
   }, [existingEvents, tempSlots]);
@@ -252,14 +228,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
           // Use original blockId from extendedProps, not the modified event id
           const blockId = event.extendedProps?.blockId || event.id;
           const slotIndex = event.extendedProps?.slotIndex;
-          console.log("🔄 Drag - Updating slot:");
-          console.log("  - Original blockId:", blockId);
-          console.log("  - Slot index:", slotIndex);
-          console.log("  - Modified eventId:", event.id);
-          console.log("  - Update data:", updateData);
-
-          // Note: API hiện tại update cả block, không update từng slot
-          // Cần API endpoint để update specific slot trong block
           const result = await handleUpdateBlock(blockId, updateData);
           if (result) {
             await refetchBlocks();
@@ -309,14 +277,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
           // Use original blockId from extendedProps, not the modified event id
           const blockId = event.extendedProps?.blockId || event.id;
           const slotIndex = event.extendedProps?.slotIndex;
-          console.log("🔄 Resize - Updating slot:");
-          console.log("  - Original blockId:", blockId);
-          console.log("  - Slot index:", slotIndex);
-          console.log("  - Modified eventId:", event.id);
-          console.log("  - Update data:", updateData);
-
-          // Note: API hiện tại update cả block, không update từng slot
-          // Cần API endpoint để update specific slot trong block
           const result = await handleUpdateBlock(blockId, updateData);
           if (result) {
             await refetchBlocks();
@@ -365,8 +325,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
 
           // Use original blockId from extendedProps, not the modified event id
           const blockId = selectedEvent.extendedProps?.blockId || selectedEvent.id;
-          console.log("Update - Original blockId:", blockId);
-          console.log("Update - Modified eventId:", selectedEvent.id);
 
           const result = await handleUpdateBlock(blockId, updateData);
           if (result) {
@@ -404,13 +362,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
         try {
           // Use original blockId from extendedProps, not the modified event id
           const blockId = contextMenuEvent.extendedProps?.blockId || eventId;
-          console.log("🗑️ Deleting slot:");
-          console.log("  - Original blockId:", blockId);
-          console.log("  - Modified eventId:", eventId);
-          console.log("  - Slot index:", contextMenuEvent.extendedProps?.slotIndex);
-
-          // Note: API hiện tại delete cả block, không delete từng slot
-          // Cần API endpoint để delete specific slot trong block
           const success = await handleDeleteBlock(blockId);
           if (success) {
             // Refresh data after successful delete
@@ -428,9 +379,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
 
   // Save all temporary slots
   const handleSaveSlots = async () => {
-    console.log("💾 Starting save process...");
-    console.log("🔵 tempSlots to save:", tempSlots);
-
     if (tempSlots.length === 0) {
       toast.error("Không có lịch nào để lưu");
       return;
@@ -448,8 +396,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
         slotsByDate[date].push(slot);
       });
 
-      console.log("📅 Grouped slots by date:", slotsByDate);
-
       // Create availability blocks for each date
       for (const [, slots] of Object.entries(slotsByDate)) {
         const timeRanges = slots.map((slot) => ({
@@ -458,23 +404,16 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
           isBooked: false,
         }));
 
-        console.log("🚀 Creating block with timeRanges:", timeRanges);
-
         const result = await handleCreateBlock({
           timeRanges,
           isRecurring: false,
           recurrenceWeeks: 0,
         });
-
-        console.log("✅ Create block result:", result);
       }
 
-      // Clear temporary slots
-      console.log("🧹 Clearing temp slots...");
       dispatch(clearTempSlots());
 
       // Refresh data
-      console.log("🔄 Refreshing data...");
       await refetchBlocks();
 
       toast.success(`Đã tạo ${tempSlots.length} khung thời gian mới`);
@@ -483,7 +422,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
         onSave();
       }
     } catch (error) {
-      console.error("❌ Error saving slots:", error);
       toast.error("Có lỗi xảy ra khi lưu lịch");
     }
   };

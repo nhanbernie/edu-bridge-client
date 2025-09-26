@@ -55,9 +55,7 @@ const StudentHomePage = () => {
     router.push(`/student/tutor/${tutorId}`);
   };
 
-  const handleContact = (tutorId: string) => {
-    console.log("Contact tutor:", tutorId);
-  };
+  const handleContact = (tutorId: string) => {};
 
   const handleFavorite = (tutorId: string) => {
     toggleFavorite(tutorId);
@@ -103,7 +101,6 @@ const StudentHomePage = () => {
     // Trigger API search with debounce
     const timeoutId = setTimeout(() => {
       if (value.trim()) {
-        console.log("🔍 Searching for:", value);
         // For now, we'll use client-side filtering
         // In the future, we can add server-side search by calling:
         // searchTutors({ ...initialSearchParams, SearchQuery: value });
@@ -116,7 +113,6 @@ const StudentHomePage = () => {
   // Handle filter change
   const handleFilterChange = (filterValue: string) => {
     setSelectedFilter(filterValue);
-    console.log("🎯 Filter changed to:", filterValue);
 
     // For advanced filtering, we could trigger API search with specific parameters
     if (filterValue === "rating_desc") {
@@ -129,7 +125,6 @@ const StudentHomePage = () => {
   // Handle advanced filter apply
   const handleAdvancedFilterApply = (filters: TutorSearchRequest) => {
     setAdvancedFilters(filters);
-    console.log("🎯 Advanced filters applied:", filters);
 
     // Trigger API search with advanced filters
     const searchParams = {

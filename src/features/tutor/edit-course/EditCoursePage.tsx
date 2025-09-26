@@ -25,7 +25,6 @@ const EditCoursePage: React.FC = () => {
   const { options: subjectOptions, isLoading: isSubjectsLoading } = useSubjects(tutorId);
 
   const handleSubmit = async (data: CourseFormData) => {
-    console.log("Check data form", data);
     await handleUpdateCourse(data);
   };
 

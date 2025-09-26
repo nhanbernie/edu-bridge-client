@@ -1,6 +1,7 @@
 "use client";
 
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
 import EBButton from "@/components/common/EBButton";
 import FormProvider from "@/components/form/FormProvider";
 import SelectField from "@/components/form/SelectField";
@@ -13,10 +14,16 @@ interface StudentFormData {
 }
 
 const StudentOnboardingPage = () => {
+  const router = useRouter();
   const { submitOnboarding, isLoading } = useStudentOnboarding();
 
   const handleSubmit = async (data: StudentFormData) => {
-    await submitOnboarding(data);
+    const result = await submitOnboarding(data);
+
+    if (result.success) {
+      // Student is approved immediately, redirect to dashboard
+      router.push("/student/dashboard");
+    }
   };
 
   const gradeOptions = [

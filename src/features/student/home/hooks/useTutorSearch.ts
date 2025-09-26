@@ -82,7 +82,6 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
   // Sync API response to Redux
   useEffect(() => {
     if (searchResponse?.success && searchResponse.data) {
-      console.log("🔄 Syncing tutors to Redux:", searchResponse.data);
       const transformedTutors = searchResponse.data.map(transformTutorData);
       dispatch(setTutors(transformedTutors));
       dispatch(setError(null));
@@ -100,13 +99,11 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
   // Manual search function
   const searchTutors = useCallback(
     async (params: TutorSearchRequest) => {
-      console.log("🔍 Manual search with params:", params);
       dispatch(setLoading(true));
       dispatch(setError(null));
 
       try {
         const result = await triggerSearch(params).unwrap();
-        console.log("✅ Search result:", result);
 
         if (result.success && result.data) {
           const transformedTutors = result.data.map(transformTutorData);
@@ -126,7 +123,6 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
 
         return result;
       } catch (error) {
-        console.error("❌ Search error:", error);
         dispatch(setError("Có lỗi xảy ra khi tìm kiếm gia sư"));
         throw error;
       } finally {
@@ -139,7 +135,6 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
   // Update filters function
   const updateFilters = useCallback(
     (filters: Partial<TutorSearchRequest>) => {
-      console.log("🎯 Updating search filters:", filters);
       dispatch(updateSearchFilters(filters));
     },
     [dispatch]
@@ -220,7 +215,6 @@ export const useTutorSearchWithFilters = () => {
         PageSize: filters.pageSize || 10,
       };
 
-      console.log("🎯 Search with filters:", searchParams);
       return await triggerSearch(searchParams).unwrap();
     },
     [triggerSearch]
