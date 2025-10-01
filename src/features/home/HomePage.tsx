@@ -36,31 +36,40 @@ const HomeFeature = () => {
 
           {/* Choice Cards - Only show for PENDING status and PENDING role */}
           {shouldShowChoiceCards && (
-            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-3xl mx-auto mb-12">
               {/* I want to learn Card */}
               <MotionItem>
                 <MotionCard
                   variants={choiceCardVariants}
                   onClick={() => router.push("/onboarding/student")}
-                  className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
-                            hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
-                            transition-all duration-500 ease-out"
+                  className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
+                            hover:shadow-xl hover:shadow-emerald-100/50
+                            transition-all duration-300 ease-out cursor-pointer flex flex-col"
                 >
-                  <div
-                    className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6 rounded-2xl w-24 h-24 mx-auto mb-6 flex items-center justify-center
-                                 shadow-lg group-hover:shadow-xl group-hover:shadow-blue-500/25 transition-all duration-500 group-hover:scale-110"
-                  >
-                    <BookOpen size={32} />
+                  <div className="flex flex-col items-center">
+                    <div
+                      className="bg-emerald-600 text-white p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
+                                   shadow-md group-hover:shadow-lg group-hover:shadow-emerald-600/25 transition-all duration-300 group-hover:scale-105"
+                    >
+                      <BookOpen size={32} />
+                    </div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300">
+                      I want to learn
+                    </h3>
+                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
+                      Find qualified tutors and book personalized lessons
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                    I want to learn
-                  </h3>
-                  <p className="text-muted-foreground mb-6 group-hover:text-foreground/80 transition-colors duration-300">
-                    Find qualified tutors and book personalized lessons
-                  </p>
-                  <div className="flex items-center justify-center text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">
-                    <Users size={16} className="mr-2" />
-                    <span className="text-sm font-medium">10,000+ Students</span>
+                  <div className="flex items-center justify-start gap-4 mt-10">
+                    <div className="flex flex-col items-start -space-y-1">
+                      <span className="text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300">
+                        10,000+
+                      </span>
+                      <span className="text-sm text-gray-600">Students</span>
+                    </div>
+                    <div className="text-gray-400 text-xl ml-auto">
+                      &gt;
+                    </div>
                   </div>
                 </MotionCard>
               </MotionItem>
@@ -70,25 +79,34 @@ const HomeFeature = () => {
                 <MotionCard
                   variants={choiceCardVariants}
                   onClick={() => router.push("/onboarding/tutor")}
-                  className="group h-full p-8 text-center border-0 bg-card/50 backdrop-blur-sm
-                            hover:border-primary/30 hover:bg-card hover:shadow-xl hover:shadow-primary/10
-                            transition-all duration-500 ease-out"
+                  className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
+                            hover:shadow-xl hover:shadow-emerald-100/50
+                            transition-all duration-300 ease-out cursor-pointer flex flex-col"
                 >
-                  <div
-                    className="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-2xl w-24 h-24 mx-auto mb-6 flex items-center justify-center
-                                 shadow-lg group-hover:shadow-xl group-hover:shadow-purple-500/25 transition-all duration-500 group-hover:scale-110"
-                  >
-                    <GraduationCap size={32} />
+                  <div className="flex flex-col items-center">
+                    <div
+                      className="bg-emerald-600 text-white p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
+                                   shadow-md group-hover:shadow-lg group-hover:shadow-emerald-600/25 transition-all duration-300 group-hover:scale-105"
+                    >
+                      <GraduationCap size={32} />
+                    </div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300">
+                      I want to teach
+                    </h3>
+                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
+                      Share your knowledge and earn money teaching students
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                    I want to teach
-                  </h3>
-                  <p className="text-muted-foreground mb-6 group-hover:text-foreground/80 transition-colors duration-300">
-                    Share your knowledge and earn money teaching students
-                  </p>
-                  <div className="flex items-center justify-center text-muted-foreground group-hover:text-primary/70 transition-colors duration-300">
-                    <Eye size={16} className="mr-2" />
-                    <span className="text-sm font-medium">500+ Expert Tutors</span>
+                  <div className="flex items-center justify-start gap-4 mt-10">
+                    <div className="flex flex-col items-start -space-y-1">
+                      <span className="text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300">
+                        500+
+                      </span>
+                      <span className="text-sm text-gray-600">Expert Tutors</span>
+                    </div>
+                    <div className="text-gray-400 text-xl ml-auto">
+                      &gt;
+                    </div>
                   </div>
                 </MotionCard>
               </MotionItem>
