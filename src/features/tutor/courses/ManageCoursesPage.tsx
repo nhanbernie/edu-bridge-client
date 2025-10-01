@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import EBTutorCourseCard from "@/components/common/EBTutorCourseCard";
 import EmptyState from "@/components/common/EmptyState";
-import ConfirmDialog from "@/components/common/ConfirmDialog";
+import EBConfirmDialog from "@/components/common/EBConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
 import type { CourseData } from "@/components/common/EBTutorCourseCard";
@@ -120,7 +120,7 @@ const ManageCoursesPage: React.FC = () => {
       )}
 
       {/* Delete Confirmation Dialog */}
-      <ConfirmDialog
+      <EBConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Xác nhận xóa khóa học"

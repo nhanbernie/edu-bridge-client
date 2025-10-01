@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface ConfirmDialogProps {
+interface EBConfirmDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
@@ -24,7 +24,7 @@ interface ConfirmDialogProps {
   loading?: boolean;
 }
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+const EBConfirmDialog: React.FC<EBConfirmDialogProps> = ({
   open,
   onOpenChange,
   title,
@@ -76,4 +76,4 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   );
 };
 
-export default ConfirmDialog;
+export default EBConfirmDialog;

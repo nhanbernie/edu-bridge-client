@@ -2,7 +2,7 @@ import React from "react";
 import FormProvider from "@/components/form/FormProvider";
 import TextField from "@/components/form/TextField";
 import TextAreaField from "@/components/form/TextAreaField";
-import SelectField from "@/components/form/SelectField";
+import EBSelectField from "@/components/form/EBSelectField";
 import EBButton from "@/components/common/EBButton";
 import { TutorFormData } from "../hooks/useTutorOnboarding";
 import MultipleSelect from "@/components/form/MultipleSelect";
@@ -43,7 +43,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
       >
         <div className="space-y-6">
           {/* Education Level */}
-          <SelectField
+          <EBSelectField
             name="educationLevel"
             label="Trình độ học vấn"
             options={[

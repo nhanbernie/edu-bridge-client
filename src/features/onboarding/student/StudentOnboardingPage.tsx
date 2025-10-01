@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import EBButton from "@/components/common/EBButton";
 import FormProvider from "@/components/form/FormProvider";
-import SelectField from "@/components/form/SelectField";
+import EBSelectField from "@/components/form/EBSelectField";
 import TextAreaField from "@/components/form/TextAreaField";
 import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
 
@@ -64,7 +64,7 @@ const StudentOnboardingPage = () => {
             defaultValues={defaultValues}
           >
             <div className="space-y-6">
-              <SelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} />
+              <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} />
 
               <TextAreaField
                 name="learningGoal"

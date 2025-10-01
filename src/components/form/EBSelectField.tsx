@@ -20,7 +20,7 @@ import {
   FORM_FIELD_CONTAINER 
 } from "@/common/constants/className.constant";
 
-interface SelectFieldProps {
+interface EBSelectFieldProps {
   name: string;
   label?: string;
   options: { value: string; label: string }[];
@@ -31,8 +31,8 @@ interface SelectFieldProps {
   disabled?: boolean;
 }
 
-export const SelectField = forwardRef<HTMLDivElement, SelectFieldProps>(
-  ({ name, label, options, placeholder = "Vui lòng chọn...", className, triggerClassName, contentClassName, disabled, ...props }, ref) => {
+export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
+  ({ name, label, options, placeholder = "Vui lòng chọn...", className, triggerClassName, contentClassName, disabled }, ref) => {
     const { control } = useFormContext();
     const {
       field: { onChange, value, onBlur },
@@ -106,6 +106,6 @@ export const SelectField = forwardRef<HTMLDivElement, SelectFieldProps>(
   }
 );
 
-SelectField.displayName = "SelectField";
+EBSelectField.displayName = "EBSelectField";
 
-export default SelectField;
+export default EBSelectField;

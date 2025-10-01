@@ -5,7 +5,7 @@ export { default as EBThemeToggle } from "./EBThemeToggle";
 export { default as EBTutorCourseCard } from "./EBTutorCourseCard";
 export { default as EmptyState } from "./EmptyState";
 export { default as EBActionsMenu } from "./EBActionsMenu";
-export { default as ConfirmDialog } from "./ConfirmDialog";
+export { default as EBConfirmDialog } from "./EBConfirmDialog";
 
 // Export types
 export type { CourseData, EBTutorCourseCardProps } from "./EBTutorCourseCard";
