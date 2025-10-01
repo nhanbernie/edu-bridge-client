@@ -51,8 +51,21 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               type === "password" && "pr-12",
               className
             )}
-            value={value || ""}
-            onChange={(e) => onChange(e.target.value)}
+            value={value === undefined ? "" : value}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (type === "number") {
+                // For number inputs, convert to number or keep as string for validation
+                if (val === "") {
+                  onChange(undefined);
+                } else {
+                  const numVal = Number(val);
+                  onChange(isNaN(numVal) ? val : numVal);
+                }
+              } else {
+                onChange(val);
+              }
+            }}
             onBlur={onBlur}
             autoComplete={
               type === "password" ? "current-password" : type === "email" ? "email" : "off"

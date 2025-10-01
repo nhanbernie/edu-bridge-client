@@ -17,7 +17,7 @@ interface TutorStep1Props {
 const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoading = false }) => {
   const defaultValues: TutorFormData = {
     educationLevel: "",
-    yearsOfExperience: 0,
+    yearsOfExperience: undefined,
     bio: "",
     subjects: [],
     languages: [],
@@ -61,6 +61,8 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             type="number"
             placeholder="Nhập số năm kinh nghiệm"
             min="0"
+            max="80"
+            step="1"
           />
           {/* Bio */}
           <TextAreaField

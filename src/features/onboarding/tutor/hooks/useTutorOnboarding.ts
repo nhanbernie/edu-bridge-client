@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export interface TutorFormData {
   educationLevel: string;
-  yearsOfExperience: number;
+  yearsOfExperience: number | undefined;
   bio: string;
   subjects: string[];
   languages: string[];
@@ -41,7 +41,7 @@ export const useTutorOnboarding = () => {
         role: "TUTOR",
         tutor: {
           educationLevel: data.educationLevel,
-          yearsOfExperience: data.yearsOfExperience,
+          yearsOfExperience: data.yearsOfExperience || 0, // Default to 0 if undefined
           bio: data.bio,
           subjects: data.subjects,
           languages: data.languages,
