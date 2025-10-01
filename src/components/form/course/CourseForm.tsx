@@ -2,10 +2,10 @@
 
 import React from "react";
 import { useWatch } from "react-hook-form";
-import TextField from "@/components/form/TextField";
-import TextAreaField from "@/components/form/TextAreaField";
-import MultipleSelect from "@/components/form/MultipleSelect";
-import SwitchField from "@/components/form/SwitchField";
+import EBTextField from "@/components/form/EBTextField";
+import EBTextAreaField from "@/components/form/EBTextAreaField";
+import EBMultipleSelect from "@/components/form/EBMultipleSelect";
+import EBSwitchField from "@/components/form/EBSwitchField";
 import EBButton from "@/components/common/EBButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
@@ -29,7 +29,7 @@ interface CourseFormProps {
   showPreview?: boolean;
 }
 
-// Component wrapper để sử dụng useWatch bên trong FormProvider
+// Component wrapper để sử dụng useWatch bên trong EBFormProvider
 const CourseForm: React.FC<CourseFormProps> = ({
   subjectOptions,
   isSubjectsLoading,
@@ -54,14 +54,14 @@ const CourseForm: React.FC<CourseFormProps> = ({
         <CardContent>
           <div className="space-y-6">
             {/* Course Title */}
-            <TextField
+            <EBTextField
               name="title"
               label="Tên khóa học *"
               placeholder="Ví dụ: Toán học cơ bản lớp 10"
             />
 
             {/* Subjects */}
-            <MultipleSelect
+            <EBMultipleSelect
               name="subjects"
               label="Môn học (có thể chọn nhiều) *"
               options={subjectOptions}
@@ -69,7 +69,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
             />
 
             {/* Description */}
-            <TextAreaField
+            <EBTextAreaField
               name="description"
               label="Mô tả khóa học *"
               placeholder="Mô tả chi tiết về nội dung, phương pháp giảng dạy..."
@@ -77,7 +77,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
             />
 
             {/* Hours per session */}
-            <TextField
+            <EBTextField
               name="hoursPerSession"
               label="Thời gian / buổi (giờ) *"
               type="number"
@@ -88,7 +88,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
             />
 
             {/* Hourly rate */}
-            <TextField
+            <EBTextField
               name="hourlyRate"
               label="Giá / buổi (VNĐ) *"
               type="number"
@@ -99,7 +99,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
             />
 
             {/* Publish Switch */}
-            <SwitchField
+            <EBSwitchField
               name="isPublished"
               label="Xuất bản khóa học"
               description="Khóa học được xuất bản, chi tiết có thể thay đổi sau"

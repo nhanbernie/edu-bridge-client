@@ -18,7 +18,7 @@ interface IFormProviderProps<T extends FieldValues = FieldValues> {
   formType?: string;
 }
 
-const FormProvider = <T extends FieldValues = FieldValues>({
+const EBFormProvider = <T extends FieldValues = FieldValues>({
   children,
   onSubmit,
   defaultValues,
@@ -83,4 +83,4 @@ const FormProvider = <T extends FieldValues = FieldValues>({
   );
 };
 
-export default FormProvider;
+export default EBFormProvider;

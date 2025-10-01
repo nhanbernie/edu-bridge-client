@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import FormProvider from "../FormProvider";
-import { TextField } from "../TextField";
+import EBFormProvider from "../EBFormProvider";
+import { EBTextField } from "../EBTextField";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
@@ -68,7 +68,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
       <div className="w-full">
         <div className="space-y-5">
           {INPUT_FIELDS[type].map((field) => {
-            return <TextField key={field.name} {...field} />;
+            return <EBTextField key={field.name} {...field} />;
           })}
         </div>
 
@@ -162,9 +162,9 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
   };
 
   return (
-    <FormProvider onSubmit={handleSubmit} validationSchema={validatorSchema[type]} formType={type}>
+    <EBFormProvider onSubmit={handleSubmit} validationSchema={validatorSchema[type]} formType={type}>
       <AuthFormContent />
-    </FormProvider>
+    </EBFormProvider>
   );
 };
 

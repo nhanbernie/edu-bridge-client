@@ -36,7 +36,7 @@ const useVerifyOtpSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, router, verifyOtpMutation]
+    [dispatch, verifyOtpMutation]
   );
 };
 

@@ -21,7 +21,7 @@ interface TextFieldProps
   type?: "text" | "password" | "email" | "number";
 }
 
-export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
+export const EBTextField = forwardRef<HTMLInputElement, TextFieldProps>(
   ({ name, label, type = "text", className, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     const { control } = useFormContext();
@@ -113,6 +113,6 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   }
 );
 
-TextField.displayName = "TextField";
+EBTextField.displayName = "EBTextField";
 
-export default TextField;
+export default EBTextField;

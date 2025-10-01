@@ -1,11 +1,11 @@
 import React from "react";
-import FormProvider from "@/components/form/FormProvider";
-import TextField from "@/components/form/TextField";
-import TextAreaField from "@/components/form/TextAreaField";
+import EBFormProvider from "@/components/form/EBFormProvider";
+import EBTextField from "@/components/form/EBTextField";
+import EBTextAreaField from "@/components/form/EBTextAreaField";
 import EBSelectField from "@/components/form/EBSelectField";
 import EBButton from "@/components/common/EBButton";
 import { TutorFormData } from "../hooks/useTutorOnboarding";
-import MultipleSelect from "@/components/form/MultipleSelect";
+import EBMultipleSelect from "@/components/form/EBMultipleSelect";
 import roleSelectValidatorSchema from "@/lib/validator/roleSelectValidator";
 
 interface TutorStep1Props {
@@ -35,7 +35,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
         <p className="text-gray-600">Hãy cho chúng tôi biết về trình độ và kinh nghiệm của bạn</p>
       </div>
 
-      <FormProvider
+      <EBFormProvider
         validationSchema={roleSelectValidatorSchema.tutorStep1Schema}
         formType="tutorStep1Schema"
         defaultValues={defaultValues}
@@ -55,7 +55,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             ]}
           />
           {/* Years of Experience */}
-          <TextField
+          <EBTextField
             name="yearsOfExperience"
             label="Số năm kinh nghiệm dạy học"
             type="number"
@@ -65,7 +65,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             step="1"
           />
           {/* Bio */}
-          <TextAreaField
+          <EBTextAreaField
             name="bio"
             label="Mô tả về bản thân"
             placeholder="Hãy chia sẻ về phong cách dạy học, thành tích và kinh nghiệm của bạn..."
@@ -73,7 +73,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
           />
 
           {/* Subjects (multiple) */}
-          <MultipleSelect
+          <EBMultipleSelect
             allowCustom
             name="subjects"
             label="Môn học dạy (có thể chọn nhiều)"
@@ -90,7 +90,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             ]}
           />
           {/* Languages (multiple) */}
-          <MultipleSelect
+          <EBMultipleSelect
             name="languages"
             label="Ngôn ngữ (có thể chọn nhiều)"
             options={[
@@ -115,7 +115,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             </EBButton>
           </div>
         </div>
-      </FormProvider>
+      </EBFormProvider>
     </div>
   );
 };

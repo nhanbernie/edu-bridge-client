@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import FormProvider from "@/components/form/FormProvider";
+import EBFormProvider from "@/components/form/EBFormProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { CourseForm, type CourseFormData } from "@/components/form/course";
@@ -50,7 +50,7 @@ const CreateCoursePage: React.FC = () => {
           </button>
         </div>
 
-        <FormProvider
+        <EBFormProvider
           validationSchema={courseValidatorSchema.createCourseSchema}
           defaultValues={defaultValues}
           onSubmit={handleSubmit}
@@ -64,7 +64,7 @@ const CreateCoursePage: React.FC = () => {
             submitButtonText="Tạo khóa học"
             showPreview={true}
           />
-        </FormProvider>
+        </EBFormProvider>
       </div>
     </div>
   );

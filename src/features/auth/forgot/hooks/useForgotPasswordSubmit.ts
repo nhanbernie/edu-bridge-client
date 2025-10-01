@@ -30,7 +30,7 @@ const useForgotPasswordSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, router, forgotPasswordMutation]
+    [dispatch, forgotPasswordMutation]
   );
 };
 

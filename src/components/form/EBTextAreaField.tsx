@@ -19,7 +19,7 @@ interface TextAreaFieldProps
   label?: string;
 }
 
-export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
+export const EBTextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
   ({ name, label, className, ...props }, ref) => {
     const { control } = useFormContext();
     const {
@@ -83,6 +83,6 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
   }
 );
 
-TextAreaField.displayName = "TextAreaField";
+EBTextAreaField.displayName = "EBTextAreaField";
 
-export default TextAreaField;
+export default EBTextAreaField;

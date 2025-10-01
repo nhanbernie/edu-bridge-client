@@ -11,7 +11,7 @@ interface SwitchFieldProps {
   className?: string;
 }
 
-const SwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, className }) => {
+const EBSwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, className }) => {
   const { control } = useFormContext();
   const {
     field: { onChange, value },
@@ -53,4 +53,4 @@ const SwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, cla
   );
 };
 
-export default SwitchField;
+export default EBSwitchField;

@@ -3,9 +3,9 @@
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import EBButton from "@/components/common/EBButton";
-import FormProvider from "@/components/form/FormProvider";
+import EBFormProvider from "@/components/form/EBFormProvider";
 import EBSelectField from "@/components/form/EBSelectField";
-import TextAreaField from "@/components/form/TextAreaField";
+import EBTextAreaField from "@/components/form/EBTextAreaField";
 import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
 
 interface StudentFormData {
@@ -58,7 +58,7 @@ const StudentOnboardingPage = () => {
         </div>
 
         <div className="bg-card rounded-lg p-6 shadow-lg">
-          <FormProvider<StudentFormData>
+          <EBFormProvider<StudentFormData>
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
             defaultValues={defaultValues}
@@ -66,7 +66,7 @@ const StudentOnboardingPage = () => {
             <div className="space-y-6">
               <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} />
 
-              <TextAreaField
+              <EBTextAreaField
                 name="learningGoal"
                 label="Mục tiêu học tập"
                 placeholder="Ví dụ: Cải thiện điểm toán và lý, chuẩn bị thi đại học..."
@@ -83,7 +83,7 @@ const StudentOnboardingPage = () => {
                 </EBButton>
               </div>
             </div>
-          </FormProvider>
+          </EBFormProvider>
         </div>
       </div>
     </div>

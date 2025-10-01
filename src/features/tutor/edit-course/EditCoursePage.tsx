@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import FormProvider from "@/components/form/FormProvider";
+import EBFormProvider from "@/components/form/EBFormProvider";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { CourseForm, type CourseFormData } from "@/components/form/course";
 import { useSubjects } from "@/hooks/useSubjects";
@@ -65,7 +65,7 @@ const EditCoursePage: React.FC = () => {
           </button>
         </div>
 
-        <FormProvider
+        <EBFormProvider
           validationSchema={courseValidatorSchema.createCourseSchema}
           defaultValues={initialData}
           onSubmit={handleSubmit}
@@ -79,7 +79,7 @@ const EditCoursePage: React.FC = () => {
             submitButtonText="Hoàn tất chỉnh sửa"
             showPreview={true}
           />
-        </FormProvider>
+        </EBFormProvider>
       </div>
     </div>
   );
