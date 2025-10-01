@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
     RESET_PASSWORD: `${AUTH_ENDPOINT}/reset-password`,
     CHANGE_PASSWORD: `${AUTH_ENDPOINT}/change-password`,
     CREATE_OTP: `${AUTH_ENDPOINT}/create-otp`,
+    RESEND_OTP: `${AUTH_ENDPOINT}/resend-otp`,
   },
   USER: {
     GET_ALL_USERS: "/api/user",

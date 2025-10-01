@@ -1,6 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../api/baseQuery";
-import { loginEndpoint, registerEndpoint, refreshTokenEndpoint } from "./endpoints/index";
+import { 
+  loginEndpoint, 
+  registerEndpoint, 
+  refreshTokenEndpoint,
+  forgotPasswordEndpoint,
+  verifyOtpEndpoint,
+  resetPasswordEndpoint,
+  resendOtpEndpoint
+} from "./endpoints/index";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -10,14 +18,19 @@ export const authApi = createApi({
     login: loginEndpoint(builder),
     register: registerEndpoint(builder),
     refreshToken: refreshTokenEndpoint(builder),
-    // TODO: Implement these endpoints when needed
-    // createOtp: createOtpEndpoint(builder),
-    // verifyOtp: verifyOtpEndpoint(builder),
-    // forgotPassword: forgotPasswordEndpoint(builder),
-    // resetPassword: resetPasswordEndpoint(builder),
-    // changePassword: changePasswordEndpoint(builder),
-    // logout: logoutEndpoint(builder),
+    forgotPassword: forgotPasswordEndpoint(builder),
+    verifyOtp: verifyOtpEndpoint(builder),
+    resetPassword: resetPasswordEndpoint(builder),
+    resendOtp: resendOtpEndpoint(builder),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useRefreshTokenMutation } = authApi;
+export const { 
+  useLoginMutation, 
+  useRegisterMutation, 
+  useRefreshTokenMutation,
+  useForgotPasswordMutation,
+  useVerifyOtpMutation,
+  useResetPasswordMutation,
+  useResendOtpMutation
+} = authApi;

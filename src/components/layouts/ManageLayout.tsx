@@ -1,10 +1,11 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
+import { usePathname } from "next/navigation";
 import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
 import LanguageSelector from "@/components/common/LanguageSelector";
-import { Search, Bell, Menu, X, Settings } from "lucide-react";
+import { Search, Bell, Menu, X, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { sidebarItems, SidebarItem } from "@/constants/navigate.constant";
 import UserMenu from "./components/UserMenu";
 
@@ -15,6 +16,12 @@ interface AdminLayoutProps {
 
 const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = sidebarItems }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const pathname = usePathname();
+
+  // Check if route is active
+  const isRouteActive = (href: string) => {
+    return pathname === href || (href !== "/tutor" && pathname.startsWith(href));
+  };
 
   return (
     <div className="h-screen flex relative overflow-hidden">
@@ -52,78 +59,79 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
                 animated={false}
               />
             </div>
-            {/* Close button when expanded - subtle */}
-            {sidebarExpanded && (
-              <button
-                onClick={() => setSidebarExpanded(false)}
-                className="flex items-center justify-center w-8 h-8 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-gray-600/50 transition-all duration-200"
-                title="Collapse Sidebar"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
           </div>
 
-          {/* Toggle Button - Only show when collapsed */}
-          {!sidebarExpanded && (
-            <div className="flex items-center justify-center mb-8">
-              <button
-                onClick={() => setSidebarExpanded(!sidebarExpanded)}
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-200/80 dark:bg-gray-600/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300/90 dark:hover:bg-gray-500/90 transition-all duration-200 backdrop-blur-sm border border-gray-300/30 dark:border-gray-500/30 shadow-sm"
-                title="Expand Sidebar"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-
-          {/* Spacer when expanded to maintain layout */}
-          {sidebarExpanded && <div className="mb-8"></div>}
+          {/* Toggle Button - Always visible */}
+          <div className="flex items-center justify-center mb-8">
+            <button
+              onClick={() => setSidebarExpanded(!sidebarExpanded)}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100/80 dark:bg-gray-700/80 text-gray-600 dark:text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 transition-all duration-200 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 shadow-sm"
+              title={sidebarExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
+            >
+              {sidebarExpanded ? (
+                <ChevronLeft className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
+            </button>
+          </div>
 
           {/* Navigation */}
           <nav className="flex-1">
-            <div className="space-y-3">
-              {sideBarRouter.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className={`
-                    group flex items-center gap-3 transition-all duration-200
-                    ${
-                      sidebarExpanded
-                        ? "px-4 py-3 rounded-xl"
-                        : "justify-center w-12 h-12 rounded-full"
-                    }
-                    ${
-                      item.active
-                        ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg shadow-gray-900/25"
-                        : "bg-gray-200/80 dark:bg-gray-600/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300/90 dark:hover:bg-gray-500/90 hover:text-gray-900 dark:hover:text-white hover:shadow-md"
-                    }
-                    backdrop-blur-sm border border-gray-300/30 dark:border-gray-500/30
-                  `}
-                  title={!sidebarExpanded ? item.label : undefined}
-                >
-                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                    {item.icon}
-                  </div>
-                  {sidebarExpanded && (
-                    <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>
-                  )}
-                </a>
-              ))}
+            <div className="space-y-2">
+              {sideBarRouter.map((item) => {
+                const isActive = isRouteActive(item.href);
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className={`
+                      group flex items-center gap-3 transition-all duration-200
+                      ${
+                        sidebarExpanded
+                          ? "px-4 py-3 rounded-lg"
+                          : "justify-center w-12 h-12 rounded-lg bg-gray-100/60 dark:bg-gray-700/60"
+                      }
+                      ${
+                        sidebarExpanded
+                          ? isActive
+                            ? "text-primary dark:text-primary font-semibold"
+                            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                          : isActive
+                            ? "bg-primary/20 dark:bg-primary/20 text-primary dark:text-primary"
+                            : "hover:bg-gray-200/80 dark:hover:bg-gray-600/80 text-gray-600 dark:text-gray-400"
+                      }
+                    `}
+                    title={!sidebarExpanded ? item.label : undefined}
+                  >
+                    <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                      {item.icon}
+                    </div>
+                    {sidebarExpanded && (
+                      <span className="font-medium text-sm whitespace-nowrap">{item.label}</span>
+                    )}
+                  </a>
+                );
+              })}
             </div>
           </nav>
 
           {/* Bottom controls */}
-          <div className="py-4 space-y-3">
+          <div className="py-4 space-y-2">
             <a
               href="/admin/settings"
               className={`
                 group flex items-center gap-3 transition-all duration-200
                 ${
-                  sidebarExpanded ? "px-4 py-3 rounded-xl" : "justify-center w-12 h-12 rounded-full"
+                  sidebarExpanded
+                    ? "px-4 py-3 rounded-lg"
+                    : "justify-center w-12 h-12 rounded-lg bg-gray-100/60 dark:bg-gray-700/60"
                 }
-                bg-gray-200/80 dark:bg-gray-600/80 text-gray-700 dark:text-gray-300 hover:bg-gray-300/90 dark:hover:bg-gray-500/90 hover:text-gray-900 dark:hover:text-white backdrop-blur-sm border border-gray-300/30 dark:border-gray-500/30
+                ${
+                  sidebarExpanded
+                    ? "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-600/80"
+                }
               `}
               title={!sidebarExpanded ? "Settings" : undefined}
             >
@@ -139,17 +147,23 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
             <div
               className={`
               flex items-center gap-3 transition-all duration-200
-              ${sidebarExpanded ? "px-4 py-3 rounded-xl" : "justify-center w-12 h-12 rounded-full"}
-              bg-gray-200/80 dark:bg-gray-600/80 backdrop-blur-sm border border-gray-300/30 dark:border-gray-500/30
+              ${
+                sidebarExpanded
+                  ? "px-4 py-3 rounded-lg"
+                  : "justify-center w-12 h-12 rounded-lg bg-gray-100/60 dark:bg-gray-700/60"
+              }
+              ${
+                sidebarExpanded
+                  ? "text-gray-600 dark:text-gray-400"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-600/80"
+              }
             `}
             >
               <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                 <EBThemeToggle />
               </div>
               {sidebarExpanded && (
-                <span className="font-medium text-sm whitespace-nowrap text-gray-700 dark:text-gray-300">
-                  Theme
-                </span>
+                <span className="font-medium text-sm whitespace-nowrap">Theme</span>
               )}
             </div>
 

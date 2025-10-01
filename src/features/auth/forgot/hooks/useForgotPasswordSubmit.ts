@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
+import { useForgotPasswordMutation } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -7,28 +8,21 @@ import { toast } from "sonner";
 const useForgotPasswordSubmit = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const [forgotPasswordMutation] = useForgotPasswordMutation();
+
   return useCallback(
     async (data: { email: string }) => {
       try {
         dispatch(setLoading(true));
-
-        // TODO: Implement forgot password API call here
-        // Example implementation when API is available:
-        /*
         const result = await forgotPasswordMutation(data).unwrap();
-        if (result.success) {
-          toast.success(result.message || 'Password reset link sent to your email');
-          router.push('/check-email');
-        } else {
-          throw new Error(result.message || 'Failed to send reset link');
-        }
-        */
 
-        // Temporary mock implementation
-        toast.success("Password reset link would be sent to your email");
-        router.push("/check-email");
+        if (result.success) {
+          toast.success(result.message || "OTP đã được gửi đến email của bạn");
+        } else {
+          throw new Error(result.message || "Không thể gửi OTP");
+        }
       } catch (error: any) {
-        let errorMessage = "Failed to send reset link. Please try again.";
+        let errorMessage = "Không thể gửi OTP. Vui lòng thử lại.";
         if (error?.data?.message) errorMessage = error.data.message;
         else if (error?.message) errorMessage = error.message;
         toast.error(errorMessage);
@@ -36,7 +30,7 @@ const useForgotPasswordSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, router]
+    [dispatch, router, forgotPasswordMutation]
   );
 };
 

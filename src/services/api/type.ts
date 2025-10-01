@@ -64,6 +64,25 @@ export interface RefreshTokenRequest {
   refreshToken: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface VerifyOtpRequest {
+  email: string;
+  otpCode: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  token: string;
+  newPassword: string;
+}
+
+export interface ResendOtpRequest {
+  email: string;
+}
+
 // Auth Response types
 export interface LoginResponse {
   accessToken: string;
@@ -74,6 +93,34 @@ export interface LoginResponse {
 export interface TokenResponse {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface ForgotPasswordResponse {
+  success: boolean;
+  data: boolean;
+  message: string;
+  errors: any[] | null;
+}
+
+export interface VerifyOtpResponse {
+  success: boolean;
+  data: string; // JWT token
+  message: string;
+  errors: any[] | null;
+}
+
+export interface ResetPasswordResponse {
+  success: boolean;
+  data: boolean;
+  message: string;
+  errors: any[] | null;
+}
+
+export interface ResendOtpResponse {
+  success: boolean;
+  data: boolean;
+  message: string;
+  errors: any[] | null;
 }
 
 // Legacy types for backward compatibility

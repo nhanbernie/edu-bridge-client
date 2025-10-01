@@ -11,7 +11,7 @@ import { INPUT_FIELDS, BUTTON_TITLES } from "@/constants/form.constant";
 
 export interface IAuthFormProps {
   type: "login" | "register" | "forgotPassword" | "verifyOTP" | "resetPassword";
-  onSubmit?: (data: any, formMethods?: any) => void | Promise<void>;
+  onSubmit?: (data: any, email?: string, formMethods?: any) => void | Promise<void>;
   email?: string;
   token?: string;
 }
@@ -34,6 +34,9 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
       // For verifyOTP, combine the email from props with the code from form
       if (type === "verifyOTP" && email) {
         await (customOnSubmit?.({ email, otp: data.code }) || defaultOnSubmit(data));
+      } else if (type === "resetPassword" && email) {
+        // For resetPassword, pass email along with form data
+        await (customOnSubmit?.(data, email) || defaultOnSubmit(data));
       } else {
         // For other form types, pass data as is
         await (customOnSubmit?.(data) || defaultOnSubmit(data));

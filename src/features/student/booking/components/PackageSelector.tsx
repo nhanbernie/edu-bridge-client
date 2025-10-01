@@ -8,6 +8,11 @@ import { slideUpVariants } from "@/components/motion";
 import { Loader2, Package } from "lucide-react";
 import type { PackageDto, PackageType } from "@/services/course/type";
 
+// Format Vietnamese currency
+const formatVNDPrice = (price: number): string => {
+  return new Intl.NumberFormat("vi-VN").format(price);
+};
+
 interface PackageSelectorProps {
   selectedPackage: string | null;
   onPackageChange: (packageId: string) => void;
@@ -111,7 +116,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
             <div className="flex justify-between items-start pr-8">
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground text-base">{pkg.name}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p>
+                {/* <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p> */}
                 <p className="text-xs text-muted-foreground mt-1">
                   {pkg.sessions} buổi học trong tháng
                 </p>
@@ -121,11 +126,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <div className="flex flex-col items-end gap-1">
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-primary">
-                      {pkg.price.toLocaleString("vi-VN")}đ
+                      {formatVNDPrice(pkg.price)}đ
                     </span>
                     {pkg.originalPrice && (
                       <span className="text-sm text-muted-foreground line-through">
-                        {pkg.originalPrice.toLocaleString("vi-VN")}đ
+                        {formatVNDPrice(pkg.originalPrice)}đ
                       </span>
                     )}
                   </div>
