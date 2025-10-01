@@ -11,6 +11,14 @@ import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
+import { 
+  FORM_FIELD_BASE, 
+  FORM_FIELD_ERROR, 
+  FORM_FIELD_NORMAL, 
+  FORM_ERROR_MESSAGE, 
+  FORM_LABEL, 
+  FORM_FIELD_CONTAINER 
+} from "@/common/constants/className.constant";
 
 interface MultipleSelectOption {
   value: string;
@@ -84,8 +92,8 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   };
 
   return (
-    <div className={cn("w-full mb-5", className)}>
-      {label && <label className="block text-sm font-medium text-gray-800 mb-2">{label}</label>}
+    <div className={cn(FORM_FIELD_CONTAINER, className)}>
+      {label && <label className={FORM_LABEL}>{label}</label>}
       <MultiSelect values={values} onValuesChange={onChange}>
         <motion.div
           animate={error ? { x: [0, -4, 4, -2, 2, 0] } : { x: 0 }}
@@ -94,8 +102,8 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
         >
           <MultiSelectTrigger
             className={cn(
-              "w-full border rounded-xl px-4 py-4 text-gray-900 bg-gray-50 text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent focus:bg-white transition-all duration-300 ease-in-out",
-              error ? "border-red-500 bg-red-50 focus:ring-red-200" : "border-gray-200 hover:border-gray-300 focus:ring-primary/20",
+              FORM_FIELD_BASE,
+              error ? FORM_FIELD_ERROR : FORM_FIELD_NORMAL,
               triggerClassName,
             )}
             disabled={disabled}
@@ -145,15 +153,15 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
 
       <AnimatePresence mode="wait">
         {error && (
-          <motion.p
-            className="text-red-500 text-sm mt-1"
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2 }}
-          >
-            {error.message as any}
-          </motion.p>
+            <motion.p
+              className={FORM_ERROR_MESSAGE}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2 }}
+            >
+              {error.message as any}
+            </motion.p>
         )}
       </AnimatePresence>
     </div>

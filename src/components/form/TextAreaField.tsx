@@ -4,6 +4,14 @@ import React, { forwardRef } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
+import { 
+  FORM_FIELD_TEXTAREA, 
+  FORM_FIELD_ERROR, 
+  FORM_FIELD_NORMAL, 
+  FORM_ERROR_MESSAGE, 
+  FORM_LABEL, 
+  FORM_FIELD_CONTAINER 
+} from "@/common/constants/className.constant";
 
 interface TextAreaFieldProps
   extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "value" | "onChange"> {
@@ -23,8 +31,8 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
     });
 
     return (
-      <div className="w-full mb-5">
-        {label && <label className="block text-sm font-medium text-gray-800 mb-2">{label}</label>}
+      <div className={FORM_FIELD_CONTAINER}>
+        {label && <label className={FORM_LABEL}>{label}</label>}
 
         <motion.div
           className="relative w-full"
@@ -34,10 +42,8 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
           <textarea
             ref={ref}
             className={cn(
-              "w-full border rounded-xl px-4 py-4 text-gray-900 bg-gray-50 text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent focus:bg-white transition-all duration-300 ease-in-out resize-none",
-              error
-                ? "border-red-500 bg-red-50 focus:ring-red-200"
-                : "border-gray-200 hover:border-gray-300 focus:ring-primary/20",
+              FORM_FIELD_TEXTAREA,
+              error ? FORM_FIELD_ERROR : FORM_FIELD_NORMAL,
               className
             )}
             value={value || ""}
@@ -62,7 +68,7 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
               className="overflow-hidden"
             >
               <motion.p
-                className="text-red-500 text-sm mt-1"
+                className={FORM_ERROR_MESSAGE}
                 initial={{ x: -5 }}
                 animate={{ x: 0 }}
                 transition={{ duration: 0.2, delay: 0.1 }}
