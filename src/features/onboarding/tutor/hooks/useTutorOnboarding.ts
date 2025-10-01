@@ -11,8 +11,6 @@ export interface TutorFormData {
   bio: string;
   subjects: string[];
   languages: string[];
-  hourlyRate: number;
-  hoursPerSession: number;
 }
 
 export const useTutorOnboarding = () => {
@@ -47,8 +45,6 @@ export const useTutorOnboarding = () => {
           bio: data.bio,
           subjects: data.subjects,
           languages: data.languages,
-          hourlyRate: data.hourlyRate,
-          hoursPerSession: data.hoursPerSession,
         },
       };
       const result = await selectRole({

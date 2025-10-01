@@ -21,8 +21,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
     bio: "",
     subjects: [],
     languages: [],
-    hourlyRate: 0,
-    hoursPerSession: 2,
     ...initialData,
   } as TutorFormData;
 
@@ -102,26 +100,6 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
               { value: "ZH", label: "Tiếng Trung" },
             ]}
           />
-          {/* Pricing */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <TextField
-              name="hourlyRate"
-              type="number"
-              label="Giá theo giờ (VNĐ)"
-              placeholder="VD: 150000"
-              min="0"
-              step="10000"
-            />
-            <TextField
-              name="hoursPerSession"
-              type="number"
-              label="Số giờ mỗi buổi"
-              placeholder="VD: 2"
-              min="0.5"
-              max="8"
-              step="0.5"
-            />
-          </div>
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
             <EBButton

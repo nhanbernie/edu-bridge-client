@@ -12,11 +12,6 @@ const roleSelectValidatorSchema = {
       .required("Vui lòng nhập mô tả về bản thân"),
     subjects: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 môn học"),
     languages: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 ngôn ngữ"),
-    hourlyRate: Yup.number().min(0, "Không được âm").required("Nhập giá theo giờ"),
-    hoursPerSession: Yup.number()
-      .min(0.5, "Tối thiểu 0.5 giờ")
-      .max(8, "Tối đa 8 giờ")
-      .required("Nhập số giờ mỗi buổi"),
   }),
 };
 

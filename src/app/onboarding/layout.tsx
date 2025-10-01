@@ -5,7 +5,7 @@ interface OnboardingLayoutProps {
 }
 
 const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
-  return <MainLayout footer={false}>{children}</MainLayout>;
+  return <>{children}</>;
 };
 
 export default OnboardingLayout;
