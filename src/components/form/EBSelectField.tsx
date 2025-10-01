@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Command, CommandInput } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Plus } from "lucide-react";
 import { 
   FORM_FIELD_BASE, 
   FORM_FIELD_ERROR, 
@@ -20,19 +23,37 @@ import {
   FORM_FIELD_CONTAINER 
 } from "@/common/constants/className.constant";
 
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
 interface EBSelectFieldProps {
   name: string;
   label?: string;
-  options: { value: string; label: string }[];
+  options: SelectOption[];
   placeholder?: string;
   className?: string;
   triggerClassName?: string;
   contentClassName?: string;
   disabled?: boolean;
+  allowCustom?: boolean;
+  onCreateOption?: (label: string) => SelectOption;
 }
 
 export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
-  ({ name, label, options, placeholder = "Vui lòng chọn...", className, triggerClassName, contentClassName, disabled }, ref) => {
+  ({ 
+    name, 
+    label, 
+    options, 
+    placeholder = "Vui lòng chọn...", 
+    className, 
+    triggerClassName, 
+    contentClassName, 
+    disabled,
+    allowCustom = false,
+    onCreateOption
+  }, ref) => {
     const { control } = useFormContext();
     const {
       field: { onChange, value, onBlur },
@@ -40,6 +61,70 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
     } = useController({
       control,
       name,
+    });
+
+    const [searchQuery, setSearchQuery] = useState("");
+    const [customOptions, setCustomOptions] = useState<SelectOption[]>([]);
+
+    const slugify = (s: string) =>
+      s
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
+
+    const addCustom = (label: string) => {
+      console.log("addCustom called with:", label);
+      const textToAdd = label.trim();
+      if (!textToAdd) {
+        console.log("Empty text, returning");
+        return;
+      }
+      
+      // Kiểm tra trong options gốc và custom options
+      const allOptions = [...options, ...customOptions];
+      const existing = allOptions.find((o) => o.label.toLowerCase() === textToAdd.toLowerCase());
+      if (existing) {
+        console.log("Found existing option:", existing);
+        onChange(existing.value);
+        setSearchQuery("");
+        return;
+      }
+      
+      const option = onCreateOption
+        ? onCreateOption(textToAdd)
+        : { value: `custom:${slugify(textToAdd)}`, label: textToAdd };
+      
+      console.log("Creating new option:", option);
+      // Thêm vào customOptions (chỉ cho instance này)
+      setCustomOptions((prev) => {
+        const newOptions = [...prev, option];
+        console.log("Updated customOptions:", newOptions);
+        return newOptions;
+      });
+      onChange(option.value);
+      setSearchQuery("");
+    };
+
+    // Combine original options with custom options
+    const allOptions = [...options, ...customOptions];
+    
+    // Filter options based on search
+    const filteredOptions = allOptions.filter(option =>
+      option.label.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Check if search query doesn't match any existing options
+    const hasNoMatches = searchQuery && filteredOptions.length === 0;
+    
+    console.log("EBSelectField render:", {
+      searchQuery,
+      filteredOptions: filteredOptions.length,
+      hasNoMatches,
+      allowCustom,
+      allOptions: allOptions.length,
+      customOptions: customOptions.length
     });
 
     return (
@@ -67,11 +152,48 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent className={contentClassName}>
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
+              <div className="p-2">
+                <Command>
+                  <CommandInput 
+                    placeholder="Tìm kiếm..." 
+                    value={searchQuery}
+                    onValueChange={setSearchQuery}
+                    className="mb-2"
+                  />
+                </Command>
+                <div className="max-h-60 overflow-y-auto">
+                  {filteredOptions.length > 0 ? (
+                    filteredOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))
+                  ) : searchQuery ? (
+                    <div className="p-2">
+                      {allowCustom ? (
+                        <div
+                          onClick={() => {
+                            console.log("Add button clicked, searchQuery:", searchQuery);
+                            addCustom(searchQuery);
+                          }}
+                          className="w-full flex items-center gap-2 p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors cursor-pointer"
+                        >
+                          <Plus className="h-4 w-4" />
+                          <span>Thêm &quot;{searchQuery}&quot;</span>
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-500 text-center py-2">
+                          Không tìm thấy kết quả
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-500 text-center py-4">
+                      Không có dữ liệu
+                    </div>
+                  )}
+                </div>
+              </div>
             </SelectContent>
           </Select>
         </motion.div>

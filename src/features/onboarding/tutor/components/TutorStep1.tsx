@@ -44,6 +44,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
         <div className="space-y-6">
           {/* Education Level */}
           <EBSelectField
+            allowCustom
             name="educationLevel"
             label="Trình độ học vấn"
             options={[

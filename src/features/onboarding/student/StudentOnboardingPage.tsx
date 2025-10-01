@@ -64,7 +64,7 @@ const StudentOnboardingPage = () => {
             defaultValues={defaultValues}
           >
             <div className="space-y-6">
-              <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} />
+              <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} allowCustom/>
 
               <EBTextAreaField
                 name="learningGoal"
