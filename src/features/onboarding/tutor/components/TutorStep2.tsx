@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+﻿"use client";
+
+import React from "react";
 import EBButton from "@/components/common/EBButton";
 import { useDocumentUpload, DocumentUpload } from "../hooks/useDocumentUpload";
 import { toast } from "sonner";
+import EBFormProvider from "@/components/form/EBFormProvider";
+import EBSelectField from "@/components/form/EBSelectField";
+import { useWatch, useFormContext } from "react-hook-form";
+import * as Yup from "yup";
 
 interface TutorStep2Props {
   onSubmit: (uploadResults: any[]) => void;
@@ -9,234 +15,375 @@ interface TutorStep2Props {
   isLoading?: boolean;
 }
 
-const documentTypes = [
-  { value: "CCCD", label: "Căn cước công dân" },
-  { value: "CERTIFICATE", label: "Chứng chỉ/Bằng cấp" },
-  { value: "SELFIE", label: "Ảnh selfie với CCCD" },
-  { value: "STUDENT_CARD", label: "Thẻ sinh viên" },
-  { value: "TRANSCRIPT", label: "Bảng điểm" },
-  { value: "ENROLLMENT_CONFIRMATION", label: "Giấy xác nhận đang theo học" },
-];
+const tutorVerificationSchema = Yup.object().shape({
+  verificationType: Yup.string().required("Vui lòng chọn loại xác minh"),
+  cccd: Yup.mixed().when("verificationType", {
+    is: (val: string) => val === "verified" || val === "trusted",
+    then: (schema) => schema.required("Vui lòng tải lên CCCD"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  selfie: Yup.mixed().when("verificationType", {
+    is: (val: string) => val === "verified" || val === "trusted",
+    then: (schema) => schema.required("Vui lòng tải lên ảnh Selfie"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  degree: Yup.mixed().when("verificationType", {
+    is: "verified",
+    then: (schema) => schema.required("Vui lòng tải lên bằng cấp"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  certificate: Yup.mixed().nullable(),
+  studentCard: Yup.mixed().when("verificationType", {
+    is: "trusted",
+    then: (schema) => schema.required("Vui lòng tải lên thẻ sinh viên"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  transcript: Yup.mixed().when("verificationType", {
+    is: "trusted",
+    then: (schema) => schema.required("Vui lòng tải lên bảng điểm"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  certificate_trusted: Yup.mixed().nullable(),
+});
 
-const getDocumentDescription = (docType: string): string => {
-  switch (docType) {
-    case "CCCD":
-      return "Ảnh chụp mặt trước và mặt sau của căn cước công dân, rõ nét, đầy đủ thông tin";
-    case "CERTIFICATE":
-      return "Bằng tốt nghiệp, chứng chỉ hoặc văn bằng chứng minh trình độ học vấn";
-    case "SELFIE":
-      return "Ảnh selfie của bạn cầm căn cước công dân, khuôn mặt và thông tin trên CCCD phải rõ ràng";
-    case "STUDENT_CARD":
-      return "Thẻ sinh viên còn hiệu lực (nếu bạn đang là sinh viên)";
-    case "TRANSCRIPT":
-      return "Bảng điểm chứng minh kết quả học tập";
-    case "ENROLLMENT_CONFIRMATION":
-      return "Giấy xác nhận đang theo học từ trường đại học/cao đẳng";
-    default:
-      return "";
-  }
+// File Upload Input Component with improved UI
+const FileUploadInput = ({
+  name,
+  label,
+  description,
+  required = false,
+}: {
+  name: string;
+  label: string;
+  description: string;
+  required?: boolean;
+}) => {
+  const { setValue, watch } = useFormContext();
+  const file = watch(name);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      // Validate file size (max 5MB)
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast.error("Kích thước file không được vượt quá 5MB");
+        e.target.value = "";
+        return;
+      }
+      setValue(name, selectedFile, { shouldValidate: true });
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setValue(name, null, { shouldValidate: true });
+  };
+
+  return (
+    <div className="space-y-3">
+      {/* Label */}
+      <label className="block text-sm font-semibold text-gray-800">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+
+      {/* Upload Area */}
+      <div
+        className={`relative border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${
+          file
+            ? "border-emerald-300 bg-emerald-50/50"
+            : "border-gray-300 bg-gray-50 hover:border-emerald-400 hover:bg-emerald-50/30"
+        }`}
+      >
+        <input
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+          onChange={handleFileChange}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+        />
+
+        {!file ? (
+          <div className="text-center py-2">
+            <svg
+              className="mx-auto h-10 w-10 text-gray-400"
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+            >
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <p className="mt-2 text-sm text-gray-600">
+              <span className="font-semibold text-emerald-600">Nhấn để chọn file</span> hoặc kéo thả
+            </p>
+            <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)</p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between py-2">
+            <div className="flex items-center space-x-3 flex-1 min-w-0">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-8 w-8 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
+                <p className="text-xs text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleRemoveFile}
+              className="ml-3 flex-shrink-0 text-red-600 hover:text-red-800 transition-colors z-20"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Description */}
+      <p className="text-xs text-gray-600 italic">{description}</p>
+    </div>
+  );
 };
 
-const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = false }) => {
-  const [documents, setDocuments] = useState<DocumentUpload[]>([
-    { docType: "CCCD" as const, file: null as any },
-  ]);
-
-  const { uploadDocuments, isLoading: isUploading } = useDocumentUpload();
-
-  const addDocument = () => {
-    setDocuments([...documents, { docType: "CCCD" as const, file: null as any }]);
-  };
-
-  const removeDocument = (index: number) => {
-    const newDocuments = documents.filter((_, i) => i !== index);
-    setDocuments(newDocuments);
-  };
-
-  const updateDocument = (index: number, field: keyof DocumentUpload, value: any) => {
-    const newDocuments = [...documents];
-    newDocuments[index] = { ...newDocuments[index], [field]: value };
-    setDocuments(newDocuments);
-  };
-
-  const handleSubmit = async () => {
-    const validDocuments = documents.filter((doc) => doc.docType && doc.file);
-
-    if (validDocuments.length === 0) {
-      toast.error("Vui lòng thêm ít nhất một tài liệu");
-      return;
-    }
-
-    // Upload documents
-    const uploadResult = await uploadDocuments(validDocuments);
-
-    if (uploadResult.success) {
-      // Call parent onSubmit with upload results
-      onSubmit(uploadResult.results || []);
-    }
-  };
-
-  const canSubmit = documents.some((doc) => doc.docType && doc.file) && !isUploading;
+const VerificationForm = ({
+  verificationOptions,
+  onBack,
+  isUploading,
+}: {
+  verificationOptions: { value: string; label: string }[];
+  onBack: () => void;
+  isUploading: boolean;
+}) => {
+  const verificationType = useWatch({ name: "verificationType" });
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Tải lên hồ sơ</h2>
-        <p className="text-gray-600">
-          Vui lòng tải lên các tài liệu xác minh danh tính và trình độ
-        </p>
-      </div>
+      {/* Verification Type Selection */}
+      <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
+        <div className="flex items-center space-x-2 mb-4">
+          <svg
+            className="h-5 w-5 text-gray-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+            />
+          </svg>
+          <h3 className="text-base font-semibold text-gray-900">Loại xác minh</h3>
+        </div>
 
-      {/* Document Upload Form */}
-      <div className="space-y-6">
-        {/* Add first document if none exist */}
-        {documents.length === 0 && (
-          <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-            <p className="text-gray-500 mb-4">Chưa có tài liệu nào được thêm</p>
-            <EBButton type="button" variant="outline" onClick={addDocument} className="bg-white">
-              + Thêm tài liệu đầu tiên
-            </EBButton>
-          </div>
-        )}
+        <EBSelectField
+          name="verificationType"
+          label="Chọn loại xác minh"
+          options={verificationOptions}
+          placeholder="Chọn loại gia sư bạn muốn đăng ký"
+        />
 
-        {/* Document Upload Items */}
-        {documents.map((document, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg p-6 bg-white">
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Tài liệu {index + 1}</h3>
-              {documents.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeDocument(index)}
-                  className="text-red-600 hover:text-red-800 text-sm font-medium"
-                >
-                  Xóa
-                </button>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Document Type Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Loại tài liệu *
-                </label>
-                <select
-                  value={document.docType}
-                  onChange={(e) => updateDocument(index, "docType", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-                  required
-                >
-                  <option value="">Chọn loại tài liệu</option>
-                  {documentTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* File Upload */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  File tài liệu *
-                </label>
-                <input
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      updateDocument(index, "file", file);
-                    }
-                  }}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
-                  required
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Định dạng: PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)
-                </p>
-              </div>
-            </div>
-
-            {/* Document Description */}
-            {document.docType && (
-              <div className="mt-4 p-3 bg-blue-50 rounded-md">
-                <p className="text-sm text-blue-800">
-                  <strong>Mô tả:</strong> {getDocumentDescription(document.docType)}
-                </p>
-              </div>
-            )}
-
-            {/* File Preview */}
-            {document.file && (
-              <div className="mt-4 p-3 bg-green-50 rounded-md">
-                <div className="flex items-center">
-                  <svg
-                    className="h-5 w-5 text-green-600 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span className="text-sm text-green-800 font-medium">{document.file.name}</span>
-                  <span className="text-xs text-green-600 ml-2">
-                    ({(document.file.size / (1024 * 1024)).toFixed(2)} MB)
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-
-        {/* Add More Documents */}
-        {documents.length > 0 && documents.length < 6 && (
-          <div className="text-center">
-            <EBButton
-              type="button"
-              variant="outline"
-              onClick={addDocument}
-              className="bg-white border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+        <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+          <div className="flex items-start space-x-2">
+            <svg
+              className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              + Thêm tài liệu khác
-            </EBButton>
-          </div>
-        )}
-      </div>
-
-      {/* Important Notes */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                 clipRule="evenodd"
               />
             </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800">Lưu ý quan trọng</h3>
-            <div className="mt-2 text-sm text-yellow-700">
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Tất cả tài liệu sẽ được xem xét để xác minh tính xác thực</li>
-                <li>Chỉ tải lên các file có định dạng được hỗ trợ</li>
-                <li>Kích thước file tối đa là 5MB</li>
-                <li>Thông tin cá nhân trong tài liệu sẽ được bảo mật tuyệt đối</li>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-blue-800 mb-2">Lưu ý:</p>
+              <ul className="space-y-2 text-sm text-blue-700">
+                <li className="flex items-start">
+                  <span className="font-semibold mr-2">•</span>
+                  <span>
+                    <strong>Verified Tutor:</strong> Upload CCCD, SELFIE, DEGREE, (CERTIFICATE - tùy
+                    chọn)
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="font-semibold mr-2">•</span>
+                  <span>
+                    <strong>Trusted Beginner Tutor:</strong> Upload CCCD, SELFIE, STUDENT_CARD (thẻ
+                    sv), TRANSCRIPT (bảng điểm), (CERTIFICATE - tùy chọn)
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
+      {/* Verified Tutor Documents */}
+      {verificationType === "verified" && (
+        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm space-y-6">
+          <div className="flex items-center space-x-2">
+            <svg
+              className="h-6 w-6 text-emerald-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              />
+            </svg>
+            <h3 className="text-lg font-semibold text-gray-900">Tài liệu cho Verified Tutor</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FileUploadInput
+              name="cccd"
+              label="CCCD (Căn cước công dân)"
+              description="Ảnh mặt trước và mặt sau CCCD rõ nét"
+              required
+            />
+            <FileUploadInput
+              name="selfie"
+              label="Ảnh Selfie cầm CCCD"
+              description="Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+              required
+            />
+            <FileUploadInput
+              name="degree"
+              label="Bằng cấp (DEGREE)"
+              description="Bằng tốt nghiệp đại học/cao đẳng"
+              required
+            />
+            <FileUploadInput
+              name="certificate"
+              label="Chứng chỉ (tùy chọn)"
+              description="Chứng chỉ chuyên môn nếu có"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Trusted Beginner Tutor Documents */}
+      {verificationType === "trusted" && (
+        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm space-y-6">
+          <div className="flex items-center space-x-2">
+            <svg
+              className="h-6 w-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
+            </svg>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Tài liệu cho Trusted Beginner Tutor
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FileUploadInput
+              name="cccd"
+              label="CCCD (Căn cước công dân)"
+              description="Ảnh mặt trước và mặt sau CCCD rõ nét"
+              required
+            />
+            <FileUploadInput
+              name="selfie"
+              label="Ảnh Selfie cầm CCCD"
+              description="Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+              required
+            />
+            <FileUploadInput
+              name="studentCard"
+              label="Thẻ sinh viên"
+              description="Thẻ sinh viên còn hiệu lực"
+              required
+            />
+            <FileUploadInput
+              name="transcript"
+              label="Bảng điểm"
+              description="Bảng điểm chứng minh kết quả học tập"
+              required
+            />
+            <FileUploadInput
+              name="certificate_trusted"
+              label="Chứng chỉ (tùy chọn)"
+              description="Chứng chỉ chuyên môn nếu có"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Important Notes */}
+      {verificationType && (
+        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-5 shadow-sm">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-yellow-900 mb-2">Lưu ý quan trọng</h3>
+              <ul className="space-y-2 text-sm text-yellow-800">
+                <li className="flex items-start">
+                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span>Tất cả tài liệu sẽ được xem xét để xác minh tính xác thực</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span>
+                    Chỉ tải lên các file có định dạng được hỗ trợ (PDF, JPG, PNG, DOC, DOCX)
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span>Kích thước file tối đa là 5MB</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span>Thông tin cá nhân trong tài liệu sẽ được bảo mật tuyệt đối</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between pt-6 border-t gap-5">
         <EBButton
           type="button"
@@ -247,19 +394,94 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
         >
           Quay lại
         </EBButton>
-
         <EBButton
-          type="button"
+          type="submit"
           variant="default"
           size="lg"
           loading={isUploading}
-          disabled={!canSubmit}
-          onClick={handleSubmit}
+          disabled={!verificationType || isUploading}
           className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          Hoàn tất đăng ký
+          {isUploading ? "Đang tải lên..." : "Hoàn tất đăng ký"}
         </EBButton>
       </div>
+    </div>
+  );
+};
+
+const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = false }) => {
+  const { uploadDocuments, isLoading: isUploading } = useDocumentUpload();
+
+  const verificationOptions = [
+    { value: "verified", label: "Verified Tutor (Gia sư đã xác minh)" },
+    { value: "trusted", label: "Trusted Beginner Tutor (Gia sư mới đáng tin cậy)" },
+  ];
+
+  const defaultValues = {
+    verificationType: "",
+    cccd: null,
+    selfie: null,
+    degree: null,
+    certificate: null,
+    studentCard: null,
+    transcript: null,
+    certificate_trusted: null,
+  };
+
+  const handleFormSubmit = async (data: any) => {
+    const documents: DocumentUpload[] = [];
+
+    // Map form data to document uploads based on verification type
+    if (data.verificationType === "verified") {
+      // Verified Tutor documents
+      if (data.cccd) documents.push({ docType: "CCCD", file: data.cccd });
+      if (data.selfie) documents.push({ docType: "SELFIE", file: data.selfie });
+      if (data.degree) documents.push({ docType: "CERTIFICATE", file: data.degree });
+      if (data.certificate) documents.push({ docType: "CERTIFICATE", file: data.certificate });
+    } else if (data.verificationType === "trusted") {
+      // Trusted Beginner Tutor documents
+      if (data.cccd) documents.push({ docType: "CCCD", file: data.cccd });
+      if (data.selfie) documents.push({ docType: "SELFIE", file: data.selfie });
+      if (data.studentCard) documents.push({ docType: "STUDENT_CARD", file: data.studentCard });
+      if (data.transcript) documents.push({ docType: "TRANSCRIPT", file: data.transcript });
+      if (data.certificate_trusted)
+        documents.push({ docType: "CERTIFICATE", file: data.certificate_trusted });
+    }
+
+    // Validate that at least one document is uploaded
+    if (documents.length === 0) {
+      toast.error("Vui lòng tải lên đầy đủ tài liệu");
+      return;
+    }
+
+    // Upload documents and handle result
+    const uploadResult = await uploadDocuments(documents);
+    if (uploadResult.success) {
+      onSubmit(uploadResult.results || []);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="text-center md:text-left">
+        <h2 className="text-3xl font-bold text-gray-900 mb-3">Tải lên hồ sơ</h2>
+        <p className="text-gray-600 text-lg">
+          Vui lòng chọn loại xác minh và tải lên các tài liệu tương ứng
+        </p>
+      </div>
+      <EBFormProvider
+        validationSchema={tutorVerificationSchema}
+        defaultValues={defaultValues}
+        onSubmit={handleFormSubmit}
+        formType="tutorVerification"
+      >
+        <VerificationForm
+          verificationOptions={verificationOptions}
+          onBack={onBack}
+          isUploading={isUploading}
+        />
+      </EBFormProvider>
     </div>
   );
 };

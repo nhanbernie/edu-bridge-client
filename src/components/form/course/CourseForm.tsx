@@ -38,7 +38,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
   submitButtonText = "Tạo khóa học",
   showPreview = true,
 }) => {
-  // Theo dõi thay đổi realtime của form
   const watchedValues = useWatch<CourseFormData>();
 
   return (

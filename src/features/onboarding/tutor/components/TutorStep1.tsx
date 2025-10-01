@@ -91,6 +91,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
           />
           {/* Languages (multiple) */}
           <EBMultipleSelect
+            allowCustom
             name="languages"
             label="Ngôn ngữ (có thể chọn nhiều)"
             options={[
