@@ -3,7 +3,7 @@
 import { EBMainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
+import { EBMotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
 import { useEffect } from "react";
@@ -39,7 +39,7 @@ const HomeFeature = () => {
             <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-3xl mx-auto mb-12">
               {/* I want to learn Card */}
               <MotionItem>
-                <MotionCard
+                <EBMotionCard
                   variants={choiceCardVariants}
                   onClick={() => router.push("/onboarding/student")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
@@ -71,12 +71,12 @@ const HomeFeature = () => {
                       &gt;
                     </div>
                   </div>
-                </MotionCard>
+                </EBMotionCard>
               </MotionItem>
 
               {/* I want to teach Card */}
               <MotionItem>
-                <MotionCard
+                <EBMotionCard
                   variants={choiceCardVariants}
                   onClick={() => router.push("/onboarding/tutor")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
@@ -108,7 +108,7 @@ const HomeFeature = () => {
                       &gt;
                     </div>
                   </div>
-                </MotionCard>
+                </EBMotionCard>
               </MotionItem>
             </MotionContainer>
           )}

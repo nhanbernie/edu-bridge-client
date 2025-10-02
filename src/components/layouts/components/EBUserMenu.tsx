@@ -9,8 +9,6 @@ import { useAuth } from "@/contexts/AuthContext";
 const EBUserMenu = ({ user }: UserMenuProps) => {
   const { logout } = useAuth();
 
-  // For now, just render the user avatar
-  // The dropdown functionality will be handled by the parent component
   return (
     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
       {user?.avatar ? (

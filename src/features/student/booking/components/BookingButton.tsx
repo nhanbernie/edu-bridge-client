@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { MotionCard } from "@/components/motion/MotionCard";
+import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { slideUpVariants } from "@/components/motion";
 
 interface BookingButtonProps {
@@ -12,7 +12,7 @@ interface BookingButtonProps {
 
 const BookingButton: React.FC<BookingButtonProps> = ({ disabled, onBook }) => {
   return (
-    <MotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
+    <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
       <div className="space-y-4">
         {/* Booking Button */}
         <Button
@@ -24,7 +24,7 @@ const BookingButton: React.FC<BookingButtonProps> = ({ disabled, onBook }) => {
           {disabled ? "Vui lòng chọn đầy đủ thông tin" : "Đặt lịch ngay"}
         </Button>
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

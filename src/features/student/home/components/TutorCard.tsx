@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MotionCard } from "@/components/motion";
+import { EBMotionCard } from "@/components/motion";
 import { tutorCardVariants } from "@/common/constants/motion/cardMotion.constant";
 import { Star, MapPin, Clock, Users, Eye, Heart, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -44,7 +44,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
   };
 
   return (
-    <MotionCard
+    <EBMotionCard
       variants={tutorCardVariants}
       onClick={handleViewDetails}
       className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border border-border/50
@@ -216,7 +216,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
           <span className="text-sm">Liên hệ ngay</span>
         </button>
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

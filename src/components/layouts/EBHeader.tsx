@@ -9,7 +9,7 @@ import { navigationItems, NavItem } from "@/constants/navigate.constant";
 import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBLogo, EBUserMenu } from "@/components/common/";
-import { ButtonAction } from "../motion/ButtonMotion";
+import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig } from "./types";
 
 interface AcitonButtonProps {
@@ -27,21 +27,21 @@ interface HeaderProps {
 const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonProps) => (
   <div className="flex items-center gap-3">
     {/* Search button */}
-    <ButtonAction>
+    <EBButtonAction>
       <Search size={20} />
-    </ButtonAction>
+    </EBButtonAction>
 
     {/* Messages button */}
     {showMessage && (
-      <ButtonAction>
+      <EBButtonAction>
         <MessageSquare size={20} />
-      </ButtonAction>
+      </EBButtonAction>
     )}
 
     {/* Language selector */}
-    <ButtonAction>
+    <EBButtonAction>
       <Globe className="w-5 h-5" />
-    </ButtonAction>
+    </EBButtonAction>
     {/* User Menu */}
 
     <EBThemeToggle />
@@ -127,7 +127,6 @@ const EBHeader = ({ showMessage, headerConfig }: HeaderProps) => {
 
             {/* Right side - Actions */}
             <div className="flex items-center gap-3">
-              {/* CTA Button if provided */}
               {headerConfig?.cta && <CTAButton cta={headerConfig.cta} />}
               
               {/* Default action buttons */}

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MotionCard } from "@/components/motion/MotionCard";
+import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Clock, MessageCircle } from "lucide-react";
 import { slideUpVariants } from "@/components/motion";
@@ -26,7 +26,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
   };
 
   return (
-    <MotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
+    <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
       <div className="flex flex-col items-center text-center space-y-4">
         {/* Avatar */}
         <div className="relative">
@@ -86,7 +86,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
           </div>
         </div>
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

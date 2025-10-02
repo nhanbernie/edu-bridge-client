@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MotionCard } from "@/components/motion/MotionCard";
+import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
@@ -53,7 +53,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   // Loading state
   if (isLoading) {
     return (
-      <MotionCard
+      <EBMotionCard
         className="text-card-foreground p-0 border-0 shadow-none hover:shadow-none"
         variants={slideUpVariants}
       >
@@ -64,14 +64,14 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
           <Loader2 className="h-8 w-8 animate-spin" />
           <span className="ml-2">Đang tải gói học...</span>
         </div>
-      </MotionCard>
+      </EBMotionCard>
     );
   }
 
   // Empty state
   if (!packages || packages.length === 0) {
     return (
-      <MotionCard
+      <EBMotionCard
         className="text-card-foreground p-0 border-0 shadow-none hover:shadow-none"
         variants={slideUpVariants}
       >
@@ -83,12 +83,12 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
           <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có gói học nào</h3>
           <p className="text-gray-500">Khóa học này chưa có gói học nào được tạo.</p>
         </div>
-      </MotionCard>
+      </EBMotionCard>
     );
   }
 
   return (
-    <MotionCard
+    <EBMotionCard
       className="text-card-foreground p-0 border-0 shadow-none  hover:shadow-none"
       variants={slideUpVariants}
     >
@@ -157,7 +157,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
           </div>
         ))}
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

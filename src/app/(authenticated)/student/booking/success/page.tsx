@@ -15,7 +15,7 @@ import {
   Home,
 } from "lucide-react";
 import { EBMainLayout } from "@/components/layouts";
-import { MotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
+import { EBMotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
 
 const BookingSuccess = () => {
   const router = useRouter();
@@ -132,7 +132,7 @@ const BookingSuccess = () => {
 
             {/* Booking Details Card */}
             <MotionItem variants={slideUpVariants}>
-              <MotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
+              <EBMotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-foreground mb-2">Chi tiết đặt lịch</h2>
                   <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
@@ -197,7 +197,7 @@ const BookingSuccess = () => {
                     <span className="text-2xl font-bold text-primary">{price}đ</span>
                   </div>
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </MotionItem>
 
             {/* Action Buttons */}
@@ -247,7 +247,7 @@ const BookingSuccess = () => {
 
             {/* Next Steps */}
             <MotionItem variants={slideUpVariants}>
-              <MotionCard className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+              <EBMotionCard className="bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-foreground mb-4">Bước tiếp theo</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -298,7 +298,7 @@ const BookingSuccess = () => {
                     </p>
                   </div>
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </MotionItem>
           </MotionContainer>
         </div>

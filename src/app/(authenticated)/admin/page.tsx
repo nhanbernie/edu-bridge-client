@@ -24,7 +24,7 @@ import {
   Clock,
   UserCheck,
 } from "lucide-react";
-import { MotionCard, MotionContainer, MotionItem } from "@/components/motion";
+import { EBMotionCard, MotionContainer, MotionItem } from "@/components/motion";
 import { motion, type Variants } from "motion/react";
 
 // Custom animation variants for admin page
@@ -256,7 +256,7 @@ const AdminPage = () => {
           >
             {statsData.map((stat) => (
               <MotionItem key={stat.title} variants={statsCardVariants}>
-                <MotionCard
+                <EBMotionCard
                   variants={statsCardVariants}
                   className={`relative overflow-hidden bg-gradient-to-br ${stat.bgGradient} border-0 hover:shadow-xl hover:shadow-${stat.color}-500/20 transition-all duration-300`}
                 >
@@ -280,7 +280,7 @@ const AdminPage = () => {
                   <div
                     className={`absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-${stat.color}-400/20 to-${stat.color}-600/20 rounded-full blur-xl`}
                   />
-                </MotionCard>
+                </EBMotionCard>
               </MotionItem>
             ))}
           </MotionContainer>
@@ -497,7 +497,7 @@ const AdminPage = () => {
               animate="visible"
               className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             >
-              <MotionCard
+              <EBMotionCard
                 variants={modalVariants}
                 className="bg-white dark:bg-gray-800 max-w-2xl w-full max-h-[80vh] overflow-hidden border-0 shadow-2xl"
               >
@@ -601,7 +601,7 @@ const AdminPage = () => {
                     </div>
                   )}
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </motion.div>
           )}
 
@@ -613,7 +613,7 @@ const AdminPage = () => {
               animate="visible"
               className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             >
-              <MotionCard
+              <EBMotionCard
                 variants={modalVariants}
                 className="bg-white dark:bg-gray-800 max-w-4xl w-full max-h-[80vh] overflow-hidden border-0 shadow-2xl"
               >
@@ -675,7 +675,7 @@ const AdminPage = () => {
                     </div>
                   )}
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </motion.div>
           )}
 
@@ -687,7 +687,7 @@ const AdminPage = () => {
               animate="visible"
               className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             >
-              <MotionCard
+              <EBMotionCard
                 variants={modalVariants}
                 className="bg-white dark:bg-gray-800 max-w-md w-full border-0 shadow-2xl"
               >
@@ -773,7 +773,7 @@ const AdminPage = () => {
                     </button>
                   </div>
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </motion.div>
           )}
         </MotionContainer>

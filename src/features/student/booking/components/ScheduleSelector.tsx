@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { MotionCard } from "@/components/motion/MotionCard";
+import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar, Loader2, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -252,7 +252,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   };
 
   return (
-    <MotionCard
+    <EBMotionCard
       className={cn("bg-card text-card-foreground", isDisabled && "opacity-50 pointer-events-none")}
       variants={slideUpVariants}
     >
@@ -465,7 +465,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
           </div>
         </div>
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

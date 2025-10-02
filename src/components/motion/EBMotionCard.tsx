@@ -19,7 +19,7 @@ export interface MotionCardProps {
   style?: React.CSSProperties;
 }
 
-export const MotionCard: React.FC<MotionCardProps> = ({
+export const EBMotionCard: React.FC<MotionCardProps> = ({
   children,
   className,
   variants = DEFAULT_CARD_ANIMATION,

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { MotionCard } from "@/components/motion";
+import { EBMotionCard } from "@/components/motion";
 import { CheckCircle, Clock, Circle, Mail, Phone, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
@@ -50,7 +50,7 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
   ];
 
   return (
-    <MotionCard
+    <EBMotionCard
       className={cn(
         "max-w-2xl mx-auto bg-card/95 backdrop-blur-sm border border-border shadow-lg",
         className
@@ -143,7 +143,7 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
           platform.
         </p>
       </div>
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

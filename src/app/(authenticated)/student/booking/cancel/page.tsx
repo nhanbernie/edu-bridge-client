@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { EBMainLayout } from "@/components/layouts";
 import {
-  MotionCard,
+  EBMotionCard,
   MotionContainer,
   MotionItem,
   slideUpVariants,
@@ -126,7 +126,7 @@ const BookingCancel = () => {
 
             {/* Booking Info Card */}
             <MotionItem variants={itemVariants}>
-              <MotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
+              <EBMotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-foreground mb-2">Thông tin đặt lịch</h2>
                   <div className="inline-flex items-center px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm font-medium border border-red-200 dark:border-red-800">
@@ -163,7 +163,7 @@ const BookingCancel = () => {
                     </span>
                   </div>
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </MotionItem>
 
             {/* Action Buttons */}
@@ -213,7 +213,7 @@ const BookingCancel = () => {
 
             {/* Help Section */}
             <MotionItem variants={itemVariants}>
-              <MotionCard className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800">
+              <EBMotionCard className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800">
                 <div className="text-center">
                   <h3 className="text-xl font-bold text-foreground mb-4">Cần hỗ trợ?</h3>
 
@@ -284,7 +284,7 @@ const BookingCancel = () => {
                     </p>
                   </div>
                 </div>
-              </MotionCard>
+              </EBMotionCard>
             </MotionItem>
 
             {/* Back to Search */}

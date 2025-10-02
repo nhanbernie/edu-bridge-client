@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MotionCard } from "@/components/motion/MotionCard";
+import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, X } from "lucide-react";
 import { slideUpVariants } from "@/components/motion";
@@ -37,7 +37,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
   };
 
   return (
-    <MotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
+    <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
       <div className="flex items-center gap-2 mb-4">
         <Calendar className="w-5 h-5 text-primary" />
         <h3 className="text-lg font-semibold text-foreground">Lịch học đã chọn</h3>
@@ -91,7 +91,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
           </p>
         </div>
       )}
-    </MotionCard>
+    </EBMotionCard>
   );
 };
 

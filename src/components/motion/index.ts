@@ -1,5 +1,5 @@
 // Motion Components
-export { MotionCard } from "./MotionCard";
+export { EBMotionCard } from "./EBMotionCard";
 export { MotionContainer, MotionItem } from "./MotionContainer";
 
 // Re-export motion constants for convenience
@@ -22,4 +22,4 @@ export {
 } from "@/common/constants/motion/cardMotion.constant";
 
 // Types
-export type { MotionCardProps } from "./MotionCard";
+export type { MotionCardProps } from "./EBMotionCard";
