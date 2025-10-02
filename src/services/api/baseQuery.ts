@@ -79,6 +79,7 @@ export const baseQueryWithReauth: BaseQueryFn<
 
   // If unauthorized (401), try to refresh token
   if (!isPublic && result.error && result.error.status === 401) {
+    
     // If already refreshing, queue this request
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
@@ -117,18 +118,18 @@ export const baseQueryWithReauth: BaseQueryFn<
       isRefreshing = true;
 
       try {
-        const refreshResult = await baseQuery(
-          {
-            url: API_ENDPOINTS.AUTH.REFRESH,
-            method: "POST",
-            body: { refreshToken: refreshToken },
+        // Call refresh endpoint directly without baseQuery to avoid recursion
+        const refreshResult = await fetch(`${API_CONFIG.BASE_URL}/${API_ENDPOINTS.AUTH.REFRESH}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          api,
-          extraOptions
-        );
+          body: JSON.stringify({ refreshToken: refreshToken }),
+        });
 
-        if (refreshResult.data) {
-          const responseData = refreshResult.data as any;
+
+        if (refreshResult.ok) {
+          const responseData = await refreshResult.json();
 
           const newAccessToken = responseData.data?.accessToken || responseData.data?.access_token;
           const newRefreshToken =
@@ -169,7 +170,8 @@ export const baseQueryWithReauth: BaseQueryFn<
             redirectToLogin();
           }
         } else {
-          processQueue(refreshResult.error, null);
+          const errorData = await refreshResult.json().catch(() => ({}));
+          processQueue(errorData, null);
           await StorageService.clearAuthData();
           redirectToLogin();
         }
