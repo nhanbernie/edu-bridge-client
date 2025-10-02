@@ -38,23 +38,23 @@ function MyComponent() {
 }
 ```
 
-### 2. Using the LanguageSelector Component
+### 2. Using the EBLanguageSelector Component
 
 ```tsx
-import LanguageSelector from '@/components/common/LanguageSelector';
+import EBLanguageSelector from '@/components/common/EBLanguageSelector';
 
-function Header() {
+function EBHeader() {
   return (
     <header>
       <nav>
         {/* Compact variant (default) */}
-        <LanguageSelector />
+        <EBLanguageSelector />
         
         {/* Icon only variant */}
-        <LanguageSelector variant="icon-only" />
+        <EBLanguageSelector variant="icon-only" />
         
         {/* With custom styling */}
-        <LanguageSelector 
+        <EBLanguageSelector 
           variant="compact" 
           className="border-2 border-blue-500" 
         />
@@ -129,7 +129,7 @@ function ItemList({ count }) {
 ## Adding New Languages
 
 1. Create a new translation file in `src/i18n/locales/[language-code].json`
-2. Add the language to the `languages` array in `src/components/common/LanguageSelector.tsx`
+2. Add the language to the `languages` array in `src/components/common/EBLanguageSelector.tsx`
 3. Import and add to resources in `src/i18n/index.ts`
 
 ## Best Practices
@@ -156,4 +156,4 @@ function ItemList({ count }) {
 2. **Browser language** (navigator.language)
 3. **Fallback** (English)
 
-The language preference is automatically saved when changed via the LanguageSelector component.
+The language preference is automatically saved when changed via the EBLanguageSelector component.
