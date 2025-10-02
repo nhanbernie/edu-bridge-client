@@ -122,7 +122,7 @@ const FeatureSection = () => {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section EBHeader */}
         <div className="text-center space-y-6 mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Tại Sao Chọn Chúng Tôi</h2>
           <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">

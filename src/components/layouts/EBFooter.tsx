@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const Footer = () => {
+const EBFooter = () => {
   const [email, setEmail] = useState("");
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Links */}
+        {/* EBFooter Links */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div className="space-y-4">
@@ -169,4 +169,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default EBFooter;

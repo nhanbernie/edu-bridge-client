@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Search, MessageSquare, Menu, Globe } from "lucide-react";
-import { EBUserMenu } from "@/components/common";
-import LanguageSelector from "../common/LanguageSelector";
-import MobileMenu from "./components/MobileMenu";
+import EBLanguageSelector from "../common/EBLanguageSelector";
+import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
 import { navigationItems, NavItem } from "@/constants/navigate.constant";
-import Navigation from "./components/Navigation";
+import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
-import { EBThemeToggle, EBLogo } from "@/components/common/";
+import { EBThemeToggle, EBLogo, EBUserMenu } from "@/components/common/";
 import { ButtonAction } from "../motion/ButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig } from "./types";
 
@@ -23,13 +22,6 @@ interface HeaderProps {
   headerConfig?: HeaderConfig;
 }
 
-const actionButtonItems = {
-  icon: <Search size={20} />,
-  message: <MessageSquare size={20} />,
-  globe: <Globe size={20} />,
-  user: <EBUserMenu />,
-  menu: <Menu size={20} />,
-};
 
 // Action buttons component
 const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonProps) => (
@@ -65,7 +57,7 @@ const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonP
   </div>
 );
 
-// Custom Navigation component for headerConfig
+// Custom EBNavigation component for headerConfig
 const CustomNavigation = ({ items }: { items: HeaderItem[] }) => (
   <div className="hidden md:flex items-center gap-6">
     {items.map((item) => (
@@ -90,8 +82,8 @@ const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
   </button>
 );
 
-// Main Header component
-const Header = ({ showMessage, headerConfig }: HeaderProps) => {
+// Main EBHeader component
+const EBHeader = ({ showMessage, headerConfig }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -124,12 +116,12 @@ const Header = ({ showMessage, headerConfig }: HeaderProps) => {
           <div className="flex items-center justify-between h-16">
             <Logo />
 
-            {/* Navigation - Use headerConfig if provided, otherwise use default */}
+            {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
             {headerConfig ? (
               <CustomNavigation items={headerConfig.items} />
             ) : (
               <nav className="hidden md:flex items-center gap-8">
-                <Navigation items={navigationItems} />
+                <EBNavigation items={navigationItems} />
               </nav>
             )}
 
@@ -146,7 +138,7 @@ const Header = ({ showMessage, headerConfig }: HeaderProps) => {
       </motion.header>
 
       {/* Mobile Menu */}
-      <MobileMenu
+      <EBMobileMenu
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
         navigationItems={navigationItems}
@@ -155,4 +147,4 @@ const Header = ({ showMessage, headerConfig }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default EBHeader;

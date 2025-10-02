@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import AuthLayout from "@/components/layouts/AuthLayout";
+import EBAuthLayout from "@/components/layouts/EBAuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
 import useForgotPasswordFlow from "./hooks/useForgotPasswordFlow";
 
@@ -56,7 +56,7 @@ const ForgotPasswordFeature = () => {
   const stepContent = getStepContent();
 
   return (
-    <AuthLayout>
+    <EBAuthLayout>
       <div className="w-full max-w-md">
         <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
           <div className="text-center mb-8">
@@ -84,7 +84,7 @@ const ForgotPasswordFeature = () => {
           )}
         </div>
       </div>
-    </AuthLayout>
+    </EBAuthLayout>
   );
 };
 

@@ -14,7 +14,7 @@ import {
   Share2,
   Home,
 } from "lucide-react";
-import { MainLayout } from "@/components/layouts";
+import { EBMainLayout } from "@/components/layouts";
 import { MotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
 
 const BookingSuccess = () => {
@@ -60,7 +60,7 @@ const BookingSuccess = () => {
   };
 
   return (
-    <MainLayout footer={false}>
+    <EBMainLayout footer={false}>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12">
         {/* Confetti Effect */}
         {confetti && (
@@ -303,7 +303,7 @@ const BookingSuccess = () => {
           </MotionContainer>
         </div>
       </div>
-    </MainLayout>
+    </EBMainLayout>
   );
 };
 

@@ -85,7 +85,7 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-card rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+        {/* EBHeader */}
         <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center space-x-2">
             <Filter className="w-5 h-5 text-primary" />
@@ -214,7 +214,7 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
           </div>
         </div>
 
-        {/* Footer */}
+        {/* EBFooter */}
         <div className="flex items-center justify-between p-6 border-t border-border">
           <button
             onClick={handleReset}

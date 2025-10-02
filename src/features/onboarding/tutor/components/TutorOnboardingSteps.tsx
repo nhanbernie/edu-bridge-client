@@ -10,7 +10,7 @@ interface StepProps {
 const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
   return (
     <div className="w-full mb-12">
-      {/* Progress Header */}
+      {/* Progress EBHeader */}
       <div className="text-center mb-8">
         <motion.h1
           className="text-3xl font-bold text-foreground mb-2"

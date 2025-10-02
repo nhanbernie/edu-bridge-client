@@ -449,7 +449,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      {/* EBHeader */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">

@@ -93,7 +93,7 @@ const EBCalendar: React.FC<EBCalendarProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* Month Navigation */}
+      {/* Month EBNavigation */}
       {showNavigation && (
         <div className="flex items-center justify-between mb-4">
           <Button

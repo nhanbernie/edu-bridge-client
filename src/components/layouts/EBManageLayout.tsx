@@ -4,17 +4,17 @@ import React, { ReactNode, useState } from "react";
 import { usePathname } from "next/navigation";
 import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
-import LanguageSelector from "@/components/common/LanguageSelector";
+import EBLanguageSelector from "@/components/common/EBLanguageSelector";
 import { Search, Bell, Menu, X, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { sidebarItems, SidebarItem } from "@/constants/navigate.constant";
-import UserMenu from "./components/UserMenu";
+import { EBUserMenu } from "@/components/common";
 
 interface AdminLayoutProps {
   children: ReactNode;
   sideBarRouter?: SidebarItem[];
 }
 
-const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = sidebarItems }) => {
+const EBManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = sidebarItems }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const pathname = usePathname();
 
@@ -76,7 +76,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
             </button>
           </div>
 
-          {/* Navigation */}
+          {/* EBNavigation */}
           <nav className="flex-1">
             <div className="space-y-2">
               {sideBarRouter.map((item) => {
@@ -176,7 +176,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
             `}
             >
               <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                <LanguageSelector variant="icon-only" />
+                <EBLanguageSelector variant="icon-only" />
               </div>
               {sidebarExpanded && (
                 <span className="font-medium text-sm whitespace-nowrap text-gray-700 dark:text-gray-300">
@@ -189,7 +189,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
 
         {/* Main content */}
         <div className="flex-1 flex flex-col h-screen">
-          {/* Header - Fixed */}
+          {/* EBHeader - Fixed */}
           <header className="h-20 flex items-center justify-end px-6 lg:px-8 bg-transparent flex-shrink-0">
             {/* Right side - Search, Notifications, User */}
             <div className="flex items-center gap-3">
@@ -210,7 +210,7 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
               </button>
 
               {/* User Menu */}
-              <UserMenu />
+              <EBUserMenu />
             </div>
           </header>
 
@@ -224,4 +224,4 @@ const ManageLayout: React.FC<AdminLayoutProps> = ({ children, sideBarRouter = si
   );
 };
 
-export default ManageLayout;
+export default EBManageLayout;

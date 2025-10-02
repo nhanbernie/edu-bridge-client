@@ -269,7 +269,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column - Calendar */}
         <div>
-          {/* Month Navigation */}
+          {/* Month EBNavigation */}
           <div className="flex items-center justify-between mb-4">
             <Button
               variant="ghost"

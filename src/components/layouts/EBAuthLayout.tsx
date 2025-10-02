@@ -6,7 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { EBLogo, EBThemeToggle } from "@/components/common";
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-100 via-teal-50 to-cyan-50 relative overflow-hidden">
       {/* Background decorative elements */}
@@ -67,4 +67,4 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default AuthLayout;
+export default EBAuthLayout;

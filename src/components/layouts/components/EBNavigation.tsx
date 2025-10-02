@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-const Navigation = ({ items }: { items: any[] }) => {
+const EBNavigation = ({ items }: { items: any[] }) => {
   return (
     <>
       {items.map((item, index) => (
@@ -33,4 +33,4 @@ const Navigation = ({ items }: { items: any[] }) => {
   );
 };
 
-export default Navigation;
+export default EBNavigation;

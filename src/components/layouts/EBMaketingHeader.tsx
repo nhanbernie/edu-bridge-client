@@ -7,8 +7,14 @@ import { navigateMarketItems } from "@/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
 import Link from "next/link";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
-import Navigation from "./Navigation";
-const MaketingHeader = () => {
+import EBNavigation from "./components/EBNavigation";
+import { HeaderConfig } from "./types";
+
+interface MaketingHeaderProps {
+  headerConfig?: HeaderConfig;
+}
+
+const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -36,10 +42,24 @@ const MaketingHeader = () => {
           <div className="flex items-center justify-between h-16">
             <EBLogo />
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Navigation items={navigateMarketItems} />
-            </nav>
+            {/* Desktop EBNavigation */}
+            {headerConfig ? (
+              <nav className="hidden md:flex items-center space-x-6">
+                {headerConfig.items.map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={item.onClick || (() => item.href && (window.location.href = item.href))}
+                    className="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            ) : (
+              <nav className="hidden md:flex items-center space-x-8">
+                <EBNavigation items={navigateMarketItems} />
+              </nav>
+            )}
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
@@ -55,26 +75,38 @@ const MaketingHeader = () => {
                 <Globe className="w-5 h-5" />
               </motion.button>
 
-              {/* Auth Buttons */}
-              <div className="hidden sm:flex items-center space-x-3">
-                <Link href="/login">
+              {/* Auth Buttons / CTA */}
+              {headerConfig?.cta ? (
+                <div className="hidden sm:flex items-center">
                   <EBButton
-                    variant="ghost"
-                    size="sm"
-                    className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                  >
-                    Log in
-                  </EBButton>
-                </Link>
-                <Link href="/register">
-                  <EBButton
+                    onClick={headerConfig.cta.onClick}
                     size="sm"
                     className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Đăng ký
+                    {headerConfig.cta.label}
                   </EBButton>
-                </Link>
-              </div>
+                </div>
+              ) : (
+                <div className="hidden sm:flex items-center space-x-3">
+                  <Link href="/login">
+                    <EBButton
+                      variant="ghost"
+                      size="sm"
+                      className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                    >
+                      Log in
+                    </EBButton>
+                  </Link>
+                  <Link href="/register">
+                    <EBButton
+                      size="sm"
+                      className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      Đăng ký
+                    </EBButton>
+                  </Link>
+                </div>
+              )}
 
               {/* Mobile Menu Button */}
               <motion.button
@@ -103,7 +135,7 @@ const MaketingHeader = () => {
         }`}
       >
         <div className="p-6 space-y-6">
-          {/* Mobile Header */}
+          {/* Mobile EBHeader */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
@@ -119,7 +151,7 @@ const MaketingHeader = () => {
             </button>
           </div>
 
-          {/* Mobile Navigation */}
+          {/* Mobile EBNavigation */}
           <nav className="space-y-2">
             {navigateMarketItems.map((item, index) => (
               <motion.div
@@ -196,4 +228,4 @@ const MaketingHeader = () => {
   );
 };
 
-export default MaketingHeader;
+export default EBMaketingHeader;

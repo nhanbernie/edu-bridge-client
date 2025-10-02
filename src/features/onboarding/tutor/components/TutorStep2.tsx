@@ -463,7 +463,7 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* EBHeader */}
       <div className="text-center md:text-left">
         <h2 className="text-3xl font-bold text-gray-900 mb-3">Tải lên hồ sơ</h2>
         <p className="text-gray-600 text-lg">

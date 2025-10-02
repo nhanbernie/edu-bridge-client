@@ -1,4 +1,4 @@
-import { MainLayout } from "@/components/layouts";
+import { EBMainLayout } from "@/components/layouts";
 
 interface OnboardingLayoutProps {
   children: React.ReactNode;

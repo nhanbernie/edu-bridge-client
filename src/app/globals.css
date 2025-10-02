@@ -240,7 +240,7 @@
   color: hsl(var(--muted-foreground));
 }
 
-/* Custom Header Styles */
+/* Custom EBHeader Styles */
 .backdrop-blur-header {
   backdrop-filter: blur(17px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);

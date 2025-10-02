@@ -35,7 +35,7 @@ const CreateSchedulesPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-6 px-4">
-        {/* Header */}
+        {/* EBHeader */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-6 w-6 text-emerald-600" />

@@ -1,6 +1,8 @@
+"use client"
+
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import EBHeader from "./EBHeader";
+import EBFooter from "./EBFooter";
 import { useRouter } from "next/navigation";
 import { HeaderConfig, BuildHeaderFunction } from "./types";
 
@@ -10,22 +12,20 @@ interface MainLayoutProps {
   buildHeader?: BuildHeaderFunction;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, footer, buildHeader }) => {
+const EBMainLayout: React.FC<MainLayoutProps> = ({ children, footer, buildHeader }) => {
   const router = useRouter();
   
-  // Create the go function for navigation
   const go = (path: string) => router.push(path);
   
-  // Build header config if provided
   const headerConfig = buildHeader ? buildHeader({ go }) : undefined;
 
   return (
     <div className="min-h-screen">
-      <Header headerConfig={headerConfig} />
+      <EBHeader headerConfig={headerConfig} />
       <main className="flex-1">{children}</main>
-      {footer && <Footer />}
+      {footer && <EBFooter />}
     </div>
   );
 };
 
-export default MainLayout;
+export default EBMainLayout;

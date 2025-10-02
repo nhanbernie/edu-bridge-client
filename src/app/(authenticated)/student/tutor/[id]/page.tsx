@@ -1,6 +1,6 @@
 import React from "react";
 import DetailTutorPage from "@/features/student/tutor/DetailTutorPage";
-import MainLayout from "@/components/layouts/MainLayout";
+import EBMainLayout from "@/components/layouts/EBMainLayout";
 
 interface DetailTutorProps {
   params: Promise<{
@@ -12,9 +12,9 @@ const DetailTutor = async ({ params }: DetailTutorProps) => {
   const { id } = await params;
 
   return (
-    <MainLayout footer={true}>
+    <EBMainLayout footer={true}>
       <DetailTutorPage tutorId={id} />
-    </MainLayout>
+    </EBMainLayout>
   );
 };
 

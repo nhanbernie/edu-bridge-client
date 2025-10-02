@@ -1,6 +1,6 @@
 "use client";
 
-import { MainLayout } from "@/components/layouts";
+import { EBMainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { MotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
@@ -21,7 +21,7 @@ const HomeFeature = () => {
   useGetAndStoreUser({ userId: user?.userId });
 
   return (
-    <MainLayout footer={true}>
+    <EBMainLayout footer={true}>
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden pt-32">
         {/* Logo and Title Section */}
         <div className="max-w-6xl mx-auto p-8 text-center">
@@ -127,7 +127,7 @@ const HomeFeature = () => {
           )}
         </div>
       </div>
-    </MainLayout>
+    </EBMainLayout>
   );
 };
 

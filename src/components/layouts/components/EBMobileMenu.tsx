@@ -1,6 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
-import LanguageSelector from "@/commonUI/LanguageSelector";
+import EBLanguageSelector from "@/components/common/EBLanguageSelector";
 
 interface NavItem {
   label: string;
@@ -14,7 +14,7 @@ interface MobileMenuProps {
   navigationItems: NavItem[];
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationItems }) => {
+const EBMobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationItems }) => {
   if (!isOpen) return null;
 
   return (
@@ -24,7 +24,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationItem
 
       {/* Mobile Menu */}
       <div className="fixed top-0 right-0 h-full w-64 bg-slate-800 z-50 md:hidden transform transition-transform">
-        {/* Header */}
+        {/* EBHeader */}
         <div className="flex items-center justify-between p-4 border-b border-slate-700">
           <span className="text-white font-semibold">Menu</span>
           <button
@@ -35,7 +35,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationItem
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* EBNavigation */}
         <nav className="p-4">
           <ul className="space-y-2">
             {navigationItems.map((item) => (
@@ -58,11 +58,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationItem
 
         {/* Language Selector */}
         <div className="p-4 border-t border-slate-700">
-          <LanguageSelector />
+          <EBLanguageSelector />
         </div>
       </div>
     </>
   );
 };
 
-export default MobileMenu;
+export default EBMobileMenu;

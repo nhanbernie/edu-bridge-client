@@ -16,12 +16,12 @@ const languages: Language[] = [
   { code: "en", name: "English", flag: "🇺🇸" },
 ];
 
-interface LanguageSelectorProps {
+interface EBLanguageSelectorProps {
   className?: string;
   variant?: "default" | "compact" | "icon-only";
 }
 
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className, variant = "compact" }) => {
+const EBLanguageSelector: React.FC<EBLanguageSelectorProps> = ({ className, variant = "compact" }) => {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -68,4 +68,4 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className, variant 
   );
 };
 
-export default LanguageSelector;
+export default EBLanguageSelector;

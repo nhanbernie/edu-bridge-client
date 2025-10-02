@@ -28,7 +28,7 @@ const LoginCard = () => {
   return (
     <div className="w-full max-w-md">
       <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
-        {/* Header */}
+        {/* EBHeader */}
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Chào mừng đến với EduBridge</h3>
         </div>
@@ -88,7 +88,7 @@ const LoginCard = () => {
           </EBButton>
         </form>
 
-        {/* Footer */}
+        {/* EBFooter */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Chưa có tài khoản?{" "}

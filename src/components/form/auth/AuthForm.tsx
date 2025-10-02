@@ -126,7 +126,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
           </button>
         </div>
 
-        {/* Footer text for login */}
+        {/* EBFooter text for login */}
         {type === "login" && (
           <div className="mt-4 text-center">
             <span className="text-gray-600 text-sm">
@@ -142,7 +142,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
           </div>
         )}
 
-        {/* Footer text for register */}
+        {/* EBFooter text for register */}
         {type === "register" && (
           <div className="mt-4 text-center">
             <span className="text-gray-600 text-sm">

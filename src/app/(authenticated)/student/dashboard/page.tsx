@@ -1,11 +1,11 @@
 import React from "react";
 import StudentDashboardPage from "@/features/student/dashboard/StudentDashboardPage";
-import MainLayout from "@/components/layouts/MainLayout";
+import EBMainLayout from "@/components/layouts/EBMainLayout";
 const StudentDashboard = () => {
   return (
-    <MainLayout footer={true}>
+    <EBMainLayout footer={true}>
       <StudentDashboardPage />
-    </MainLayout>
+    </EBMainLayout>
   );
 };
 

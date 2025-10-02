@@ -1,12 +1,12 @@
-import { LandingLayout } from "@/components/layouts";
+import { EBLandingLayout } from "@/components/layouts";
 import { CTASection, FeatureSection, HeroSection } from "./components";
 const MarketingFeature = () => {
   return (
-    <LandingLayout>
+    <EBLandingLayout>
       <HeroSection />
       <FeatureSection />
       <CTASection />
-    </LandingLayout>
+    </EBLandingLayout>
   );
 };
 

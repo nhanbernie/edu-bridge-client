@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { RoleGuard } from "@/components/guards";
-import AdminLayout from "@/components/layouts/ManageLayout";
+import AdminLayout from "@/components/layouts/EBManageLayout";
 import {
   useGetAllUsersQuery,
   useGetUserQuery,
@@ -231,7 +231,7 @@ const AdminPage = () => {
     <RoleGuard allowedRoles={["ADMIN"]} requiredStatus={["APPROVED"]}>
       <AdminLayout>
         <MotionContainer className="space-y-8" variants={staggerContainer}>
-          {/* Header */}
+          {/* EBHeader */}
           <MotionItem variants={adminPageVariants}>
             <div className="flex items-center justify-between">
               <div>
