@@ -257,7 +257,6 @@ export interface DeleteUserResponse {
 }
 
 // Onboarding Response types
-// Onboarding Response
 export interface OnboardingResponse {
   message: string;
   userData: any;

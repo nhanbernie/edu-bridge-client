@@ -1,10 +1,27 @@
 import { UserDto } from "../api/type";
+
 const STORAGE_KEYS = {
   ACCESS_TOKEN: "access_token",
   REFRESH_TOKEN: "refresh_token",
   USER_DATA: "user_data",
   EXPIRES_AT: "expires_at",
 } as const;
+
+// RAM Cache để tối ưu performance
+interface TokenCache {
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiresAt: number | null;
+  lastUpdated: number;
+}
+
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL
+let tokenCache: TokenCache = {
+  accessToken: null,
+  refreshToken: null,
+  expiresAt: null,
+  lastUpdated: 0
+};
 
 export interface TokenData {
   access_token: string;
@@ -61,10 +78,28 @@ class BrowserStorage {
   }
 }
 
+// Helper functions for cache management
+const isCacheValid = (): boolean => {
+  const now = Date.now();
+  return (now - tokenCache.lastUpdated) < CACHE_TTL;
+};
+
+const updateCache = (accessToken: string | null, refreshToken: string | null, expiresAt: number | null): void => {
+  tokenCache = {
+    accessToken,
+    refreshToken,
+    expiresAt,
+    lastUpdated: Date.now()
+  };
+};
+
 export class StorageService {
   static async setAccessToken(token: string): Promise<void> {
     try {
       BrowserStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+      // Update cache
+      tokenCache.accessToken = token;
+      tokenCache.lastUpdated = Date.now();
     } catch (error) {
       console.error("Error saving access token:", error);
       throw error;
@@ -73,7 +108,21 @@ export class StorageService {
 
   static async getAccessToken(): Promise<string | null> {
     try {
-      return BrowserStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+      // Check cache first
+      if (isCacheValid() && tokenCache.accessToken) {
+        return tokenCache.accessToken;
+      }
+
+      // Fallback to storage
+      const token = BrowserStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+      
+      // Update cache
+      if (token) {
+        tokenCache.accessToken = token;
+        tokenCache.lastUpdated = Date.now();
+      }
+      
+      return token;
     } catch (error) {
       console.error("Error getting access token:", error);
       return null;
@@ -83,6 +132,9 @@ export class StorageService {
   static async setRefreshToken(token: string): Promise<void> {
     try {
       BrowserStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
+      // Update cache
+      tokenCache.refreshToken = token;
+      tokenCache.lastUpdated = Date.now();
     } catch (error) {
       console.error("Error saving refresh token:", error);
       throw error;
@@ -91,7 +143,21 @@ export class StorageService {
 
   static async getRefreshToken(): Promise<string | null> {
     try {
-      return BrowserStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+      // Check cache first
+      if (isCacheValid() && tokenCache.refreshToken) {
+        return tokenCache.refreshToken;
+      }
+
+      // Fallback to storage
+      const token = BrowserStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+      
+      // Update cache
+      if (token) {
+        tokenCache.refreshToken = token;
+        tokenCache.lastUpdated = Date.now();
+      }
+      
+      return token;
     } catch (error) {
       console.error("Error getting refresh token:", error);
       return null;
@@ -100,12 +166,14 @@ export class StorageService {
 
   static async setTokenData(tokenData: TokenData): Promise<void> {
     try {
+      const expiresAt = Date.now() + tokenData.expires_in * 1000;
+      
       BrowserStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokenData.access_token);
       BrowserStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokenData.refresh_token);
-      BrowserStorage.setItem(
-        STORAGE_KEYS.EXPIRES_AT,
-        (Date.now() + tokenData.expires_in * 1000).toString()
-      );
+      BrowserStorage.setItem(STORAGE_KEYS.EXPIRES_AT, expiresAt.toString());
+      
+      // Update cache
+      updateCache(tokenData.access_token, tokenData.refresh_token, expiresAt);
     } catch (error) {
       console.error("Error saving token data:", error);
       throw error;
@@ -174,9 +242,23 @@ export class StorageService {
       BrowserStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
       BrowserStorage.removeItem(STORAGE_KEYS.USER_DATA);
       BrowserStorage.removeItem(STORAGE_KEYS.EXPIRES_AT);
+      
+      // Clear cache
+      updateCache(null, null, null);
     } catch (error) {
       console.error("Error clearing auth data:", error);
     }
+  }
+
+  // Debug method để kiểm tra cache
+  static getCacheInfo() {
+    return {
+      hasAccessToken: !!tokenCache.accessToken,
+      hasRefreshToken: !!tokenCache.refreshToken,
+      isCacheValid: isCacheValid(),
+      lastUpdated: new Date(tokenCache.lastUpdated).toISOString(),
+      expiresAt: tokenCache.expiresAt ? new Date(tokenCache.expiresAt).toISOString() : null
+    };
   }
 
   static async isAuthenticated(): Promise<boolean> {

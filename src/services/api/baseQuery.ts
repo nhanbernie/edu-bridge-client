@@ -4,189 +4,206 @@ import {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { API_CONFIG, API_ENDPOINTS, PUBLIC_ENDPOINTS } from "@/common/constants/endpoint.constant";
+import { Mutex } from 'async-mutex';
+import { API_CONFIG, API_ENDPOINTS } from "@/common/constants/endpoint.constant";
 import { StorageService } from "@/services/storage/secureStorage.service";
+import { joinUrl } from "@/utils/joinUrl";
+import { isPublicPath, shouldSetContentType } from "@/utils/isPublicPath";
 
-const getUrlFromArgs = (arg: any) => {
+// Mutex để đảm bảo chỉ có 1 refresh token request tại một thời điểm
+const refreshMutex = new Mutex();
+
+/**
+ * Extract URL from RTK Query args
+ */
+const getUrlFromArgs = (arg: any): string => {
   if (typeof arg === "string") return arg;
-  if (typeof arg === "object" && arg.url) return arg.url;
+  if (typeof arg === "object" && arg?.url) return arg.url;
   return "";
 };
 
-const redirectToLogin = () => {
+/**
+ * Extract HTTP method from RTK Query args
+ */
+const getMethodFromArgs = (arg: any): string => {
+  if (typeof arg === "object" && arg?.method) return arg.method;
+  return "GET";
+};
+
+/**
+ * Extract body from RTK Query args
+ */
+const getBodyFromArgs = (arg: any): any => {
+  if (typeof arg === "object" && arg?.body !== undefined) return arg.body;
+  return undefined;
+};
+
+/**
+ * Redirect to login page
+ */
+const redirectToLogin = (): void => {
   if (typeof window !== "undefined") {
     window.location.href = "/login";
   }
 };
 
-// Base query with keychain
-const baseQuery = fetchBaseQuery({
-  baseUrl: API_CONFIG.BASE_URL,
-  prepareHeaders: async (headers, { endpoint, ...rest }) => {
-    const url = getUrlFromArgs(rest.arg);
-    const isPublic = PUBLIC_ENDPOINTS.some((ep) => url.includes(ep));
-
-    if (!isPublic) {
-      const token = await StorageService.getAccessToken();
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+/**
+ * Create base query với optimized headers
+ */
+const createBaseQuery = (accessToken?: string) => {
+  return fetchBaseQuery({
+    baseUrl: API_CONFIG.BASE_URL,
+    prepareHeaders: async (headers, { endpoint, ...rest }) => {
+      const url = getUrlFromArgs(rest.arg);
+      const method = getMethodFromArgs(rest.arg);
+      const body = getBodyFromArgs(rest.arg);
+      
+      // Chỉ set Authorization cho non-public endpoints
+      if (!isPublicPath(url)) {
+        const token = accessToken || await StorageService.getAccessToken();
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
       }
-    }
 
-    // Check if body is FormData, don't set Content-Type for FormData
-    const isFormData =
-      rest.arg && typeof rest.arg === "object" && rest.arg.body instanceof FormData;
+      // Chỉ set Content-Type khi cần thiết (không phải GET/DELETE và không phải FormData)
+      if (shouldSetContentType(method, body)) {
+        headers.set("Content-Type", "application/json");
+      }
 
-    if (!isFormData) {
-      headers.set("Content-Type", "application/json");
-    }
-
-    headers.set("Accept", "application/json");
-    return headers;
-  },
-});
-
-// Track refresh token requests to prevent multiple simultaneous calls
-let isRefreshing = false;
-let failedQueue: Array<{
-  resolve: (value: any) => void;
-  reject: (error: any) => void;
-}> = [];
-
-const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (error) {
-      reject(error);
-    } else {
-      resolve(token);
-    }
+      // Always set Accept header
+      headers.set("Accept", "application/json");
+      
+      return headers;
+    },
   });
-
-  failedQueue = [];
 };
 
-// Base query with refresh token interceptor
+/**
+ * Refresh access token using refresh token
+ */
+const refreshAccessToken = async (): Promise<string | null> => {
+  const refreshToken = await StorageService.getRefreshToken();
+  
+  if (!refreshToken) {
+    throw new Error("No refresh token available");
+  }
+
+  const refreshUrl = joinUrl(API_CONFIG.BASE_URL || '', API_ENDPOINTS.AUTH.REFRESH);
+  
+  const response = await fetch(refreshUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    },
+    body: JSON.stringify({ refreshToken }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Refresh failed: ${response.status}`);
+  }
+
+  const responseData = await response.json();
+  const newAccessToken = responseData.data?.accessToken || responseData.data?.access_token;
+  const newRefreshToken = responseData.data?.refreshToken || responseData.data?.refresh_token;
+  const expiresIn = responseData.data?.expires_in || 3600;
+
+  if (!newAccessToken) {
+    throw new Error("No access token in refresh response");
+  }
+
+  // Update tokens in StorageService
+  await StorageService.setTokenData({
+    access_token: newAccessToken,
+    refresh_token: newRefreshToken || refreshToken, // Keep old refresh token if new one not provided
+    expires_in: expiresIn
+  });
+
+  return newAccessToken;
+};
+
+/**
+ * Check if error should trigger refresh
+ */
+const shouldRefreshToken = (error: FetchBaseQueryError): boolean => {
+  if (typeof error.status === 'number') {
+    // 401: Unauthorized, 403: Forbidden, 419: Authentication Timeout, 440: Login Timeout
+    return [401, 403, 419, 440].includes(error.status);
+  }
+  return false;
+};
+
+/**
+ * Base query with automatic token refresh
+ */
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  // Determine if this is a public endpoint
-  const url = typeof args === "string" ? args : args.url;
-  const isPublic = PUBLIC_ENDPOINTS.some((ep) => url.includes(ep));
+  const url = getUrlFromArgs(args);
+  
+  // Skip auth logic for public endpoints
+  if (isPublicPath(url)) {
+    const baseQuery = createBaseQuery();
+    return await baseQuery(args, api, extraOptions);
+  }
 
+  // First attempt with current token
+  const baseQuery = createBaseQuery();
   let result = await baseQuery(args, api, extraOptions);
 
-  // If unauthorized (401), try to refresh token
-  if (!isPublic && result.error && result.error.status === 401) {
+  // If request failed with auth error, try to refresh token
+  if (result.error && shouldRefreshToken(result.error)) {
     
-    // If already refreshing, queue this request
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({
-          resolve: async (token: string) => {
-            // Use fresh baseQuery with new token for queued requests
-            const retryResult = await fetchBaseQuery({
-              baseUrl: API_CONFIG.BASE_URL,
-              prepareHeaders: async (headers, { arg }) => {
-                headers.set("Authorization", `Bearer ${token}`);
-
-                // Check if body is FormData, don't set Content-Type for FormData
-                const isFormData = arg && typeof arg === "object" && arg.body instanceof FormData;
-
-                if (!isFormData) {
-                  headers.set("Content-Type", "application/json");
-                }
-
-                headers.set("Accept", "application/json");
-                return headers;
-              },
-            })(args, api, extraOptions);
-
-            resolve(retryResult);
-          },
-          reject: (error: any) => {
-            reject(error);
-          },
-        });
-      });
-    }
-
-    const refreshToken = await StorageService.getRefreshToken();
-
-    if (refreshToken) {
-      isRefreshing = true;
-
-      try {
-        // Call refresh endpoint directly without baseQuery to avoid recursion
-        const refreshResult = await fetch(`${API_CONFIG.BASE_URL}/${API_ENDPOINTS.AUTH.REFRESH}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: refreshToken }),
-        });
-
-
-        if (refreshResult.ok) {
-          const responseData = await refreshResult.json();
-
-          const newAccessToken = responseData.data?.accessToken || responseData.data?.access_token;
-          const newRefreshToken =
-            responseData.data?.refreshToken || responseData.data?.refresh_token;
-
+    // Use mutex to ensure only one refresh happens at a time
+    const release = await refreshMutex.acquire();
+    
+    try {
+      // Check if token was already refreshed by another request
+      const currentToken = await StorageService.getAccessToken();
+      
+      // Try with current token first (might have been refreshed by another request)
+      const retryQuery = createBaseQuery(currentToken || undefined);
+      const retryResult = await retryQuery(args, api, extraOptions);
+      
+      // If still failing, do the actual refresh
+      if (retryResult.error && shouldRefreshToken(retryResult.error)) {
+        try {
+          const newAccessToken = await refreshAccessToken();
+          
           if (newAccessToken) {
-            await StorageService.setTokenData({
-              access_token: newAccessToken,
-              refresh_token: newRefreshToken || refreshToken,
-              expires_in: responseData.data?.expires_in || 3600,
-            });
-
-            // Force a fresh baseQuery call with new token
-            const retryResult = await fetchBaseQuery({
-              baseUrl: API_CONFIG.BASE_URL,
-              prepareHeaders: async (headers, { arg }) => {
-                headers.set("Authorization", `Bearer ${newAccessToken}`);
-
-                // Check if body is FormData, don't set Content-Type for FormData
-                const isFormData = arg && typeof arg === "object" && arg.body instanceof FormData;
-
-                if (!isFormData) {
-                  headers.set("Content-Type", "application/json");
-                }
-
-                headers.set("Accept", "application/json");
-                return headers;
-              },
-            })(args, api, extraOptions);
-
-            result = retryResult;
-
-            // Process queued requests
-            processQueue(null, newAccessToken);
+            // Retry with new token
+            const finalQuery = createBaseQuery(newAccessToken);
+            result = await finalQuery(args, api, extraOptions);
           } else {
-            processQueue(new Error("No access token received"), null);
-            await StorageService.clearAuthData();
-            redirectToLogin();
+            throw new Error("Failed to get new access token");
           }
-        } else {
-          const errorData = await refreshResult.json().catch(() => ({}));
-          processQueue(errorData, null);
+          
+        } catch (refreshError) {
+          console.error("Token refresh failed:", refreshError);
+          
+          // Clear auth data and redirect to login
           await StorageService.clearAuthData();
           redirectToLogin();
+          
+          // Return the original error
+          return result;
         }
-      } catch (error) {
-        processQueue(error, null);
-        await StorageService.clearAuthData();
-        redirectToLogin();
-      } finally {
-        isRefreshing = false;
+      } else {
+        // Token was refreshed by another request, use retry result
+        result = retryResult;
       }
-    } else {
-      await StorageService.clearAuthData();
-      redirectToLogin();
+      
+    } finally {
+      release();
     }
   }
 
   return result;
 };
+
+// Export base query for direct use if needed
+export const baseQuery = createBaseQuery();

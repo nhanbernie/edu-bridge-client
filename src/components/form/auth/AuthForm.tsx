@@ -71,10 +71,9 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
           {INPUT_FIELDS[type].map((field) => {
             if (field.type === "otp") {
               return (
-                <EBOTPInput 
-                  key={field.name} 
+                <EBOTPInput
+                  key={field.name}
                   name={field.name}
-                  label={field.label}
                   length={field.length || 6}
                   autoFocus={true}
                 />
@@ -174,7 +173,11 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
   };
 
   return (
-    <EBFormProvider onSubmit={handleSubmit} validationSchema={validatorSchema[type]} formType={type}>
+    <EBFormProvider
+      onSubmit={handleSubmit}
+      validationSchema={validatorSchema[type]}
+      formType={type}
+    >
       <AuthFormContent />
     </EBFormProvider>
   );
