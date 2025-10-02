@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search, MessageSquare, Menu, Globe } from "lucide-react";
-import UserMenu from "./components/UserMenu";
+import { EBUserMenu } from "@/components/common";
 import LanguageSelector from "../common/LanguageSelector";
 import MobileMenu from "./components/MobileMenu";
 import Logo from "../common/EBLogo";
@@ -11,6 +11,7 @@ import Navigation from "./components/Navigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
 import { ButtonAction } from "../motion/ButtonMotion";
+import { HeaderItem, HeaderCTA, HeaderConfig } from "./types";
 
 interface AcitonButtonProps {
   onMobileMenuToggle: () => void;
@@ -19,13 +20,14 @@ interface AcitonButtonProps {
 
 interface HeaderProps {
   showMessage?: boolean;
+  headerConfig?: HeaderConfig;
 }
 
 const actionButtonItems = {
   icon: <Search size={20} />,
   message: <MessageSquare size={20} />,
   globe: <Globe size={20} />,
-  user: <UserMenu />,
+  user: <EBUserMenu />,
   menu: <Menu size={20} />,
 };
 
@@ -52,7 +54,7 @@ const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonP
 
     <EBThemeToggle />
 
-    <UserMenu />
+    <EBUserMenu />
     {/* Mobile menu button */}
     <button
       onClick={onMobileMenuToggle}
@@ -63,8 +65,33 @@ const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonP
   </div>
 );
 
+// Custom Navigation component for headerConfig
+const CustomNavigation = ({ items }: { items: HeaderItem[] }) => (
+  <div className="hidden md:flex items-center gap-6">
+    {items.map((item) => (
+      <button
+        key={item.key}
+        onClick={item.onClick || (() => item.href && (window.location.href = item.href))}
+        className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
+      >
+        {item.label}
+      </button>
+    ))}
+  </div>
+);
+
+// CTA Button component
+const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
+  <button
+    onClick={cta.onClick}
+    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+  >
+    {cta.label}
+  </button>
+);
+
 // Main Header component
-const Header = ({ showMessage }: HeaderProps) => {
+const Header = ({ showMessage, headerConfig }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -97,12 +124,23 @@ const Header = ({ showMessage }: HeaderProps) => {
           <div className="flex items-center justify-between h-16">
             <Logo />
 
-            <nav className="hidden md:flex items-center gap-8">
-              <Navigation items={navigationItems} />
-            </nav>
+            {/* Navigation - Use headerConfig if provided, otherwise use default */}
+            {headerConfig ? (
+              <CustomNavigation items={headerConfig.items} />
+            ) : (
+              <nav className="hidden md:flex items-center gap-8">
+                <Navigation items={navigationItems} />
+              </nav>
+            )}
 
             {/* Right side - Actions */}
-            <ActionButtons showMessage={showMessage} onMobileMenuToggle={handleMobileMenuToggle} />
+            <div className="flex items-center gap-3">
+              {/* CTA Button if provided */}
+              {headerConfig?.cta && <CTAButton cta={headerConfig.cta} />}
+              
+              {/* Default action buttons */}
+              <ActionButtons showMessage={showMessage} onMobileMenuToggle={handleMobileMenuToggle} />
+            </div>
           </div>
         </div>
       </motion.header>

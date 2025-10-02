@@ -75,10 +75,8 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
         .replace(/(^-|-$)+/g, "");
 
     const addCustom = (label: string) => {
-      console.log("addCustom called with:", label);
       const textToAdd = label.trim();
       if (!textToAdd) {
-        console.log("Empty text, returning");
         return;
       }
       
@@ -86,7 +84,6 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
       const allOptions = [...options, ...customOptions];
       const existing = allOptions.find((o) => o.label.toLowerCase() === textToAdd.toLowerCase());
       if (existing) {
-        console.log("Found existing option:", existing);
         onChange(existing.value);
         setSearchQuery("");
         return;
@@ -96,11 +93,8 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
         ? onCreateOption(textToAdd)
         : { value: `custom:${slugify(textToAdd)}`, label: textToAdd };
       
-      console.log("Creating new option:", option);
-      // Thêm vào customOptions (chỉ cho instance này)
       setCustomOptions((prev) => {
         const newOptions = [...prev, option];
-        console.log("Updated customOptions:", newOptions);
         return newOptions;
       });
       onChange(option.value);
@@ -115,17 +109,6 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
       option.label.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Check if search query doesn't match any existing options
-    const hasNoMatches = searchQuery && filteredOptions.length === 0;
-    
-    console.log("EBSelectField render:", {
-      searchQuery,
-      filteredOptions: filteredOptions.length,
-      hasNoMatches,
-      allowCustom,
-      allOptions: allOptions.length,
-      customOptions: customOptions.length
-    });
 
     return (
       <div className={FORM_FIELD_CONTAINER} ref={ref}>
@@ -173,8 +156,6 @@ export const EBSelectField = forwardRef<HTMLDivElement, EBSelectFieldProps>(
                       {allowCustom ? (
                         <div
                           onClick={() => {
-                            console.log("Add button clicked, searchQuery:", searchQuery);
-                            addCustom(searchQuery);
                           }}
                           className="w-full flex items-center gap-2 p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors cursor-pointer"
                         >
