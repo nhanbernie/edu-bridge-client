@@ -3,9 +3,10 @@ import i18n from "@/i18n";
 export interface IInputFieldProps {
   name: string;
   label?: string;
-  type?: "text" | "password" | "email" | "number";
+  type?: "text" | "password" | "email" | "number" | "otp";
   placeholder?: string;
   className?: string;
+  length?: number; // For OTP input
 }
 
 const getCommonFields = (): IInputFieldProps[] => [
@@ -108,9 +109,9 @@ export const INPUT_FIELDS = {
   verifyOTP: [
     {
       name: "code",
-      type: "text" as const,
+      type: "otp" as const,
       placeholder: "Nhập mã xác thực",
-      label: "Mã xác thực",
+      length: 6,
     },
   ],
   resetPassword: [

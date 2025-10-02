@@ -3,11 +3,12 @@
 import React, { useState } from "react";
 import EBFormProvider from "../EBFormProvider";
 import { EBTextField } from "../EBTextField";
+import { EBOTPInput } from "../EBOTPInput";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import validatorSchema from "@/lib/validator/authValidator";
-import { INPUT_FIELDS, BUTTON_TITLES } from "@/constants/form.constant";
+import { INPUT_FIELDS, BUTTON_TITLES } from "@/common/constants/form.constant";
 
 export interface IAuthFormProps {
   type: "login" | "register" | "forgotPassword" | "verifyOTP" | "resetPassword";
@@ -68,6 +69,17 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
       <div className="w-full">
         <div className="space-y-5">
           {INPUT_FIELDS[type].map((field) => {
+            if (field.type === "otp") {
+              return (
+                <EBOTPInput 
+                  key={field.name} 
+                  name={field.name}
+                  label={field.label}
+                  length={field.length || 6}
+                  autoFocus={true}
+                />
+              );
+            }
             return <EBTextField key={field.name} {...field} />;
           })}
         </div>
