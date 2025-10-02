@@ -65,29 +65,32 @@ const AdminDataTable: React.FC<AdminDataTableProps> = ({ columns, data, isLoadin
   }, [activeTab, data]);
 
   // Memoize tab configurations
-  const tabs: TabConfig[] = useMemo(() => [
-    {
-      key: "pending",
-      label: "Pending Tutors",
-      icon: Clock,
-      color: "orange",
-      count: data.filter((user) => user.role === "TUTOR" && user.status === "PENDING").length,
-    },
-    {
-      key: "approved",
-      label: "Approved Tutors",
-      icon: UserCheck,
-      color: "green",
-      count: data.filter((user) => user.role === "TUTOR" && user.status === "APPROVED").length,
-    },
-    {
-      key: "all",
-      label: "All Users",
-      icon: Users,
-      color: "blue",
-      count: data.length,
-    },
-  ], [data]);
+  const tabs: TabConfig[] = useMemo(
+    () => [
+      {
+        key: "pending",
+        label: "Pending Tutors",
+        icon: Clock,
+        color: "orange",
+        count: data.filter((user) => user.role === "TUTOR" && user.status === "PENDING").length,
+      },
+      {
+        key: "approved",
+        label: "Approved Tutors",
+        icon: UserCheck,
+        color: "green",
+        count: data.filter((user) => user.role === "TUTOR" && user.status === "APPROVED").length,
+      },
+      {
+        key: "all",
+        label: "All Users",
+        icon: Users,
+        color: "blue",
+        count: data.length,
+      },
+    ],
+    [data]
+  );
 
   // Memoize table configuration
   const table = useReactTable({
