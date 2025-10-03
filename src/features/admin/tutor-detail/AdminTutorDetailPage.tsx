@@ -64,9 +64,14 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
 
   // Fetch tutor data
   const { data: tutorData, isLoading: isLoadingTutor } = useGetUserQuery({ userId: tutorId });
-  const { data: verificationDocsData, isLoading: isLoadingDocs } = useGetVerificationDocsQuery({
-    tutorId,
-  });
+  const { data: verificationDocsData, isLoading: isLoadingDocs } = useGetVerificationDocsQuery(
+    {
+      tutorId,
+    },
+    {
+      skip: !tutorId,
+    }
+  );
   const [verifyAllDocuments] = useVerifyAllDocumentsMutation();
 
   const { handleApproveTutor, handleRejectTutor } = useAdminActions();
@@ -220,40 +225,42 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3">
-              {tutor.status === "PENDING" && (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => setShowRejectModal(true)}
-                    className="text-gray-600 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 dark:text-gray-300 transition-colors"
-                  >
-                    <X className="w-4 h-4 mr-2" />
-                    Reject
-                  </Button>
-                  <Button
-                    onClick={() => setShowApprovalModal(true)}
-                    className="bg-green-600 hover:bg-green-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    <Check className="w-4 h-4 mr-2" />
-                    Approve
-                  </Button>
-                </>
-              )}
-              {tutor.status === "APPROVED" && (
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="font-medium">Approved</span>
-                </div>
-              )}
-              {tutor.status === "REJECTED" && (
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <XCircle className="w-5 h-5" />
-                  <span className="font-medium">Rejected</span>
-                </div>
-              )}
-            </div>
+            {/* Action Buttons (Only for Tutors) */}
+            {tutor.role === "TUTOR" && (
+              <div className="flex items-center gap-3">
+                {tutor.status === "PENDING" && (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowRejectModal(true)}
+                      className="text-gray-600 border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600 dark:text-gray-300 transition-colors"
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Reject
+                    </Button>
+                    <Button
+                      onClick={() => setShowApprovalModal(true)}
+                      className="bg-green-600 hover:bg-green-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
+                    >
+                      <Check className="w-4 h-4 mr-2" />
+                      Approve
+                    </Button>
+                  </>
+                )}
+                {tutor.status === "APPROVED" && (
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-medium">Approved</span>
+                  </div>
+                )}
+                {tutor.status === "REJECTED" && (
+                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                    <XCircle className="w-5 h-5" />
+                    <span className="font-medium">Rejected</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -401,96 +408,97 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
             )}
           </div>
 
-          {/* Right Column - Verification Documents */}
-          <div className="lg:col-span-2">
-            <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
-              <CardHeader className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
-                <CardTitle className="flex items-center gap-3 text-gray-900 dark:text-white">
-                  <FileText className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                  <span className="text-lg font-semibold">Verification Documents</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                {isLoadingDocs ? (
-                  <div className="flex items-center justify-center py-16">
-                    <div className="text-center space-y-4">
-                      <div className="relative">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-200 border-t-indigo-600 mx-auto"></div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-indigo-600" />
+          {/* Right Column - Verification Documents (Only for Tutors) */}
+          {tutor.role === "TUTOR" && (
+            <div className="lg:col-span-2">
+              <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                <CardHeader className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
+                  <CardTitle className="flex items-center gap-3 text-gray-900 dark:text-white">
+                    <FileText className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-lg font-semibold">Verification Documents</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {isLoadingDocs ? (
+                    <div className="flex items-center justify-center py-16">
+                      <div className="text-center space-y-4">
+                        <div className="relative">
+                          <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-200 border-t-indigo-600 mx-auto"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-indigo-600" />
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            Loading Documents
+                          </h3>
+                          <p className="text-gray-500 dark:text-gray-400">
+                            Fetching verification documents...
+                          </p>
                         </div>
                       </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          Loading Documents
-                        </h3>
-                        <p className="text-gray-500 dark:text-gray-400">
-                          Fetching verification documents...
-                        </p>
-                      </div>
                     </div>
-                  </div>
-                ) : verificationDocs.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {verificationDocs.map((doc: any, index: number) => {
-                      const docType = documentTypes.find((dt) => dt.key === doc.docType);
-                      const Icon = docType?.icon || FileText;
+                  ) : verificationDocs.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {verificationDocs.map((doc: any, index: number) => {
+                        const docType = documentTypes.find((dt) => dt.key === doc.docType);
+                        const Icon = docType?.icon || FileText;
 
-                      return (
-                        <Card
-                          key={doc.docId}
-                          className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-md transition-all duration-300 group overflow-hidden"
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center gap-3">
-                                <div className="p-2 bg-gray-100 dark:bg-gray-600 rounded-lg">
-                                  <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                        return (
+                          <Card
+                            key={doc.docId}
+                            className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-md transition-all duration-300 group overflow-hidden"
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2 bg-gray-100 dark:bg-gray-600 rounded-lg">
+                                    <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-gray-900 dark:text-white">
+                                      {docType?.label || doc.docType}
+                                    </p>
+                                  </div>
                                 </div>
-                                <div>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {docType?.label || doc.docType}
-                                  </p>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => window.open(doc.filePath, "_blank")}
+                                    className="hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      const link = document.createElement("a");
+                                      link.href = doc.filePath;
+                                      link.download = `${doc.docType}_${index + 1}`;
+                                      link.click();
+                                    }}
+                                    className="hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
+                                  >
+                                    <Download className="w-4 h-4" />
+                                  </Button>
                                 </div>
                               </div>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => window.open(doc.filePath, "_blank")}
-                                  className="hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
-                                >
-                                  <Eye className="w-4 h-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => {
-                                    const link = document.createElement("a");
-                                    link.href = doc.filePath;
-                                    link.download = `${doc.docType}_${index + 1}`;
-                                    link.click();
-                                  }}
-                                  className="hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
-                                >
-                                  <Download className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </div>
 
-                            {/* Image Preview */}
-                            <div className="relative">
-                              <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center overflow-hidden">
-                                <img
-                                  src={doc.filePath}
-                                  alt={`${doc.docType} document`}
-                                  className="w-full h-auto object-contain rounded-lg"
-                                  onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    target.style.display = "none";
-                                    const parent = target.parentElement;
-                                    if (parent) {
-                                      parent.innerHTML = `
+                              {/* Image Preview */}
+                              <div className="relative">
+                                <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center overflow-hidden">
+                                  <img
+                                    src={doc.filePath}
+                                    alt={`${doc.docType} document`}
+                                    className="w-full h-auto object-contain rounded-lg"
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                      const parent = target.parentElement;
+                                      if (parent) {
+                                        parent.innerHTML = `
                                         <div class="w-full h-48 flex items-center justify-center">
                                           <div class="text-center space-y-2 p-4">
                                             <FileText class="w-8 h-8 text-gray-400 mx-auto" />
@@ -498,33 +506,62 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
                                           </div>
                                         </div>
                                       `;
-                                    }
-                                  }}
-                                />
+                                      }
+                                    }}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-16">
-                    <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <FileText className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      No Verification Documents
+                  ) : (
+                    <div className="text-center py-16">
+                      <div className="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <FileText className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                        No Verification Documents
+                      </h3>
+                      <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                        This tutor has not uploaded any verification documents yet. Documents will
+                        appear here once they are submitted.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Student Information (Only for Students) */}
+          {tutor.role === "STUDENT" && (
+            <div className="lg:col-span-2">
+              <Card className="bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                <CardHeader className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-600">
+                  <CardTitle className="flex items-center gap-3 text-gray-900 dark:text-white">
+                    <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-lg font-semibold">Student Information</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="text-center py-16">
+                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <User className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      Student Profile
                     </h3>
-                    <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                      This tutor has not uploaded any verification documents yet. Documents will
-                      appear here once they are submitted.
+                    <p className="text-gray-500 dark:text-gray-400">
+                      This student doesn't have verification documents as they are not required for
+                      students.
                     </p>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
 

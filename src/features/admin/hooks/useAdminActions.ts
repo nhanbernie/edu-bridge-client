@@ -16,11 +16,11 @@ export const useAdminActions = () => {
   const [verifyAllDocuments] = useVerifyAllDocumentsMutation();
   const [deleteUser] = useDeleteUserMutation();
 
-  // Navigate to tutor detail page
+  // Navigate to user detail page
   const handleViewTutorDetail = useCallback(
     (user: UserDto) => {
-      if (user.role === "TUTOR") {
-        router.push(`/admin/tutor/${user.userId}`);
+      if (user.role === "TUTOR" || user.role === "STUDENT") {
+        router.push(`/admin/user/${user.userId}`);
       }
     },
     [router]
