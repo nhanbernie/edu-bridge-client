@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Eye, FileText, Check, X, Trash2 } from "lucide-react";
-import { UserDto } from "@/services/api/type";
+import { UserDto, TutorType } from "@/services/api/type";
 import EBActionsMenu, { ActionItem } from "@/components/common/EBActionsMenu";
+import { useAdminActions } from "@/features/admin/hooks/useAdminActions";
 
 interface AdminTableActionsProps {
-  onViewUser: (user: UserDto) => void;
   onViewVerificationDocs: (user: UserDto) => void;
-  onApproveTutor: (userId: string) => void;
+  onApproveTutor: (userId: string, tutorType: TutorType) => void;
   onRejectTutor: (userId: string) => void;
   onDeleteUser: (userId: string) => void;
 }
@@ -42,9 +42,58 @@ const getStatusBadgeVariant = (status: string) => {
   }
 };
 
-export const createAdminTableColumns = (
-  actions: AdminTableActionsProps
-): ColumnDef<UserDto>[] => [
+// Wrapper component to use hooks in table columns
+const AdminTableActionsWrapper: React.FC<{ user: UserDto; actions: AdminTableActionsProps }> = ({
+  user,
+  actions,
+}) => {
+  const { handleViewTutorDetail } = useAdminActions();
+
+  const actionItems: ActionItem[] = [
+    {
+      label: "View Details",
+      icon: Eye,
+      onClick: () => handleViewTutorDetail(user),
+    },
+  ];
+
+  // Add tutor-specific actions
+  if (user.role === "TUTOR") {
+    actionItems.push({
+      label: "View Documents",
+      icon: FileText,
+      onClick: () => actions.onViewVerificationDocs(user),
+    });
+
+    if (user.status === "PENDING") {
+      actionItems.push(
+        {
+          label: "Approve",
+          icon: Check,
+          onClick: () => actions.onApproveTutor(user.userId, "VERIFIED"),
+        },
+        {
+          label: "Reject",
+          icon: X,
+          onClick: () => actions.onRejectTutor(user.userId),
+          danger: true,
+        }
+      );
+    }
+  }
+
+  // Add delete action
+  actionItems.push({
+    label: "Delete User",
+    icon: Trash2,
+    onClick: () => actions.onDeleteUser(user.userId),
+    danger: true,
+  });
+
+  return <EBActionsMenu actions={actionItems} />;
+};
+
+export const createAdminTableColumns = (actions: AdminTableActionsProps): ColumnDef<UserDto>[] => [
   {
     accessorKey: "fullName",
     header: "User",
@@ -61,9 +110,7 @@ export const createAdminTableColumns = (
             <div className="text-sm font-medium text-gray-900 dark:text-white">
               {user.fullName || user.email}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {user.email}
-            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
           </div>
         </div>
       );
@@ -85,11 +132,7 @@ export const createAdminTableColumns = (
     },
     cell: ({ row }) => {
       const role = row.getValue("role") as string;
-      return (
-        <Badge variant={getRoleBadgeVariant(role)}>
-          {role}
-        </Badge>
-      );
+      return <Badge variant={getRoleBadgeVariant(role)}>{role}</Badge>;
     },
   },
   {
@@ -109,9 +152,7 @@ export const createAdminTableColumns = (
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       return (
-        <Badge variant={getStatusBadgeVariant(status || "UNKNOWN")}>
-          {status || "UNKNOWN"}
-        </Badge>
+        <Badge variant={getStatusBadgeVariant(status || "UNKNOWN")}>{status || "UNKNOWN"}</Badge>
       );
     },
   },
@@ -120,49 +161,7 @@ export const createAdminTableColumns = (
     header: "Actions",
     cell: ({ row }) => {
       const user = row.original;
-      
-      const actionItems: ActionItem[] = [
-        {
-          label: "View Details",
-          icon: Eye,
-          onClick: () => actions.onViewUser(user),
-        },
-      ];
-
-      // Add tutor-specific actions
-      if (user.role === "TUTOR") {
-        actionItems.push({
-          label: "View Documents",
-          icon: FileText,
-          onClick: () => actions.onViewVerificationDocs(user),
-        });
-
-        if (user.status === "PENDING") {
-          actionItems.push(
-            {
-              label: "Approve",
-              icon: Check,
-              onClick: () => actions.onApproveTutor(user.userId),
-            },
-            {
-              label: "Reject",
-              icon: X,
-              onClick: () => actions.onRejectTutor(user.userId),
-              danger: true,
-            }
-          );
-        }
-      }
-
-      // Add delete action
-      actionItems.push({
-        label: "Delete User",
-        icon: Trash2,
-        onClick: () => actions.onDeleteUser(user.userId),
-        danger: true,
-      });
-
-      return <EBActionsMenu actions={actionItems} />;
+      return <AdminTableActionsWrapper user={user} actions={actions} />;
     },
     enableSorting: false,
     enableHiding: false,

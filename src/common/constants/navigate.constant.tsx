@@ -310,7 +310,7 @@ export const createLayoutConfig = (
   }
 ) => {
   const defaultConfig = getDefaultLayoutConfig(type);
-  
+
   return {
     ...defaultConfig,
     ...overrides,

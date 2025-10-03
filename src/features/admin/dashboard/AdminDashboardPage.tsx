@@ -3,58 +3,35 @@
 import React, { useState, useMemo, useCallback } from "react";
 import {
   useGetAllUsersQuery,
-  useGetUserQuery,
   useGetVerificationDocsQuery,
   useVerifyAllDocumentsMutation,
   useDeleteUserMutation,
 } from "@/services/user";
-import { UserDto } from "@/services/api/type";
-import {
-  Eye,
-  Check,
-  X,
-  Trash2,
-  FileText,
-  Users,
-  GraduationCap,
-  TrendingUp,
-  Shield,
-  Clock,
-  UserCheck,
-} from "lucide-react";
+import { UserDto, TutorType } from "@/services/api/type";
+import { Users, GraduationCap, TrendingUp, Shield, Clock, UserCheck } from "lucide-react";
 import { EBMotionCard, MotionContainer, MotionItem } from "@/components/motion";
-import { motion } from "motion/react";
 import { ADMIN_ANIMATION_VARIANTS } from "@/common/constants/animation.constant";
-import AdminDataTable from "./components/AdminDataTable";
-import { createAdminTableColumns } from "./components/AdminTableColumns";
 import {
-  UserDetailsModal,
+  AdminDataTable,
+  createAdminTableColumns,
   VerificationDocsModal,
   ApprovalModal,
   DeleteConfirmDialog,
   RejectConfirmDialog,
-} from "./components/AdminModals";
+} from "./components";
 
 const AdminDashboardPage = () => {
   const [selectedUser, setSelectedUser] = useState<UserDto | null>(null);
-  const [showUserModal, setShowUserModal] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
-  const [tutorType, setTutorType] = useState<string>("");
 
   // Fetch all users data
   const { data: allUsersData, isLoading: isLoadingAllUsers } = useGetAllUsersQuery({});
   const { data: pendingTutorsData } = useGetAllUsersQuery({ role: 2, status: 0 }); // TUTOR = 2, PENDING = 0
   const { data: studentsData } = useGetAllUsersQuery({ role: 1 }); // STUDENT = 1
   const { data: approvedTutorsData } = useGetAllUsersQuery({ role: 2, status: 1 }); // TUTOR = 2, APPROVED = 1
-
-  // Get user details when selected
-  const { data: userDetailsData } = useGetUserQuery(
-    { userId: selectedUser?.userId || "" },
-    { skip: !selectedUser?.userId }
-  );
 
   // Get verification docs when viewing tutor
   const { data: verificationDocsData } = useGetVerificationDocsQuery(
@@ -72,36 +49,26 @@ const AdminDashboardPage = () => {
     (approvedTutorsData?.data?.length || 0) + (pendingTutorsData?.data?.length || 0);
   const pendingTutors = pendingTutorsData?.data?.length || 0;
 
-  const handleViewUser = useCallback((user: UserDto) => {
-    setSelectedUser(user);
-    setShowUserModal(true);
-  }, []);
-
   const handleViewVerificationDocs = useCallback((user: UserDto) => {
     setSelectedUser(user);
     setShowVerificationModal(true);
   }, []);
 
   const handleApproveTutor = useCallback(
-    async (tutorId: string, tutorTypeValue?: string) => {
-      if (!tutorTypeValue) {
-        setSelectedUser({ userId: tutorId } as UserDto);
-        setShowApprovalModal(true);
-        return;
-      }
-
+    async (tutorId: string, tutorType: TutorType) => {
       try {
         await verifyAllDocuments({
           tutorId,
           isApproved: true,
-          tutorType: tutorTypeValue,
+          tutorType,
         }).unwrap();
-        alert("Tutor approved successfully!");
+        // TODO: Replace with toast notification
+        console.log("Tutor approved successfully!");
         setShowApprovalModal(false);
-        setTutorType("");
       } catch (error) {
         console.error("Error approving tutor:", error);
-        alert("Error approving tutor");
+        // TODO: Replace with toast notification
+        console.error("Error approving tutor");
       }
     },
     [verifyAllDocuments]
@@ -121,12 +88,14 @@ const AdminDashboardPage = () => {
   const handleDeleteConfirm = async (userId: string) => {
     try {
       await deleteUser({ userId }).unwrap();
-      alert("User deleted successfully!");
+      // TODO: Replace with toast notification
+      console.log("User deleted successfully!");
       setShowDeleteDialog(false);
       setSelectedUser(null);
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert("Error deleting user");
+      // TODO: Replace with toast notification
+      console.error("Error deleting user");
     }
   };
 
@@ -146,14 +115,16 @@ const AdminDashboardPage = () => {
       await verifyAllDocuments({
         tutorId: userId,
         isApproved: false,
-        rejectType: "OTHER",
+        tutorType: "TRUSTED_BEGINNER", // Default tutorType for rejected tutors
       }).unwrap();
-      alert("Tutor rejected successfully!");
+      // TODO: Replace with toast notification
+      console.log("Tutor rejected successfully!");
       setShowRejectDialog(false);
       setSelectedUser(null);
     } catch (error) {
       console.error("Error rejecting tutor:", error);
-      alert("Error rejecting tutor");
+      // TODO: Replace with toast notification
+      console.error("Error rejecting tutor");
     }
   };
 
@@ -161,19 +132,12 @@ const AdminDashboardPage = () => {
   const tableColumns = useMemo(
     () =>
       createAdminTableColumns({
-        onViewUser: handleViewUser,
         onViewVerificationDocs: handleViewVerificationDocs,
-        onApproveTutor: handleApproveTutor,
+        onApproveTutor: (userId: string) => handleApproveTutor(userId, "VERIFIED"),
         onRejectTutor: handleRejectTutor,
         onDeleteUser: handleDeleteUser,
       }),
-    [
-      handleViewUser,
-      handleViewVerificationDocs,
-      handleApproveTutor,
-      handleRejectTutor,
-      handleDeleteUser,
-    ]
+    [handleViewVerificationDocs, handleApproveTutor, handleRejectTutor, handleDeleteUser]
   );
 
   // Statistics data for cleaner code
@@ -279,14 +243,6 @@ const AdminDashboardPage = () => {
         isLoading={isLoadingAllUsers}
       />
 
-      {/* User Details Modal */}
-      <UserDetailsModal
-        isOpen={showUserModal}
-        onClose={() => setShowUserModal(false)}
-        user={selectedUser}
-        userDetails={userDetailsData}
-      />
-
       {/* Verification Documents Modal */}
       <VerificationDocsModal
         isOpen={showVerificationModal}
@@ -302,9 +258,7 @@ const AdminDashboardPage = () => {
         isOpen={showApprovalModal}
         onClose={() => setShowApprovalModal(false)}
         user={selectedUser}
-        tutorType={tutorType}
-        onTutorTypeChange={setTutorType}
-        onApprove={handleApproveTutor}
+        onApprove={(tutorId: string) => handleApproveTutor(tutorId, "VERIFIED")}
       />
 
       {/* Delete Confirmation Dialog */}

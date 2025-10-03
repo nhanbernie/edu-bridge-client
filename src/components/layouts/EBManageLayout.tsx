@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
@@ -30,8 +30,17 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   showSearch = true,
   showNotifications = true,
 }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Check if route is active
   const isRouteActive = (href: string) => {
@@ -154,7 +163,9 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
         {/* Main content */}
         <div className="flex-1 flex flex-col h-screen">
           {/* Header - Fixed */}
-          <header className="h-20 flex items-center justify-end px-6 lg:px-8 bg-transparent flex-shrink-0">
+          <header
+            className={`h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 ${isScrolled ? "backdrop-blur-sm  header-glass-effect" : "bg-transparent"}`}
+          >
             {/* Right side - Search, Notifications, User */}
             <div className="flex items-center gap-3">
               {/* Search */}

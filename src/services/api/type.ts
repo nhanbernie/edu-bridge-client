@@ -220,8 +220,7 @@ export interface GetVerificationDocsResponse {
 export interface VerifyAllDocumentsRequest {
   tutorId: string;
   isApproved: boolean;
-  rejectType?: "INVALID" | "INCOMPLETE" | "EXPIRED" | "OTHER";
-  tutorType?: string;
+  tutorType?: TutorType;
 }
 
 export interface VerifyAllDocumentsResponse {
