@@ -8,11 +8,11 @@ import EBSidebarButton from "@/components/common/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
 import { Search, Bell, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { EBUserMenu } from "@/components/common";
-import { 
-  EBSidebarItem, 
-  EBActionButton, 
+import {
+  EBSidebarItem,
+  EBActionButton,
   defaultTutorSidebarItems,
-  defaultTutorActionButtons 
+  defaultTutorActionButtons,
 } from "@/common/constants/navigate.constant";
 
 interface EBManageLayoutProps {
@@ -23,12 +23,12 @@ interface EBManageLayoutProps {
   showNotifications?: boolean;
 }
 
-const EBManageLayout: React.FC<EBManageLayoutProps> = ({ 
-  children, 
+const EBManageLayout: React.FC<EBManageLayoutProps> = ({
+  children,
   sidebarItems = defaultTutorSidebarItems,
   actionButtons = defaultTutorActionButtons,
   showSearch = true,
-  showNotifications = true
+  showNotifications = true,
 }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const pathname = usePathname();
@@ -77,7 +77,9 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
           </div>
 
           {/* Toggle Button - Always visible */}
-          <div className={`flex items-center mb-8 ${sidebarExpanded ? 'justify-end pr-4' : 'justify-center'}`}>
+          <div
+            className={`flex items-center mb-8 ${sidebarExpanded ? "justify-end" : "justify-center"}`}
+          >
             <EBButton
               variant="ghost"
               size="icon"

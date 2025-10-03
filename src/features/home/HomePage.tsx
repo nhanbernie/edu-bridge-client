@@ -20,6 +20,12 @@ const HomeFeature = () => {
   // Call the hook at the top level
   useGetAndStoreUser({ userId: user?.userId });
 
+  useEffect(() => {
+    if (user?.status === "APPROVED" && user?.role === "STUDENT") {
+      router.push("/student");
+    }
+  }, [user?.status, user?.role, router]);
+
   return (
     <EBMainLayout footer={true}>
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden pt-32">
