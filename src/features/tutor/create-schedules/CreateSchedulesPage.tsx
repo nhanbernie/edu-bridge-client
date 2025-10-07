@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,13 @@ import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/sche
 const CreateSchedulesPage = () => {
   const router = useRouter();
   const { tutorId } = useTutorId();
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const { availabilityBlocks, isLoadingBlocks } = useAvailabilityBlock({
     tutorId: tutorId || undefined,
   });
 
-  const currentSchedules = transformToCurrentWeekSchedule(availabilityBlocks);
+  const currentSchedules = transformToCurrentWeekSchedule(availabilityBlocks, currentDate);
   const scheduleSummary = getScheduleSummary(availabilityBlocks);
 
   const handleBack = () => {
@@ -71,6 +73,7 @@ const CreateSchedulesPage = () => {
                 mode="week"
                 showDate={true}
                 showHeader={false}
+                onDateChange={setCurrentDate}
               />
             )}
           </CardContent>

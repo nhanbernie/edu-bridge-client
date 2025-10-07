@@ -93,7 +93,7 @@ const TabContent: React.FC<TabContentProps> = ({
 
     // Transform availability blocks to schedule format
     const transformedSchedule = availabilityData?.availabilityBlocks
-      ? transformToCurrentWeekSchedule(availabilityData.availabilityBlocks)
+      ? transformToCurrentWeekSchedule(availabilityData.availabilityBlocks, new Date())
       : scheduleData;
 
     // Hiển thị empty state nếu không có lịch

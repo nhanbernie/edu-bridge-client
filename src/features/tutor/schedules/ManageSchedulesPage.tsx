@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, Plus, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/sche
 const ManageSchedulesPage = () => {
   const router = useRouter();
   const { tutorId } = useTutorId();
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   // Get availability blocks from API
   const { availabilityBlocks, isLoadingBlocks, refetchBlocks } = useAvailabilityBlock({
@@ -18,7 +20,7 @@ const ManageSchedulesPage = () => {
   });
 
   // Transform API data to EBSchedule format
-  const currentSchedules = transformToCurrentWeekSchedule(availabilityBlocks);
+  const currentSchedules = transformToCurrentWeekSchedule(availabilityBlocks, currentDate);
   const scheduleSummary = getScheduleSummary(availabilityBlocks);
 
   const handleCreateSchedule = () => {
@@ -76,6 +78,7 @@ const ManageSchedulesPage = () => {
             mode="week"
             showDate={true}
             showHeader={false}
+            onDateChange={setCurrentDate}
           />
         </CardContent>
       </Card>
