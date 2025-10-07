@@ -1,4 +1,4 @@
-import EBMainLayout from "@/components/layouts/EBMainLayout";
+// import EBMainLayout from "@/components/layouts/EBMainLayout"; note: true footer
 import BookingPage from "@/features/student/booking/BookingPage";
 
 interface BookingProps {
@@ -14,11 +14,7 @@ const Booking = async ({ params, searchParams }: BookingProps) => {
   const { slug: tutorId } = await params;
   const { courseId } = await searchParams;
 
-  return (
-    <EBMainLayout footer={true}>
-      <BookingPage tutorId={tutorId} courseId={courseId} />
-    </EBMainLayout>
-  );
+  return <BookingPage tutorId={tutorId} courseId={courseId} />;
 };
 
 export default Booking;

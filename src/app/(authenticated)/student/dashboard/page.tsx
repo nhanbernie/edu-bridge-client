@@ -3,9 +3,9 @@ import StudentDashboardPage from "@/features/student/dashboard/StudentDashboardP
 import EBMainLayout from "@/components/layouts/EBMainLayout";
 const StudentDashboard = () => {
   return (
-    <EBMainLayout footer={true}>
-      <StudentDashboardPage />
-    </EBMainLayout>
+    // <EBMainLayout footer={true}>
+    <StudentDashboardPage />
+    // </EBMainLayout>
   );
 };
 

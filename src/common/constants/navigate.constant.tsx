@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
+import { HeaderItem } from "@/components/layouts/types";
 
 export interface NavItem {
   label: string;
@@ -299,6 +300,85 @@ export const getDefaultLayoutConfig = (type: DashboardType) => {
     actionButtons: getDefaultActionButtons(type),
     showSearch: type !== "student", // Students might not need search
     showNotifications: true,
+  };
+};
+
+/**
+ * Get default header config for EBMainLayout
+ */
+export const getDefaultHeaderConfig = (type: DashboardType) => {
+  return ({ go }: { go: (path: string) => void }) => {
+    const items: HeaderItem[] = [];
+
+    switch (type) {
+      case "student":
+        items.push(
+          {
+            key: "tutors",
+            label: "Tìm gia sư",
+            href: "/student",
+            onClick: () => go("/student"),
+          },
+          {
+            key: "transactions",
+            label: "Giao dịch",
+            href: "/student/transactions",
+            onClick: () => go("/student/transactions"),
+          }
+        );
+        break;
+      case "tutor":
+        items.push(
+          { key: "dashboard", label: "Dashboard", href: "/tutor", onClick: () => go("/tutor") },
+          {
+            key: "courses",
+            label: "Courses",
+            href: "/tutor/courses",
+            onClick: () => go("/tutor/courses"),
+          },
+          {
+            key: "schedules",
+            label: "Schedules",
+            href: "/tutor/schedules",
+            onClick: () => go("/tutor/schedules"),
+          },
+          {
+            key: "transactions",
+            label: "Transactions",
+            href: "/tutor/transactions",
+            onClick: () => go("/tutor/transactions"),
+          }
+        );
+        break;
+      case "admin":
+        items.push(
+          {
+            key: "dashboard",
+            label: "Dashboard",
+            href: "/admin/dashboard",
+            onClick: () => go("/admin/dashboard"),
+          },
+          { key: "users", label: "Users", href: "/admin", onClick: () => go("/admin") },
+          {
+            key: "transactions",
+            label: "Transactions",
+            href: "/admin/transactions",
+            onClick: () => go("/admin/transactions"),
+          }
+        );
+        break;
+    }
+
+    return {
+      items,
+      // Only add CTA for specific roles if needed
+      // ...(type === "student" && {
+      //   cta: {
+      //     label: "Profile",
+      //     onClick: () => go("/profile"),
+      //   },
+      // }),
+    };
   };
 };
 

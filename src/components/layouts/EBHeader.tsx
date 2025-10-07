@@ -22,7 +22,6 @@ interface HeaderProps {
   headerConfig?: HeaderConfig;
 }
 
-
 // Action buttons component
 const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonProps) => (
   <div className="flex items-center gap-3">
@@ -57,20 +56,14 @@ const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonP
   </div>
 );
 
-// Custom EBNavigation component for headerConfig
-const CustomNavigation = ({ items }: { items: HeaderItem[] }) => (
-  <div className="hidden md:flex items-center gap-6">
-    {items.map((item) => (
-      <button
-        key={item.key}
-        onClick={item.onClick || (() => item.href && (window.location.href = item.href))}
-        className="text-gray-300 hover:text-white transition-colors duration-200 font-medium"
-      >
-        {item.label}
-      </button>
-    ))}
-  </div>
-);
+// Convert HeaderItem[] to NavItem[] for EBNavigation
+const convertToNavItems = (items: HeaderItem[]): NavItem[] => {
+  return items.map((item) => ({
+    label: item.label,
+    href: item.href || "#",
+    active: false,
+  }));
+};
 
 // CTA Button component
 const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
@@ -117,20 +110,21 @@ const EBHeader = ({ showMessage, headerConfig }: HeaderProps) => {
             <Logo />
 
             {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
-            {headerConfig ? (
-              <CustomNavigation items={headerConfig.items} />
-            ) : (
-              <nav className="hidden md:flex items-center gap-8">
-                <EBNavigation items={navigationItems} />
-              </nav>
-            )}
+            <nav className="hidden md:flex items-center gap-8">
+              <EBNavigation
+                items={headerConfig ? convertToNavItems(headerConfig.items) : navigationItems}
+              />
+            </nav>
 
             {/* Right side - Actions */}
             <div className="flex items-center gap-3">
               {headerConfig?.cta && <CTAButton cta={headerConfig.cta} />}
-              
+
               {/* Default action buttons */}
-              <ActionButtons showMessage={showMessage} onMobileMenuToggle={handleMobileMenuToggle} />
+              <ActionButtons
+                showMessage={showMessage}
+                onMobileMenuToggle={handleMobileMenuToggle}
+              />
             </div>
           </div>
         </div>

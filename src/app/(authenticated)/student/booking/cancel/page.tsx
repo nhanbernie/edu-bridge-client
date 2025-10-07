@@ -13,7 +13,7 @@ import {
   Phone,
   Clock,
 } from "lucide-react";
-import { EBMainLayout } from "@/components/layouts";
+// import { EBMainLayout } from "@/components/layouts"; note: false footer
 import {
   EBMotionCard,
   MotionContainer,
@@ -95,216 +95,211 @@ const BookingCancel = () => {
   const reasonInfo = getReason(reason);
 
   return (
-    <EBMainLayout footer={false}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <MotionContainer variants={containerVariants}>
-            {/* Cancel Icon and Title */}
-            <MotionItem variants={itemVariants}>
+    // <EBMainLayout footer={false}>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MotionContainer variants={containerVariants}>
+          {/* Cancel Icon and Title */}
+          <MotionItem variants={itemVariants}>
+            <motion.div
+              className="text-center mb-8"
+              variants={cancelVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <motion.div
-                className="text-center mb-8"
-                variants={cancelVariants}
-                initial="hidden"
-                animate="visible"
+                className="relative inline-block mb-6"
+                animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
+                transition={{ duration: 0.5 }}
               >
-                <motion.div
-                  className="relative inline-block mb-6"
-                  animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="w-24 h-24 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
-                    {reasonInfo.icon}
-                  </div>
-                </motion.div>
-
-                <h1 className="text-4xl font-bold text-foreground mb-4">{reasonInfo.title}</h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  {reasonInfo.description}
-                </p>
+                <div className="w-24 h-24 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
+                  {reasonInfo.icon}
+                </div>
               </motion.div>
-            </MotionItem>
 
-            {/* Booking Info Card */}
-            <MotionItem variants={itemVariants}>
-              <EBMotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
-                <div className="text-center mb-6">
-                  <h2 className="text-2xl font-bold text-foreground mb-2">Thông tin đặt lịch</h2>
-                  <div className="inline-flex items-center px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm font-medium border border-red-200 dark:border-red-800">
-                    <span>Mã đặt lịch: {bookingId}</span>
-                  </div>
+              <h1 className="text-4xl font-bold text-foreground mb-4">{reasonInfo.title}</h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                {reasonInfo.description}
+              </p>
+            </motion.div>
+          </MotionItem>
+
+          {/* Booking Info Card */}
+          <MotionItem variants={itemVariants}>
+            <EBMotionCard className="mb-8 bg-card/80 backdrop-blur-sm border border-border/50">
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-foreground mb-2">Thông tin đặt lịch</h2>
+                <div className="inline-flex items-center px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm font-medium border border-red-200 dark:border-red-800">
+                  <span>Mã đặt lịch: {bookingId}</span>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl">
-                    <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-                      <XCircle className="w-5 h-5 text-red-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Gia sư</p>
-                      <p className="font-semibold text-foreground">{tutorName}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl">
-                    <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-                      <XCircle className="w-5 h-5 text-red-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Môn học</p>
-                      <p className="font-semibold text-foreground">{subject}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-border">
-                  <div className="flex items-center justify-center">
-                    <span className="text-lg font-medium text-red-600 dark:text-red-400">
-                      Trạng thái: Đã hủy
-                    </span>
-                  </div>
-                </div>
-              </EBMotionCard>
-            </MotionItem>
-
-            {/* Action Buttons */}
-            <MotionItem variants={itemVariants}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <motion.button
-                  onClick={handleTryAgain}
-                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <RefreshCw className="w-5 h-5" />
-                  <span className="font-medium">Thử lại</span>
-                </motion.button>
-
-                <motion.button
-                  onClick={handleContactSupport}
-                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span className="font-medium">Liên hệ hỗ trợ</span>
-                </motion.button>
-
-                <motion.button
-                  onClick={handleCallSupport}
-                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Phone className="w-5 h-5" />
-                  <span className="font-medium">Gọi hotline</span>
-                </motion.button>
-
-                <motion.button
-                  onClick={handleGoHome}
-                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Home className="w-5 h-5" />
-                  <span className="font-medium">Về trang chủ</span>
-                </motion.button>
               </div>
-            </MotionItem>
 
-            {/* Help Section */}
-            <MotionItem variants={itemVariants}>
-              <EBMotionCard className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800">
-                <div className="text-center">
-                  <h3 className="text-xl font-bold text-foreground mb-4">Cần hỗ trợ?</h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <MessageCircle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                      </div>
-                      <h4 className="font-semibold text-foreground mb-2">Chat trực tuyến</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Nhận hỗ trợ ngay lập tức từ đội ngũ chăm sóc khách hàng
-                      </p>
-                      <button
-                        onClick={handleContactSupport}
-                        className="text-primary hover:underline font-medium"
-                      >
-                        Bắt đầu chat
-                      </button>
-                    </div>
-
-                    <div className="text-center">
-                      <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <Phone className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                      </div>
-                      <h4 className="font-semibold text-foreground mb-2">Hotline 24/7</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Gọi ngay để được hỗ trợ trực tiếp
-                      </p>
-                      <button
-                        onClick={handleCallSupport}
-                        className="text-primary hover:underline font-medium"
-                      >
-                        1900 123 456
-                      </button>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl">
+                  <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                    <XCircle className="w-5 h-5 text-red-500" />
                   </div>
-
-                  {/* Common Issues */}
-                  <div className="pt-6 border-t border-orange-200 dark:border-orange-800">
-                    <h4 className="font-semibold text-foreground mb-4">Các vấn đề thường gặp</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-                        <p className="font-medium text-foreground mb-1">Thanh toán thất bại</p>
-                        <p className="text-muted-foreground">Kiểm tra thông tin thẻ và số dư</p>
-                      </div>
-                      <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-                        <p className="font-medium text-foreground mb-1">Gia sư không có sẵn</p>
-                        <p className="text-muted-foreground">
-                          Chọn thời gian khác hoặc gia sư khác
-                        </p>
-                      </div>
-                      <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
-                        <p className="font-medium text-foreground mb-1">Lỗi kỹ thuật</p>
-                        <p className="text-muted-foreground">Thử lại sau hoặc liên hệ hỗ trợ</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-orange-200 dark:border-orange-800">
-                    <p className="text-sm text-muted-foreground">
-                      Email hỗ trợ:{" "}
-                      <a
-                        href="mailto:support@edubridge.com"
-                        className="text-primary hover:underline"
-                      >
-                        support@edubridge.com
-                      </a>
-                    </p>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Gia sư</p>
+                    <p className="font-semibold text-foreground">{tutorName}</p>
                   </div>
                 </div>
-              </EBMotionCard>
-            </MotionItem>
 
-            {/* Back to Search */}
-            <MotionItem variants={itemVariants}>
+                <div className="flex items-center space-x-3 p-4 bg-secondary/50 rounded-xl">
+                  <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                    <XCircle className="w-5 h-5 text-red-500" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Môn học</p>
+                    <p className="font-semibold text-foreground">{subject}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-border">
+                <div className="flex items-center justify-center">
+                  <span className="text-lg font-medium text-red-600 dark:text-red-400">
+                    Trạng thái: Đã hủy
+                  </span>
+                </div>
+              </div>
+            </EBMotionCard>
+          </MotionItem>
+
+          {/* Action Buttons */}
+          <MotionItem variants={itemVariants}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <motion.button
+                onClick={handleTryAgain}
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <RefreshCw className="w-5 h-5" />
+                <span className="font-medium">Thử lại</span>
+              </motion.button>
+
+              <motion.button
+                onClick={handleContactSupport}
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <MessageCircle className="w-5 h-5" />
+                <span className="font-medium">Liên hệ hỗ trợ</span>
+              </motion.button>
+
+              <motion.button
+                onClick={handleCallSupport}
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Phone className="w-5 h-5" />
+                <span className="font-medium">Gọi hotline</span>
+              </motion.button>
+
+              <motion.button
+                onClick={handleGoHome}
+                className="flex items-center justify-center space-x-2 px-6 py-3 bg-card border border-border rounded-xl hover:bg-secondary transition-all duration-200"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Home className="w-5 h-5" />
+                <span className="font-medium">Về trang chủ</span>
+              </motion.button>
+            </div>
+          </MotionItem>
+
+          {/* Help Section */}
+          <MotionItem variants={itemVariants}>
+            <EBMotionCard className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border border-orange-200 dark:border-orange-800">
               <div className="text-center">
-                <motion.button
-                  onClick={() => router.push("/student")}
-                  className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-lg"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                  <span>Tìm gia sư khác</span>
-                </motion.button>
+                <h3 className="text-xl font-bold text-foreground mb-4">Cần hỗ trợ?</h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <MessageCircle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h4 className="font-semibold text-foreground mb-2">Chat trực tuyến</h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Nhận hỗ trợ ngay lập tức từ đội ngũ chăm sóc khách hàng
+                    </p>
+                    <button
+                      onClick={handleContactSupport}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      Bắt đầu chat
+                    </button>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Phone className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h4 className="font-semibold text-foreground mb-2">Hotline 24/7</h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Gọi ngay để được hỗ trợ trực tiếp
+                    </p>
+                    <button
+                      onClick={handleCallSupport}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      1900 123 456
+                    </button>
+                  </div>
+                </div>
+
+                {/* Common Issues */}
+                <div className="pt-6 border-t border-orange-200 dark:border-orange-800">
+                  <h4 className="font-semibold text-foreground mb-4">Các vấn đề thường gặp</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+                      <p className="font-medium text-foreground mb-1">Thanh toán thất bại</p>
+                      <p className="text-muted-foreground">Kiểm tra thông tin thẻ và số dư</p>
+                    </div>
+                    <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+                      <p className="font-medium text-foreground mb-1">Gia sư không có sẵn</p>
+                      <p className="text-muted-foreground">Chọn thời gian khác hoặc gia sư khác</p>
+                    </div>
+                    <div className="p-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
+                      <p className="font-medium text-foreground mb-1">Lỗi kỹ thuật</p>
+                      <p className="text-muted-foreground">Thử lại sau hoặc liên hệ hỗ trợ</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-orange-200 dark:border-orange-800">
+                  <p className="text-sm text-muted-foreground">
+                    Email hỗ trợ:{" "}
+                    <a href="mailto:support@edubridge.com" className="text-primary hover:underline">
+                      support@edubridge.com
+                    </a>
+                  </p>
+                </div>
               </div>
-            </MotionItem>
-          </MotionContainer>
-        </div>
+            </EBMotionCard>
+          </MotionItem>
+
+          {/* Back to Search */}
+          <MotionItem variants={itemVariants}>
+            <div className="text-center">
+              <motion.button
+                onClick={() => router.push("/student")}
+                className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-lg"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Tìm gia sư khác</span>
+              </motion.button>
+            </div>
+          </MotionItem>
+        </MotionContainer>
       </div>
-    </EBMainLayout>
+    </div>
+    // </EBMainLayout>
   );
 };
 

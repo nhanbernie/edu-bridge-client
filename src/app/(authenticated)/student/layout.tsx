@@ -3,14 +3,14 @@
 import React from "react";
 import { RoleGuard } from "@/components/guards";
 import { EBMainLayout } from "@/components/layouts";
-import { getDefaultLayoutConfig } from "@/common/constants/navigate.constant";
+import { getDefaultHeaderConfig } from "@/common/constants/navigate.constant";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
-  const config = getDefaultLayoutConfig("student");
+  const buildHeader = getDefaultHeaderConfig("student");
 
   return (
     <RoleGuard allowedRoles={["STUDENT"]} requiredStatus={["APPROVED"]}>
-      <EBMainLayout footer={true} {...config}>
+      <EBMainLayout footer={true} buildHeader={buildHeader}>
         {children}
       </EBMainLayout>
     </RoleGuard>
