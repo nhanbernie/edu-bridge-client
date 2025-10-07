@@ -127,7 +127,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
 
   const renderWeekMode = () => {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-7 gap-2 sm:gap-4">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-4">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
           const dayData = schedule.find((s) => {
@@ -149,13 +149,13 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
           return (
             <div key={dayInfo.date.toISOString()} className="text-center">
               <div
-                className={`font-medium mb-1 text-sm ${dayInfo.isToday ? "text-blue-600 font-bold" : ""}`}
+                className={`font-medium mb-1 text-xs sm:text-sm ${dayInfo.isToday ? "text-blue-600 font-bold" : ""}`}
               >
                 {dayInfo.dayName}
               </div>
               {showDate && (
                 <div
-                  className={`text-xs mb-2 ${dayInfo.isCurrentMonth ? "text-muted-foreground" : "text-gray-300"}`}
+                  className={`text-xs mb-1 sm:mb-2 ${dayInfo.isCurrentMonth ? "text-muted-foreground" : "text-gray-300"}`}
                 >
                   {dayInfo.dayNumber}
                 </div>
@@ -224,7 +224,6 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
 
   const renderMonthMode = () => (
     <div className="space-y-2">
-      {/* Month header */}
       <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
         {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day) => (
           <div
@@ -236,7 +235,6 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
         ))}
       </div>
 
-      {/* Month grid */}
       <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
