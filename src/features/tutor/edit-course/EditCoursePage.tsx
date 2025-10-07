@@ -66,9 +66,10 @@ const EditCoursePage: React.FC = () => {
 
         <EBFormProvider
           validationSchema={courseValidatorSchema.createCourseSchema}
-          defaultValues={initialData}
+          defaultValues={{}}
           onSubmit={handleSubmit}
           formType="createCourseSchema"
+          mode="onSubmit"
         >
           <CourseForm
             subjectOptions={subjectOptions}
@@ -77,6 +78,7 @@ const EditCoursePage: React.FC = () => {
             isLoading={isLoading}
             submitButtonText="Hoàn tất chỉnh sửa"
             showPreview={true}
+            initialData={initialData}
           />
         </EBFormProvider>
       </div>

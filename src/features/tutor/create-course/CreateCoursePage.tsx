@@ -13,14 +13,7 @@ const CreateCoursePage: React.FC = () => {
 
   const { options: subjectOptions, isLoading: isSubjectsLoading } = useSubjects(tutorId);
 
-  const defaultValues: CourseFormData = {
-    title: "",
-    subjects: [],
-    description: "",
-    hoursPerSession: "2",
-    hourlyRate: 100000,
-    isPublished: false,
-  };
+  const defaultValues: Partial<CourseFormData> = {};
 
   const handleSubmit = async (data: CourseFormData) => {
     await handleCreateCourse(data);

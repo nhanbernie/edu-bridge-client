@@ -1,13 +1,9 @@
 "use client";
 
-import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Star, Clock, Award, BookOpen, Users, Loader2 } from "lucide-react";
+import { Star, Clock, Award, BookOpen, Loader2 } from "lucide-react";
 import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
-import type { CourseData } from "@/components/common/EBTutorCourseCard";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";

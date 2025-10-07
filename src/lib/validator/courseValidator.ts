@@ -20,7 +20,7 @@ const courseValidatorSchema = {
       }),
     hourlyRate: Yup.number()
       .typeError("Giá/buổi phải là số")
-      .min(50000, "Giá/buổi phải ít nhất 50,000 VNĐ")
+      .min(500, "Giá/buổi phải ít nhất 500 VNĐ")
       .max(2000000, "Giá/buổi không được vượt quá 2,000,000 VNĐ")
       .required("Vui lòng nhập giá/buổi"),
     isPublished: Yup.boolean(),

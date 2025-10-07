@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useWatch, useFormContext } from "react-hook-form";
 import EBTextField from "@/components/form/EBTextField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
 import EBMultipleSelect from "@/components/form/EBMultipleSelect";
@@ -27,6 +27,7 @@ interface CourseFormProps {
   isLoading: boolean;
   submitButtonText?: string;
   showPreview?: boolean;
+  initialData?: CourseFormData;
 }
 
 // Component wrapper để sử dụng useWatch bên trong EBFormProvider
@@ -37,8 +38,22 @@ const CourseForm: React.FC<CourseFormProps> = ({
   isLoading,
   submitButtonText = "Tạo khóa học",
   showPreview = true,
+  initialData,
 }) => {
+  const { setValue } = useFormContext<CourseFormData>();
   const watchedValues = useWatch<CourseFormData>();
+
+  // Set initial values when initialData is provided
+  useEffect(() => {
+    if (initialData) {
+      setValue("title", initialData.title);
+      setValue("description", initialData.description);
+      setValue("subjects", initialData.subjects);
+      setValue("isPublished", initialData.isPublished);
+      setValue("hoursPerSession", initialData.hoursPerSession);
+      setValue("hourlyRate", initialData.hourlyRate);
+    }
+  }, [initialData, setValue]);
 
   return (
     <div className={`grid grid-cols-1 ${showPreview ? "lg:grid-cols-2" : ""} gap-8`}>
