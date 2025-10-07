@@ -7,6 +7,7 @@ export * from "./booking";
 export * from "./payment";
 export * from "./tutor";
 export * from "./feedback";
+export * from "./transactions";
 
 // Export API types
 export * from "./api/type";

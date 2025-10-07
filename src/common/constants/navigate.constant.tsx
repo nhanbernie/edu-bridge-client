@@ -116,6 +116,11 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     href: "/tutor/schedules",
   },
   {
+    label: "Giao dịch",
+    icon: CreditCard,
+    href: "/tutor/transactions",
+  },
+  {
     label: "Thống kê",
     icon: BarChart3,
     href: "/tutor/statistics",

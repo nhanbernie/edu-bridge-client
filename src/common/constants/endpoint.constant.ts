@@ -46,6 +46,11 @@ export const API_ENDPOINTS = {
     GET_TUTOR_RATING: "/api/feedback/tutor/{tutorId}/rating",
     GET_COURSE_RATING: "/api/feedback/course/{courseId}/rating",
   },
+  TRANSACTION: {
+    GET_TUTOR_TRANSACTIONS: "/api/transaction/tutor",
+    GET_STUDENT_TRANSACTIONS: "/api/transaction/student",
+    GET_ADMIN_TRANSACTIONS: "/api/transaction/admin",
+  },
 } as const;
 
 export const API_CONFIG = {
