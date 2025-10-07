@@ -41,6 +41,11 @@ export const API_ENDPOINTS = {
     UPDATE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
     DELETE_AVAILABILITY_BLOCK: "/api/availability-block/{blockId}",
   },
+  FEEDBACK: {
+    CREATE_FEEDBACK: "/api/feedback/course/{courseId}",
+    GET_TUTOR_RATING: "/api/feedback/tutor/{tutorId}/rating",
+    GET_COURSE_RATING: "/api/feedback/course/{courseId}/rating",
+  },
 } as const;
 
 export const API_CONFIG = {

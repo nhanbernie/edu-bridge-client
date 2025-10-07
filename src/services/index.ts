@@ -6,6 +6,7 @@ export * from "./availability-block";
 export * from "./booking";
 export * from "./payment";
 export * from "./tutor";
+export * from "./feedback";
 
 // Export API types
 export * from "./api/type";

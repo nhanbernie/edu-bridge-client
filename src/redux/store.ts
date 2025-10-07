@@ -5,25 +5,23 @@ import { userApi } from "@/services/user";
 import { tutorApi } from "@/services/tutor";
 import { bookingApi } from "@/services/booking";
 import { paymentApi } from "@/services/payment";
+import { feedbackApi } from "@/services/feedback";
 import { authReducer } from "@/slices/auth.slice";
 import { courseReducer } from "@/slices/course.slice";
 import { availabilityBlockReducer } from "@/slices/availability-block.slice";
 import { tutorReducer } from "@/slices/tutor.slice";
+import { feedbackReducer } from "@/slices/feedback.slice";
 import { courseApi } from "@/services/course";
 import { availabilityBlockApi } from "@/services/availability-block";
 // import { apiErrorHandler } from "@/services/api/apiErrorHandler";
 
 export const store = configureStore({
   reducer: {
-    // Auth slice
     auth: authReducer,
-    // Course slice
     course: courseReducer,
-    // Availability Block slice
     availabilityBlock: availabilityBlockReducer,
-    // Tutor slice
     tutor: tutorReducer,
-    // RTK Query APIs
+    feedback: feedbackReducer,
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
@@ -31,6 +29,7 @@ export const store = configureStore({
     [tutorApi.reducerPath]: tutorApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
+    [feedbackApi.reducerPath]: feedbackApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -45,7 +44,8 @@ export const store = configureStore({
       availabilityBlockApi.middleware,
       tutorApi.middleware,
       bookingApi.middleware,
-      paymentApi.middleware
+      paymentApi.middleware,
+      feedbackApi.middleware
     ),
   // devTools: __DEV__,
 });
