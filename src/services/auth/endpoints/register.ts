@@ -15,7 +15,6 @@ export const registerEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Register error:", response);
       return response;
     },
   });

@@ -11,7 +11,6 @@ export const createFeedbackEndpoint = (builder: EndpointBuilder<any, any, any>) 
     }),
     invalidatesTags: ["Feedback", "TutorRating", "CourseRating"],
     transformErrorResponse: (response: any) => {
-      console.error("Create feedback error:", response);
       return response;
     },
   });

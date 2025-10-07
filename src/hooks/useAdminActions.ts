@@ -44,10 +44,8 @@ export const useAdminActions = () => {
           isApproved: true,
           tutorType,
         }).unwrap();
-        console.log("Tutor approved successfully!");
         return { success: true };
       } catch (error) {
-        console.error("Error approving tutor:", error);
         return { success: false, error };
       }
     },
@@ -63,10 +61,8 @@ export const useAdminActions = () => {
           isApproved: false,
           tutorType: "TRUSTED_BEGINNER",
         }).unwrap();
-        console.log("Tutor rejected successfully!");
         return { success: true };
       } catch (error) {
-        console.error("Error rejecting tutor:", error);
         return { success: false, error };
       }
     },
@@ -78,10 +74,8 @@ export const useAdminActions = () => {
     async (userId: string) => {
       try {
         await deleteUser({ userId }).unwrap();
-        console.log("User deleted successfully!");
         return { success: true };
       } catch (error) {
-        console.error("Error deleting user:", error);
         return { success: false, error };
       }
     },

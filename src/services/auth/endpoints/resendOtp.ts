@@ -14,7 +14,6 @@ export const resendOtpEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Resend OTP error:", response);
       return response;
     },
   });

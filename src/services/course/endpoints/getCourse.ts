@@ -14,7 +14,6 @@ export const getCourseEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get course error:", response);
       return response;
     },
   });

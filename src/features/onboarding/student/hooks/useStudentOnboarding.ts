@@ -60,7 +60,6 @@ export const useStudentOnboarding = () => {
         return { success: false, message: result.message };
       }
     } catch (err: any) {
-      console.error("Student onboarding error:", err);
       const errorMessage = err?.data?.message || "Có lỗi xảy ra khi thiết lập hồ sơ";
       toast.error(errorMessage);
       return { success: false, message: errorMessage };

@@ -37,8 +37,6 @@ export const useCreateCourse = () => {
           toast.error(response.message || "Có lỗi xảy ra khi tạo khóa học");
         }
       } catch (error: any) {
-        console.error("Error creating course:", error);
-
         // Handle different error types
         if (error?.data?.message) {
           toast.error(error.data.message);

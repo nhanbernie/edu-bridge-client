@@ -20,7 +20,7 @@ let tokenCache: TokenCache = {
   accessToken: null,
   refreshToken: null,
   expiresAt: null,
-  lastUpdated: 0
+  lastUpdated: 0,
 };
 
 export interface TokenData {
@@ -81,15 +81,19 @@ class BrowserStorage {
 // Helper functions for cache management
 const isCacheValid = (): boolean => {
   const now = Date.now();
-  return (now - tokenCache.lastUpdated) < CACHE_TTL;
+  return now - tokenCache.lastUpdated < CACHE_TTL;
 };
 
-const updateCache = (accessToken: string | null, refreshToken: string | null, expiresAt: number | null): void => {
+const updateCache = (
+  accessToken: string | null,
+  refreshToken: string | null,
+  expiresAt: number | null
+): void => {
   tokenCache = {
     accessToken,
     refreshToken,
     expiresAt,
-    lastUpdated: Date.now()
+    lastUpdated: Date.now(),
   };
 };
 
@@ -101,7 +105,6 @@ export class StorageService {
       tokenCache.accessToken = token;
       tokenCache.lastUpdated = Date.now();
     } catch (error) {
-      console.error("Error saving access token:", error);
       throw error;
     }
   }
@@ -115,16 +118,15 @@ export class StorageService {
 
       // Fallback to storage
       const token = BrowserStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-      
+
       // Update cache
       if (token) {
         tokenCache.accessToken = token;
         tokenCache.lastUpdated = Date.now();
       }
-      
+
       return token;
     } catch (error) {
-      console.error("Error getting access token:", error);
       return null;
     }
   }
@@ -136,7 +138,6 @@ export class StorageService {
       tokenCache.refreshToken = token;
       tokenCache.lastUpdated = Date.now();
     } catch (error) {
-      console.error("Error saving refresh token:", error);
       throw error;
     }
   }
@@ -150,16 +151,15 @@ export class StorageService {
 
       // Fallback to storage
       const token = BrowserStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
-      
+
       // Update cache
       if (token) {
         tokenCache.refreshToken = token;
         tokenCache.lastUpdated = Date.now();
       }
-      
+
       return token;
     } catch (error) {
-      console.error("Error getting refresh token:", error);
       return null;
     }
   }
@@ -167,15 +167,14 @@ export class StorageService {
   static async setTokenData(tokenData: TokenData): Promise<void> {
     try {
       const expiresAt = Date.now() + tokenData.expires_in * 1000;
-      
+
       BrowserStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokenData.access_token);
       BrowserStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokenData.refresh_token);
       BrowserStorage.setItem(STORAGE_KEYS.EXPIRES_AT, expiresAt.toString());
-      
+
       // Update cache
       updateCache(tokenData.access_token, tokenData.refresh_token, expiresAt);
     } catch (error) {
-      console.error("Error saving token data:", error);
       throw error;
     }
   }
@@ -199,7 +198,6 @@ export class StorageService {
         expires_in,
       };
     } catch (error) {
-      console.error("Error getting token data:", error);
       return null;
     }
   }
@@ -208,7 +206,6 @@ export class StorageService {
     try {
       BrowserStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
     } catch (error) {
-      console.error("Error saving user data:", error);
       throw error;
     }
   }
@@ -218,7 +215,6 @@ export class StorageService {
       const userData = BrowserStorage.getItem(STORAGE_KEYS.USER_DATA);
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
-      console.error("Error getting user data:", error);
       return null;
     }
   }
@@ -231,7 +227,6 @@ export class StorageService {
 
       return Date.now() >= parseInt(expires_at);
     } catch (error) {
-      console.error("Error checking token expiration:", error);
       return true;
     }
   }
@@ -242,12 +237,10 @@ export class StorageService {
       BrowserStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
       BrowserStorage.removeItem(STORAGE_KEYS.USER_DATA);
       BrowserStorage.removeItem(STORAGE_KEYS.EXPIRES_AT);
-      
+
       // Clear cache
       updateCache(null, null, null);
-    } catch (error) {
-      console.error("Error clearing auth data:", error);
-    }
+    } catch (error) {}
   }
 
   // Debug method để kiểm tra cache
@@ -257,7 +250,7 @@ export class StorageService {
       hasRefreshToken: !!tokenCache.refreshToken,
       isCacheValid: isCacheValid(),
       lastUpdated: new Date(tokenCache.lastUpdated).toISOString(),
-      expiresAt: tokenCache.expiresAt ? new Date(tokenCache.expiresAt).toISOString() : null
+      expiresAt: tokenCache.expiresAt ? new Date(tokenCache.expiresAt).toISOString() : null,
     };
   }
 
@@ -281,7 +274,6 @@ export class StorageService {
       await this.clearAuthData();
       return false;
     } catch (error) {
-      console.error("Error checking authentication status:", error);
       return false;
     }
   }

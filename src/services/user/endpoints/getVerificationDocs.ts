@@ -14,7 +14,6 @@ export const getVerificationDocsEndpoint = (builder: EndpointBuilder<any, any, a
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get verification docs error:", response);
       return response;
     },
   });

@@ -126,12 +126,8 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   };
 
   const renderWeekMode = () => {
-    // Debug: Log schedule data
-    console.log("Schedule data:", schedule);
-    console.log("Display days:", displayDays);
-
     return (
-      <div className="grid grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-7 gap-2 sm:gap-4">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
           const dayData = schedule.find((s) => {
@@ -149,9 +145,6 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
             timeSlots: [],
             isFullDay: false,
           };
-
-          // Debug: Log matching
-          console.log(`Day ${dayInfo.dayName} (${dayInfo.date.toDateString()}):`, finalDayData);
 
           return (
             <div key={dayInfo.date.toISOString()} className="text-center">
@@ -232,16 +225,19 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   const renderMonthMode = () => (
     <div className="space-y-2">
       {/* Month header */}
-      <div className="grid grid-cols-7 gap-2 mb-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
         {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day) => (
-          <div key={day} className="text-center font-medium text-sm text-gray-600 py-2">
+          <div
+            key={day}
+            className="text-center font-medium text-xs sm:text-sm text-gray-600 py-1 sm:py-2"
+          >
             {day}
           </div>
         ))}
       </div>
 
       {/* Month grid */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
           const dayData = schedule.find((s) => {
@@ -263,7 +259,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
           return (
             <div
               key={dayInfo.date.toISOString()}
-              className={`min-h-[80px] p-2 border rounded-lg ${
+              className={`min-h-[60px] sm:min-h-[80px] p-1 sm:p-2 border rounded-lg ${
                 dayInfo.isToday
                   ? "bg-blue-50 border-blue-200"
                   : dayInfo.isCurrentMonth
@@ -272,7 +268,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               }`}
             >
               <div
-                className={`text-sm font-medium mb-1 ${
+                className={`text-xs sm:text-sm font-medium mb-1 ${
                   dayInfo.isToday
                     ? "text-blue-600"
                     : dayInfo.isCurrentMonth
@@ -329,7 +325,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
     return (
       <div>
         {showNavigation && (
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={handlePrevious}>
                 <ChevronLeft className="h-4 w-4" />
@@ -337,11 +333,8 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               <Button variant="outline" size="sm" onClick={handleNext}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={handleToday}>
-                Hôm nay
-              </Button>
             </div>
-            <div className="text-lg font-semibold">
+            <div className="text-lg font-semibold text-center sm:text-left">
               {format(currentDate, "MMMM yyyy", { locale: vi })}
             </div>
           </div>
@@ -354,7 +347,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   return (
     <Card className="border-0 shadow-sm">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
             {title}
@@ -367,14 +360,11 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               <Button variant="outline" size="sm" onClick={handleNext}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={handleToday}>
-                Hôm nay
-              </Button>
             </div>
           )}
         </div>
         {showNavigation && (
-          <div className="text-lg font-semibold text-gray-700">
+          <div className="text-lg font-semibold text-gray-700 text-center sm:text-left mt-2">
             {format(currentDate, "MMMM yyyy", { locale: vi })}
           </div>
         )}

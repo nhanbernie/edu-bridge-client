@@ -20,7 +20,6 @@ export const uploadDocumentEndpoint = (builder: EndpointBuilder<any, any, any>) 
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Upload document error:", response);
       return response;
     },
   });

@@ -14,7 +14,6 @@ export const verifyOtpEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Verify OTP error:", response);
       return response;
     },
   });

@@ -86,7 +86,6 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
       dispatch(setTutors(transformedTutors));
       dispatch(setError(null));
     } else if (apiError) {
-      console.error("❌ API Error:", apiError);
       dispatch(setError("Có lỗi xảy ra khi tìm kiếm gia sư"));
     }
   }, [searchResponse, apiError, dispatch]);

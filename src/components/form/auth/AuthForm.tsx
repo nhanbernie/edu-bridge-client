@@ -54,7 +54,6 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
           }
         });
       } else {
-        console.error("Form submission error:", error);
       }
     } finally {
       setIsSubmitting(false);

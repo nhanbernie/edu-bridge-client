@@ -19,18 +19,13 @@ const TutorOnboardingPage = () => {
     try {
       setStep1Data(data);
 
-      // Call API step 1 first
       const result = await submitOnboarding(data);
 
       if (result && result.success) {
         setStep1Completed(true);
         setCurrentStep(1);
       }
-      // If failed, stay at step 1 (error handled in hook)
-    } catch (error) {
-      // Error handled in hook, stay at step 1
-      console.error("Step 1 submission failed:", error);
-    }
+    } catch (error) {}
   };
 
   const handleStep2Back = () => {
@@ -40,12 +35,9 @@ const TutorOnboardingPage = () => {
   // Step 2: Only upload documents (step 1 already completed)
   const handleStep2Submit = async (documents: any[]) => {
     if (!step1Completed) {
-      console.error("Step 1 must be completed first");
       return;
     }
 
-    // Documents uploaded successfully in TutorStep2
-    // Redirect to home after completing all steps
     router.push("/home");
   };
 
@@ -59,7 +51,6 @@ const TutorOnboardingPage = () => {
               <TutorOnboardingSteps steps={steps} currentStep={currentStep} />
             </div>
 
-            {/* Step Content */}
             {currentStep === 0 && (
               <div className="p-8">
                 <TutorStep1

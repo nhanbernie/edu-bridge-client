@@ -59,7 +59,6 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
           return null;
         }
       } catch (error: any) {
-        console.error("Create availability block error:", error);
         toast.error("Có lỗi xảy ra khi tạo khung thời gian");
         return null;
       }
@@ -81,7 +80,6 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
           return null;
         }
       } catch (error: any) {
-        console.error("Update availability block error:", error);
         toast.error("Có lỗi xảy ra khi cập nhật khung thời gian");
         return null;
       }
@@ -103,7 +101,6 @@ export const useAvailabilityBlock = ({ tutorId, courseId }: UseAvailabilityBlock
           return false;
         }
       } catch (error: any) {
-        console.error("Delete availability block error:", error);
         toast.error("Có lỗi xảy ra khi xóa khung thời gian");
         return false;
       }

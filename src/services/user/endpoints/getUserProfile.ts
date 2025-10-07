@@ -14,7 +14,6 @@ export const getUserProfileEndpoint = (builder: EndpointBuilder<any, any, any>) 
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get user profile error:", response);
       return response;
     },
   });

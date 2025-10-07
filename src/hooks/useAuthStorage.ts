@@ -49,7 +49,6 @@ export const useAuthStorage = () => {
 
         return storedUserData;
       } catch (error) {
-        console.error("Failed to save auth data:", error);
         throw error;
       }
     },
@@ -64,7 +63,6 @@ export const useAuthStorage = () => {
         expires_in: tokenData.expires_in || 900,
       });
     } catch (error) {
-      console.error("Failed to save token data:", error);
       throw error;
     }
   }, []);
@@ -89,7 +87,6 @@ export const useAuthStorage = () => {
 
         return storedUserData;
       } catch (error) {
-        console.error("Failed to save user data:", error);
         throw error;
       }
     },
@@ -99,9 +96,8 @@ export const useAuthStorage = () => {
   const clearAuthData = useCallback(async () => {
     try {
       await StorageService.clearAuthData();
-      dispatch(setUser(null as any)); // Clear user with null
+      dispatch(setUser(null as any));
     } catch (error) {
-      console.error("Failed to clear auth data:", error);
       throw error;
     }
   }, [dispatch]);

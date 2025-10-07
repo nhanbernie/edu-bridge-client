@@ -10,15 +10,11 @@ export const updateCourseEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       body,
     }),
 
-    invalidatesTags: (result, error, { courseId }) => [
-      { type: "Course", id: courseId },
-      "Course",
-    ],
+    invalidatesTags: (result, error, { courseId }) => [{ type: "Course", id: courseId }, "Course"],
     transformResponse: (response: UpdateCourseResponse) => {
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Update course error:", response);
       return response;
     },
   });

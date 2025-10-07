@@ -43,7 +43,6 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
           });
         }
       } catch (error) {
-        console.error("Error checking role access:", error);
         setIsAuthorized(false);
       }
     };

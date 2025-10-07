@@ -26,7 +26,6 @@ export const verifyAllDocumentsEndpoint = (builder: EndpointBuilder<any, any, an
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Verify all documents error:", response);
       return response;
     },
   });

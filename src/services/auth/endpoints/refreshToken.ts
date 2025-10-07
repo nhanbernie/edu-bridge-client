@@ -15,7 +15,6 @@ export const refreshTokenEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Refresh token error:", response);
       return response;
     },
   });

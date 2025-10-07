@@ -15,7 +15,6 @@ export const createAvailabilityBlockEndpoint = (builder: EndpointBuilder<any, an
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Create availability block error:", response);
       return response;
     },
   });

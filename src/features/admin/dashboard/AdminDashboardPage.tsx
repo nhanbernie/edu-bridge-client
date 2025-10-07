@@ -62,14 +62,8 @@ const AdminDashboardPage = () => {
           isApproved: true,
           tutorType,
         }).unwrap();
-        // TODO: Replace with toast notification
-        console.log("Tutor approved successfully!");
         setShowApprovalModal(false);
-      } catch (error) {
-        console.error("Error approving tutor:", error);
-        // TODO: Replace with toast notification
-        console.error("Error approving tutor");
-      }
+      } catch (error) {}
     },
     [verifyAllDocuments]
   );
@@ -89,13 +83,10 @@ const AdminDashboardPage = () => {
     try {
       await deleteUser({ userId }).unwrap();
       // TODO: Replace with toast notification
-      console.log("User deleted successfully!");
       setShowDeleteDialog(false);
       setSelectedUser(null);
     } catch (error) {
-      console.error("Error deleting user:", error);
       // TODO: Replace with toast notification
-      console.error("Error deleting user");
     }
   };
 
@@ -122,9 +113,7 @@ const AdminDashboardPage = () => {
       setShowRejectDialog(false);
       setSelectedUser(null);
     } catch (error) {
-      console.error("Error rejecting tutor:", error);
       // TODO: Replace with toast notification
-      console.error("Error rejecting tutor");
     }
   };
 

@@ -14,7 +14,6 @@ export const deleteUserEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Delete user error:", response);
       return response;
     },
   });

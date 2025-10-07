@@ -50,7 +50,6 @@ export const useAdminActions = () => {
         });
         return { success: true };
       } catch (error) {
-        console.error("Error approving tutor:", error);
         toast.error("Failed to approve tutor", {
           description: "Please try again or contact support if the issue persists.",
         });
@@ -74,7 +73,6 @@ export const useAdminActions = () => {
         });
         return { success: true };
       } catch (error) {
-        console.error("Error rejecting tutor:", error);
         toast.error("Failed to reject tutor", {
           description: "Please try again or contact support if the issue persists.",
         });
@@ -94,7 +92,6 @@ export const useAdminActions = () => {
         });
         return { success: true };
       } catch (error) {
-        console.error("Error deleting user:", error);
         toast.error("Failed to delete user", {
           description: "Please try again or contact support if the issue persists.",
         });

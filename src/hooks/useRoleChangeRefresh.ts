@@ -25,7 +25,6 @@ export const useRefreshToken = () => {
       }
       return false;
     } catch (error) {
-      console.error("Manual token refresh failed:", error);
       return false;
     }
   };

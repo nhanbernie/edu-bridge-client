@@ -10,7 +10,6 @@ export const getTutorRatingEndpoint = (builder: EndpointBuilder<any, any, any>) 
     }),
     providesTags: ["TutorRating"],
     transformErrorResponse: (response: any) => {
-      console.error("Get tutor rating error:", response);
       return response;
     },
   });

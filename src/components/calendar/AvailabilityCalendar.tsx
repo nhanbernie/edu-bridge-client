@@ -236,7 +236,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
             dropInfo.revert();
           }
         } catch (error) {
-          console.error("Error moving schedule:", error);
           dropInfo.revert();
           toast.error("Có lỗi xảy ra khi di chuyển lịch");
         }
@@ -285,7 +284,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
             resizeInfo.revert();
           }
         } catch (error) {
-          console.error("Error resizing schedule:", error);
           resizeInfo.revert();
           toast.error("Có lỗi xảy ra khi thay đổi thời gian lịch");
         }
@@ -332,7 +330,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
             await refetchBlocks();
           }
         } catch (error) {
-          console.error("Error updating schedule:", error);
           toast.error("Có lỗi xảy ra khi cập nhật lịch");
         }
       }
@@ -368,7 +365,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
             await refetchBlocks();
           }
         } catch (error) {
-          console.error("Error deleting schedule:", error);
           toast.error("Có lỗi xảy ra khi xóa lịch");
         }
       }

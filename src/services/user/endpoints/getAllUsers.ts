@@ -32,7 +32,6 @@ export const getAllUsersEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get all users error:", response);
       return response;
     },
   });

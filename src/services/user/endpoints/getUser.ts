@@ -17,7 +17,6 @@ export const getUserEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get user error:", response);
       return response;
     },
   });

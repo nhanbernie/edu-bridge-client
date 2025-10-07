@@ -15,7 +15,6 @@ export const selectRoleEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Select role error:", response);
       return response;
     },
   });

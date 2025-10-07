@@ -21,7 +21,6 @@ export const updateAvailabilityBlockEndpoint = (builder: EndpointBuilder<any, an
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Update availability block error:", response);
       return response;
     },
   });

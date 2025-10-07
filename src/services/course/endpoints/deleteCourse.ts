@@ -23,7 +23,6 @@ export const deleteCourseEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Delete course error:", response);
       return response;
     },
   });

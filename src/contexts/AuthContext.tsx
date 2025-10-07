@@ -52,7 +52,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         dispatch(clearUser());
       }
     } catch (error) {
-      console.error("Error checking auth status:", error);
       dispatch(clearUser());
     } finally {
       dispatch(setLoading(false));
@@ -123,7 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dispatch(clearUser());
       router.replace("/login");
     } catch (error) {
-      console.error("Error during logout:", error);
+      // Ignore error
     }
   };
 

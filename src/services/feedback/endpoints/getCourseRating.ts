@@ -10,7 +10,6 @@ export const getCourseRatingEndpoint = (builder: EndpointBuilder<any, any, any>)
     }),
     providesTags: ["CourseRating"],
     transformErrorResponse: (response: any) => {
-      console.error("Get course rating error:", response);
       return response;
     },
   });

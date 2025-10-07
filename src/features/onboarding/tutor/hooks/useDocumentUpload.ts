@@ -39,7 +39,6 @@ export const useDocumentUpload = () => {
             return { success: false };
           }
         } catch (err: any) {
-          console.error(`Upload error for ${doc.docType}:`, err);
           toast.error(`Lỗi upload ${doc.docType}: ${err?.data?.message || "Có lỗi xảy ra"}`);
           return { success: false };
         }
@@ -48,7 +47,6 @@ export const useDocumentUpload = () => {
       toast.success("Upload tất cả tài liệu thành công!");
       return { success: true, results: uploadResults };
     } catch (err: any) {
-      console.error("Document upload error:", err);
       toast.error("Có lỗi xảy ra khi upload tài liệu");
       return { success: false };
     }
@@ -77,7 +75,6 @@ export const useDocumentUpload = () => {
         return { success: false };
       }
     } catch (err: any) {
-      console.error("Single document upload error:", err);
       toast.error(err?.data?.message || "Có lỗi xảy ra khi upload tài liệu");
       return { success: false };
     }

@@ -84,7 +84,6 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
           toast.error(result.message || "Có lỗi xảy ra khi đặt lịch.");
         }
       } catch (error: any) {
-        console.error("Booking error:", error);
         toast.error(error?.data?.message || error?.message || "Có lỗi xảy ra khi đặt lịch.");
       }
     },
@@ -117,7 +116,6 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
         toast.error(result.message || "Có lỗi xảy ra khi tạo thanh toán.");
       }
     } catch (error: any) {
-      console.error("Payment error:", error);
       toast.error(error?.data?.message || error?.message || "Có lỗi xảy ra khi tạo thanh toán.");
     } finally {
       setShowPaymentDialog(false);

@@ -83,7 +83,6 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
         toast.success("Xóa khóa học thành công");
         refetchCourse();
       } catch (error) {
-        console.error("Error deleting course:", error);
         toast.error("Không thể xóa khóa học. Vui lòng thử lại.");
       }
     },
@@ -97,7 +96,6 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
 
   // Handle errors
   if (courseError) {
-    console.error("Error loading courses:", courseError);
     toast.error("Không thể tải danh sách khóa học. Vui lòng thử lại.");
   }
 

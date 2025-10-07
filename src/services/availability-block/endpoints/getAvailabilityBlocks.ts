@@ -31,7 +31,6 @@ export const getAvailabilityBlocksEndpoint = (builder: EndpointBuilder<any, any,
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Get availability blocks error:", response);
       return response;
     },
   });

@@ -14,7 +14,6 @@ export const resetPasswordEndpoint = (builder: EndpointBuilder<any, any, any>) =
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Reset password error:", response);
       return response;
     },
   });

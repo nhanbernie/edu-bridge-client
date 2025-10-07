@@ -14,7 +14,6 @@ export const deleteAvailabilityBlockEndpoint = (builder: EndpointBuilder<any, an
       return response;
     },
     transformErrorResponse: (response: any) => {
-      console.error("Delete availability block error:", response);
       return response;
     },
   });

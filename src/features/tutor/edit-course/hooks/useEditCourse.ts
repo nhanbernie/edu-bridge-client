@@ -70,8 +70,6 @@ export const useEditCourse = (courseId: string) => {
           toast.error(response.message || "Có lỗi xảy ra khi cập nhật khóa học");
         }
       } catch (error: any) {
-        console.error("Error updating course:", error);
-
         // Handle different error types
         if (error?.data?.message) {
           toast.error(error.data.message);
@@ -91,7 +89,6 @@ export const useEditCourse = (courseId: string) => {
 
   // Handle loading error
   if (courseError) {
-    console.error("Error loading course:", courseError);
     toast.error("Không thể tải thông tin khóa học. Vui lòng thử lại.");
   }
 

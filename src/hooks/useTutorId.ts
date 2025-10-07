@@ -40,7 +40,6 @@ export function useTutorId(): { tutorId: string | null; isLoading: boolean } {
           setLoading(false);
         }
       } catch (error) {
-        console.error("Error initializing tutor ID:", error);
         if (mounted) {
           setTutorId(null);
           setLoading(false);

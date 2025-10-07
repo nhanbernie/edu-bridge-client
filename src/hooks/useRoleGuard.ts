@@ -23,7 +23,6 @@ export const useRoleGuard = () => {
     try {
       return await StorageService.getUserData();
     } catch (error) {
-      console.error("Error getting user data:", error);
       return null;
     }
   }, []);
