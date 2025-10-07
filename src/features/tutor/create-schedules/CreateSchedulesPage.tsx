@@ -1,28 +1,22 @@
 "use client";
 
-import React from "react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
-import { AvailabilityCalendar } from "@/components/calendar/AvailabilityCalendar";
 import EBSchedule from "@/components/common/EBSchedule";
-import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
-import { useTutorId } from "@/hooks/useTutorId";
+import { AvailabilityCalendar } from "@/components/calendar/AvailabilityCalendar";
+import { useAvailabilityBlock, useTutorId } from "@/hooks";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
-import { selectAvailabilityBlocks } from "@/redux/slices/availability-block.slice";
 
 const CreateSchedulesPage = () => {
   const router = useRouter();
   const { tutorId } = useTutorId();
 
-  // Get availability blocks from API
   const { availabilityBlocks, isLoadingBlocks } = useAvailabilityBlock({
     tutorId: tutorId || undefined,
   });
 
-  // Transform API data to EBSchedule format
   const currentSchedules = transformToCurrentWeekSchedule(availabilityBlocks);
   const scheduleSummary = getScheduleSummary(availabilityBlocks);
 

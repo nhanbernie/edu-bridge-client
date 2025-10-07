@@ -1,0 +1,148 @@
+/* Custom FullCalendar Styles */
+/* fc-header-toolbar fc-toolbar fc-toolbar-ltr */
+.fc-header-toolbar {
+  /* display: none !important; */
+}
+.fc-toolbar {
+  margin-bottom: 1.5rem !important;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fc-button {
+  background: transparent !important;
+  border: 1px solid #d1d5db62 !important;
+  color: #374151 !important;
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  border-radius: 0.375rem !important;
+  font-weight: 500 !important;
+}
+
+.fc-button:hover {
+  background: #f9fafb !important;
+  border-color: #9ca3af59 !important;
+}
+
+.fc-button:focus {
+  box-shadow: none !important;
+}
+
+.fc-button-group .fc-button {
+  border-radius: 0.375rem !important;
+}
+
+.fc-button-group .fc-button:first-child {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.fc-button-group .fc-button:last-child {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.fc-button-group .fc-button:not(:first-child):not(:last-child) {
+  border-radius: 0 !important;
+}
+
+.fc-toolbar-title {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+
+/* Header Days Styling */
+.fc-col-header-cell {
+  padding: 0.5rem 0 !important;
+  text-align: center !important;
+}
+
+.fc-col-header-cell-cushion {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  padding: 0.5rem !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* Day of week (smaller) */
+.fc-col-header-cell-cushion .fc-daygrid-day-number {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+  line-height: 1 !important;
+}
+
+/* Date number (larger) */
+.fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Active/Today styling - Green background */
+.fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  background-color: #10b981 !important;
+  color: white !important;
+}
+
+.fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:first-child {
+  color: #10b981 !important;
+  font-weight: 600 !important;
+}
+
+/* Table borders and spacing */
+.fc-theme-standard .fc-scrollgrid {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: #dbdbdb !important;
+}
+
+.fc-col-header-cell {
+  height: 4rem !important;
+  padding: 0.75rem 0 !important;
+}
+
+.fc-daygrid-day {
+  height: 3rem !important;
+  min-height: 3rem !important;
+}
+
+.fc-timegrid-slot {
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
+}
+
+/* Time labels font size */
+.fc-timegrid-axis {
+  font-size: 0.6rem !important;
+  color: #6b7280 !important;
+}
+
+.fc-timegrid-slot-label {
+  font-size: 0.6rem !important;
+  color: #6b7280 !important;
+}
+
+.fc-timegrid-slot-label .fc-timegrid-slot-label-cushion {
+  font-size: 0.6rem !important;
+  font-weight: 500 !important;
+}

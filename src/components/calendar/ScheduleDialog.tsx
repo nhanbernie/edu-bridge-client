@@ -158,7 +158,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
       date: selectedDate,
       startTime,
       endTime,
-      title,
+      title: "Rảnh", // Default title
     };
 
     onSave(scheduleData);
@@ -196,19 +196,6 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Event Type Tabs */}
-          <div className="flex gap-2">
-            <Badge variant="default" className="bg-blue-100 text-blue-800 cursor-pointer">
-              Event
-            </Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-gray-50">
-              Task
-            </Badge>
-            <Badge variant="outline" className="cursor-pointer hover:bg-gray-50">
-              Appointment schedule
-            </Badge>
-          </div>
-
           {/* Date and Time Display */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Clock className="w-4 h-4" />
@@ -236,7 +223,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
             <div className="relative time-dropdown-container">
               <Input
                 id="startTime"
-                type="time"
+                type="text"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
                 onFocus={() => setShowStartTimeOptions(true)}
@@ -245,7 +232,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
                     setShowStartTimeOptions(false);
                   }
                 }}
-                placeholder="Chọn hoặc nhập thời gian"
+                placeholder="Chọn hoặc nhập thời gian (HH:MM)"
               />
               {showStartTimeOptions && (
                 <div className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-y-auto">
@@ -270,7 +257,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
             <div className="relative time-dropdown-container">
               <Input
                 id="endTime"
-                type="time"
+                type="text"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 onFocus={() => setShowEndTimeOptions(true)}
@@ -279,7 +266,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
                     setShowEndTimeOptions(false);
                   }
                 }}
-                placeholder="Chọn hoặc nhập thời gian"
+                placeholder="Chọn hoặc nhập thời gian (HH:MM)"
               />
               {showEndTimeOptions && (
                 <div className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-y-auto">
@@ -297,17 +284,6 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
               )}
             </div>
           </div>
-
-          {/* Title */}
-          <div className="space-y-2">
-            <Label htmlFor="title">Tiêu đề</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Nhập tiêu đề cho lịch rảnh"
-            />
-          </div>
         </div>
 
         <DialogFooter className="gap-2">
@@ -318,7 +294,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
           <Button
             onClick={handleSave}
             disabled={!selectedDate || !startTime || !endTime}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-emerald-600 hover:bg-emerald-700"
           >
             <Save className="w-4 h-4 mr-2" />
             {mode === "create" ? "Tạo lịch" : "Cập nhật"}
