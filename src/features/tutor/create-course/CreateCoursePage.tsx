@@ -1,13 +1,12 @@
 "use client";
 
 import React from "react";
-import EBFormProvider from "@/components/form/EBFormProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, BookOpen } from "lucide-react";
+import { EBFormProvider } from "@/components/form";
 import { CourseForm, type CourseFormData } from "@/components/form/course";
-import { useSubjects } from "@/hooks/useSubjects";
 import courseValidatorSchema from "@/lib/validator/courseValidator";
 import { useCreateCourse } from "./hooks/useCreateCourse";
+import { useSubjects } from "@/hooks/useSubjects";
 
 const CreateCoursePage: React.FC = () => {
   const { tutorId, isLoading, tutorLoading, handleCreateCourse, handleCancel } = useCreateCourse();

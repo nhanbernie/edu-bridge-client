@@ -554,8 +554,8 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
                       Student Profile
                     </h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      This student doesn't have verification documents as they are not required for
-                      students.
+                      This student doesn&apos;t have verification documents as they are not required
+                      for students.
                     </p>
                   </div>
                 </CardContent>

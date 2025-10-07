@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
 import { useParams } from "next/navigation";
-import EBFormProvider from "@/components/form/EBFormProvider";
 import { ArrowLeft, BookOpen } from "lucide-react";
-import { CourseForm, type CourseFormData } from "@/components/form/course";
+import { CourseForm, type CourseFormData, EBFormProvider } from "@/components/form";
 import { useSubjects } from "@/hooks/useSubjects";
-import courseValidatorSchema from "@/lib/validator/courseValidator";
 import { useEditCourse } from "./hooks/useEditCourse";
+import courseValidatorSchema from "@/lib/validator/courseValidator";
+
 const EditCoursePage: React.FC = () => {
   const params = useParams();
   const courseId = params.courseId as string;

@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import EBTutorCourseCard from "@/components/common/EBTutorCourseCard";
-import EmptyState from "@/components/common/EmptyState";
-import EBConfirmDialog from "@/components/common/EBConfirmDialog";
+import {
+  EmptyState,
+  ActionItem,
+  EBConfirmDialog,
+  EBTutorCourseCard,
+  CourseData,
+} from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
-import type { CourseData } from "@/components/common/EBTutorCourseCard";
-import type { ActionItem } from "@/components/common/EBActionsMenu";
 import { useManageCourses } from "./hooks/useManageCourses";
 import { useTutorId } from "@/hooks/useTutorId";
 
@@ -22,7 +24,7 @@ const ManageCoursesPage: React.FC = () => {
     handleEditCourse,
     handleDeleteCourse,
     handleRefresh,
-  } = useManageCourses(tutorId || ""); // No courseId needed for listing all courses
+  } = useManageCourses(tutorId || ""); 
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);

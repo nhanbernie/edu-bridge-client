@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
+import { useRouter } from "next/navigation";
+import { Calendar, Plus, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Plus, RefreshCw } from "lucide-react";
 import EBSchedule from "@/components/common/EBSchedule";
-import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
-import { useTutorId } from "@/hooks/useTutorId";
+import { useAvailabilityBlock, useTutorId } from "@/hooks/index";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
-import { useRouter } from "next/navigation";
 
 const ManageSchedulesPage = () => {
   const router = useRouter();
