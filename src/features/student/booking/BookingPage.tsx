@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { toast } from "sonner";
 import {
   TutorInfo,
   PackageSelector,
@@ -9,10 +8,10 @@ import {
   SelectedSchedule,
   PaymentConfirmDialog,
 } from "./components";
+import { useBookingFlow } from "./hooks";
 import { Button } from "@/components/ui/button";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
-import { useBookingFlow } from "./hooks";
 
 interface BookingPageProps {
   tutorId: string;

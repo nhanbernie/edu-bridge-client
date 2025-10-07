@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
 import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
 import { Loader2, Package } from "lucide-react";
-import type { PackageDto, PackageType } from "@/services/course/type";
+import type { PackageDto } from "@/services/course/type";
 
 // Format Vietnamese currency
 const formatVNDPrice = (price: number): string => {
