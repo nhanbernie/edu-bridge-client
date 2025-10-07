@@ -186,9 +186,9 @@ export const defaultAdminSidebarItems: EBSidebarItem[] = [
     href: "/admin/reports",
   },
   {
-    label: "Thanh toán",
+    label: "Giao dịch",
     icon: CreditCard,
-    href: "/admin/payments",
+    href: "/admin/transactions",
   },
 ];
 

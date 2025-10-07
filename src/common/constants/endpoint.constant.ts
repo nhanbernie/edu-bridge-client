@@ -50,6 +50,7 @@ export const API_ENDPOINTS = {
     GET_TUTOR_TRANSACTIONS: "/api/transaction/tutor",
     GET_STUDENT_TRANSACTIONS: "/api/transaction/student",
     GET_ADMIN_TRANSACTIONS: "/api/transaction/admin",
+    GET_SERVICE_FEES: "/api/transaction/admin/service-fees",
   },
 } as const;
 
