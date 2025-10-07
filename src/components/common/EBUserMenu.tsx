@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
@@ -15,6 +15,7 @@ import {
 
 const EBUserMenu = () => {
   const { logout, user } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   const userActions: ActionItem[] = [
     {
@@ -40,10 +41,10 @@ const EBUserMenu = () => {
   ];
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-3 p-2 rounded-xl  dark:hover:bg-gray-800 transition-all duration-200 ease-in-out group border border-transparent  dark:hover:border-gray-700">
-          <div className="relative w-9 h-9 bg-gradient-to-br rounded-full flex items-center justify-center shadow-sm ring-2 ring-white dark:ring-gray-900 group-hover:shadow-md transition-shadow duration-200">
+        <button className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 ease-in-out group border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+          <div className="relative w-9 h-9 rounded-full flex items-center justify-center shadow-sm ring-2 bg-gray-100 ring-white dark:ring-gray-900 group-hover:shadow-md transition-shadow duration-200">
             {user?.avatar ? (
               <Image
                 src={user.avatar}
@@ -53,12 +54,14 @@ const EBUserMenu = () => {
                 className="w-full h-full rounded-full object-cover"
               />
             ) : (
-              <User size={18} className="text-white" />
+              <User size={18} className="text-gray-600 dark:text-gray-400" />
             )}
           </div>
           <ChevronDown
             size={16}
-            className="text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200"
+            className={`text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-all duration-200 ${
+              isOpen ? "rotate-180" : "rotate-0"
+            }`}
           />
         </button>
       </DropdownMenuTrigger>
@@ -69,9 +72,9 @@ const EBUserMenu = () => {
       >
         {user && (
           <>
-            <div className="px-4 py-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 rounded-lg mb-2">
+            <div className="px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg mb-2">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br   rounded-full flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center shadow-sm">
                   {user?.avatar ? (
                     <Image
                       src={user.avatar}
@@ -81,7 +84,7 @@ const EBUserMenu = () => {
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <User size={20} className="text-white" />
+                    <User size={20} className="text-gray-600 dark:text-gray-400" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -116,15 +119,13 @@ const EBUserMenu = () => {
                   }`}
                 >
                   {IconComponent && (
-                    <div
-                      className={`p-1.5 rounded-md ${
+                    <IconComponent
+                      className={`h-5 w-5 ${
                         action.danger
-                          ? "bg-red-100 dark:bg-red-950/50"
-                          : "bg-gray-100 dark:bg-gray-800"
+                          ? "text-red-600 dark:text-red-400"
+                          : "text-gray-600 dark:text-gray-400"
                       }`}
-                    >
-                      <IconComponent className="h-4 w-4" />
-                    </div>
+                    />
                   )}
                   <span className="font-medium">{action.label}</span>
                 </DropdownMenuItem>
