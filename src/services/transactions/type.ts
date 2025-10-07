@@ -20,3 +20,4 @@ export interface TransactionDto {
 export type GetTutorTransactionsResponse = ApiResponse<TransactionDto[]>;
 export type GetStudentTransactionsResponse = ApiResponse<TransactionDto[]>;
 export type GetAdminTransactionsResponse = ApiResponse<TransactionDto[]>;
+export type GetServiceFeesResponse = ApiResponse<number>;
