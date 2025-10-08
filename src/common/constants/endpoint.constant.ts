@@ -61,6 +61,13 @@ export const API_ENDPOINTS = {
     GET_STUDENT_SCHEDULE: "/api/class-session/student/{studentId}/schedule",
     JOIN_SESSION: "/api/class-session/{sessionId}/join",
   },
+  MEETING: {
+    GET_WHITEBOARD: "/api/class-session/{sessionId}/whiteboard",
+    SAVE_WHITEBOARD: "/api/class-session/{sessionId}/whiteboard",
+    JOIN_MEETING: "/api/class-session/{sessionId}/join",
+    GET_CHAT_HISTORY: "/api/class-session/{sessionId}/chat",
+    SEND_MESSAGE: "/api/class-session/{sessionId}/chat",
+  },
 } as const;
 
 export const API_CONFIG = {
