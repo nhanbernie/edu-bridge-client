@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
     CREATE_FEEDBACK: "/api/feedback/course/{courseId}",
     GET_TUTOR_RATING: "/api/feedback/tutor/{tutorId}/rating",
     GET_COURSE_RATING: "/api/feedback/course/{courseId}/rating",
+    GET_TUTOR_FEEDBACKS: "/api/feedback/tutor/{tutorId}/feedbacks",
   },
   TRANSACTION: {
     GET_TUTOR_TRANSACTIONS: "/api/transaction/tutor",

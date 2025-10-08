@@ -4,18 +4,24 @@ import {
   createFeedbackEndpoint,
   getTutorRatingEndpoint,
   getCourseRatingEndpoint,
+  getTutorFeedbacksEndpoint,
 } from "./endpoints";
 
 export const feedbackApi = createApi({
   reducerPath: "feedbackApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Feedback", "TutorRating", "CourseRating"],
+  tagTypes: ["Feedback", "TutorRating", "CourseRating", "TutorFeedbacks"],
   endpoints: (builder) => ({
     createFeedback: createFeedbackEndpoint(builder),
     getTutorRating: getTutorRatingEndpoint(builder),
     getCourseRating: getCourseRatingEndpoint(builder),
+    getTutorFeedbacks: getTutorFeedbacksEndpoint(builder),
   }),
 });
 
-export const { useCreateFeedbackMutation, useGetTutorRatingQuery, useGetCourseRatingQuery } =
-  feedbackApi;
+export const {
+  useCreateFeedbackMutation,
+  useGetTutorRatingQuery,
+  useGetCourseRatingQuery,
+  useGetTutorFeedbacksQuery,
+} = feedbackApi;

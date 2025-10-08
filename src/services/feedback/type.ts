@@ -16,15 +16,22 @@ export interface FeedbackData {
   comment: string;
   createdAt: string;
   updatedAt: string | null;
+  courseTitle?: string | null;
+  studentName?: string | null;
 }
 
 // Response Types using generic ApiResponse
 export type CreateFeedbackResponse = ApiResponse<FeedbackData>;
 export type GetRatingResponse = ApiResponse<number>;
+export type GetTutorFeedbacksResponse = ApiResponse<FeedbackData[]>;
 
 // Route Parameters
 export interface FeedbackRouteParams {
   courseId: string;
+}
+
+export interface TutorFeedbacksParams {
+  tutorId: string;
 }
 
 export interface TutorRatingRouteParams {
