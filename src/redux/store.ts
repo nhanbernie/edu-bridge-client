@@ -7,6 +7,7 @@ import { bookingApi } from "@/services/booking";
 import { paymentApi } from "@/services/payment";
 import { feedbackApi } from "@/services/feedback";
 import { transactionsApi } from "@/services/transactions";
+import { classSessionApi } from "@/services/classSession";
 import { authReducer } from "@/slices/auth.slice";
 import { courseReducer } from "@/slices/course.slice";
 import { availabilityBlockReducer } from "@/slices/availability-block.slice";
@@ -32,6 +33,7 @@ export const store = configureStore({
     [paymentApi.reducerPath]: paymentApi.reducer,
     [feedbackApi.reducerPath]: feedbackApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
+    [classSessionApi.reducerPath]: classSessionApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -48,7 +50,8 @@ export const store = configureStore({
       bookingApi.middleware,
       paymentApi.middleware,
       feedbackApi.middleware,
-      transactionsApi.middleware
+      transactionsApi.middleware,
+      classSessionApi.middleware
     ),
   // devTools: __DEV__,
 });
