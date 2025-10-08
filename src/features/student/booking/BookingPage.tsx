@@ -8,6 +8,7 @@ import {
   SelectedSchedule,
   PaymentConfirmDialog,
 } from "./components";
+import PaymentQRCodeDialog from "./components/PaymentQRCodeDialog";
 import { useBookingFlow } from "./hooks";
 import { Button } from "@/components/ui/button";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
@@ -173,6 +174,15 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
         isLoading={bookingFlow.isLoading}
         bookingId={bookingFlow.bookingId}
       />
+
+      {/* QR Code Dialog */}
+      {bookingFlow.paymentData && (
+        <PaymentQRCodeDialog
+          isOpen={bookingFlow.showQRDialog}
+          onClose={bookingFlow.handleCloseQRDialog}
+          paymentData={bookingFlow.paymentData}
+        />
+      )}
     </div>
   );
 };

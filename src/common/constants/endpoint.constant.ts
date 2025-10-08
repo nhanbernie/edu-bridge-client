@@ -55,6 +55,10 @@ export const API_ENDPOINTS = {
   CLASS_SESSION: {
     GET_STUDENT_UPCOMING_SESSIONS: "/api/class-session/student/{studentId}/upcoming",
     GET_TUTOR_UPCOMING_SESSIONS: "/api/class-session/tutor/{tutorId}/upcoming",
+    GET_TUTOR_UPCOMING_SESSIONS_BY_COURSE:
+      "/api/class-session/tutor/{tutorId}/course/{courseId}/upcoming",
+    GET_STUDENT_SCHEDULE: "/api/class-session/student/{studentId}/schedule",
+    JOIN_SESSION: "/api/class-session/{sessionId}/join",
   },
 } as const;
 

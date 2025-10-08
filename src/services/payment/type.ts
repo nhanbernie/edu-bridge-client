@@ -20,6 +20,7 @@ export interface PaymentData {
 export interface CreatePaymentData {
   payment: PaymentData;
   paymentUrl: string;
+  qrCodeBase64: string;
 }
 
 export type CreatePaymentResponse = ApiResponse<CreatePaymentData>;
