@@ -52,6 +52,10 @@ export const API_ENDPOINTS = {
     GET_ADMIN_TRANSACTIONS: "/api/transaction/admin",
     GET_SERVICE_FEES: "/api/transaction/admin/service-fees",
   },
+  CLASS_SESSION: {
+    GET_STUDENT_UPCOMING_SESSIONS: "/api/class-session/student/{studentId}/upcoming",
+    GET_TUTOR_UPCOMING_SESSIONS: "/api/class-session/tutor/{tutorId}/upcoming",
+  },
 } as const;
 
 export const API_CONFIG = {

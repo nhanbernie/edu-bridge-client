@@ -31,7 +31,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   showNotifications = true,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const pathname = usePathname();
 
   useEffect(() => {

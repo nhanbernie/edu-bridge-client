@@ -14,6 +14,7 @@ import {
   Bell,
   UserCheck,
   GraduationCap,
+  CalendarCheck,
 } from "lucide-react";
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
@@ -115,6 +116,11 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     label: "Lịch rảnh",
     icon: Calendar,
     href: "/tutor/schedules",
+  },
+  {
+    label: "Lịch dạy của tôi",
+    icon: CalendarCheck,
+    href: "/tutor/my-schedule",
   },
   {
     label: "Giao dịch",
@@ -320,6 +326,12 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
             onClick: () => go("/student"),
           },
           {
+            key: "my-schedule",
+            label: "Lịch học của tôi",
+            href: "/student/my-schedule",
+            onClick: () => go("/student/my-schedule"),
+          },
+          {
             key: "transactions",
             label: "Giao dịch",
             href: "/student/transactions",
@@ -341,6 +353,12 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
             label: "Schedules",
             href: "/tutor/schedules",
             onClick: () => go("/tutor/schedules"),
+          },
+          {
+            key: "my-schedule",
+            label: "Lịch dạy của tôi",
+            href: "/tutor/my-schedule",
+            onClick: () => go("/tutor/my-schedule"),
           },
           {
             key: "transactions",
