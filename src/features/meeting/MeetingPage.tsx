@@ -18,12 +18,9 @@ import { Whiteboard, ChatPanel, VideoPanel } from "./components";
 
 interface MeetingPageProps {
   sessionId: string;
-  userId?: string;
 }
 
-const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123" }) => {
-  const [showWhiteboard, setShowWhiteboard] = useState(false);
-
+const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId }) => {
   const {
     isJoined,
     isVideoOn,
@@ -32,13 +29,15 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123
     localStream,
     remoteStreams,
     isLoading,
+    userId,
+    userRole,
     handleJoinMeeting,
     handleLeaveMeeting,
     handleSendMessage,
     toggleVideo,
     toggleMic,
     setupEditorListener,
-  } = useMeeting({ sessionId, userId });
+  } = useMeeting({ sessionId });
 
   if (isLoading) {
     return (
@@ -60,17 +59,11 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123
           <div>
             <h1 className="text-lg font-semibold text-gray-900">Meeting Room</h1>
             <p className="text-sm text-gray-600">Session ID: {sessionId}</p>
-            <p className="text-xs text-gray-500">User: {userId}</p>
+            <p className="text-xs text-gray-500">
+              User: {userId} ({userRole})
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowWhiteboard(!showWhiteboard)}
-              className={`p-2 rounded-lg transition-colors ${
-                showWhiteboard ? "bg-blue-600 text-white" : "hover:bg-gray-200 text-gray-700"
-              }`}
-            >
-              <MessageSquare className="h-5 w-5" />
-            </button>
             <button className="p-2 hover:bg-gray-200 rounded-lg text-gray-700">
               <Settings className="h-5 w-5" />
             </button>
@@ -105,11 +98,10 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123
               </div>
             </div>
           ) : (
-            // Meeting screen
-            <div className="flex-1 bg-gray-50 relative">
-              {showWhiteboard ? (
-                <Whiteboard onMount={setupEditorListener} isJoined={isJoined} />
-              ) : (
+            // Meeting screen - Show both video and whiteboard
+            <div className="flex-1 bg-gray-50 relative flex">
+              {/* Video Panel - Left side */}
+              <div className="flex-1">
                 <VideoPanel
                   localStream={localStream}
                   remoteStreams={remoteStreams}
@@ -119,7 +111,12 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123
                   onToggleMic={toggleMic}
                   isJoined={isJoined}
                 />
-              )}
+              </div>
+
+              {/* Whiteboard Panel - Right side */}
+              <div className="w-1/2 border-l border-gray-200">
+                <Whiteboard onMount={setupEditorListener} isJoined={isJoined} />
+              </div>
             </div>
           )}
 
@@ -174,7 +171,7 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId, userId = "user-123
           <ChatPanel
             messages={messages}
             onSendMessage={handleSendMessage}
-            currentUserId={userId}
+            currentUserId={userId || "unknown"}
             isJoined={isJoined}
           />
         </div>

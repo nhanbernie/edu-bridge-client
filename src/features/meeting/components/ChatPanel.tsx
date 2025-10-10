@@ -60,12 +60,12 @@ const ChatPanel: React.FC<ChatPanelProps> = ({
       <div className="flex items-center gap-2 p-4 border-b border-gray-200">
         <MessageSquare className="h-5 w-5 text-gray-600" />
         <h3 className="font-semibold text-gray-900">Chat</h3>
-        <span className="text-sm text-gray-600">({messages.length})</span>
+        <span className="text-sm text-gray-600">({messages?.length || 0})</span>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {messages.length === 0 ? (
+        {!messages || !Array.isArray(messages) || messages.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
             <MessageSquare className="h-12 w-12 mx-auto mb-2 opacity-50" />
             <p>Chưa có tin nhắn nào</p>

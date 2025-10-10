@@ -11,6 +11,7 @@ export interface TutorFormData {
   bio: string;
   subjects: string[];
   languages: string[];
+  location: string;
 }
 
 export const useTutorOnboarding = () => {
@@ -45,6 +46,7 @@ export const useTutorOnboarding = () => {
           bio: data.bio,
           subjects: data.subjects,
           languages: data.languages,
+          location: data.location,
         },
       };
       const result = await selectRole({
