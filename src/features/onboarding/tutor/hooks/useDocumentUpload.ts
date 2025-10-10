@@ -1,4 +1,4 @@
-import { useUploadDocumentMutation } from "@/services/user";
+import { useUploadDocumentMutation, useLazyCheckVerificationQuery } from "@/services/user";
 import { DocumentType } from "@/services/api/type";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
@@ -10,6 +10,8 @@ export interface DocumentUpload {
 
 export const useDocumentUpload = () => {
   const [uploadDocument, { isLoading, error }] = useUploadDocumentMutation();
+  const [checkVerification, { isLoading: isCheckingVerification }] =
+    useLazyCheckVerificationQuery();
 
   const uploadDocuments = async (documents: DocumentUpload[]) => {
     try {
@@ -20,8 +22,9 @@ export const useDocumentUpload = () => {
         return { success: false };
       }
 
-      // Upload each document sequentially
       const uploadResults = [];
+      let successCount = 0;
+      const totalCount = documents.length;
 
       for (const doc of documents) {
         try {
@@ -33,7 +36,7 @@ export const useDocumentUpload = () => {
 
           if (result.success) {
             uploadResults.push(result);
-            toast.success(`Upload ${doc.docType} thành công!`);
+            successCount++;
           } else {
             toast.error(`Lỗi upload ${doc.docType}: ${result.message}`);
             return { success: false };
@@ -44,7 +47,17 @@ export const useDocumentUpload = () => {
         }
       }
 
-      toast.success("Upload tất cả tài liệu thành công!");
+      if (successCount === totalCount) {
+        toast.success("Tất cả tài liệu đã được tải lên thành công!");
+
+        try {
+          await checkVerification({ tutorId: userData.userId });
+          console.log("Verification check completed");
+        } catch (err) {
+          console.log("Verification check failed silently:", err);
+        }
+      }
+
       return { success: true, results: uploadResults };
     } catch (err: any) {
       toast.error("Có lỗi xảy ra khi upload tài liệu");

@@ -9,13 +9,14 @@ import {
   verifyAllDocumentsEndpoint,
   getAllUsersEndpoint,
   deleteUserEndpoint,
+  checkVerificationEndpoint,
 } from "./endpoints/index";
 import { getSubjectsEndpoint } from "@/services/common";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["UserProfile", "UserOnboarding"],
+  tagTypes: ["UserProfile", "UserOnboarding", "UserVerification"],
   endpoints: (builder) => ({
     getAllUsers: getAllUsersEndpoint(builder),
     getUser: getUserEndpoint(builder),
@@ -26,6 +27,7 @@ export const userApi = createApi({
     getVerificationDocs: getVerificationDocsEndpoint(builder),
     verifyAllDocuments: verifyAllDocumentsEndpoint(builder),
     deleteUser: deleteUserEndpoint(builder),
+    checkVerification: checkVerificationEndpoint(builder),
     // TODO: Implement these endpoints when needed
     // updateProfile: updateProfileEndpoint(builder),
     // getProfile: getProfileEndpoint(builder),
@@ -43,4 +45,6 @@ export const {
   useGetVerificationDocsQuery,
   useVerifyAllDocumentsMutation,
   useDeleteUserMutation,
+  useCheckVerificationQuery,
+  useLazyCheckVerificationQuery,
 } = userApi;

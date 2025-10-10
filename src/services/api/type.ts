@@ -35,6 +35,14 @@ export interface StudentDto {
   learningGoal?: string;
 }
 
+// Verification types
+export interface CheckVerificationResponse {
+  success: boolean;
+  data: boolean;
+  message: string;
+  errors: null;
+}
+
 export interface UserDto {
   userId: string;
   email: string;

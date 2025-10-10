@@ -28,7 +28,7 @@ const HomeFeature = () => {
 
   return (
     <EBMainLayout footer={true}>
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden pt-32">
+      <div className="min-h-screen bg-gray-50 relative overflow-hidden pt-32">
         {/* Logo and Title Section */}
         <div className="max-w-6xl mx-auto p-8 text-center">
           <div className="mb-16">
@@ -73,9 +73,7 @@ const HomeFeature = () => {
                       </span>
                       <span className="text-sm text-gray-600">Students</span>
                     </div>
-                    <div className="text-gray-400 text-xl ml-auto">
-                      &gt;
-                    </div>
+                    <div className="text-gray-400 text-xl ml-auto">&gt;</div>
                   </div>
                 </EBMotionCard>
               </MotionItem>
@@ -110,9 +108,7 @@ const HomeFeature = () => {
                       </span>
                       <span className="text-sm text-gray-600">Expert Tutors</span>
                     </div>
-                    <div className="text-gray-400 text-xl ml-auto">
-                      &gt;
-                    </div>
+                    <div className="text-gray-400 text-xl ml-auto">&gt;</div>
                   </div>
                 </EBMotionCard>
               </MotionItem>

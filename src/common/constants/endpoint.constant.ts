@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
     UPLOAD_VERIFICATION_DOC: "/api/user/{tutorId}/upload-verification-doc",
     GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
     VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
+    CHECK_VERIFICATION: "/api/user/{tutorId}/check-verification",
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",

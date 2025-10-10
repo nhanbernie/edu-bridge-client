@@ -57,7 +57,7 @@ const StudentOnboardingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32">
+    <div className="min-h-screen bg-gray-50 pt-32">
       <div className="max-w-2xl mx-auto p-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">Thiết lập hồ sơ học sinh</h1>
