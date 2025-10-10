@@ -213,7 +213,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
                      text-primary-foreground rounded-lg hover:bg-primary/90
                      transition-colors duration-200 font-medium"
         >
-          <span className="text-sm">Liên hệ ngay</span>
+          <span className="text-sm">Học ngay</span>
         </button>
       </div>
     </EBMotionCard>

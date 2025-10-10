@@ -36,22 +36,22 @@ export const tutorCardVariants: Variants = {
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.01,
       ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth feel
     },
   },
   hover: {
     y: -8,
-    scale: 1.02,
+    scale: 1.01,
     transition: {
-      duration: 0.3,
+      duration: 0.01,
       ease: "easeOut",
     },
   },
   tap: {
-    scale: 0.98,
+    scale: 0.9,
     transition: {
-      duration: 0.1,
+      duration: 0.01,
     },
   },
 };

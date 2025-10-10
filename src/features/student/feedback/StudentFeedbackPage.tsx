@@ -9,6 +9,7 @@ import RatingSummary from "@/components/common/RatingSummary";
 import { useCreateFeedback } from "./hooks/useCreateFeedback";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { useUserId } from "@/hooks/useUserId";
+import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
 import SessionInfoCard from "@/components/common/SessionInfoCard";
 
@@ -20,11 +21,13 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
   const router = useRouter();
   const { userId: studentId } = useUserId();
   const { createFeedback, isLoading } = useCreateFeedback();
+  const { refetchAllSessions } = useRefetchSessions();
 
-  const { data: historyData, isLoading: isLoadingSession } = useGetStudentHistorySessionsQuery(
-    { studentId: studentId || "" },
-    { skip: !studentId }
-  );
+  const {
+    data: historyData,
+    isLoading: isLoadingSession,
+    refetch: refetchHistory,
+  } = useGetStudentHistorySessionsQuery({ studentId: studentId || "" }, { skip: !studentId });
 
   const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
 
@@ -50,6 +53,8 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
     });
 
     if (result.success) {
+      // Refetch all sessions data to update the UI
+      await refetchAllSessions();
       router.push("/student/my-schedule");
     }
   };
@@ -120,6 +125,8 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
                 tutorRatingValue={existingFeedback.tutorRating}
                 courseRatingValue={existingFeedback.courseRating}
                 existingComment={existingFeedback.comment}
+                courseTitle={currentSession.courseTitle}
+                createdAt={existingFeedback.createdAt}
               />
             ) : (
               <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />

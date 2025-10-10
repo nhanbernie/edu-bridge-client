@@ -163,12 +163,12 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   </span>
                 </button>
 
-                <button
+                {/* <button
                   onClick={handleContact}
                   className="flex items-center justify-center space-x-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
                 >
                   <MessageCircle className="w-4 h-4" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

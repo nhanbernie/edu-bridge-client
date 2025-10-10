@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useSessionUtils } from "@/hooks/useSessionUtils";
 
 interface RatingSummaryProps {
   type: "create" | "view";
@@ -19,6 +20,8 @@ interface RatingSummaryProps {
   tutorRatingValue?: number; // Specific tutor rating for a single feedback
   courseRatingValue?: number; // Specific course rating for a single feedback
   existingComment?: string;
+  courseTitle?: string; // Course title for feedback card
+  createdAt?: string; // Feedback creation date
 
   // Props for create mode
   onSubmit?: (tutorRating: number, courseRating: number, comment: string) => void;
@@ -40,9 +43,12 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
   tutorRatingValue,
   courseRatingValue,
   existingComment,
+  courseTitle,
+  createdAt,
   onSubmit,
   isLoading = false,
 }) => {
+  const { formatFeedbackDate } = useSessionUtils();
   const [tutorRating, setTutorRating] = useState(0);
   const [courseRating, setCourseRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -138,16 +144,31 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
 
   // View mode - check if it's single feedback or overall summary
   if (reviewerName && tutorRatingValue !== undefined && courseRatingValue !== undefined) {
-    // Single feedback view
+    // Single feedback view - Layout like the old UI
     return (
       <Card className="border-0 shadow-sm">
         <CardContent className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Đánh giá của {reviewerName}</h3>
-
-          {/* Tutor Rating */}
+          {/* Header with name */}
           <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-medium">Đánh giá gia sư:</span>
+            <h3 className="text-2xl  font-medium text-gray-900 dark:text-white mb-1">
+              {reviewerName}
+            </h3>
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <span>{courseTitle}</span>
+              {createdAt && (
+                <>
+                  <span>•</span>
+                  <span>{formatFeedbackDate(createdAt)}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Ratings */}
+          <div className="flex flex-col gap-2 mb-4">
+            {/* Tutor Rating */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-600">Tutor:</span>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -157,15 +178,12 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
                     }`}
                   />
                 ))}
-                <span className="text-sm text-gray-600 ml-2">{tutorRatingValue}/5</span>
               </div>
             </div>
-          </div>
 
-          {/* Course Rating */}
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-medium">Đánh giá khóa học:</span>
+            {/* Course Rating */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-600">Course:</span>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -175,19 +193,15 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
                     }`}
                   />
                 ))}
-                <span className="text-sm text-gray-600 ml-2">{courseRatingValue}/5</span>
               </div>
             </div>
           </div>
 
           {/* Comment */}
           {existingComment && (
-            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-semibold mb-2">Nhận xét:</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-                &ldquo;{existingComment}&rdquo;
-              </p>
-            </div>
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+              {existingComment}
+            </p>
           )}
         </CardContent>
       </Card>

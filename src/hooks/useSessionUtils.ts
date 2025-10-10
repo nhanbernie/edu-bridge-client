@@ -86,12 +86,28 @@ export const useSessionUtils = () => {
     }
   };
 
+  /**
+   * Format feedback date in Vietnamese format
+   * Format: "2024-01-15" (for feedback cards)
+   * @param dateString - ISO string of the date
+   * @returns Formatted date string
+   */
+  const formatFeedbackDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   return {
     calculateSessionDuration,
     formatSessionDateTime,
     formatSessionDate,
     formatSessionTime,
     getSessionDurationText,
+    formatFeedbackDate,
   };
 };
 

@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTutorMySchedule } from "./hooks/useTutorMySchedule";
 import { useGetTutorHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
+import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
 
 const TutorMySchedulePage: React.FC = () => {
@@ -24,11 +25,13 @@ const TutorMySchedulePage: React.FC = () => {
 
   // Get user ID using the existing hook
   const { userId: tutorId, isLoading: isLoadingUserId } = useUserId();
+  const { refetchAllSessions } = useRefetchSessions();
 
-  const { data: historyData, isLoading: historyLoading } = useGetTutorHistorySessionsQuery(
-    { tutorId: tutorId || "" },
-    { skip: !tutorId }
-  );
+  const {
+    data: historyData,
+    isLoading: historyLoading,
+    refetch: refetchHistory,
+  } = useGetTutorHistorySessionsQuery({ tutorId: tutorId || "" }, { skip: !tutorId });
 
   const historySessions = historyData?.data || [];
 
@@ -41,6 +44,16 @@ const TutorMySchedulePage: React.FC = () => {
   const handleViewFeedback = (courseId: string) => {
     router.push(`/tutor/feedback/${courseId}`);
   };
+
+  // Refetch data when returning from feedback page
+  useEffect(() => {
+    const handleFocus = () => {
+      refetchAllSessions();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, [refetchAllSessions]);
 
   if (isPageLoading) {
     return (

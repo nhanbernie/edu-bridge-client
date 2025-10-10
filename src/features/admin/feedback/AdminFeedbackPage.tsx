@@ -90,6 +90,8 @@ const AdminFeedbackPage: React.FC<AdminFeedbackPageProps> = ({ courseId }) => {
                     tutorRatingValue={feedback.tutorRating}
                     courseRatingValue={feedback.courseRating}
                     existingComment={feedback.comment}
+                    courseTitle={currentSession.courseTitle}
+                    createdAt={feedback.createdAt}
                   />
                 ))}
               </div>
