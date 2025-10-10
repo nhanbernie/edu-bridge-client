@@ -263,7 +263,7 @@ const StudentHomePage = () => {
             </button>
           </div>
         ) : (
-          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {filteredTutors.map((tutor) => (
               <MotionItem key={tutor.id}>
                 <TutorCard
