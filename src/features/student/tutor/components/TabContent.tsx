@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, Clock, Award, BookOpen, Loader2 } from "lucide-react";
 import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
+import RatingSummary from "@/components/common/RatingSummary";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
@@ -132,43 +133,7 @@ const TabContent: React.FC<TabContentProps> = ({
     <div className="flex gap-6">
       {/* Left side - Rating Summary */}
       <div className="w-80 flex-shrink-0">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Tổng quan đánh giá</h3>
-            <div className="text-center mb-6">
-              <div className="text-4xl font-bold text-primary mb-2">4.9</div>
-              <div className="flex items-center justify-center gap-1 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <div className="text-sm text-muted-foreground">127 đánh giá</div>
-            </div>
-
-            {/* Rating breakdown */}
-            <div className="space-y-2">
-              {[
-                { stars: 5, count: 89, percentage: 70 },
-                { stars: 4, count: 25, percentage: 20 },
-                { stars: 3, count: 8, percentage: 6 },
-                { stars: 2, count: 3, percentage: 2 },
-                { stars: 1, count: 2, percentage: 2 },
-              ].map((item) => (
-                <div key={item.stars} className="flex items-center gap-2 text-sm">
-                  <span className="w-2">{item.stars}</span>
-                  <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-primary h-2 rounded-full"
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                  <span className="w-6 text-right">{item.count}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <RatingSummary type="view" />
       </div>
 
       {/* Right side - Reviews List */}

@@ -1,0 +1,233 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Star, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+interface RatingSummaryProps {
+  type: "create" | "view";
+  // Props for overall summary view
+  averageRating?: number;
+  totalReviews?: number;
+  ratingBreakdown?: Array<{
+    stars: number;
+    count: number;
+    percentage: number;
+  }>;
+  // Props for single feedback view
+  reviewerName?: string;
+  tutorRatingValue?: number; // Specific tutor rating for a single feedback
+  courseRatingValue?: number; // Specific course rating for a single feedback
+  existingComment?: string;
+
+  // Props for create mode
+  onSubmit?: (tutorRating: number, courseRating: number, comment: string) => void;
+  isLoading?: boolean;
+}
+
+const RatingSummary: React.FC<RatingSummaryProps> = ({
+  type,
+  averageRating = 4.9,
+  totalReviews = 127,
+  ratingBreakdown = [
+    { stars: 5, count: 89, percentage: 70 },
+    { stars: 4, count: 25, percentage: 20 },
+    { stars: 3, count: 8, percentage: 6 },
+    { stars: 2, count: 3, percentage: 2 },
+    { stars: 1, count: 2, percentage: 2 },
+  ],
+  reviewerName,
+  tutorRatingValue,
+  courseRatingValue,
+  existingComment,
+  onSubmit,
+  isLoading = false,
+}) => {
+  const [tutorRating, setTutorRating] = useState(0);
+  const [courseRating, setCourseRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+  const handleSubmit = () => {
+    if (onSubmit && tutorRating > 0 && courseRating > 0) {
+      onSubmit(tutorRating, courseRating, comment);
+    }
+  };
+  if (type === "create") {
+    return (
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-semibold mb-4">Đánh giá gia sư</h3>
+
+          {/* Tutor Rating */}
+          <div className="mb-6">
+            <p className="text-sm font-medium mb-3">Đánh giá gia sư:</p>
+            <div className="flex items-center gap-2">
+              {[...Array(5)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setTutorRating(i + 1)}
+                  className={`transition-colors ${
+                    i < tutorRating ? "text-yellow-400" : "text-gray-300 hover:text-yellow-300"
+                  }`}
+                >
+                  <Star className="h-8 w-8 fill-current" />
+                </button>
+              ))}
+            </div>
+            {tutorRating > 0 && (
+              <p className="text-sm text-gray-600 mt-2">Bạn đã chọn {tutorRating} sao cho gia sư</p>
+            )}
+          </div>
+
+          {/* Course Rating */}
+          <div className="mb-6">
+            <p className="text-sm font-medium mb-3">Đánh giá khóa học:</p>
+            <div className="flex items-center gap-2">
+              {[...Array(5)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCourseRating(i + 1)}
+                  className={`transition-colors ${
+                    i < courseRating ? "text-yellow-400" : "text-gray-300 hover:text-yellow-300"
+                  }`}
+                >
+                  <Star className="h-8 w-8 fill-current" />
+                </button>
+              ))}
+            </div>
+            {courseRating > 0 && (
+              <p className="text-sm text-gray-600 mt-2">
+                Bạn đã chọn {courseRating} sao cho khóa học
+              </p>
+            )}
+          </div>
+
+          {/* Comment */}
+          <div className="mb-6">
+            <label className="text-sm font-medium mb-2 block">Nhận xét (tùy chọn):</label>
+            <Textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Chia sẻ trải nghiệm học tập của bạn..."
+              className="min-h-[100px]"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            onClick={handleSubmit}
+            disabled={tutorRating === 0 || courseRating === 0 || isLoading}
+            className="w-full"
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
+                <span>Đang gửi...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Send className="h-4 w-4" />
+                <span>Gửi đánh giá</span>
+              </div>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // View mode - check if it's single feedback or overall summary
+  if (reviewerName && tutorRatingValue !== undefined && courseRatingValue !== undefined) {
+    // Single feedback view
+    return (
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-semibold mb-4">Đánh giá của {reviewerName}</h3>
+
+          {/* Tutor Rating */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm font-medium">Đánh giá gia sư:</span>
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${
+                      i < tutorRatingValue ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                    }`}
+                  />
+                ))}
+                <span className="text-sm text-gray-600 ml-2">{tutorRatingValue}/5</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Course Rating */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm font-medium">Đánh giá khóa học:</span>
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-4 w-4 ${
+                      i < courseRatingValue ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                    }`}
+                  />
+                ))}
+                <span className="text-sm text-gray-600 ml-2">{courseRatingValue}/5</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Comment */}
+          {existingComment && (
+            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <h4 className="text-sm font-semibold mb-2">Nhận xét:</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                &ldquo;{existingComment}&rdquo;
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Overall summary view (existing functionality)
+  return (
+    <Card className="border-0 shadow-sm">
+      <CardContent className="p-6">
+        <h3 className="text-lg font-semibold mb-4">Tổng quan đánh giá</h3>
+        <div className="text-center mb-6">
+          <div className="text-4xl font-bold text-primary mb-2">{averageRating}</div>
+          <div className="flex items-center justify-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+          <div className="text-sm text-muted-foreground">{totalReviews} đánh giá</div>
+        </div>
+
+        {/* Rating breakdown */}
+        <div className="space-y-2">
+          {ratingBreakdown.map((item) => (
+            <div key={item.stars} className="flex items-center gap-2 text-sm">
+              <span className="w-2">{item.stars}</span>
+              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+              <div className="flex-1 bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-primary h-2 rounded-full"
+                  style={{ width: `${item.percentage}%` }}
+                />
+              </div>
+              <span className="w-6 text-right">{item.count}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default RatingSummary;

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 interface StudentFormData {
   grade: string;
   learningGoal: string;
+  location: string;
 }
 
 export const useStudentOnboarding = () => {
@@ -36,7 +37,11 @@ export const useStudentOnboarding = () => {
 
       const payload: StudentOnboardingRequest = {
         role: "STUDENT",
-        student: data,
+        student: {
+          grade: data.grade,
+          learningGoal: data.learningGoal,
+          location: data.location,
+        },
       };
 
       const result = await selectRole({

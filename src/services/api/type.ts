@@ -152,6 +152,7 @@ export interface StudentOnboardingRequest {
   student: {
     grade: string;
     learningGoal: string;
+    location: string;
   };
 }
 
@@ -163,6 +164,7 @@ export interface TutorOnboardingRequest {
     bio: string;
     subjects: string[];
     languages: string[];
+    location: string;
   };
 }
 

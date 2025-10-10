@@ -21,6 +21,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
     bio: "",
     subjects: [],
     languages: [],
+    location: "",
     ...initialData,
   } as TutorFormData;
 
@@ -65,6 +66,13 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             max="80"
             step="1"
           />
+          {/* Location */}
+          <EBTextField
+            name="location"
+            label="Địa điểm"
+            placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+          />
+
           {/* Bio */}
           <EBTextAreaField
             name="bio"

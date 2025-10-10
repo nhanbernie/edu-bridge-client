@@ -6,11 +6,13 @@ import EBButton from "@/components/common/EBButton";
 import EBFormProvider from "@/components/form/EBFormProvider";
 import EBSelectField from "@/components/form/EBSelectField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
+import EBTextField from "@/components/form/EBTextField";
 import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
 
 interface StudentFormData {
   grade: string;
   learningGoal: string;
+  location: string;
 }
 
 const StudentOnboardingPage = () => {
@@ -42,11 +44,16 @@ const StudentOnboardingPage = () => {
       .min(10, "Mục tiêu học tập phải có ít nhất 10 ký tự")
       .max(300, "Mục tiêu học tập không được quá 300 ký tự")
       .required("Trường này là bắt buộc"),
+    location: Yup.string()
+      .min(2, "Địa điểm phải có ít nhất 2 ký tự")
+      .max(100, "Địa điểm không được quá 100 ký tự")
+      .required("Vui lòng nhập địa điểm"),
   });
 
   const defaultValues: StudentFormData = {
     grade: "",
     learningGoal: "",
+    location: "",
   };
 
   return (
@@ -64,7 +71,18 @@ const StudentOnboardingPage = () => {
             defaultValues={defaultValues}
           >
             <div className="space-y-6">
-              <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} allowCustom/>
+              <EBSelectField
+                name="grade"
+                label="Lớp học hiện tại"
+                options={gradeOptions}
+                allowCustom
+              />
+
+              <EBTextField
+                name="location"
+                label="Địa điểm"
+                placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+              />
 
               <EBTextAreaField
                 name="learningGoal"
