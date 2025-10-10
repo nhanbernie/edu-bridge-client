@@ -1,14 +1,7 @@
-import { ApiResponse } from "../api/type";
+import { ApiResponse } from "@/services/api/type";
 
-// Feedback Request Types
-export interface CreateFeedbackRequest {
-  tutorRating: number;
-  courseRating: number;
-  comment: string;
-}
-
-// Feedback Data Types
-export interface FeedbackData {
+// Feedback item interface
+export interface FeedbackItem {
   feedbackId: string;
   courseId: string;
   tutorRating: number;
@@ -16,44 +9,26 @@ export interface FeedbackData {
   comment: string;
   createdAt: string;
   updatedAt: string | null;
-  courseTitle?: string | null;
-  studentName?: string | null;
+  courseTitle: string;
+  studentName: string;
 }
 
-// Response Types using generic ApiResponse
-export type CreateFeedbackResponse = ApiResponse<FeedbackData>;
-export type GetRatingResponse = ApiResponse<number>;
-export type GetTutorFeedbacksResponse = ApiResponse<FeedbackData[]>;
-
-// Route Parameters
-export interface FeedbackRouteParams {
-  courseId: string;
+// Rating counts interface
+export interface RatingCounts {
+  "1": number;
+  "2": number;
+  "3": number;
+  "4": number;
+  "5": number;
 }
 
-export interface TutorFeedbacksParams {
-  tutorId: string;
+// Tutor feedbacks response interface
+export interface TutorFeedbacksData {
+  totalFeedbacks: number;
+  averageTutorRating: number;
+  ratingCounts: RatingCounts;
+  feedbacks: FeedbackItem[];
 }
 
-export interface TutorRatingRouteParams {
-  tutorId: string;
-}
-
-export interface CourseRatingRouteParams {
-  courseId: string;
-}
-
-// Validation constraints
-export const FEEDBACK_CONSTRAINTS = {
-  MIN_RATING: 1,
-  MAX_RATING: 5,
-  MIN_COMMENT_LENGTH: 1,
-  MAX_COMMENT_LENGTH: 1000,
-} as const;
-
-// Error messages
-export const FEEDBACK_ERROR_MESSAGES = {
-  INVALID_RATING: "Rating phải từ 1 đến 5",
-  NO_COMPLETED_SESSIONS: "Phải tham gia ít nhất 1 buổi học trong khóa để feedback/rating",
-  COURSE_NOT_FOUND: "Khóa học không tồn tại",
-  SERVER_ERROR: "Lỗi server",
-} as const;
+// API response type
+export type TutorFeedbacksResponse = ApiResponse<TutorFeedbacksData>;

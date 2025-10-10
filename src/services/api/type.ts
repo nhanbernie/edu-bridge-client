@@ -26,6 +26,13 @@ export interface TutorDto {
   bio?: string;
   subjects?: string[];
   languages?: string[];
+  currency?: string;
+  hourlyRate?: number;
+  verifiedStatus?: "VERIFIED" | "TRUSTED_BEGINNER" | "PENDING";
+  totalStudents?: number;
+  totalCourses?: number;
+  totalFeedbacks?: number;
+  averageTutorRating?: number;
   verificationType?: TutorType;
 }
 
@@ -49,6 +56,8 @@ export interface UserDto {
   role: UserRole;
   fullName?: string | null;
   phone?: string | null;
+  location?: string | null;
+  avatarUrl?: string | null;
   status?: UserStatus | null;
   tutor?: TutorDto | null;
   student?: StudentDto | null;

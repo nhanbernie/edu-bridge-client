@@ -1,27 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQueryWithReauth } from "../api/baseQuery";
-import {
-  createFeedbackEndpoint,
-  getTutorRatingEndpoint,
-  getCourseRatingEndpoint,
-  getTutorFeedbacksEndpoint,
-} from "./endpoints";
+import { baseQuery } from "@/services/api/baseQuery";
+import { getTutorFeedbacksEndpoint } from "./endpoints/getTutorFeedbacks";
 
 export const feedbackApi = createApi({
   reducerPath: "feedbackApi",
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ["Feedback", "TutorRating", "CourseRating", "TutorFeedbacks"],
+  baseQuery,
+  tagTypes: ["TutorFeedbacks", "CourseFeedbacks"],
   endpoints: (builder) => ({
-    createFeedback: createFeedbackEndpoint(builder),
-    getTutorRating: getTutorRatingEndpoint(builder),
-    getCourseRating: getCourseRatingEndpoint(builder),
     getTutorFeedbacks: getTutorFeedbacksEndpoint(builder),
   }),
 });
 
-export const {
-  useCreateFeedbackMutation,
-  useGetTutorRatingQuery,
-  useGetCourseRatingQuery,
-  useGetTutorFeedbacksQuery,
-} = feedbackApi;
+export const { useGetTutorFeedbacksQuery, useLazyGetTutorFeedbacksQuery } = feedbackApi;

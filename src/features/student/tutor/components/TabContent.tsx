@@ -8,6 +8,7 @@ import RatingSummary from "@/components/common/RatingSummary";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
+import { useTutorFeedbacksData } from "../hooks/useTutorFeedbacks";
 
 interface TimeSlot {
   start: string;
@@ -40,6 +41,11 @@ const TabContent: React.FC<TabContentProps> = ({
   onCourseSelect,
   scheduleData,
 }) => {
+  // Get tutor feedbacks data
+  const { feedbacksData, isLoading: isLoadingFeedbacks } = useTutorFeedbacksData({
+    tutorId: tutorId || "",
+    enabled: !!tutorId && activeTab === "reviews",
+  });
   const renderCoursesTab = () => {
     if (coursesData?.isLoading) {
       return (
@@ -129,68 +135,82 @@ const TabContent: React.FC<TabContentProps> = ({
     );
   };
 
-  const renderReviewsTab = () => (
-    <div className="flex gap-6">
-      {/* Left side - Rating Summary */}
-      <div className="w-80 flex-shrink-0">
-        <RatingSummary type="view" />
-      </div>
+  const renderReviewsTab = () => {
+    if (isLoadingFeedbacks) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải đánh giá...</span>
+        </div>
+      );
+    }
 
-      {/* Right side - Reviews List */}
-      <div className="flex-1 space-y-4">
-        {[
-          {
-            name: "Hoàng Minh",
-            subject: "Toán lớp 12",
-            date: "2024-01-15",
-            rating: 5,
-            comment:
-              "Thầy dạy rất dễ hiểu, giải thích tỉ mỉ từng bước. Điểm Toán của em đã tăng từ 6 lên 8.5!",
-          },
-          {
-            name: "Thu Hà",
-            subject: "Vật lý",
-            date: "2024-01-10",
-            rating: 5,
-            comment:
-              "Phương pháp giảng dạy của thầy rất hay, em hiểu bài ngay. Thầy rất tận tâm và chu đáo.",
-          },
-          {
-            name: "Đức Anh",
-            subject: "Toán lớp 12",
-            date: "2024-01-08",
-            rating: 4,
-            comment:
-              "Thầy dạy hay, chỉ có điều thỉnh thoảng hơi nhanh. Nhưng nhìn chung rất hài lòng.",
-          },
-        ].map((review, index) => (
-          <Card key={index} className="border-0 shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <div className="font-medium">{review.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {review.subject} • {review.date}
+    return (
+      <div className="flex gap-6">
+        {/* Left side - Rating Summary */}
+        <div className="w-80 flex-shrink-0">
+          <RatingSummary
+            type="view"
+            totalFeedbacks={feedbacksData?.totalFeedbacks}
+            averageTutorRating={feedbacksData?.averageTutorRating}
+            ratingCounts={feedbacksData?.ratingCounts}
+          />
+        </div>
+
+        {/* Right side - Reviews List */}
+        <div className="flex-1 space-y-4">
+          {feedbacksData?.feedbacks?.map((feedback, index) => (
+            <Card key={index} className="border-0 shadow-sm">
+              <CardContent className="p-4">
+                <div className="mb-3">
+                  <div className="font-medium text-lg mb-1">{feedback.studentName}</div>
+                  <div className="text-sm text-muted-foreground mb-3">
+                    {feedback.courseTitle} •{" "}
+                    {new Date(feedback.createdAt).toLocaleDateString("vi-VN")}
+                  </div>
+
+                  {/* Tutor Rating */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-sm text-muted-foreground font-semibold">Tutor:</span>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 ${
+                            i < feedback.tutorRating
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Course Rating */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground font-semibold">Course:</span>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 ${
+                            i < feedback.courseRating
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">{review.comment}</p>
-            </CardContent>
-          </Card>
-        ))}
+                <p className="text-muted-foreground text-sm leading-relaxed">{feedback.comment}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAwardsTab = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -15,6 +15,16 @@ interface RatingSummaryProps {
     count: number;
     percentage: number;
   }>;
+  // Props for API data (new)
+  totalFeedbacks?: number;
+  averageTutorRating?: number;
+  ratingCounts?: {
+    "1": number;
+    "2": number;
+    "3": number;
+    "4": number;
+    "5": number;
+  };
   // Props for single feedback view
   reviewerName?: string;
   tutorRatingValue?: number; // Specific tutor rating for a single feedback
@@ -39,6 +49,10 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
     { stars: 2, count: 3, percentage: 2 },
     { stars: 1, count: 2, percentage: 2 },
   ],
+  // New API props
+  totalFeedbacks,
+  averageTutorRating,
+  ratingCounts,
   reviewerName,
   tutorRatingValue,
   courseRatingValue,
@@ -146,8 +160,8 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
   if (reviewerName && tutorRatingValue !== undefined && courseRatingValue !== undefined) {
     // Single feedback view - Layout like the old UI
     return (
-      <Card className="border-0 shadow-sm">
-        <CardContent className="p-6">
+      <Card className="border-0 shadow-sm w-full">
+        <CardContent className="p-4">
           {/* Header with name */}
           <div className="mb-4">
             <h3 className="text-2xl  font-medium text-gray-900 dark:text-white mb-1">
@@ -199,7 +213,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
 
           {/* Comment */}
           {existingComment && (
-            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed break-words">
               {existingComment}
             </p>
           )}
@@ -208,24 +222,72 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
     );
   }
 
-  // Overall summary view (existing functionality)
+  // Overall summary view - use API data if available, otherwise fallback to props
+  const displayRating = averageTutorRating ?? averageRating;
+  const displayTotal = totalFeedbacks ?? totalReviews;
+
+  // Convert ratingCounts to ratingBreakdown format if available
+  const getRatingBreakdown = () => {
+    if (ratingCounts) {
+      const total = Object.values(ratingCounts).reduce((sum, count) => sum + count, 0);
+      return [
+        {
+          stars: 5,
+          count: ratingCounts["5"],
+          percentage: total > 0 ? (ratingCounts["5"] / total) * 100 : 0,
+        },
+        {
+          stars: 4,
+          count: ratingCounts["4"],
+          percentage: total > 0 ? (ratingCounts["4"] / total) * 100 : 0,
+        },
+        {
+          stars: 3,
+          count: ratingCounts["3"],
+          percentage: total > 0 ? (ratingCounts["3"] / total) * 100 : 0,
+        },
+        {
+          stars: 2,
+          count: ratingCounts["2"],
+          percentage: total > 0 ? (ratingCounts["2"] / total) * 100 : 0,
+        },
+        {
+          stars: 1,
+          count: ratingCounts["1"],
+          percentage: total > 0 ? (ratingCounts["1"] / total) * 100 : 0,
+        },
+      ];
+    }
+    return ratingBreakdown;
+  };
+
+  // Get the actual count for display
+  const getDisplayCount = (stars: number) => {
+    if (ratingCounts) {
+      return ratingCounts[stars.toString() as keyof typeof ratingCounts];
+    }
+    return 0;
+  };
+
+  const finalRatingBreakdown = getRatingBreakdown();
+
   return (
-    <Card className="border-0 shadow-sm">
-      <CardContent className="p-6">
+    <Card className="border-0 shadow-sm w-full ">
+      <CardContent className="p-4">
         <h3 className="text-lg font-semibold mb-4">Tổng quan đánh giá</h3>
         <div className="text-center mb-6">
-          <div className="text-4xl font-bold text-primary mb-2">{averageRating}</div>
+          <div className="text-4xl font-bold text-primary mb-2">{displayRating}</div>
           <div className="flex items-center justify-center gap-1 mb-2">
             {[...Array(5)].map((_, i) => (
               <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
             ))}
           </div>
-          <div className="text-sm text-muted-foreground">{totalReviews} đánh giá</div>
+          <div className="text-sm text-muted-foreground">{displayTotal} đánh giá</div>
         </div>
 
         {/* Rating breakdown */}
         <div className="space-y-2">
-          {ratingBreakdown.map((item) => (
+          {finalRatingBreakdown.map((item) => (
             <div key={item.stars} className="flex items-center gap-2 text-sm">
               <span className="w-2">{item.stars}</span>
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -235,7 +297,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
                   style={{ width: `${item.percentage}%` }}
                 />
               </div>
-              <span className="w-6 text-right">{item.count}</span>
+              <span className="w-6 text-right text-xs">{getDisplayCount(item.stars)}</span>
             </div>
           ))}
         </div>
