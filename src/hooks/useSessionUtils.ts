@@ -1,4 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
+
+// Cache for expensive calculations
+const durationCache = new Map<string, number>();
+const dateFormatCache = new Map<string, string>();
 
 /**
  * Hook for session-related utilities
@@ -11,13 +15,22 @@ export const useSessionUtils = () => {
    * @param endTime - ISO string of session end time
    * @returns Duration in hours (e.g., 1.5 for 1 hour 30 minutes)
    */
-  const calculateSessionDuration = (startTime: string, endTime: string): number => {
+  const calculateSessionDuration = useCallback((startTime: string, endTime: string): number => {
+    const cacheKey = `${startTime}-${endTime}`;
+
+    if (durationCache.has(cacheKey)) {
+      return durationCache.get(cacheKey)!;
+    }
+
     const start = new Date(startTime);
     const end = new Date(endTime);
     const diffInMs = end.getTime() - start.getTime();
     const diffInHours = diffInMs / (1000 * 60 * 60); // Convert milliseconds to hours
-    return Math.round(diffInHours * 10) / 10; // Round to 1 decimal place
-  };
+    const result = Math.round(diffInHours * 10) / 10; // Round to 1 decimal place
+
+    durationCache.set(cacheKey, result);
+    return result;
+  }, []);
 
   /**
    * Format date and time in Vietnamese format
@@ -25,7 +38,11 @@ export const useSessionUtils = () => {
    * @param dateString - ISO string of the date
    * @returns Formatted date string
    */
-  const formatSessionDateTime = (dateString: string): string => {
+  const formatSessionDateTime = useCallback((dateString: string): string => {
+    if (dateFormatCache.has(dateString)) {
+      return dateFormatCache.get(dateString)!;
+    }
+
     const date = new Date(dateString);
 
     // Vietnamese day names
@@ -38,8 +55,10 @@ export const useSessionUtils = () => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
-    return `${dayName}, ${day}/${month}/${year} - lúc ${hours}:${minutes}`;
-  };
+    const result = `${dayName}, ${day}/${month}/${year} - lúc ${hours}:${minutes}`;
+    dateFormatCache.set(dateString, result);
+    return result;
+  }, []);
 
   /**
    * Format date only in Vietnamese format

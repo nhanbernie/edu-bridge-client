@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTutorMySchedule } from "./hooks/useTutorMySchedule";
@@ -37,13 +37,29 @@ const TutorMySchedulePage: React.FC = () => {
 
   const isPageLoading = upcomingLoading || isLoadingUserId;
 
-  const handleJoinSession = (sessionId: string) => {
-    router.push(`/meeting/${sessionId}`);
-  };
+  const handleJoinSession = useCallback(
+    (sessionId: string) => {
+      router.push(`/meeting/${sessionId}`);
+    },
+    [router]
+  );
 
-  const handleViewFeedback = (courseId: string) => {
-    router.push(`/tutor/feedback/${courseId}`);
-  };
+  const handleViewFeedback = useCallback(
+    (courseId: string) => {
+      router.push(`/tutor/feedback/${courseId}`);
+    },
+    [router]
+  );
+
+  // Memoize stats data to prevent unnecessary re-renders
+  const statsData = useMemo(
+    () => ({
+      todaySessions,
+      thisWeekSessions,
+      uniqueStudents,
+    }),
+    [todaySessions, thisWeekSessions, uniqueStudents]
+  );
 
   // Refetch data when returning from feedback page
   useEffect(() => {
@@ -84,7 +100,9 @@ const TutorMySchedulePage: React.FC = () => {
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   Buổi dạy hôm nay
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{todaySessions}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {statsData.todaySessions}
+                </p>
               </div>
               <Calendar className="h-8 w-8 text-blue-500" />
             </div>
@@ -97,7 +115,7 @@ const TutorMySchedulePage: React.FC = () => {
                   Buổi dạy tuần này
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {thisWeekSessions}
+                  {statsData.thisWeekSessions}
                 </p>
               </div>
               <Clock className="h-8 w-8 text-green-500" />
@@ -108,7 +126,9 @@ const TutorMySchedulePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Học sinh</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueStudents}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {statsData.uniqueStudents}
+                </p>
               </div>
               <Users className="h-8 w-8 text-orange-500" />
             </div>
