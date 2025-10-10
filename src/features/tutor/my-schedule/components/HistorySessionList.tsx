@@ -4,10 +4,23 @@ import { SessionList } from "@/components/common/history-upcoming";
 
 interface HistorySessionListProps {
   sessions: ClassSessionDto[];
+  userType: "student" | "tutor";
+  onViewFeedback?: (courseId: string) => void;
 }
 
-const HistorySessionList: React.FC<HistorySessionListProps> = ({ sessions }) => {
-  return <SessionList sessions={sessions} userType="tutor" sessionType="history" />;
+const HistorySessionList: React.FC<HistorySessionListProps> = ({
+  sessions,
+  userType,
+  onViewFeedback,
+}) => {
+  return (
+    <SessionList
+      sessions={sessions}
+      userType={userType}
+      sessionType="history"
+      onViewFeedback={onViewFeedback}
+    />
+  );
 };
 
 export default HistorySessionList;

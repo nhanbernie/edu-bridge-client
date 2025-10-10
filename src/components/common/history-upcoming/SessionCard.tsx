@@ -137,10 +137,26 @@ const SessionCard: React.FC<SessionCardProps> = ({
               {/* Feedback button for students */}
               {userType === "student" && (
                 <FeedbackButton
-                  sessionId={session.sessionId}
+                  courseId={session.courseId}
                   hasFeedbacks={hasFeedbacks}
                   onViewFeedback={onViewFeedback}
                 />
+              )}
+
+              {/* View feedback button for tutors */}
+              {userType === "tutor" && (
+                <button
+                  onClick={() => onViewFeedback?.(session.courseId)}
+                  disabled={!hasFeedbacks}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                    hasFeedbacks
+                      ? "bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
+                  }`}
+                >
+                  <Eye className="h-4 w-4" />
+                  <span>{hasFeedbacks ? "Xem phản hồi" : "Chưa có phản hồi"}</span>
+                </button>
               )}
             </div>
           ) : (

@@ -22,12 +22,11 @@ const StudentMySchedulePage: React.FC = () => {
     refetchSessions,
   } = useStudentMySchedule();
 
-  // Get user ID using the existing hook
   const { userId: studentId, isLoading: isLoadingUserId } = useUserId();
 
   const { data: historyData, isLoading: isLoadingHistory } = useGetStudentHistorySessionsQuery(
     { studentId: studentId || "" },
-    { skip: !studentId || activeTab !== "history" }
+    { skip: !studentId }
   );
 
   const historySessions = historyData?.data || [];
@@ -36,12 +35,12 @@ const StudentMySchedulePage: React.FC = () => {
     router.push(`/meeting/${sessionId}`);
   };
 
-  const handleViewFeedback = (sessionId: string) => {
-    router.push(`/feedback/${sessionId}`);
+  const handleViewFeedback = (courseId: string) => {
+    router.push(`/student/feedback/${courseId}`);
   };
 
   // Only show page loading for initial data
-  const isPageLoading = isLoadingUpcoming || isLoadingUserId;
+  const isPageLoading = isLoadingUpcoming || isLoadingUserId || isLoadingHistory;
 
   if (isPageLoading) {
     return (
@@ -124,16 +123,7 @@ const StudentMySchedulePage: React.FC = () => {
 
             {/* Session Content */}
             {activeTab === "upcoming" ? (
-              isLoadingUpcoming ? (
-                <EBLoadingSpinner message="Đang tải lịch sắp tới..." size="md" />
-              ) : (
-                <UpcomingSessionList
-                  sessions={upcomingSessions}
-                  onJoinSession={handleJoinSession}
-                />
-              )
-            ) : isLoadingHistory ? (
-              <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
+              <UpcomingSessionList sessions={upcomingSessions} onJoinSession={handleJoinSession} />
             ) : (
               <HistorySessionList sessions={historySessions} onViewFeedback={handleViewFeedback} />
             )}

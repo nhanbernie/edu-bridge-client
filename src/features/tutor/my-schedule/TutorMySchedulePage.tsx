@@ -25,7 +25,6 @@ const TutorMySchedulePage: React.FC = () => {
   // Get user ID using the existing hook
   const { userId: tutorId, isLoading: isLoadingUserId } = useUserId();
 
-  // Get history sessions
   const { data: historyData, isLoading: historyLoading } = useGetTutorHistorySessionsQuery(
     { tutorId: tutorId || "" },
     { skip: !tutorId }
@@ -33,11 +32,14 @@ const TutorMySchedulePage: React.FC = () => {
 
   const historySessions = historyData?.data || [];
 
-  // Only show page loading for initial data
   const isPageLoading = upcomingLoading || isLoadingUserId;
 
   const handleJoinSession = (sessionId: string) => {
     router.push(`/meeting/${sessionId}`);
+  };
+
+  const handleViewFeedback = (courseId: string) => {
+    router.push(`/tutor/feedback/${courseId}`);
   };
 
   if (isPageLoading) {
@@ -130,7 +132,11 @@ const TutorMySchedulePage: React.FC = () => {
             ) : historyLoading ? (
               <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
             ) : (
-              <HistorySessionList sessions={historySessions} />
+              <HistorySessionList
+                sessions={historySessions}
+                userType="tutor"
+                onViewFeedback={handleViewFeedback}
+              />
             )}
           </div>
         </div>

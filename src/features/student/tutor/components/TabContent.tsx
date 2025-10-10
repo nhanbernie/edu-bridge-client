@@ -133,7 +133,7 @@ const TabContent: React.FC<TabContentProps> = ({
     <div className="flex gap-6">
       {/* Left side - Rating Summary */}
       <div className="w-80 flex-shrink-0">
-        <RatingSummary />
+        <RatingSummary type="view" />
       </div>
 
       {/* Right side - Reviews List */}

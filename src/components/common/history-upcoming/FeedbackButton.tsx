@@ -2,22 +2,21 @@ import React from "react";
 import { MessageSquare, Eye } from "lucide-react";
 
 interface FeedbackButtonProps {
-  sessionId: string;
+  courseId: string;
   hasFeedbacks: boolean;
-  onViewFeedback?: (sessionId: string) => void;
+  onViewFeedback?: (courseId: string) => void;
 }
 
 const FeedbackButton: React.FC<FeedbackButtonProps> = ({
-  sessionId,
+  courseId,
   hasFeedbacks,
   onViewFeedback,
 }) => {
   const handleClick = () => {
     if (onViewFeedback) {
-      onViewFeedback(sessionId);
+      onViewFeedback(courseId);
     } else {
-      // Default behavior - navigate to feedback page
-      window.location.href = `/feedback/${sessionId}`;
+      window.location.href = `/student/feedback/${courseId}`;
     }
   };
 
