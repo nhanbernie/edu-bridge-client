@@ -1,5 +1,43 @@
 import { ApiResponse } from "@/services/api/type";
 
+// Create feedback request
+export interface CreateFeedbackRequest {
+  tutorRating: number;
+  courseRating: number;
+  comment: string;
+}
+
+// Create feedback response
+export interface CreateFeedbackResponse {
+  feedbackId: string;
+  courseId: string;
+  tutorRating: number;
+  courseRating: number;
+  comment: string;
+  createdAt: string;
+}
+
+// Feedback route params
+export interface FeedbackRouteParams {
+  courseId: string;
+}
+
+// Get rating response
+export interface GetRatingResponse {
+  rating: number;
+  totalRatings: number;
+}
+
+// Course rating route params
+export interface CourseRatingRouteParams {
+  courseId: string;
+}
+
+// Tutor rating route params
+export interface TutorRatingRouteParams {
+  tutorId: string;
+}
+
 // Feedback item interface
 export interface FeedbackItem {
   feedbackId: string;

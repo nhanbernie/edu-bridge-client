@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBFormProvider from "@/components/form/EBFormProvider";
@@ -11,6 +11,7 @@ import EBMultipleSelect from "@/components/form/EBMultipleSelect";
 import EBButton from "@/components/common/EBButton";
 import { useUserId } from "@/hooks/useUserId";
 import { useGetUser } from "@/hooks/useGetUser";
+import { useUploadAvatar } from "@/hooks/useUploadAvatar";
 import { tutorProfileValidationSchema } from "@/lib/validator/profileValidator";
 import {
   EDUCATION_LEVEL_OPTIONS,
@@ -32,9 +33,11 @@ interface TutorProfileFormData {
 
 const TutorProfilePage = () => {
   const { userId } = useUserId();
-  const { userData, isLoading } = useGetUser({ userId: userId || "" });
+  const { userData, isLoading, refetch } = useGetUser({ userId: userId || "" });
+  const { handleUploadAvatar, isUploading } = useUploadAvatar();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Get initials for avatar placeholder
   const getInitials = (name?: string | null) => {
@@ -83,8 +86,23 @@ const TutorProfilePage = () => {
   };
 
   const handleChangePhoto = () => {
-    // TODO: Implement photo upload
-    console.log("Change photo clicked");
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !userId) return;
+
+    const avatarUrl = await handleUploadAvatar(userId, file);
+    if (avatarUrl) {
+      // Refetch user data to update avatar
+      refetch();
+    }
+
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   if (isLoading) {
@@ -119,14 +137,28 @@ const TutorProfilePage = () => {
 
         <Card className="border-0 shadow-lg">
           <CardContent className="p-8">
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+
             {/* Avatar Section */}
             <div className="flex items-center gap-6 mb-8 pb-8 border-b">
               <div className="relative">
+                {isUploading && (
+                  <div className="absolute inset-0 w-24 h-24 rounded-full bg-black/50 flex items-center justify-center z-10">
+                    <Loader2 className="w-6 h-6 text-white animate-spin" />
+                  </div>
+                )}
                 {userData?.avatarUrl ? (
                   <img
                     src={userData.avatarUrl}
                     alt={userData.fullName || "Tutor"}
-                    className="w-24 h-24 rounded-full object-cover border-4 border-gray-100"
+                    className="w-34 h-34 rounded-full object-cover border-4 border-gray-100"
                   />
                 ) : (
                   <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center border-4 border-gray-100">
@@ -137,10 +169,11 @@ const TutorProfilePage = () => {
                 )}
                 <button
                   onClick={handleChangePhoto}
-                  className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200"
+                  disabled={isUploading}
+                  className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   title="Thay đổi ảnh đại diện"
                 >
-                  <Camera className="w-4 h-4 text-gray-700" />
+                  <Camera className="w-4 h-4 text-gray-700 hover:cursor-pointer" />
                 </button>
               </div>
               <div>

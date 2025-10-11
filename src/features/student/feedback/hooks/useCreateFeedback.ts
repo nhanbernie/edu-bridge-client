@@ -17,19 +17,19 @@ export const useCreateFeedback = () => {
     try {
       setIsSubmitting(true);
 
-      const result = await createFeedback({
+      const response = await createFeedback({
         courseId: data.courseId,
         tutorRating: data.tutorRating,
         courseRating: data.courseRating,
         comment: data.comment,
       }).unwrap();
 
-      if (result.success) {
+      if (response.success) {
         toast.success("Đánh giá đã được gửi thành công!");
-        return { success: true, data: result.data };
+        return { success: true, data: response.data };
       } else {
-        toast.error(result.message || "Có lỗi xảy ra khi gửi đánh giá");
-        return { success: false, error: result.message };
+        toast.error(response.message || "Có lỗi xảy ra khi gửi đánh giá");
+        return { success: false, error: response.message };
       }
     } catch (error: any) {
       console.error("Create feedback error:", error);
