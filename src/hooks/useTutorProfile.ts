@@ -5,15 +5,22 @@ import { useUploadAvatar } from "@/hooks/useUploadAvatar";
 import { useTutorMedia } from "@/hooks/useTutorMedia";
 import { MediaType } from "@/services/user/types/media.type";
 
-export const useTutorProfile = () => {
-  const { userId } = useUserId();
-  const { userData, isLoading, refetch } = useGetUser({ userId: userId || "" });
+interface UseTutorProfileProps {
+  tutorId?: string; // Optional: if provided, use this instead of current user's ID
+}
+
+export const useTutorProfile = (props?: UseTutorProfileProps) => {
+  const { userId: currentUserId } = useUserId();
+
+  const effectiveUserId = props?.tutorId || currentUserId || "";
+
+  const { userData, isLoading, refetch } = useGetUser({ userId: effectiveUserId });
   const { handleUploadAvatar, isUploading: isUploadingAvatar } = useUploadAvatar();
   const {
     allMedia,
     handleUploadMedia,
     isUploading: isUploadingMedia,
-  } = useTutorMedia(userId || "");
+  } = useTutorMedia(effectiveUserId);
 
   // UI States
   const [isEditing, setIsEditing] = useState(false);
@@ -29,8 +36,8 @@ export const useTutorProfile = () => {
 
   // Handlers
   const handleAvatarUpload = async (file: File) => {
-    if (!userId) return null;
-    const avatarUrl = await handleUploadAvatar(userId, file);
+    if (!effectiveUserId) return null;
+    const avatarUrl = await handleUploadAvatar(effectiveUserId, file);
     if (avatarUrl) {
       refetch();
     }
@@ -65,7 +72,7 @@ export const useTutorProfile = () => {
     userData: userData || undefined,
     videoIntro,
     certificates,
-    userId,
+    userId: effectiveUserId,
 
     // Loading states
     isLoading,

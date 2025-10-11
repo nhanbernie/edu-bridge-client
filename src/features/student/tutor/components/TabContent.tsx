@@ -5,10 +5,14 @@ import { Star, Clock, Award, BookOpen, Loader2 } from "lucide-react";
 import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
 import RatingSummary from "@/components/common/EBRatingSummary";
+import EBMediaCard from "@/components/common/EBMediaCard";
+import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
 import { useTutorFeedbacksData } from "../hooks/useTutorFeedbacks";
+import { useTutorProfile } from "@/hooks/useTutorProfile";
+import { useState } from "react";
 
 interface TimeSlot {
   start: string;
@@ -46,6 +50,25 @@ const TabContent: React.FC<TabContentProps> = ({
     tutorId: tutorId || "",
     enabled: !!tutorId && activeTab === "reviews",
   });
+
+  // Get tutor certificates for awards tab
+  const { certificates, isLoading: isLoadingCertificates } = useTutorProfile({
+    tutorId: tutorId || "",
+  });
+
+  // Image view modal state
+  const [isImageViewOpen, setIsImageViewOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<{ url: string; title: string } | null>(null);
+
+  const handleViewCertificate = (url: string, title: string) => {
+    setSelectedImage({ url, title });
+    setIsImageViewOpen(true);
+  };
+
+  const closeImageView = () => {
+    setIsImageViewOpen(false);
+    setSelectedImage(null);
+  };
   const renderCoursesTab = () => {
     if (coursesData?.isLoading) {
       return (
@@ -212,44 +235,69 @@ const TabContent: React.FC<TabContentProps> = ({
     );
   };
 
-  const renderAwardsTab = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {[
-        { title: "Giáo viên xuất sắc 2023", org: "Trung tâm giáo dục ABC", year: "2023" },
-        { title: "Chứng chỉ TESOL", org: "Cambridge University", year: "2022" },
-        { title: "Thạc sĩ Toán học", org: "Đại học Bách Khoa", year: "2021" },
-        { title: "Giải nhất Olympic Toán", org: "Bộ Giáo dục", year: "2020" },
-      ].map((award, index) => (
-        <Card key={index} className="border-0 shadow-sm">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <Award className="h-6 w-6 text-yellow-600" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-medium">{award.title}</h3>
-                <p className="text-sm text-muted-foreground">{award.org}</p>
-                <p className="text-sm text-muted-foreground">{award.year}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
+  const renderAwardsTab = () => {
+    if (isLoadingCertificates) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span className="ml-2">Đang tải chứng chỉ...</span>
+        </div>
+      );
+    }
 
-  switch (activeTab) {
-    case "courses":
-      return renderCoursesTab();
-    case "schedule":
-      return renderScheduleTab();
-    case "reviews":
-      return renderReviewsTab();
-    case "awards":
-      return renderAwardsTab();
-    default:
-      return renderCoursesTab();
-  }
+    if (!certificates || certificates.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <Award className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có chứng chỉ nào</h3>
+          <p className="text-gray-500">Gia sư này chưa thêm chứng chỉ hoặc giải thưởng.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {certificates.map((cert) => (
+          <EBMediaCard
+            key={cert.mediaId}
+            title={cert.title}
+            imageUrl={cert.filePath}
+            onView={() => handleViewCertificate(cert.filePath, cert.title)}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {/* Tab Content */}
+      {(() => {
+        switch (activeTab) {
+          case "courses":
+            return renderCoursesTab();
+          case "schedule":
+            return renderScheduleTab();
+          case "reviews":
+            return renderReviewsTab();
+          case "awards":
+            return renderAwardsTab();
+          default:
+            return renderCoursesTab();
+        }
+      })()}
+
+      {/* Image View Modal */}
+      {selectedImage && (
+        <ImageViewModal
+          isOpen={isImageViewOpen}
+          onClose={closeImageView}
+          imageUrl={selectedImage.url}
+          title={selectedImage.title}
+        />
+      )}
+    </>
+  );
 };
 
 export default TabContent;
