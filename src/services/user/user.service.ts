@@ -10,6 +10,7 @@ import {
   getAllUsersEndpoint,
   deleteUserEndpoint,
   checkVerificationEndpoint,
+  uploadAvatarEndpoint,
 } from "./endpoints/index";
 import { getSubjectsEndpoint } from "@/services/common";
 
@@ -28,6 +29,7 @@ export const userApi = createApi({
     verifyAllDocuments: verifyAllDocumentsEndpoint(builder),
     deleteUser: deleteUserEndpoint(builder),
     checkVerification: checkVerificationEndpoint(builder),
+    uploadAvatar: uploadAvatarEndpoint(builder),
     // TODO: Implement these endpoints when needed
     // updateProfile: updateProfileEndpoint(builder),
     // getProfile: getProfileEndpoint(builder),
@@ -47,4 +49,5 @@ export const {
   useDeleteUserMutation,
   useCheckVerificationQuery,
   useLazyCheckVerificationQuery,
+  useUploadAvatarMutation,
 } = userApi;

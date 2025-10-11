@@ -7,3 +7,4 @@ export { verifyAllDocumentsEndpoint } from "./verifyAllDocuments";
 export { getAllUsersEndpoint } from "./getAllUsers";
 export { deleteUserEndpoint } from "./deleteUser";
 export { checkVerificationEndpoint } from "./checkVerification";
+export { uploadAvatarEndpoint } from "./uploadAvatar";

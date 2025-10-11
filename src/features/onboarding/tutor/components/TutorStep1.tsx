@@ -7,6 +7,11 @@ import EBButton from "@/components/common/EBButton";
 import { TutorFormData } from "../hooks/useTutorOnboarding";
 import EBMultipleSelect from "@/components/form/EBMultipleSelect";
 import roleSelectValidatorSchema from "@/lib/validator/roleSelectValidator";
+import {
+  EDUCATION_LEVEL_OPTIONS,
+  SUBJECT_OPTIONS,
+  LANGUAGE_OPTIONS,
+} from "@/common/constants/profile.constant";
 
 interface TutorStep1Props {
   onNext: (data: TutorFormData) => void;
@@ -48,13 +53,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             allowCustom
             name="educationLevel"
             label="Trình độ học vấn"
-            options={[
-              { value: "HIGH_SCHOOL", label: "Tốt nghiệp THPT" },
-              { value: "COLLEGE", label: "Cao đẳng" },
-              { value: "BACHELOR", label: "Cử nhân" },
-              { value: "MASTER", label: "Thạc sĩ" },
-              { value: "DOCTORATE", label: "Tiến sĩ" },
-            ]}
+            options={EDUCATION_LEVEL_OPTIONS}
           />
           {/* Years of Experience */}
           <EBTextField
@@ -86,31 +85,14 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
             allowCustom
             name="subjects"
             label="Môn học dạy (có thể chọn nhiều)"
-            options={[
-              { value: "MATH", label: "Toán" },
-              { value: "PHYSICS", label: "Vật lý" },
-              { value: "CHEMISTRY", label: "Hóa học" },
-              { value: "BIOLOGY", label: "Sinh học" },
-              { value: "ENGLISH", label: "Tiếng Anh" },
-              { value: "LITERATURE", label: "Ngữ văn" },
-              { value: "HISTORY", label: "Lịch sử" },
-              { value: "GEOGRAPHY", label: "Địa lý" },
-              { value: "COMPUTER_SCIENCE", label: "Tin học" },
-            ]}
+            options={SUBJECT_OPTIONS}
           />
           {/* Languages (multiple) */}
           <EBMultipleSelect
             allowCustom
             name="languages"
             label="Ngôn ngữ (có thể chọn nhiều)"
-            options={[
-              { value: "VI", label: "Tiếng Việt" },
-              { value: "EN", label: "Tiếng Anh" },
-              { value: "FR", label: "Tiếng Pháp" },
-              { value: "JP", label: "Tiếng Nhật" },
-              { value: "KR", label: "Tiếng Hàn" },
-              { value: "ZH", label: "Tiếng Trung" },
-            ]}
+            options={LANGUAGE_OPTIONS}
           />
           {/* Submit Button */}
           <div className="flex justify-end pt-4">
