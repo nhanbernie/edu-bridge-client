@@ -26,28 +26,30 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   isLoading,
 }) => {
   // Helper function to get package type name
-  const getPackageTypeName = (packageType: number): string => {
-    const typeNames = {
-      0: "Buổi học thử",
-      1: "Gói cơ bản",
-      2: "Gói tiêu chuẩn",
-      3: "Gói cao cấp",
-      4: "Gói tùy chỉnh",
+  const getPackageTypeName = (packageType: string): string => {
+    const typeNames: Record<string, string> = {
+      TRIAL: "Buổi học thử",
+      SINGLE: "Gói cơ bản",
+      FOUR: "Gói 4 buổi",
+      EIGHT: "Gói 8 buổi",
+      TWELVE: "Gói 12 buổi",
     };
-    return typeNames[packageType as keyof typeof typeNames] || "Gói học";
+    return typeNames[packageType] || "Gói học";
   };
 
-  // Transform API packages to display format
+  // Transform API packages to display format and sort by price
   const packages =
-    apiPackages?.map((pkg) => ({
-      id: pkg.packageId,
-      name: getPackageTypeName(pkg.packageType),
-      description: `${pkg.numberOfSessions} buổi học`,
-      sessions: pkg.numberOfSessions,
-      price: pkg.price / 1000, // Convert to thousands
-      originalPrice: pkg.packageType === 2 ? (pkg.price * 1.2) / 1000 : null, // Add 20% as original price for popular packages
-      popular: pkg.packageType === 2, // Standard package is popular
-    })) || [];
+    apiPackages
+      ?.map((pkg) => ({
+        id: pkg.packageId,
+        name: getPackageTypeName(pkg.packageType as string),
+        description: `${pkg.numberOfSessions} buổi học`,
+        sessions: pkg.numberOfSessions,
+        price: pkg.price,
+        originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
+        popular: (pkg.packageType as string) === "EIGHT",
+      }))
+      .sort((a, b) => a.price - b.price) || [];
 
   // Loading state
   if (isLoading) {

@@ -14,17 +14,17 @@ export interface CourseDto {
 
 // Package types
 export enum PackageType {
-  TRIAL = 0,
-  BASIC = 1,
-  STANDARD = 2,
-  PREMIUM = 3,
-  CUSTOM = 4,
+  TRIAL = "TRIAL",
+  SINGLE = "SINGLE",
+  FOUR = "FOUR",
+  EIGHT = "EIGHT",
+  TWELVE = "TWELVE",
 }
 
 export interface PackageDto {
   packageId: string;
   courseId: string;
-  packageType: PackageType;
+  packageType: string; // Changed to string to accept "TRIAL", "SINGLE", etc.
   numberOfSessions: number;
   price: number;
   serviceFeePercentage: number;
