@@ -132,13 +132,13 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
         <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8 shadow-xl">
           <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
             {/* Left Side - Avatar and Basic Info */}
-            <div className="flex items-start space-x-6">
+            <div className="flex items-start space-x-8">
               <div className="relative">
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
                     alt={user.fullName || "Tutor"}
-                    className="w-64 h-64 rounded-full object-cover"
+                    className="w-44 h-44 rounded-full object-cover"
                   />
                 ) : (
                   <div className="w-64 h-64 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-primary font-bold text-8xl">
@@ -146,7 +146,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   </div>
                 )}
                 {user.status === "APPROVED" && (
-                  <div className="absolute bottom-4 right-4 w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-gray-800 animate-pulse" />
+                  <div className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-gray-800 animate-pulse" />
                 )}
               </div>
 
