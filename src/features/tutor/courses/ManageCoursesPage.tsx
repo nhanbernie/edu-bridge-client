@@ -24,7 +24,7 @@ const ManageCoursesPage: React.FC = () => {
     handleEditCourse,
     handleDeleteCourse,
     handleRefresh,
-  } = useManageCourses(tutorId || ""); 
+  } = useManageCourses(tutorId || "");
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
@@ -69,9 +69,9 @@ const ManageCoursesPage: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto py-6 px-4">
+    <>
       {/* EBHeader */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-2xl font-bold">Quản lý khóa học</h1>
           <p className="text-muted-foreground">Quản lý tất cả khóa học của bạn</p>
@@ -135,7 +135,7 @@ const ManageCoursesPage: React.FC = () => {
         onConfirm={handleDeleteConfirm}
         variant="destructive"
       />
-    </div>
+    </>
   );
 };
 

@@ -36,46 +36,44 @@ const ManageTransactionsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8 px-4">
-        <TransactionHeader
-          title="Lịch sử giao dịch"
-          description="Theo dõi thu nhập và giao dịch của bạn"
-          onRefresh={refetchTransactions}
-          isLoading={isLoading}
+    <div className="min-h-screen">
+      <TransactionHeader
+        title="Lịch sử giao dịch"
+        description="Theo dõi thu nhập và giao dịch của bạn"
+        onRefresh={refetchTransactions}
+        isLoading={isLoading}
+      />
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <TransactionStatsCard
+          title="Tổng thu nhập"
+          value={formatCurrency(totalEarnings)}
+          description="Sau khi trừ phí dịch vụ"
+          icon={DollarSign}
         />
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <TransactionStatsCard
-            title="Tổng thu nhập"
-            value={formatCurrency(totalEarnings)}
-            description="Sau khi trừ phí dịch vụ"
-            icon={DollarSign}
-          />
-          <TransactionStatsCard
-            title="Phí dịch vụ"
-            value={formatCurrency(totalServiceFees)}
-            description="Phí hệ thống"
-            icon={TrendingUp}
-          />
-          <TransactionStatsCard
-            title="Hoàn thành"
-            value={completedTransactions}
-            description="Giao dịch thành công"
-            icon={CheckCircle}
-          />
-          <TransactionStatsCard
-            title="Đang chờ"
-            value={pendingTransactions}
-            description="Chờ xử lý"
-            icon={Clock}
-          />
-        </div>
-
-        {/* Transactions List */}
-        <TransactionList transactions={transactions} formatCurrency={formatCurrency} />
+        <TransactionStatsCard
+          title="Phí dịch vụ"
+          value={formatCurrency(totalServiceFees)}
+          description="Phí hệ thống"
+          icon={TrendingUp}
+        />
+        <TransactionStatsCard
+          title="Hoàn thành"
+          value={completedTransactions}
+          description="Giao dịch thành công"
+          icon={CheckCircle}
+        />
+        <TransactionStatsCard
+          title="Đang chờ"
+          value={pendingTransactions}
+          description="Chờ xử lý"
+          icon={Clock}
+        />
       </div>
+
+      {/* Transactions List */}
+      <TransactionList transactions={transactions} formatCurrency={formatCurrency} />
     </div>
   );
 };

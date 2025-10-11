@@ -27,6 +27,8 @@ export const API_ENDPOINTS = {
     GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
     VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
     CHECK_VERIFICATION: "/api/user/{tutorId}/check-verification",
+    UPLOAD_MEDIA: "/api/user/tutor/{tutorId}/media",
+    GET_MEDIA: "/api/user/tutor/{tutorId}/media",
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",

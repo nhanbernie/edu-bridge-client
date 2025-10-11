@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, Clock, Award, BookOpen, Loader2 } from "lucide-react";
 import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
-import RatingSummary from "@/components/common/RatingSummary";
+import RatingSummary from "@/components/common/EBRatingSummary";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";

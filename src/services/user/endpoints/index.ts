@@ -8,3 +8,5 @@ export { getAllUsersEndpoint } from "./getAllUsers";
 export { deleteUserEndpoint } from "./deleteUser";
 export { checkVerificationEndpoint } from "./checkVerification";
 export { uploadAvatarEndpoint } from "./uploadAvatar";
+export { uploadMediaEndpoint } from "./uploadMedia";
+export { getMediaEndpoint } from "./getMedia";

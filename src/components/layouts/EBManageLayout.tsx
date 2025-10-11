@@ -14,6 +14,7 @@ import {
   defaultTutorSidebarItems,
   defaultTutorActionButtons,
 } from "@/common/constants/navigate.constant";
+import { MAX_WIDTH_8XL } from "@/common/constants/className.constant";
 
 interface EBManageLayoutProps {
   children: ReactNode;
@@ -200,7 +201,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
 
           {/* Main Content - Scrollable */}
           <main className="flex-1 overflow-y-auto overflow-x-hidden">
-            <div className="max-w-8xl mx-auto p-6">{children}</div>
+            <div className={MAX_WIDTH_8XL}>{children}</div>
           </main>
         </div>
       </div>

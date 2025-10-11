@@ -80,98 +80,91 @@ const TutorMySchedulePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8 px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Lịch dạy của tôi
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Xem lịch dạy và quản lý các buổi học sắp tới
-          </p>
-        </div>
+    <div className="min-h-screen">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Lịch dạy của tôi</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Xem lịch dạy và quản lý các buổi học sắp tới
+        </p>
+      </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi dạy hôm nay
-                </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {statsData.todaySessions}
-                </p>
-              </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                Buổi dạy hôm nay
+              </p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {statsData.todaySessions}
+              </p>
             </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi dạy tuần này
-                </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {statsData.thisWeekSessions}
-                </p>
-              </div>
-              <Clock className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Học sinh</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {statsData.uniqueStudents}
-                </p>
-              </div>
-              <Users className="h-8 w-8 text-orange-500" />
-            </div>
+            <Calendar className="h-8 w-8 text-blue-500" />
           </div>
         </div>
 
-        {/* Schedule Content */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
-          <div className="p-8">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lịch dạy</h2>
-              </div>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                Buổi dạy tuần này
+              </p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {statsData.thisWeekSessions}
+              </p>
             </div>
-            {/* Tabs */}
-            <div className="flex items-center justify-between mb-8">
-              <SessionTabs
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-                upcomingCount={upcomingSessions.length}
-                historyCount={historySessions.length}
-              />
-            </div>
+            <Clock className="h-8 w-8 text-green-500" />
+          </div>
+        </div>
 
-            {activeTab === "upcoming" ? (
-              upcomingLoading ? (
-                <EBLoadingSpinner message="Đang tải lịch sắp tới..." size="md" />
-              ) : (
-                <UpcomingSessionList
-                  sessions={upcomingSessions}
-                  onJoinSession={handleJoinSession}
-                />
-              )
-            ) : historyLoading ? (
-              <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Học sinh</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {statsData.uniqueStudents}
+              </p>
+            </div>
+            <Users className="h-8 w-8 text-orange-500" />
+          </div>
+        </div>
+      </div>
+
+      {/* Schedule Content */}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+        <div className="p-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lịch dạy</h2>
+            </div>
+          </div>
+          {/* Tabs */}
+          <div className="flex items-center justify-between mb-8">
+            <SessionTabs
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              upcomingCount={upcomingSessions.length}
+              historyCount={historySessions.length}
+            />
+          </div>
+
+          {activeTab === "upcoming" ? (
+            upcomingLoading ? (
+              <EBLoadingSpinner message="Đang tải lịch sắp tới..." size="md" />
             ) : (
-              <HistorySessionList
-                sessions={historySessions}
-                userType="tutor"
-                onViewFeedback={handleViewFeedback}
-              />
-            )}
-          </div>
+              <UpcomingSessionList sessions={upcomingSessions} onJoinSession={handleJoinSession} />
+            )
+          ) : historyLoading ? (
+            <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
+          ) : (
+            <HistorySessionList
+              sessions={historySessions}
+              userType="tutor"
+              onViewFeedback={handleViewFeedback}
+            />
+          )}
         </div>
       </div>
     </div>
