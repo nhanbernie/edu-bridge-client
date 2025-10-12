@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import RatingSummary from "@/components/common/EBRatingSummary";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/EBSessionInfoCard";
 
 interface AdminFeedbackPageProps {
   courseId: string;
@@ -59,14 +58,29 @@ const AdminFeedbackPage: React.FC<AdminFeedbackPageProps> = ({ courseId }) => {
         </div>
 
         {/* Session Info - Secondary Display */}
-        <div className="mb-8">
-          <SessionInfoCard
-            courseTitle={currentSession.courseTitle}
-            tutorName={currentSession.tutorName}
-            startTime={currentSession.startTime}
-            endTime={currentSession.endTime}
-          />
-        </div>
+        <Card className="mb-8 border-0 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen className="h-5 w-5 text-emerald-600" />
+                  <h3 className="font-semibold text-lg">{currentSession.courseTitle}</h3>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600 mb-1">
+                  <User className="h-4 w-4" />
+                  <span className="text-sm">Gia sư: {currentSession.tutorName}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">
+                    {new Date(currentSession.startTime).toLocaleString("vi-VN")} -{" "}
+                    {new Date(currentSession.endTime).toLocaleString("vi-VN")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Rating Summary (View Mode) */}

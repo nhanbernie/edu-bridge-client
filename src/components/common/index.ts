@@ -6,6 +6,7 @@ export { default as EBLanguageSelector } from "./EBLanguageSelector";
 export { default as EBThemeToggle } from "./EBThemeToggle";
 export { default as EBTutorCourseCard } from "./EBTutorCourseCard";
 export { default as EmptyState } from "./EmptyState";
+export { default as EmptyFeedback } from "./EmptyFeedback";
 export { default as EBActionsMenu } from "./EBActionsMenu";
 export { default as EBConfirmDialog } from "./EBConfirmDialog";
 
