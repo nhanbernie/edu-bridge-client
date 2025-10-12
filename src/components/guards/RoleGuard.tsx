@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRoleGuard, UserRole, UserStatus } from "@/hooks/useRoleGuard";
 
 interface RoleGuardProps {
@@ -13,18 +13,23 @@ interface RoleGuardProps {
 
 /**
  * Component to guard routes based on user roles and status
+ * Optimized to avoid showing loading spinner on every navigation
  */
 export const RoleGuard: React.FC<RoleGuardProps> = ({
   children,
   allowedRoles,
   requiredStatus,
-  fallback = <div className="flex items-center justify-center min-h-screen">Loading...</div>,
+  fallback = null,
   redirectTo,
 }) => {
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
+  const hasChecked = useRef(false);
   const { checkRoleAccess, guardRoute } = useRoleGuard();
 
   useEffect(() => {
+    if (hasChecked.current) return;
+    hasChecked.current = true;
+
     const checkAccess = async () => {
       try {
         const hasAccess = await checkRoleAccess({
@@ -48,15 +53,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
     };
 
     checkAccess();
-  }, [allowedRoles, requiredStatus, redirectTo, checkRoleAccess, guardRoute]);
-
-  if (isAuthorized === null) {
-    return <>{fallback}</>;
-  }
-
-  if (!isAuthorized) {
-    return <>{fallback}</>;
-  }
+  }, []);
 
   return <>{children}</>;
 };

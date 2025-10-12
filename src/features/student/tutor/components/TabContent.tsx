@@ -6,6 +6,7 @@ import EBTutorCard from "@/components/common/EBTutorCourseCard";
 import EBSchedule from "@/components/common/EBSchedule";
 import RatingSummary from "@/components/common/EBRatingSummary";
 import EBMediaCard from "@/components/common/EBMediaCard";
+import EmptyFeedback from "@/components/common/EmptyFeedback";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
 import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
@@ -166,6 +167,11 @@ const TabContent: React.FC<TabContentProps> = ({
           <span className="ml-2">Đang tải đánh giá...</span>
         </div>
       );
+    }
+
+    // Empty state when no feedbacks
+    if (!feedbacksData?.feedbacks || feedbacksData.feedbacks.length === 0) {
+      return <EmptyFeedback />;
     }
 
     return (

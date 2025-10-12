@@ -430,13 +430,14 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
 
   const handleFormSubmit = async (data: any) => {
     const documents: DocumentUpload[] = [];
-
+    // CCCD, Selfie, Degree, Certificate (optional): Verified
+    // CCCD, Selfie, Student card, Transcript, Certificate (optional): Trusted Beginner Tutor
     // Map form data to document uploads based on verification type
     if (data.verificationType === "verified") {
       // Verified Tutor documents
       if (data.cccd) documents.push({ docType: "CCCD", file: data.cccd });
       if (data.selfie) documents.push({ docType: "SELFIE", file: data.selfie });
-      if (data.degree) documents.push({ docType: "CERTIFICATE", file: data.degree });
+      if (data.degree) documents.push({ docType: "DEGREE", file: data.degree });
       if (data.certificate) documents.push({ docType: "CERTIFICATE", file: data.certificate });
     } else if (data.verificationType === "trusted") {
       // Trusted Beginner Tutor documents

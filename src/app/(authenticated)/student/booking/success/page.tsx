@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
 import {
@@ -17,7 +17,7 @@ import {
 // import { EBMainLayout } from "@/components/layouts"; note: false footer
 import { EBMotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
 
-const BookingSuccess = () => {
+const BookingSuccessContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [confetti, setConfetti] = useState(true);
@@ -300,6 +300,23 @@ const BookingSuccess = () => {
       </div>
     </div>
     // </EBMainLayout>
+  );
+};
+
+const BookingSuccess = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Đang tải...</p>
+          </div>
+        </div>
+      }
+    >
+      <BookingSuccessContent />
+    </Suspense>
   );
 };
 
