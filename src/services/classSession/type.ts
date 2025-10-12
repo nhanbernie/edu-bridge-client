@@ -22,12 +22,12 @@ export interface ClassSessionDto {
   courseId: string;
   courseTitle: string;
   tutorId: string;
-  studentName: string;
   tutorName: string;
   studentId: string;
+  studentName: string | null;
   createdAt: string;
-  averageCourseRating?: number;
-  feedbacks?: FeedbackDto[];
+  averageCourseRating: number;
+  avatarUrl: string;
 }
 
 // API Response Types

@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 interface SessionInfoCardProps {
   courseTitle: string;
   tutorName?: string;
-  studentName?: string;
+  studentName?: string | null;
   startTime: string;
   endTime: string;
 }

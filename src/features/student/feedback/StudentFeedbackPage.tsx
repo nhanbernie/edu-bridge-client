@@ -31,12 +31,9 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
 
   const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
 
-  // Check if student already has feedback for this course
-  const existingFeedback = currentSession?.feedbacks?.find(
-    (feedback) => feedback.courseId === courseId
-  );
-
-  const hasExistingFeedback = Boolean(existingFeedback);
+  // Note: With new API, we don't have feedbacks list in session anymore
+  // Always show feedback form for now
+  const hasExistingFeedback = false;
 
   const handleSubmitFeedback = async (
     tutorRating: number,
@@ -112,25 +109,13 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
             <RatingSummary
               type="view"
               averageRating={currentSession.averageCourseRating}
-              totalReviews={currentSession.feedbacks?.length || 0}
+              totalReviews={0}
             />
           </div>
 
-          {/* Right Column - Feedback Form or View */}
+          {/* Right Column - Feedback Form */}
           <div>
-            {hasExistingFeedback && existingFeedback ? (
-              <RatingSummary
-                type="view"
-                reviewerName={existingFeedback.studentName}
-                tutorRatingValue={existingFeedback.tutorRating}
-                courseRatingValue={existingFeedback.courseRating}
-                existingComment={existingFeedback.comment}
-                courseTitle={currentSession.courseTitle}
-                createdAt={existingFeedback.createdAt}
-              />
-            ) : (
-              <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
-            )}
+            <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
           </div>
         </div>
       </div>

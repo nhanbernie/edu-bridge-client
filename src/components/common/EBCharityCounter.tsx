@@ -21,20 +21,16 @@ const formatCharityAmount = (amount: number | null): string => {
   }
 };
 
-// Format full number with dots for tooltip
 const formatFullAmount = (amount: number | null): string => {
   if (amount === null || amount === undefined) return "0";
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
 const EBCharityCounter: React.FC = () => {
-  // Call API using RTK Query
   const { data, isLoading, error } = useGetCharityTotalQuery();
 
-  // Don't render if loading or error
   if (isLoading || error) return null;
 
-  // Get amount, default to 0 if no data
   const amount = data?.success && data?.data !== undefined ? data.data : 0;
   return (
     <TooltipProvider>

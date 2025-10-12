@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from "react";
-import { Clock, Users, Video, Star, MessageSquare, Eye } from "lucide-react";
+import { Clock, Users, Video, Star } from "lucide-react";
 import { ClassSessionDto } from "@/services/classSession/type";
 import { useSessionUtils } from "@/hooks/useSessionUtils";
-import FeedbackButton from "./FeedbackButton";
+import Image from "next/image";
 
 interface SessionCardProps {
   session: ClassSessionDto;
@@ -22,7 +22,6 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       const sessionDuration = calculateSessionDuration(session.startTime, session.endTime);
       const durationText = getSessionDurationText(sessionDuration);
       const isHistory = session.isCompleted;
-      const hasFeedbacks = Boolean(session.feedbacks && session.feedbacks.length > 0);
       const displayName = userType === "student" ? session.tutorName : session.studentName;
       const displayLabel = userType === "student" ? "Gia sư" : "Học sinh";
 
@@ -30,7 +29,6 @@ const SessionCard: React.FC<SessionCardProps> = memo(
         sessionDuration,
         durationText,
         isHistory,
-        hasFeedbacks,
         displayName,
         displayLabel,
       };
@@ -38,7 +36,6 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       session.startTime,
       session.endTime,
       session.isCompleted,
-      session.feedbacks,
       session.tutorName,
       session.studentName,
       userType,
@@ -46,21 +43,20 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       getSessionDurationText,
     ]);
 
-    const { sessionDuration, durationText, isHistory, hasFeedbacks, displayName, displayLabel } =
-      sessionData;
+    const { sessionDuration, durationText, isHistory, displayName, displayLabel } = sessionData;
 
     // Memoize styling classes
     const stylingClasses = useMemo(() => {
       const cardClasses = isHistory
-        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700/50 transition-all duration-300"
-        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300";
+        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300"
+        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300";
 
       const iconClasses = isHistory
-        ? "w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center"
+        ? "w-10 h-10 bg-emerald-100 dark:bg-emerald-900 rounded-xl flex items-center justify-center"
         : "w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center";
 
       const textClasses = isHistory
-        ? "text-blue-600 dark:text-blue-400 font-bold text-sm"
+        ? "text-emerald-600 dark:text-emerald-400 font-bold text-sm"
         : "text-gray-600 dark:text-gray-400 font-bold text-sm";
 
       return { cardClasses, iconClasses, textClasses };
@@ -72,143 +68,106 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       <div className={cardClasses}>
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={iconClasses}>
-                <span className={textClasses}>{index + 1}</span>
+            <div className="flex items-start gap-4">
+              {/* Avatar - Square with rounded corners */}
+              <div className="relative w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden">
+                {session.avatarUrl ? (
+                  <Image
+                    src={session.avatarUrl}
+                    alt={displayName || "Avatar"}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                    <span className="text-gray-600 dark:text-gray-400 font-bold text-2xl">
+                      {(displayName || "?").charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="flex-1 space-y-2">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                   {session.courseTitle}
                 </h3>
+
+                {/* User info - Fixed position */}
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-gray-500" />
                   <span className="text-gray-600 dark:text-gray-400 text-sm">
                     {displayLabel}: {displayName}
                   </span>
                 </div>
-              </div>
-            </div>
 
-            <div className="flex items-center gap-6 text-sm mb-4">
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded-lg">
-                <Clock className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                <span className="text-gray-700 dark:text-gray-300 font-medium">
-                  {formatSessionDateTime(session.startTime)}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded-lg">
-                <Video className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                <span className="text-gray-700 dark:text-gray-300 font-medium">{durationText}</span>
-              </div>
-            </div>
-
-            {/* Rating and Feedback for history sessions */}
-            {isHistory && session.averageCourseRating !== undefined && (
-              <div className="flex items-center gap-2 mb-3">
-                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Đánh giá trung bình: {session.averageCourseRating}/5
-                </span>
-              </div>
-            )}
-
-            {/* Feedbacks for history sessions - Lazy load */}
-            {isHistory && session.feedbacks && session.feedbacks.length > 0 && (
-              <div className="space-y-2 mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                  Phản hồi:
-                </h4>
-                {session.feedbacks.slice(0, 2).map((feedback) => (
-                  <div
-                    key={feedback.feedbackId}
-                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3 w-3 ${
-                              i < feedback.tutorRating
-                                ? "text-yellow-400 fill-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {feedback.tutorRating}/5
-                      </span>
-                    </div>
-                    {feedback.comment && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-                        &ldquo;{feedback.comment}&rdquo;
-                      </p>
-                    )}
+                {/* Rating - show for all sessions if available */}
+                {session.averageCourseRating != null && session.averageCourseRating > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Đánh giá trung bình: {session.averageCourseRating.toFixed(1)}/5
+                    </span>
                   </div>
-                ))}
-                {session.feedbacks.length > 2 && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">
-                    +{session.feedbacks.length - 2} phản hồi khác...
-                  </p>
                 )}
               </div>
-            )}
+            </div>
           </div>
 
           <div className="ml-6 flex-shrink-0">
             {isHistory ? (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm font-medium">Hoàn thành</span>
+              <div className="flex flex-col gap-3 items-end">
+                {/* Time info - Above status badge */}
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {formatSessionDateTime(session.startTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Video className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {durationText}
+                    </span>
+                  </div>
                 </div>
-
-                {/* Feedback button for students */}
-                {userType === "student" && (
-                  <FeedbackButton
-                    courseId={session.courseId}
-                    hasFeedbacks={hasFeedbacks}
-                    onViewFeedback={onViewFeedback}
-                  />
-                )}
-
-                {/* View feedback button for tutors */}
-                {userType === "tutor" && (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
+                  <span className="text-xs font-medium">Hoàn thành</span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 items-end">
+                {/* Time info for upcoming sessions */}
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {formatSessionDateTime(session.startTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Video className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {durationText}
+                    </span>
+                  </div>
+                </div>
+                {onJoinSession && (
                   <button
-                    onClick={() => onViewFeedback?.(session.courseId)}
-                    disabled={!hasFeedbacks}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      hasFeedbacks
-                        ? "bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
-                        : "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
-                    }`}
+                    onClick={() => onJoinSession(session.sessionId)}
+                    className="group/btn flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                   >
-                    <Eye className="h-4 w-4" />
-                    <span>{hasFeedbacks ? "Xem phản hồi" : "Chưa có phản hồi"}</span>
+                    <Video className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
+                    <span>Tham gia</span>
                   </button>
                 )}
               </div>
-            ) : (
-              onJoinSession && (
-                <button
-                  onClick={() => onJoinSession(session.sessionId)}
-                  className="group/btn flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  <Video className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
-                  <span>Tham gia</span>
-                </button>
-              )
             )}
           </div>
         </div>
 
         {/* Decorative elements */}
         <div
-          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-blue-400" : "bg-gray-400"} rounded-full opacity-60`}
-        ></div>
-        <div
-          className={`absolute bottom-4 left-4 w-1 h-1 ${isHistory ? "bg-blue-300" : "bg-gray-300"} rounded-full opacity-40`}
+          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-emerald-400" : "bg-gray-400"} rounded-full opacity-60`}
         ></div>
       </div>
     );

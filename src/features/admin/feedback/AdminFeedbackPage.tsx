@@ -69,41 +69,26 @@ const AdminFeedbackPage: React.FC<AdminFeedbackPageProps> = ({ courseId }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Rating Summary (View Mode) */}
+          {/* Rating Summary (View Mode) */}
           <div>
             <RatingSummary
               type="view"
               averageRating={currentSession.averageCourseRating}
-              totalReviews={currentSession.feedbacks?.length || 0}
+              totalReviews={0}
             />
           </div>
 
-          {/* Right Column - Feedbacks */}
+          {/* Info Message */}
           <div>
-            {currentSession.feedbacks && currentSession.feedbacks.length > 0 ? (
-              <div className="space-y-4">
-                {currentSession.feedbacks.map((feedback) => (
-                  <RatingSummary
-                    key={feedback.feedbackId}
-                    type="view"
-                    reviewerName={feedback.studentName}
-                    tutorRatingValue={feedback.tutorRating}
-                    courseRatingValue={feedback.courseRating}
-                    existingComment={feedback.comment}
-                    courseTitle={currentSession.courseTitle}
-                    createdAt={feedback.createdAt}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Card className="border-0 shadow-sm">
-                <CardContent className="p-6">
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Chưa có đánh giá nào</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-6">
+                <div className="text-center py-8">
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Đánh giá trung bình: {currentSession.averageCourseRating || 0}/5
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
