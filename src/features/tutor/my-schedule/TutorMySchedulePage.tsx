@@ -9,6 +9,8 @@ import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./componen
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { SessionCardSkeleton } from "@/components/common/skeletons";
+import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 const TutorMySchedulePage: React.FC = () => {
   const router = useRouter();
@@ -82,11 +84,9 @@ const TutorMySchedulePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Lịch dạy của tôi</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Xem lịch dạy và quản lý các buổi học sắp tới
-        </p>
+      <div className={PAGE_HEADER}>
+        <h1 className={PAGE_TITLE}>Lịch dạy của tôi</h1>
+        <p className={PAGE_SUBTITLE}>Xem lịch dạy và quản lý các buổi học sắp tới</p>
       </div>
 
       {/* Stats Cards */}

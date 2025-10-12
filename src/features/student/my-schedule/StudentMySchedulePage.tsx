@@ -8,6 +8,7 @@ import { useGetStudentHistorySessionsQuery } from "@/services/classSession/class
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { SessionCardSkeleton } from "@/components/common/skeletons";
 import {
   PAGE_CONTAINER,
   CONTENT_WRAPPER,

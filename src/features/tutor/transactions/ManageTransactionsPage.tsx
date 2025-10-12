@@ -4,6 +4,7 @@ import React from "react";
 import { useTutorTransactions } from "./hooks/useTutorTransactions";
 import { TransactionStatsCard, TransactionList, TransactionHeader } from "@/components/common";
 import { DollarSign, TrendingUp, Clock, CheckCircle } from "lucide-react";
+import { PAGE_HEADER } from "@/common/constants/className.constant";
 
 const ManageTransactionsPage: React.FC = () => {
   const {
@@ -37,12 +38,14 @@ const ManageTransactionsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <TransactionHeader
-        title="Lịch sử giao dịch"
-        description="Theo dõi thu nhập và giao dịch của bạn"
-        onRefresh={refetchTransactions}
-        isLoading={isLoading}
-      />
+      <div className={PAGE_HEADER}>
+        <TransactionHeader
+          title="Lịch sử giao dịch"
+          description="Theo dõi thu nhập và giao dịch của bạn"
+          onRefresh={refetchTransactions}
+          isLoading={isLoading}
+        />
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

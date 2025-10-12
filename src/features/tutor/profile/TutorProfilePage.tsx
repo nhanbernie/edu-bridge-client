@@ -10,6 +10,7 @@ import EBTutorProfileForm from "./components/EBTutorProfileForm";
 import MediaUploadModal from "./components/MediaUploadModal";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
 import { useTutorProfile } from "@/hooks/useTutorProfile";
+import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 interface TutorProfileFormData {
   fullName: string;
@@ -83,11 +84,9 @@ const TutorProfilePage = () => {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Hồ sơ gia sư</h1>
-        <p className="text-gray-600 mt-1 text-sm">
-          Quản lý thông tin cá nhân và hồ sơ gia sư của bạn
-        </p>
+      <div className={PAGE_HEADER}>
+        <h1 className={PAGE_TITLE}>Hồ sơ gia sư</h1>
+        <p className={PAGE_SUBTITLE}>Quản lý thông tin cá nhân và hồ sơ của bạn</p>
       </div>
 
       {/* 2 Column Layout */}
