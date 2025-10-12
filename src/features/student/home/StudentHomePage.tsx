@@ -9,6 +9,7 @@ import AdvancedFilter from "./components/AdvancedFilter";
 import { useTutorSearch } from "./hooks/useTutorSearch";
 import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
+import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 // Initial search params
 const initialSearchParams = {
@@ -145,9 +146,9 @@ const StudentHomePage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* EBHeader Section */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Gia sư phù hợp</h1>
-          <p className="text-muted-foreground text-lg">
+        <div className={PAGE_HEADER}>
+          <h1 className={`${PAGE_TITLE} text-4xl`}>Gia sư phù hợp</h1>
+          <p className={`${PAGE_SUBTITLE} text-lg`}>
             {isLoading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />

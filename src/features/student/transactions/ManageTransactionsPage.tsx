@@ -4,6 +4,7 @@ import React from "react";
 import { useStudentTransactions } from "./hooks/useStudentTransactions";
 import { TransactionStatsCard, TransactionList, TransactionHeader } from "@/components/common";
 import { CreditCard, TrendingDown, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
 
 const ManageTransactionsPage: React.FC = () => {
   const {
@@ -36,8 +37,8 @@ const ManageTransactionsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
         <TransactionHeader
           title="Lịch sử thanh toán"
           description="Theo dõi các giao dịch thanh toán của bạn"

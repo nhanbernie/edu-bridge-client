@@ -7,6 +7,13 @@ import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { EnrolledCourseCard } from "./components";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import {
+  PAGE_CONTAINER,
+  CONTENT_WRAPPER,
+  PAGE_HEADER,
+  PAGE_TITLE,
+  PAGE_SUBTITLE,
+} from "@/common/constants/className.constant";
 
 const StudentFeedbackListPage: React.FC = () => {
   const router = useRouter();
@@ -54,17 +61,12 @@ const StudentFeedbackListPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Khóa học đã tham gia
-            </h1>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400">
+        <div className={PAGE_HEADER}>
+          <h1 className={PAGE_TITLE}>Khóa học đã tham gia</h1>
+          <p className={PAGE_SUBTITLE}>
             Xem lại các khóa học bạn đã đăng ký và theo dõi tiến độ học tập
           </p>
         </div>

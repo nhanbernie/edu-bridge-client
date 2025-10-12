@@ -13,6 +13,13 @@ import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import {
+  PAGE_CONTAINER,
+  CONTENT_WRAPPER,
+  PAGE_HEADER,
+  PAGE_TITLE,
+  PAGE_SUBTITLE,
+} from "@/common/constants/className.constant";
 
 interface StudentFeedbackPageProps {
   courseId: string;
@@ -89,18 +96,16 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
   const ratingCounts = feedbacksData?.data?.ratingCounts;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
         {/* Header */}
-        <div className="mb-8">
+        <div className={PAGE_HEADER}>
           <Button variant="ghost" onClick={() => router.push("/student/feedback")} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Quay lại danh sách khóa học
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {enrollment.courseTitle}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h1 className={PAGE_TITLE}>{enrollment.courseTitle}</h1>
+          <p className={PAGE_SUBTITLE}>
             Gia sư: {enrollment.tutorName} • {enrollment.completedSessions}/
             {enrollment.totalSessionsBooked} buổi đã hoàn thành
           </p>
