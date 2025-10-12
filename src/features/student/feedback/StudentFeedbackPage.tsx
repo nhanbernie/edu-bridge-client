@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, User, BookOpen, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import RatingSummary from "@/components/common/EBRatingSummary";
+import RatingSummary from "@/components/common/RatingSummary";
 import { useCreateFeedback } from "./hooks/useCreateFeedback";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/EBSessionInfoCard";
+import SessionInfoCard from "@/components/common/SessionInfoCard";
 
 interface StudentFeedbackPageProps {
   courseId: string;

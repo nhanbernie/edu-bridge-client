@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, BookOpen, User, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import RatingSummary from "@/components/common/EBRatingSummary";
+import RatingSummary from "@/components/common/RatingSummary";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/EBSessionInfoCard";
+import SessionInfoCard from "@/components/common/SessionInfoCard";
 
 interface AdminFeedbackPageProps {
   courseId: string;
