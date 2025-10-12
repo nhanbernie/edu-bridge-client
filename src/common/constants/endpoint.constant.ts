@@ -34,6 +34,7 @@ export const API_ENDPOINTS = {
     CHECK_VERIFICATION: "/api/user/{tutorId}/check-verification",
     UPLOAD_MEDIA: "/api/user/tutor/{tutorId}/media",
     GET_MEDIA: "/api/user/tutor/{tutorId}/media",
+    UPDATE_MEDIA: "/api/user/tutor/{tutorId}/media/{mediaId}",
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",
@@ -78,6 +79,9 @@ export const API_ENDPOINTS = {
     JOIN_MEETING: "/api/class-session/{sessionId}/join",
     GET_CHAT_HISTORY: "/api/class-session/{sessionId}/chat",
     SEND_MESSAGE: "/api/class-session/{sessionId}/chat",
+  },
+  PAYMENT: {
+    CHARITY: "/api/payment/charity",
   },
 } as const;
 
