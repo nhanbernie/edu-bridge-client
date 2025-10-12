@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/services/api/baseQuery";
 import { getTutorFeedbacksEndpoint } from "./endpoints/getTutorFeedbacks";
 import { createFeedbackEndpoint } from "./endpoints/createFeedback";
+import { getCourseFeedbacksEndpoint } from "./endpoints/getCourseFeedbacks";
 
 export const feedbackApi = createApi({
   reducerPath: "feedbackApi",
@@ -9,6 +10,7 @@ export const feedbackApi = createApi({
   tagTypes: ["TutorFeedbacks", "CourseFeedbacks", "Feedback", "TutorRating", "CourseRating"],
   endpoints: (builder) => ({
     getTutorFeedbacks: getTutorFeedbacksEndpoint(builder),
+    getCourseFeedbacks: getCourseFeedbacksEndpoint(builder),
     createFeedback: createFeedbackEndpoint(builder),
   }),
 });
@@ -16,5 +18,7 @@ export const feedbackApi = createApi({
 export const {
   useGetTutorFeedbacksQuery,
   useLazyGetTutorFeedbacksQuery,
+  useGetCourseFeedbacksQuery,
+  useLazyGetCourseFeedbacksQuery,
   useCreateFeedbackMutation,
 } = feedbackApi;

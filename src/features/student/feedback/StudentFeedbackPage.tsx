@@ -2,16 +2,17 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, User, BookOpen, Clock } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import RatingSummary from "@/components/common/EBRatingSummary";
+import EBFeedbackCard from "@/components/common/EBFeedbackCard";
 import { useCreateFeedback } from "./hooks/useCreateFeedback";
-import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
+import { useGetCourseFeedbacksQuery } from "@/services/feedback";
+import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/EBSessionInfoCard";
 
 interface StudentFeedbackPageProps {
   courseId: string;
@@ -23,101 +24,153 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
   const { createFeedback, isLoading } = useCreateFeedback();
   const { refetchAllSessions } = useRefetchSessions();
 
+  // Get course feedbacks
   const {
-    data: historyData,
-    isLoading: isLoadingSession,
-    refetch: refetchHistory,
-  } = useGetStudentHistorySessionsQuery({ studentId: studentId || "" }, { skip: !studentId });
+    data: feedbacksData,
+    isLoading: isLoadingFeedbacks,
+    refetch: refetchFeedbacks,
+  } = useGetCourseFeedbacksQuery({ courseId });
 
-  const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
+  // Get enrollments to check completedSessions
+  const { data: enrollmentsData, isLoading: isLoadingEnrollments } = useGetStudentEnrollmentsQuery(
+    { studentId: studentId || "" },
+    { skip: !studentId }
+  );
 
-  // Note: With new API, we don't have feedbacks list in session anymore
-  // Always show feedback form for now
-  const hasExistingFeedback = false;
+  const enrollment = enrollmentsData?.data?.find((e) => e.courseId === courseId);
+  const canCreateFeedback = enrollment && enrollment.completedSessions > 1;
 
   const handleSubmitFeedback = async (
     tutorRating: number,
     courseRating: number,
     comment: string
   ) => {
-    if (!currentSession) return;
-
     const result = await createFeedback({
-      courseId: currentSession.courseId,
+      courseId: courseId,
       tutorRating: tutorRating,
       courseRating: courseRating,
       comment: comment,
     });
 
     if (result.success) {
-      // Refetch all sessions data to update the UI
+      // Refetch feedbacks and sessions
+      await refetchFeedbacks();
       await refetchAllSessions();
-      router.push("/student/my-schedule");
     }
   };
 
-  if (isLoadingSession) {
+  if (isLoadingFeedbacks || isLoadingEnrollments) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải thông tin buổi học..." size="lg" />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <EBLoadingSpinner message="Đang tải đánh giá..." size="lg" />
       </div>
     );
   }
 
-  if (!currentSession) {
+  if (!enrollment) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Không tìm thấy buổi học</h2>
-          <p className="text-gray-600 mb-6">Buổi học này không tồn tại hoặc đã bị xóa.</p>
-          <Button onClick={() => router.push("/student/my-schedule")}>Quay lại lịch học</Button>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Không tìm thấy khóa học
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">Bạn chưa đăng ký khóa học này.</p>
+          <Button onClick={() => router.push("/student/feedback")}>
+            Quay lại danh sách khóa học
+          </Button>
         </div>
       </div>
     );
   }
+
+  const feedbacks = feedbacksData?.data?.feedbacks || [];
+  const averageRating = feedbacksData?.data?.averageCourseRating || 0;
+  const totalFeedbacks = feedbacksData?.data?.totalFeedbacks || 0;
+  const ratingCounts = feedbacksData?.data?.ratingCounts;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/student/my-schedule")}
-            className="mb-4"
-          >
+          <Button variant="ghost" onClick={() => router.push("/student/feedback")} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại lịch học
+            Quay lại danh sách khóa học
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Đánh giá gia sư</h1>
-          <p className="text-gray-600 dark:text-gray-400">Chia sẻ trải nghiệm học tập của bạn</p>
-        </div>
-
-        {/* Session Info - Secondary Display */}
-        <div className="mb-8">
-          <SessionInfoCard
-            courseTitle={currentSession.courseTitle}
-            tutorName={currentSession.tutorName}
-            startTime={currentSession.startTime}
-            endTime={currentSession.endTime}
-          />
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {enrollment.courseTitle}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Gia sư: {enrollment.tutorName} • {enrollment.completedSessions}/
+            {enrollment.totalSessionsBooked} buổi đã hoàn thành
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Rating Summary (View Mode) */}
+          {/* Left Column - Rating Summary */}
           <div>
             <RatingSummary
               type="view"
-              averageRating={currentSession.averageCourseRating}
-              totalReviews={0}
+              averageRating={averageRating}
+              totalReviews={totalFeedbacks}
+              ratingCounts={ratingCounts}
             />
           </div>
 
-          {/* Right Column - Feedback Form */}
-          <div>
-            <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
+          {/* Right Column - All Feedbacks */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              Đánh giá từ học sinh ({totalFeedbacks})
+            </h2>
+            {feedbacks.length > 0 ? (
+              <div className="space-y-4">
+                {feedbacks.map((feedback) => (
+                  <EBFeedbackCard
+                    key={feedback.feedbackId}
+                    studentName={feedback.studentName}
+                    courseTitle={feedback.courseTitle}
+                    tutorRating={feedback.tutorRating}
+                    courseRating={feedback.courseRating}
+                    comment={feedback.comment}
+                    createdAt={feedback.createdAt}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card className="border-0 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="text-center py-4">
+                    <p className="text-gray-500 dark:text-gray-400">Chưa có đánh giá nào</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
+
+        {/* Create Feedback Section */}
+        {canCreateFeedback ? (
+          <div className="mt-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+              Đánh giá của bạn
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
+            </div>
+          </div>
+        ) : (
+          <div className="mt-8">
+            <Card className="border-0 shadow-sm bg-yellow-50 dark:bg-yellow-900/20">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <p className="text-yellow-800 dark:text-yellow-200">
+                    Bạn cần hoàn thành ít nhất 2 buổi học để có thể đánh giá khóa học này.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );

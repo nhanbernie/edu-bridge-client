@@ -157,7 +157,7 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
   {
     label: "Đánh giá",
     icon: Star,
-    href: "/tutor/reviews",
+    href: "/tutor/feedback",
   },
   {
     label: "Học sinh",
@@ -358,6 +358,12 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
             label: "Giao dịch",
             href: "/student/transactions",
             onClick: () => go("/student/transactions"),
+          },
+          {
+            key: "feedback",
+            label: "Đánh giá",
+            href: "/student/feedback",
+            onClick: () => go("/student/feedback"),
           }
         );
         break;
@@ -366,25 +372,25 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
           { key: "dashboard", label: "Dashboard", href: "/tutor", onClick: () => go("/tutor") },
           {
             key: "courses",
-            label: "Courses",
+            label: "Khóa học",
             href: "/tutor/courses",
             onClick: () => go("/tutor/courses"),
           },
           {
             key: "schedules",
-            label: "Schedules",
+            label: "Lịch rảnh",
             href: "/tutor/schedules",
             onClick: () => go("/tutor/schedules"),
           },
           {
             key: "my-schedule",
-            label: "Lịch dạy của tôi",
+            label: "Lịch dạy",
             href: "/tutor/my-schedule",
             onClick: () => go("/tutor/my-schedule"),
           },
           {
             key: "transactions",
-            label: "Transactions",
+            label: "Giao dịch",
             href: "/tutor/transactions",
             onClick: () => go("/tutor/transactions"),
           }

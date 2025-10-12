@@ -27,3 +27,22 @@ export const FORM_FIELD_CONTAINER = "w-full mb-5";
 
 // max-w-8xl mx-auto p-6
 export const MAX_WIDTH_8XL = "max-w-8xl mx-auto p-6";
+
+/**
+ * Page Layout CSS Constants - Chuẩn hóa layout cho các trang
+ */
+
+// Page container
+export const PAGE_CONTAINER = "min-h-screen bg-gray-50 dark:bg-gray-900 pt-16";
+
+// Content wrapper
+export const CONTENT_WRAPPER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12";
+
+// Page header
+export const PAGE_HEADER = "mb-8";
+
+// Page title
+export const PAGE_TITLE = "text-3xl font-bold text-gray-900 dark:text-white mb-2";
+
+// Page subtitle
+export const PAGE_SUBTITLE = "text-gray-600 dark:text-gray-400";

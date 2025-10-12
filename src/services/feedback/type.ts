@@ -68,5 +68,14 @@ export interface TutorFeedbacksData {
   feedbacks: FeedbackItem[];
 }
 
+// Course feedbacks response interface
+export interface CourseFeedbacksData {
+  totalFeedbacks: number;
+  averageCourseRating: number;
+  ratingCounts: RatingCounts;
+  feedbacks: FeedbackItem[];
+}
+
 // API response type
 export type TutorFeedbacksResponse = ApiResponse<TutorFeedbacksData>;
+export type CourseFeedbacksResponse = ApiResponse<CourseFeedbacksData>;

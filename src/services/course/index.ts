@@ -6,4 +6,6 @@ export {
   useUpdateCourseMutation,
   useDeleteCourseMutation,
   useGetCoursePackagesQuery,
+  useGetStudentEnrollmentsQuery,
+  useLazyGetStudentEnrollmentsQuery,
 } from "./course.service";

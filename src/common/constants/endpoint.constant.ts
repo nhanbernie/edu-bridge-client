@@ -44,6 +44,7 @@ export const API_ENDPOINTS = {
     CREATE_COURSE: "/api/course",
     UPDATE_COURSE: "/api/course/{courseId}",
     GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
+    GET_STUDENT_ENROLLMENTS: "/api/course/student/{studentId}/enrollments",
   },
   AVAILABILITY_BLOCK: {
     GET_AVAILABILITY_BLOCKS: "/api/availability-block/tutor/{tutorId}",
@@ -56,6 +57,7 @@ export const API_ENDPOINTS = {
     GET_TUTOR_RATING: "/api/feedback/tutor/{tutorId}/rating",
     GET_COURSE_RATING: "/api/feedback/course/{courseId}/rating",
     GET_TUTOR_FEEDBACKS: "/api/feedback/tutor/{tutorId}/feedbacks",
+    GET_COURSE_FEEDBACKS: "/api/feedback/course/{courseId}/feedbacks",
   },
   TRANSACTION: {
     GET_TUTOR_TRANSACTIONS: "/api/transaction/tutor",

@@ -94,3 +94,27 @@ export interface UpdateCourseResponse {
   message: string;
   errors: any[] | null;
 }
+
+// Enrollment types
+export interface EnrollmentDto {
+  courseId: string;
+  courseTitle: string;
+  tutorId: string;
+  tutorName: string;
+  tutorAvatarUrl: string;
+  totalSessionsBooked: number;
+  completedSessions: number;
+  progressStatus: string; // "In Progress" | "Completed"
+  totalStudents: number | null;
+}
+
+export interface GetStudentEnrollmentsRequest {
+  studentId: string;
+}
+
+export interface GetStudentEnrollmentsResponse {
+  success: boolean;
+  data: EnrollmentDto[];
+  message: string;
+  errors: any[] | null;
+}
