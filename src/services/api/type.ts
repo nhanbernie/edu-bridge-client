@@ -192,6 +192,7 @@ export type DocumentType =
   | "CCCD"
   | "CERTIFICATE"
   | "SELFIE"
+  | "DEGREE"
   | "STUDENT_CARD"
   | "TRANSCRIPT"
   | "ENROLLMENT_CONFIRMATION";

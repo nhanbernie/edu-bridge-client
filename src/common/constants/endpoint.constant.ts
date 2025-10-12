@@ -10,12 +10,17 @@ export const API_ENDPOINTS = {
     REFRESH: `${AUTH_ENDPOINT}/refresh-token`,
     LOGOUT: `${AUTH_ENDPOINT}/logout`,
     PROFILE: `${AUTH_ENDPOINT}/profile`,
+    // Reset password flow
     FORGOT_PASSWORD: `${AUTH_ENDPOINT}/forgot-password`,
-    VERIFY_OTP: `${AUTH_ENDPOINT}/verify-otp`,
+    VERIFY_OTP: `${AUTH_ENDPOINT}/verify-otp-reset`,
     RESET_PASSWORD: `${AUTH_ENDPOINT}/reset-password`,
+    RESEND_OTP: `${AUTH_ENDPOINT}/resend-otp-reset`,
+    // Email verification flow (for registration)
+    SEND_OTP_REGISTER: `${AUTH_ENDPOINT}/send-otp-register`,
+    VERIFY_OTP_REGISTER: `${AUTH_ENDPOINT}/verify-otp-register`,
+
     CHANGE_PASSWORD: `${AUTH_ENDPOINT}/change-password`,
     CREATE_OTP: `${AUTH_ENDPOINT}/create-otp`,
-    RESEND_OTP: `${AUTH_ENDPOINT}/resend-otp`,
   },
   USER: {
     GET_ALL_USERS: "/api/user",
@@ -88,5 +93,8 @@ export const PUBLIC_ENDPOINTS = [
   API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
   API_ENDPOINTS.AUTH.VERIFY_OTP,
   API_ENDPOINTS.AUTH.RESET_PASSWORD,
+  API_ENDPOINTS.AUTH.RESEND_OTP,
+  API_ENDPOINTS.AUTH.SEND_OTP_REGISTER,
+  API_ENDPOINTS.AUTH.VERIFY_OTP_REGISTER,
   API_ENDPOINTS.AUTH.CREATE_OTP,
 ];
