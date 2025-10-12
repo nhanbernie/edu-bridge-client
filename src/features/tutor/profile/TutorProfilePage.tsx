@@ -28,15 +28,18 @@ const TutorProfilePage = () => {
     userData,
     videoIntro,
     certificates,
+    allMedia,
     isLoading,
     isUploadingAvatar,
     isUploadingMedia,
+    isUpdatingMedia,
     isSaving,
     isEditing,
     setIsEditing,
     setIsSaving,
     isMediaModalOpen,
     selectedMediaType,
+    selectedMediaId,
     isImageViewOpen,
     selectedImage,
     handleAvatarUpload,
@@ -110,7 +113,7 @@ const TutorProfilePage = () => {
                 <h3 className="text-lg font-semibold text-gray-900">Video giới thiệu</h3>
                 {videoIntro && (
                   <button
-                    onClick={() => openMediaModal("VideoIntro")}
+                    onClick={() => openMediaModal("VideoIntro", videoIntro.mediaId)}
                     className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
                   >
                     Chỉnh sửa
@@ -166,6 +169,8 @@ const TutorProfilePage = () => {
                       title={cert.title}
                       imageUrl={cert.filePath}
                       onView={() => handleViewImage(cert.filePath, cert.title)}
+                      onEdit={() => openMediaModal("Award", cert.mediaId)}
+                      showEdit={true}
                     />
                   ))
                 ) : (
@@ -204,8 +209,12 @@ const TutorProfilePage = () => {
         isOpen={isMediaModalOpen}
         onClose={closeMediaModal}
         mediaType={selectedMediaType}
+        mediaId={selectedMediaId}
+        existingTitle={
+          selectedMediaId ? allMedia.find((m) => m.mediaId === selectedMediaId)?.title : undefined
+        }
         onUpload={handleMediaUpload}
-        isUploading={isUploadingMedia}
+        isUploading={isUploadingMedia || isUpdatingMedia}
       />
 
       {/* Image View Modal */}

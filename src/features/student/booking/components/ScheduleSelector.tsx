@@ -18,6 +18,7 @@ interface ScheduleSelectorProps {
   selectedDate: Date | null;
   selectedTime: string | null;
   selectedBlockId: string | null;
+  selectedPackage?: string | null; // Add to check if package is selected
   onDateChange: (date: Date | null) => void;
   onTimeChange: (time: string | null, blockId: string | null) => void;
   onAddSession: () => void;
@@ -35,6 +36,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   selectedDate,
   selectedTime,
   selectedBlockId,
+  selectedPackage,
   onDateChange,
   onTimeChange,
   onAddSession,
@@ -239,7 +241,15 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   };
 
   const isDateDisabled = (date: Date) => {
-    return date < today || date.getDay() === 0; // Disable past dates and Sundays
+    // Normalize date to start of day for proper comparison
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+
+    const todayStart = new Date(today);
+    todayStart.setHours(0, 0, 0, 0);
+
+    // Only disable dates before today (past dates)
+    return checkDate < todayStart;
   };
 
   const isDateSelected = (date: Date) => {
@@ -317,7 +327,10 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
               return (
                 <button
                   key={index}
-                  onClick={() => !isDisabled && onDateChange(date)}
+                  onClick={() => {
+                    if (isDisabled) return;
+                    onDateChange(date);
+                  }}
                   disabled={isDisabled}
                   className={cn(
                     "aspect-square text-sm rounded-lg transition-colors relative",

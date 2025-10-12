@@ -8,6 +8,7 @@ import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
 import { useTutorSearch } from "./hooks/useTutorSearch";
 import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
+import { EBCharityCounter } from "@/components/common";
 
 // Initial search params
 const initialSearchParams = {
@@ -316,6 +317,9 @@ const StudentHomePage = () => {
         onApplyFilters={handleAdvancedFilterApply}
         currentFilters={advancedFilters}
       />
+
+      {/* Charity Counter - Fixed bottom right */}
+      <EBCharityCounter />
     </div>
   );
 };

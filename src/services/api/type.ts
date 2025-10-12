@@ -194,8 +194,7 @@ export type DocumentType =
   | "SELFIE"
   | "DEGREE"
   | "STUDENT_CARD"
-  | "TRANSCRIPT"
-  | "ENROLLMENT_CONFIRMATION";
+  | "TRANSCRIPT";
 
 export interface UploadDocumentRequest {
   tutorId: string;

@@ -15,10 +15,13 @@ import {
   UserCheck,
   GraduationCap,
   CalendarCheck,
+  Search,
+  MessageSquare,
+  Globe,
 } from "lucide-react";
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import { HeaderItem } from "@/components/layouts/types";
+import { HeaderItem, HeaderActionButton } from "@/components/layouts/types";
 
 export interface NavItem {
   label: string;
@@ -37,6 +40,25 @@ export const navigateMarketItems: NavItem[] = [
   { label: "Packages", href: "/packages" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact Us", href: "/contact" },
+];
+
+// Default Header Action Buttons
+export const defaultHeaderActionButtons: HeaderActionButton[] = [
+  // {
+  //   key: "search",
+  //   icon: Search,
+  //   show: true,
+  // },
+  // {
+  //   key: "message",
+  //   icon: MessageSquare,
+  //   show: true,
+  // },
+  {
+    key: "language",
+    icon: Globe,
+    show: true,
+  },
 ];
 export interface SidebarItem {
   label: string;

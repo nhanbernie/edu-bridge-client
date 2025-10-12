@@ -6,3 +6,13 @@ export { default as EBLanguageSelector } from "../common/EBLanguageSelector";
 export { default as EBLandingLayout } from "./EBLandingLayout";
 export { default as EBAuthLayout } from "./EBAuthLayout";
 export { default as AdminLayout } from "./EBManageLayout";
+
+// Export types
+export type {
+  HeaderItem,
+  HeaderCTA,
+  HeaderActionButton,
+  HeaderConfig,
+  BuildHeaderHelpers,
+  BuildHeaderFunction,
+} from "./types";

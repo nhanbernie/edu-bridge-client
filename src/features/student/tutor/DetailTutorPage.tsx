@@ -141,7 +141,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                     className="w-44 h-44 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-64 h-64 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-primary font-bold text-8xl">
+                  <div className="w-44 h-44 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-primary font-bold text-8xl">
                     {user.fullName?.charAt(0).toUpperCase() || "T"}
                   </div>
                 )}

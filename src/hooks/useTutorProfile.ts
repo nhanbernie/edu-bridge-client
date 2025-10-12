@@ -19,7 +19,9 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
   const {
     allMedia,
     handleUploadMedia,
+    handleUpdateMedia,
     isUploading: isUploadingMedia,
+    isUpdating: isUpdatingMedia,
   } = useTutorMedia(effectiveUserId);
 
   // UI States
@@ -27,6 +29,7 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
   const [selectedMediaType, setSelectedMediaType] = useState<MediaType>("VideoIntro");
+  const [selectedMediaId, setSelectedMediaId] = useState<string | null>(null); // For editing existing media
   const [isImageViewOpen, setIsImageViewOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{ url: string; title: string } | null>(null);
 
@@ -44,17 +47,30 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
     return avatarUrl;
   };
 
-  const openMediaModal = (type: MediaType) => {
+  const openMediaModal = (type: MediaType, mediaId?: string) => {
     setSelectedMediaType(type);
+    setSelectedMediaId(mediaId || null);
     setIsMediaModalOpen(true);
   };
 
   const closeMediaModal = () => {
     setIsMediaModalOpen(false);
+    setSelectedMediaId(null);
   };
 
-  const handleMediaUpload = async (file: File, title: string, type: MediaType) => {
-    await handleUploadMedia(file, title, type);
+  const handleMediaUpload = async (
+    file: File,
+    title: string,
+    type: MediaType,
+    mediaId?: string
+  ) => {
+    if (mediaId) {
+      // Update existing media
+      await handleUpdateMedia(mediaId, title, type, file);
+    } else {
+      // Upload new media
+      await handleUploadMedia(file, title, type);
+    }
   };
 
   const handleViewImage = (url: string, title: string) => {
@@ -72,12 +88,14 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
     userData: userData || undefined,
     videoIntro,
     certificates,
+    allMedia,
     userId: effectiveUserId,
 
     // Loading states
     isLoading,
     isUploadingAvatar,
     isUploadingMedia,
+    isUpdatingMedia,
     isSaving,
 
     // Edit states
@@ -88,6 +106,7 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
     // Modal states
     isMediaModalOpen,
     selectedMediaType,
+    selectedMediaId,
     isImageViewOpen,
     selectedImage,
 

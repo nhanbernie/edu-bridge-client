@@ -10,9 +10,23 @@ export interface HeaderCTA {
   onClick: () => void;
 }
 
+export interface HeaderActionButton {
+  key: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  onClick?: () => void;
+  badge?: boolean; // For notification badge
+  show?: boolean; // Control visibility
+}
+
 export interface HeaderConfig {
   items: HeaderItem[];
   cta?: HeaderCTA;
+  actionButtons?: HeaderActionButton[]; // Add action buttons config
+  showSearch?: boolean;
+  showMessage?: boolean;
+  showLanguage?: boolean;
+  showTheme?: boolean;
+  showUserMenu?: boolean;
 }
 
 export interface BuildHeaderHelpers {

@@ -72,12 +72,16 @@ const EBCharityCounter: React.FC = () => {
 
         <TooltipContent
           side="left"
-          className="bg-primary text-white border-none shadow-xl px-4 py-3"
+          className="border border-white/20 dark:border-gray-700/20 shadow-2xl px-4 py-3 backdrop-blur-xl bg-white/80 dark:bg-gray-900/80"
         >
           <div className="text-center space-y-1">
-            <p className="text-xs font-medium opacity-90">Tổng tiền từ thiện</p>
-            <p className="text-lg font-bold">{formatFullAmount(amount)} VND</p>
-            <p className="text-lg opacity-80">Cảm ơn sự đóng góp của bạn! 💚</p>
+            <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              Tổng tiền từ thiện
+            </p>
+            <p className="text-lg font-bold text-primary">{formatFullAmount(amount)} VND</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Cảm ơn sự đóng góp của bạn! 💚
+            </p>
           </div>
         </TooltipContent>
       </Tooltip>

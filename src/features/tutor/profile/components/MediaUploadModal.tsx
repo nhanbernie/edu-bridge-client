@@ -10,7 +10,9 @@ interface MediaUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   mediaType: MediaType;
-  onUpload: (file: File, title: string, type: MediaType) => Promise<void>;
+  mediaId?: string | null; // If provided, it's an edit operation
+  existingTitle?: string; // Pre-fill title when editing
+  onUpload: (file: File, title: string, type: MediaType, mediaId?: string) => Promise<void>;
   isUploading?: boolean;
 }
 
@@ -18,14 +20,17 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   isOpen,
   onClose,
   mediaType,
+  mediaId,
+  existingTitle,
   onUpload,
   isUploading = false,
 }) => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(existingTitle || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const isEditMode = Boolean(mediaId);
   const isVideo = mediaType === "VideoIntro";
   const acceptTypes = isVideo
     ? "video/mp4,video/mpeg,video/quicktime,video/x-msvideo"
@@ -57,12 +62,20 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (!selectedFile || !title.trim()) {
-      alert("Vui lòng chọn file và nhập tiêu đề");
+    // For edit mode, file is optional (only update title if no new file)
+    // For create mode, file is required
+    if (!isEditMode && !selectedFile) {
+      alert("Vui lòng chọn file");
       return;
     }
 
-    await onUpload(selectedFile, title.trim(), mediaType);
+    if (!title.trim()) {
+      alert("Vui lòng nhập tiêu đề");
+      return;
+    }
+
+    // Pass file (can be undefined in edit mode), title, type, and mediaId
+    await onUpload(selectedFile!, title.trim(), mediaType, mediaId || undefined);
     handleClose();
   };
 
@@ -80,7 +93,15 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isVideo ? "Tải lên Video giới thiệu" : "Thêm Chứng chỉ"}</DialogTitle>
+          <DialogTitle>
+            {isEditMode
+              ? isVideo
+                ? "Chỉnh sửa Video giới thiệu"
+                : "Chỉnh sửa Chứng chỉ"
+              : isVideo
+                ? "Tải lên Video giới thiệu"
+                : "Thêm Chứng chỉ"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -102,7 +123,10 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              File <span className="text-red-500">*</span>
+              File {!isEditMode && <span className="text-red-500">*</span>}
+              {isEditMode && (
+                <span className="text-gray-500 text-xs">(Tùy chọn - Để trống nếu không đổi)</span>
+              )}
             </label>
             <input
               ref={fileInputRef}
@@ -169,11 +193,11 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           </EBButton>
           <EBButton
             onClick={handleSubmit}
-            disabled={!selectedFile || !title.trim() || isUploading}
+            disabled={(!isEditMode && !selectedFile) || !title.trim() || isUploading}
             loading={isUploading}
             className="flex-1 bg-emerald-600 hover:bg-emerald-700"
           >
-            Tải lên
+            {isEditMode ? "Cập nhật" : "Tải lên"}
           </EBButton>
         </div>
       </DialogContent>

@@ -37,19 +37,26 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
     return typeNames[packageType] || "Gói học";
   };
 
-  // Transform API packages to display format and sort by price
+  // Transform API packages to display format
   const packages =
-    apiPackages
-      ?.map((pkg) => ({
-        id: pkg.packageId,
-        name: getPackageTypeName(pkg.packageType as string),
-        description: `${pkg.numberOfSessions} buổi học`,
-        sessions: pkg.numberOfSessions,
-        price: pkg.price,
-        originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
-        popular: (pkg.packageType as string) === "EIGHT",
-      }))
-      .sort((a, b) => a.price - b.price) || [];
+    apiPackages?.map((pkg) => ({
+      id: pkg.packageId,
+      name: getPackageTypeName(pkg.packageType as string),
+      description: `${pkg.numberOfSessions} buổi học`,
+      sessions: pkg.numberOfSessions,
+      price: pkg.price,
+      originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
+      popular: (pkg.packageType as string) === "EIGHT",
+      isTrial: (pkg.packageType as string) === "TRIAL",
+      packageType: pkg.packageType as string,
+    })) || [];
+
+  // Sort: TRIAL first, then by price
+  const sortedPackages = [...packages].sort((a, b) => {
+    if (a.isTrial) return -1; // TRIAL always first
+    if (b.isTrial) return 1;
+    return a.price - b.price; // Others sort by price
+  });
 
   // Loading state
   if (isLoading) {
@@ -70,7 +77,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   }
 
   // Empty state
-  if (!packages || packages.length === 0) {
+  if (!sortedPackages || sortedPackages.length === 0) {
     return (
       <EBMotionCard
         className="text-card-foreground p-0 border-0 shadow-none hover:shadow-none"
@@ -97,36 +104,72 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
         <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
       </div>
       <div className="space-y-4">
-        {packages.map((pkg) => (
+        {sortedPackages.map((pkg) => (
           <div
             key={pkg.id}
             onClick={() => onPackageChange(pkg.id)}
             className={cn(
               "relative p-4 pt-6 rounded-xl border-2 cursor-pointer transition-all",
-              selectedPackage === pkg.id
-                ? "border-primary bg-primary/5 shadow-md"
-                : "border-border hover:border-primary/50 hover:shadow-sm"
+              pkg.isTrial
+                ? "border-transparent bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-lg overflow-hidden"
+                : selectedPackage === pkg.id
+                  ? "border-primary bg-primary/5 shadow-md"
+                  : "border-border hover:border-primary/50 hover:shadow-sm"
             )}
           >
-            {pkg.popular && (
+            {/* Animated border for TRIAL package */}
+            {pkg.isTrial && (
+              <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-[length:200%_100%] animate-border-flow" />
+                <div className="absolute inset-[2px] rounded-[10px] bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50" />
+              </div>
+            )}
+
+            {pkg.isTrial && (
+              <Badge className="absolute -top-0.5 left-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white text-xs px-3 py-1 shadow-md z-10">
+                🎁 Học thử miễn phí
+              </Badge>
+            )}
+            {pkg.popular && !pkg.isTrial && (
               <Badge className="absolute -top-2 left-4 bg-blue-600 text-white text-xs px-2 py-1">
                 Phổ biến nhất
               </Badge>
             )}
 
-            <div className="flex justify-between items-start pr-8">
-              <div className="flex-1">
-                <h3 className="font-semibold text-foreground text-base">{pkg.name}</h3>
-                {/* <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p> */}
-                <p className="text-xs text-muted-foreground mt-1">
+            <div className="flex justify-between items-start pr-8 relative z-10">
+              <div className="flex-1 min-w-0">
+                <h3
+                  className={cn(
+                    "font-semibold text-base",
+                    pkg.isTrial ? "text-rose-900" : "text-foreground"
+                  )}
+                >
+                  {pkg.name}
+                </h3>
+                <p
+                  className={cn(
+                    "text-xs mt-1",
+                    pkg.isTrial ? "text-rose-700" : "text-muted-foreground"
+                  )}
+                >
                   {pkg.sessions} buổi học trong tháng
                 </p>
+                {pkg.isTrial && (
+                  <p className="text-[11px] text-pink-600 mt-1.5 font-medium leading-tight">
+                    💝 Ủng hộ trực tiếp người khó khăn
+                  </p>
+                )}
               </div>
 
               <div className="text-right ml-4 min-w-fit">
                 <div className="flex flex-col items-end gap-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-primary">
+                    <span
+                      className={cn(
+                        "text-lg font-bold",
+                        pkg.isTrial ? "text-pink-600" : "text-primary"
+                      )}
+                    >
                       {formatVNDPrice(pkg.price)}đ
                     </span>
                     {pkg.originalPrice && (
@@ -135,7 +178,14 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-muted-foreground">{pkg.sessions} buổi</div>
+                  <div
+                    className={cn(
+                      "text-xs",
+                      pkg.isTrial ? "text-pink-600" : "text-muted-foreground"
+                    )}
+                  >
+                    {pkg.sessions} buổi
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,14 +193,21 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
             {/* Selection indicator */}
             <div
               className={cn(
-                "absolute top-3 right-3 w-5 h-5 rounded-full border-2 transition-all",
+                "absolute top-3 right-3 w-5 h-5 rounded-full border-2 transition-all z-10",
                 selectedPackage === pkg.id
-                  ? "border-primary bg-primary"
+                  ? pkg.isTrial
+                    ? "border-pink-500 bg-pink-500"
+                    : "border-primary bg-primary"
                   : "border-muted-foreground/30 bg-background"
               )}
             >
               {selectedPackage === pkg.id && (
-                <div className="w-full h-full rounded-full bg-primary flex items-center justify-center">
+                <div
+                  className={cn(
+                    "w-full h-full rounded-full flex items-center justify-center",
+                    pkg.isTrial ? "bg-pink-500" : "bg-primary"
+                  )}
+                >
                   <div className="w-2 h-2 rounded-full bg-white" />
                 </div>
               )}
