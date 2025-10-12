@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
     UPDATE_COURSE: "/api/course/{courseId}",
     GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
     GET_STUDENT_ENROLLMENTS: "/api/course/student/{studentId}/enrollments",
+    GET_TUTOR_TEACHINGS: "/api/course/tutor/{tutorId}/teachings",
   },
   AVAILABILITY_BLOCK: {
     GET_AVAILABILITY_BLOCKS: "/api/availability-block/tutor/{tutorId}",

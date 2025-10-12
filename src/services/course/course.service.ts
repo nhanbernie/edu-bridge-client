@@ -7,12 +7,13 @@ import {
   deleteCourseEndpoint,
   getCoursePackagesEndpoint,
   getStudentEnrollmentsEndpoint,
+  getTutorTeachingsEndpoint,
 } from "./endpoints/index";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Course", "CoursePackages", "CourseEnrollments"],
+  tagTypes: ["Course", "CoursePackages", "CourseEnrollments", "TutorTeachings"],
   endpoints: (builder) => ({
     getCourse: getCourseEndpoint(builder),
     createCourse: createCourseEndpoint(builder),
@@ -20,6 +21,7 @@ export const courseApi = createApi({
     deleteCourse: deleteCourseEndpoint(builder),
     getCoursePackages: getCoursePackagesEndpoint(builder),
     getStudentEnrollments: getStudentEnrollmentsEndpoint(builder),
+    getTutorTeachings: getTutorTeachingsEndpoint(builder),
   }),
 });
 
@@ -31,4 +33,6 @@ export const {
   useGetCoursePackagesQuery,
   useGetStudentEnrollmentsQuery,
   useLazyGetStudentEnrollmentsQuery,
+  useGetTutorTeachingsQuery,
+  useLazyGetTutorTeachingsQuery,
 } = courseApi;

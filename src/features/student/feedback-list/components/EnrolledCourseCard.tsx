@@ -7,10 +7,11 @@ interface EnrolledCourseCardProps {
   enrollment: EnrollmentDto;
   index: number;
   onViewDetails?: (courseId: string) => void;
+  role?: "student" | "tutor";
 }
 
 const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
-  ({ enrollment, index, onViewDetails }) => {
+  ({ enrollment, index, onViewDetails, role = "student" }) => {
     const isCompleted = enrollment.progressStatus === "Completed";
     const progress =
       enrollment.totalSessionsBooked > 0
@@ -79,15 +80,17 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   />
                 </div>
 
-                {/* Total Students (if available) */}
-                {enrollment.totalStudents !== null && enrollment.totalStudents > 0 && (
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-gray-500" />
-                    <span className="text-gray-600 dark:text-gray-400 text-xs">
-                      {enrollment.totalStudents} học sinh
-                    </span>
-                  </div>
-                )}
+                {/* Total Students (only for tutors) */}
+                {role === "tutor" &&
+                  enrollment.totalStudents !== null &&
+                  enrollment.totalStudents > 0 && (
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-gray-500" />
+                      <span className="text-gray-600 dark:text-gray-400 text-xs">
+                        {enrollment.totalStudents} học sinh
+                      </span>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

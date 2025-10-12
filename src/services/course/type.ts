@@ -118,3 +118,15 @@ export interface GetStudentEnrollmentsResponse {
   message: string;
   errors: any[] | null;
 }
+
+// Tutor teachings (same structure as enrollments)
+export interface GetTutorTeachingsRequest {
+  tutorId: string;
+}
+
+export interface GetTutorTeachingsResponse {
+  success: boolean;
+  data: EnrollmentDto[];
+  message: string;
+  errors: any[] | null;
+}
