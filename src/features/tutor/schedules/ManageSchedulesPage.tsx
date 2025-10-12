@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Plus, RefreshCw } from "lucide-react";
+import { Calendar, Plus, PlusCircle, Clock, CheckCircle, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EBPageLoading } from "@/components/common";
 import EBSchedule from "@/components/common/EBSchedule";
 import { useAvailabilityBlock, useTutorId } from "@/hooks/index";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
@@ -28,14 +29,7 @@ const ManageSchedulesPage = () => {
   };
 
   if (isLoadingBlocks) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-2" />
-          <p>Đang tải lịch rảnh...</p>
-        </div>
-      </div>
-    );
+    return <EBPageLoading message="Đang tải lịch rảnh..." />;
   }
 
   return (

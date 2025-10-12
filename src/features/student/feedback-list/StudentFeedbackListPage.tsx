@@ -6,7 +6,7 @@ import { BookOpen, GraduationCap } from "lucide-react";
 import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { EnrolledCourseCard } from "./components";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { EnrolledCourseCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
 import {
   PAGE_CONTAINER,
   CONTENT_WRAPPER,
@@ -39,10 +39,18 @@ const StudentFeedbackListPage: React.FC = () => {
     router.push(`/student/feedback/${courseId}`);
   };
 
-  if (isLoading) {
+  // Show skeleton only on initial load (no data yet)
+  if (isLoading && enrollments.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải khóa học..." size="lg" />
+      <div className={PAGE_CONTAINER}>
+        <div className={CONTENT_WRAPPER}>
+          <div className={PAGE_HEADER}>
+            <h1 className={PAGE_TITLE}>Khóa học đã tham gia</h1>
+            <p className={PAGE_SUBTITLE}>Xem lại và đánh giá các khóa học bạn đã tham gia</p>
+          </div>
+
+          <EnrolledCourseCardSkeleton count={4} />
+        </div>
       </div>
     );
   }

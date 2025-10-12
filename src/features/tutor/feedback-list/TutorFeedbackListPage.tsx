@@ -7,6 +7,7 @@ import { useGetTutorTeachingsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { EnrolledCourseCard } from "@/features/student/feedback-list/components";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { EnrolledCourseCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 const TutorFeedbackListPage: React.FC = () => {
@@ -34,8 +35,13 @@ const TutorFeedbackListPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải khóa học..." size="lg" />
+      <div className="min-h-screen">
+        <div className={PAGE_HEADER}>
+          <h1 className={PAGE_TITLE}>Khóa học đang dạy</h1>
+          <p className={PAGE_SUBTITLE}>Xem đánh giá từ học viên của bạn</p>
+        </div>
+
+        <EnrolledCourseCardSkeleton count={4} />
       </div>
     );
   }

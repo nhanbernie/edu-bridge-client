@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Star, MapPin, Users, Clock, Award, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { EBPageLoading } from "@/components/common";
 import TabNavigation from "@/components/common/EBTabNavigation";
 import TabContent from "./components/TabContent";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
@@ -75,18 +76,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
   // Loading state
   if (isLoadingUser) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">Đang tải thông tin gia sư...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <EBPageLoading message="Đang tải thông tin gia sư..." />;
   }
 
   // Error state

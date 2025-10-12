@@ -7,8 +7,7 @@ import { useStudentMySchedule } from "./hooks/useStudentMySchedule";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import { SessionCardSkeleton } from "@/components/common/skeletons";
+import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
 import {
   PAGE_CONTAINER,
   CONTENT_WRAPPER,
@@ -51,11 +50,7 @@ const StudentMySchedulePage: React.FC = () => {
   const isPageLoading = isLoadingUpcoming || isLoadingUserId || isLoadingHistory;
 
   if (isPageLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải lịch học..." size="lg" />
-      </div>
-    );
+    return <EBPageLoading message="Đang tải lịch học..." />;
   }
 
   return (

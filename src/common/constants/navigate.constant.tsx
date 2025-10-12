@@ -130,6 +130,11 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     href: "/tutor",
   },
   {
+    label: "Lịch dạy của tôi",
+    icon: CalendarCheck,
+    href: "/tutor/my-schedule",
+  },
+  {
     label: "Khóa học",
     icon: BookOpen,
     href: "/tutor/courses",
@@ -140,30 +145,25 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     href: "/tutor/schedules",
   },
   {
-    label: "Lịch dạy của tôi",
-    icon: CalendarCheck,
-    href: "/tutor/my-schedule",
-  },
-  {
     label: "Giao dịch",
     icon: CreditCard,
     href: "/tutor/transactions",
   },
-  {
-    label: "Thống kê",
-    icon: BarChart3,
-    href: "/tutor/statistics",
-  },
+  // {
+  //   label: "Thống kê",
+  //   icon: BarChart3,
+  //   href: "/tutor/statistics",
+  // },
   {
     label: "Đánh giá",
     icon: Star,
     href: "/tutor/feedback",
   },
-  {
-    label: "Học sinh",
-    icon: Users,
-    href: "/tutor/students",
-  },
+  // {
+  //   label: "Học sinh",
+  //   icon: Users,
+  //   href: "/tutor/students",
+  // },
 ];
 
 export const defaultTutorActionButtons: EBActionButton[] = [

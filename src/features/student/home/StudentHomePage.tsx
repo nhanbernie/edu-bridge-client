@@ -9,6 +9,7 @@ import AdvancedFilter from "./components/AdvancedFilter";
 import { useTutorSearch } from "./hooks/useTutorSearch";
 import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
+import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 // Initial search params
@@ -234,9 +235,8 @@ const StudentHomePage = () => {
 
         {/* Tutors Grid */}
         {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin mr-2" />
-            <span>Đang tải danh sách gia sư...</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <TutorCardSkeleton count={6} />
           </div>
         ) : error ? (
           <div className="text-center py-12">

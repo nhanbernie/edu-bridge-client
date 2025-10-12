@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { EBPageLoading } from "@/components/common";
 import EBFormProvider from "@/components/form/EBFormProvider";
 import EBTextField from "@/components/form/EBTextField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
@@ -77,12 +78,7 @@ const StudentProfilePage = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2">Đang tải thông tin...</span>
-      </div>
-    );
+    return <EBPageLoading message="Đang tải thông tin..." />;
   }
 
   const defaultValues: ProfileFormData = {

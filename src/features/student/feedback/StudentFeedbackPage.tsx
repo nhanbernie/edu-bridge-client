@@ -13,6 +13,7 @@ import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { FeedbackCardSkeleton } from "@/components/common/skeletons";
 import {
   PAGE_CONTAINER,
   CONTENT_WRAPPER,
@@ -68,8 +69,22 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
 
   if (isLoadingFeedbacks || isLoadingEnrollments) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải đánh giá..." size="lg" />
+      <div className={PAGE_CONTAINER}>
+        <div className={CONTENT_WRAPPER}>
+          <div className={PAGE_HEADER}>
+            <h1 className={PAGE_TITLE}>Đánh giá khóa học</h1>
+            <p className={PAGE_SUBTITLE}>Xem và viết đánh giá cho khóa học</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 h-64 animate-pulse" />
+            </div>
+            <div className="lg:col-span-2 space-y-4">
+              <FeedbackCardSkeleton count={3} />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

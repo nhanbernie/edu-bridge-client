@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBMediaCard from "@/components/common/EBMediaCard";
 import EBEmptyState from "@/components/common/EBEmptyState";
 import EBVideoUploadPlaceholder from "@/components/common/EBVideoUploadPlaceholder";
+import { EBPageLoading } from "@/components/common";
 import EBTutorProfileForm from "./components/EBTutorProfileForm";
 import MediaUploadModal from "./components/MediaUploadModal";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
@@ -73,12 +73,7 @@ const TutorProfilePage = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2">Đang tải thông tin...</span>
-      </div>
-    );
+    return <EBPageLoading message="Đang tải thông tin..." />;
   }
 
   return (

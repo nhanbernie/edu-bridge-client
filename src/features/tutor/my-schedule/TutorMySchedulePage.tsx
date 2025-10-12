@@ -8,8 +8,7 @@ import { useGetTutorHistorySessionsQuery } from "@/services/classSession/classSe
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import { SessionCardSkeleton } from "@/components/common/skeletons";
+import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 const TutorMySchedulePage: React.FC = () => {
@@ -74,11 +73,7 @@ const TutorMySchedulePage: React.FC = () => {
   }, [refetchAllSessions]);
 
   if (isPageLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải lịch dạy..." size="lg" />
-      </div>
-    );
+    return <EBPageLoading message="Đang tải lịch dạy..." />;
   }
 
   return (
@@ -152,12 +147,12 @@ const TutorMySchedulePage: React.FC = () => {
 
           {activeTab === "upcoming" ? (
             upcomingLoading ? (
-              <EBLoadingSpinner message="Đang tải lịch sắp tới..." size="md" />
+              <SessionCardSkeleton count={3} />
             ) : (
               <UpcomingSessionList sessions={upcomingSessions} onJoinSession={handleJoinSession} />
             )
           ) : historyLoading ? (
-            <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
+            <SessionCardSkeleton count={3} />
           ) : (
             <HistorySessionList
               sessions={historySessions}

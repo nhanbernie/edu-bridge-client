@@ -10,6 +10,7 @@ export { default as EmptyFeedback } from "./EmptyFeedback";
 export { default as EBActionsMenu } from "./EBActionsMenu";
 export { default as EBConfirmDialog } from "./EBConfirmDialog";
 export { default as EBCharityCounter } from "./EBCharityCounter";
+export { default as EBPageLoading } from "./EBPageLoading";
 export { default as BookingGuideModal } from "../../features/student/booking/components/BookingGuideModal";
 
 // Transaction Components

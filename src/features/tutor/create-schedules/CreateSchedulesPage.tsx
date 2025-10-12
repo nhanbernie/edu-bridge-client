@@ -63,8 +63,7 @@ const CreateSchedulesPage = () => {
           </CardHeader>
           <CardContent>
             {isLoadingBlocks ? (
-              <div className="flex items-center justify-center h-32">
-                <Clock className="w-6 h-6 animate-spin mr-2" />
+              <div className="flex items-center justify-center h-32 text-gray-600">
                 <span>Đang tải lịch...</span>
               </div>
             ) : (

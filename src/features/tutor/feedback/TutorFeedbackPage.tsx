@@ -9,6 +9,7 @@ import RatingSummary from "@/components/common/EBRatingSummary";
 import EBFeedbackCard from "@/components/common/EBFeedbackCard";
 import { useGetCourseFeedbacksQuery } from "@/services/feedback";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { FeedbackCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 interface TutorFeedbackPageProps {
@@ -29,8 +30,20 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
 
   if (isLoadingFeedbacks) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải đánh giá..." size="lg" />
+      <div className="min-h-screen">
+        <div className={PAGE_HEADER}>
+          <h1 className={PAGE_TITLE}>Đánh giá khóa học</h1>
+          <p className={PAGE_SUBTITLE}>Xem đánh giá từ học viên</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-1">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 h-64 animate-pulse" />
+          </div>
+          <div className="lg:col-span-2 space-y-4">
+            <FeedbackCardSkeleton count={3} />
+          </div>
+        </div>
       </div>
     );
   }

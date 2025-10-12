@@ -2,7 +2,12 @@
 
 import React from "react";
 import { useStudentTransactions } from "./hooks/useStudentTransactions";
-import { TransactionStatsCard, TransactionList, TransactionHeader } from "@/components/common";
+import {
+  TransactionStatsCard,
+  TransactionList,
+  TransactionHeader,
+  EBPageLoading,
+} from "@/components/common";
 import { CreditCard, TrendingDown, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
 
@@ -26,14 +31,7 @@ const ManageTransactionsPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 animate-spin mx-auto mb-4 border-2 border-gray-300 border-t-gray-600 rounded-full"></div>
-          <p className="text-gray-600">Đang tải lịch sử giao dịch...</p>
-        </div>
-      </div>
-    );
+    return <EBPageLoading message="Đang tải lịch sử giao dịch..." />;
   }
 
   return (

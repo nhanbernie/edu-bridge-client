@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { CourseForm, type CourseFormData, EBFormProvider } from "@/components/form";
+import { EBPageLoading } from "@/components/common";
 import { useSubjects } from "@/hooks/useSubjects";
 import { useEditCourse } from "./hooks/useEditCourse";
 import courseValidatorSchema from "@/lib/validator/courseValidator";
@@ -34,14 +35,9 @@ const EditCoursePage: React.FC = () => {
   // Show loading while fetching course data or tutor ID
   if (isLoadingCourse || tutorLoading || !initialData || !tutorId) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">
-            {tutorLoading ? "Đang xác thực thông tin..." : "Đang tải thông tin khóa học..."}
-          </p>
-        </div>
-      </div>
+      <EBPageLoading
+        message={tutorLoading ? "Đang xác thực thông tin..." : "Đang tải thông tin khóa học..."}
+      />
     );
   }
 

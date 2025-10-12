@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import RatingSummary from "@/components/common/EBRatingSummary";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { EBPageLoading } from "@/components/common";
 import SessionInfoCard from "@/components/common/EBSessionInfoCard";
 
 interface AdminFeedbackPageProps {
@@ -26,11 +26,7 @@ const AdminFeedbackPage: React.FC<AdminFeedbackPageProps> = ({ courseId }) => {
   const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
 
   if (isLoadingSession) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải thông tin buổi học..." size="lg" />
-      </div>
-    );
+    return <EBPageLoading message="Đang tải thông tin buổi học..." />;
   }
 
   if (!currentSession) {
