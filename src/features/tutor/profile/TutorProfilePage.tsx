@@ -47,6 +47,7 @@ const TutorProfilePage = () => {
     isImageViewOpen,
     selectedImage,
     handleAvatarUpload,
+    handleUpdateProfile,
     openMediaModal,
     closeMediaModal,
     handleMediaUpload,
@@ -55,20 +56,7 @@ const TutorProfilePage = () => {
   } = useTutorProfile();
 
   const handleSubmit = async (data: TutorProfileFormData) => {
-    setIsSaving(true);
-    try {
-      // TODO: Call update profile API here
-      console.log("Profile data to save:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error saving profile:", error);
-    } finally {
-      setIsSaving(false);
-    }
+    await handleUpdateProfile(data);
   };
 
   const handleAvatarChange = async (file: File) => {
