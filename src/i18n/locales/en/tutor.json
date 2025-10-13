@@ -6,6 +6,12 @@
   },
   "dashboard": {
     "title": "Tutor Dashboard",
-    "subtitle": "Manage your courses and schedule"
+    "subtitle": "Manage your courses and schedule",
+    "stats": {
+      "students": "Students",
+      "courses": "Courses",
+      "rating": "Rating",
+      "earnings": "Earnings"
+    }
   }
 }

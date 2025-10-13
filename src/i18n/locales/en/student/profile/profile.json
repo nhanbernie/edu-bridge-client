@@ -1,0 +1,47 @@
+{
+  "loading": "Loading profile...",
+  "title": "Personal Profile",
+  "subtitle": "Manage your personal information",
+  "avatar": {
+    "changePhoto": "Change profile picture",
+    "uploading": "Uploading..."
+  },
+  "role": {
+    "student": "Student"
+  },
+  "section": {
+    "personalInfo": "Personal Information"
+  },
+  "form": {
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email cannot be changed"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter phone number"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "E.g: Hanoi, Ho Chi Minh City, Da Nang..."
+    },
+    "grade": {
+      "label": "Grade",
+      "placeholder": "E.g: Grade 12"
+    },
+    "learningGoal": {
+      "label": "Learning Goal",
+      "placeholder": "Share your learning goals..."
+    }
+  },
+  "actions": {
+    "edit": "Edit",
+    "save": "Save Changes",
+    "cancel": "Cancel"
+  }
+}

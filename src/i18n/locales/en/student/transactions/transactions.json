@@ -1,0 +1,25 @@
+{
+  "loading": "Loading transaction history...",
+  "header": {
+    "title": "Payment History",
+    "description": "Track your payment transactions"
+  },
+  "stats": {
+    "totalSpent": {
+      "title": "Total Spent",
+      "description": "Money sent"
+    },
+    "totalReceived": {
+      "title": "Total Received",
+      "description": "Money received"
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Successful transactions"
+    },
+    "pending": {
+      "title": "Pending",
+      "description": "Awaiting processing"
+    }
+  }
+}

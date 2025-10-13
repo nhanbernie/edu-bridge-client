@@ -93,7 +93,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
       <div className="px-2 pb-7">
         {/* Name */}
         <h3
-          className="text-xl font-bold text-foreground 
+          className="text-xl font-bold text-foreground
                        transition-colors duration-300 text-center mb-2"
         >
           {tutor.name}
@@ -199,7 +199,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
             e.stopPropagation();
             handleContact();
           }}
-          className="w-full flex items-center justify-center space-x-2 px-4 py-3  rounded-2xl text-white text-xs 
+          className="w-full flex items-center justify-center space-x-2 px-4 py-3  rounded-2xl text-white text-xs
                       backdrop-blur-sm shadow-md bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 transition-colors duration-200 font-medium hover:cursor-pointer"
         >
           <span className="text-sm">Học ngay</span>

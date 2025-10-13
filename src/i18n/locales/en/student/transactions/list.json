@@ -1,0 +1,15 @@
+{
+  "title": "Transaction History",
+  "empty": {
+    "title": "No transactions yet",
+    "description": "You don't have any transactions in the system"
+  },
+  "flowType": {
+    "outgoing": "Money sent",
+    "incoming": "Money received",
+    "default": "Transaction"
+  },
+  "fee": "Fee",
+  "income": "Income",
+  "updated": "Updated"
+}

@@ -36,6 +36,16 @@ export default async function LocaleLayout({ children, params }: Props) {
       `@/i18n/locales/${locale}/student/my-schedule/mySchedule.json`
     );
     const studentFeedback = await import(`@/i18n/locales/${locale}/student/feedback/feedback.json`);
+    const studentProfile = await import(`@/i18n/locales/${locale}/student/profile/profile.json`);
+    const studentTransactions = await import(
+      `@/i18n/locales/${locale}/student/transactions/transactions.json`
+    );
+    const studentTransactionsList = await import(
+      `@/i18n/locales/${locale}/student/transactions/list.json`
+    );
+    const studentTransactionsStatus = await import(
+      `@/i18n/locales/${locale}/student/transactions/status.json`
+    );
 
     messages = {
       common: common.default,
@@ -50,6 +60,12 @@ export default async function LocaleLayout({ children, params }: Props) {
         },
         mySchedule: studentMySchedule.default,
         feedback: studentFeedback.default,
+        profile: studentProfile.default,
+        transactions: {
+          ...studentTransactions.default,
+          list: studentTransactionsList.default,
+          status: studentTransactionsStatus.default,
+        },
       },
     };
   } catch (error) {

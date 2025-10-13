@@ -10,8 +10,10 @@ import {
 } from "@/components/common";
 import { CreditCard, TrendingDown, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 const ManageTransactionsPage: React.FC = () => {
+  const t = useTranslations("student.transactions");
   const {
     transactions,
     isLoading,
@@ -31,15 +33,15 @@ const ManageTransactionsPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <EBPageLoading message="Đang tải lịch sử giao dịch..." />;
+    return <EBPageLoading message={t("loading")} />;
   }
 
   return (
     <div className={PAGE_CONTAINER}>
       <div className={CONTENT_WRAPPER}>
         <TransactionHeader
-          title="Lịch sử thanh toán"
-          description="Theo dõi các giao dịch thanh toán của bạn"
+          title={t("header.title")}
+          description={t("header.description")}
           onRefresh={refetchTransactions}
           isLoading={isLoading}
         />
@@ -47,27 +49,27 @@ const ManageTransactionsPage: React.FC = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <TransactionStatsCard
-            title="Tổng chi tiêu"
+            title={t("stats.totalSpent.title")}
             value={formatCurrency(totalSpent)}
-            description="Tiền chuyển đi"
+            description={t("stats.totalSpent.description")}
             icon={CreditCard}
           />
           <TransactionStatsCard
-            title="Tổng nhận"
+            title={t("stats.totalReceived.title")}
             value={formatCurrency(totalReceived)}
-            description="Tiền nhận vào"
+            description={t("stats.totalReceived.description")}
             icon={TrendingDown}
           />
           <TransactionStatsCard
-            title="Hoàn thành"
+            title={t("stats.completed.title")}
             value={completedTransactions}
-            description="Giao dịch thành công"
+            description={t("stats.completed.description")}
             icon={CheckCircle}
           />
           <TransactionStatsCard
-            title="Đang chờ"
+            title={t("stats.pending.title")}
             value={pendingTransactions}
-            description="Chờ xử lý"
+            description={t("stats.pending.description")}
             icon={Clock}
           />
         </div>
