@@ -120,7 +120,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
                 >
                   {rememberMe && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
-                <span className="text-gray-700 text-sm">Ghi nhớ đăng nhập</span>
+                <span className="text-gray-700 text-sm">{t("login.rememberMe")}</span>
               </button>
 
               <div className="flex justify-end">
@@ -129,7 +129,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
                   onClick={() => push(ROUTES.FORGOT_PASSWORD)}
                   className="text-primary hover:text-primary/80 text-sm"
                 >
-                  Quên mật khẩu?
+                  {t("login.forgotPassword")}
                 </button>
               </div>
             </div>
