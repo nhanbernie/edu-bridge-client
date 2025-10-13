@@ -1,0 +1,17 @@
+{
+  "verified": "Đã xác thực",
+  "rating": {
+    "noRating": "Chưa có đánh giá"
+  },
+  "subjects": {
+    "more": "+{count} môn khác"
+  },
+  "stats": {
+    "students": "Học sinh",
+    "courses": "Khóa học",
+    "years": "Năm"
+  },
+  "button": {
+    "startLearning": "Bắt đầu học"
+  }
+}

@@ -11,6 +11,7 @@ import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 // Initial search params
 const initialSearchParams = {
@@ -20,6 +21,7 @@ const initialSearchParams = {
 
 const StudentHomePage = () => {
   const { push } = useLocaleRouter();
+  const t = useTranslations("student.home");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
@@ -46,12 +48,12 @@ const StudentHomePage = () => {
   }, [searchTutors]);
 
   const filterOptions = [
-    { label: "Tất cả", value: "all" },
-    { label: "Đánh giá cao nhất", value: "rating_desc" },
-    { label: "Giá thấp nhất", value: "price_asc" },
-    { label: "Giá cao nhất", value: "price_desc" },
-    { label: "Kinh nghiệm nhiều", value: "experience_desc" },
-    { label: "Online", value: "online" },
+    { label: t("filter.options.all"), value: "all" },
+    { label: t("filter.options.rating_desc"), value: "rating_desc" },
+    { label: t("filter.options.price_asc"), value: "price_asc" },
+    { label: t("filter.options.price_desc"), value: "price_desc" },
+    { label: t("filter.options.experience_desc"), value: "experience_desc" },
+    { label: t("filter.options.online"), value: "online" },
   ];
 
   const handleViewDetails = (tutorId: string) => {
@@ -148,17 +150,17 @@ const StudentHomePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* EBHeader Section */}
         <div className={PAGE_HEADER}>
-          <h1 className={`${PAGE_TITLE} text-4xl`}>Gia sư phù hợp</h1>
+          <h1 className={`${PAGE_TITLE} text-4xl`}>{t("title")}</h1>
           <p className={`${PAGE_SUBTITLE} text-lg`}>
             {isLoading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Đang tìm kiếm gia sư...
+                {t("subtitle.loading")}
               </span>
             ) : error ? (
-              <span className="text-red-500">Có lỗi xảy ra khi tải dữ liệu</span>
+              <span className="text-red-500">{t("subtitle.error")}</span>
             ) : (
-              `Tìm thấy ${filteredTutors.length} gia sư phù hợp với yêu cầu của bạn`
+              t("subtitle.found", { count: filteredTutors.length })
             )}
           </p>
         </div>
@@ -172,7 +174,7 @@ const StudentHomePage = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <input
                 type="text"
-                placeholder="Tìm gia sư theo tên hoặc môn học..."
+                placeholder={t("search.placeholder")}
                 value={searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-lg
@@ -206,7 +208,7 @@ const StudentHomePage = () => {
                                rounded-lg hover:bg-secondary transition-colors duration-200"
             >
               <SlidersHorizontal className="w-5 h-5" />
-              <span>Bộ lọc</span>
+              <span>{t("filter.button")}</span>
             </button>
           </div>
 
@@ -216,19 +218,19 @@ const StudentHomePage = () => {
               className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
                             rounded-full text-sm border border-primary/20"
             >
-              <span>Đánh giá cao nhất</span>
+              <span>{t("filter.tags.highestRating")}</span>
             </div>
             <div
               className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
                             rounded-full text-sm border border-primary/20"
             >
-              <span>Mới nhất</span>
+              <span>{t("filter.tags.newest")}</span>
             </div>
             <div
               className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
                             rounded-full text-sm border border-primary/20"
             >
-              <span>Mới nhất</span>
+              <span>{t("filter.tags.newest")}</span>
             </div>
           </div>
         </div>
@@ -245,14 +247,12 @@ const StudentHomePage = () => {
               onClick={() => searchTutors(initialSearchParams)}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
             >
-              Thử lại
+              {t("error.button")}
             </button>
           </div>
         ) : filteredTutors.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">
-              Không tìm thấy gia sư phù hợp với tiêu chí tìm kiếm
-            </p>
+            <p className="text-muted-foreground mb-4">{t("empty.title")}</p>
             <button
               onClick={() => {
                 setSearchQuery("");
@@ -261,7 +261,7 @@ const StudentHomePage = () => {
               }}
               className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90"
             >
-              Xóa bộ lọc
+              {t("empty.button")}
             </button>
           </div>
         ) : (
@@ -301,10 +301,10 @@ const StudentHomePage = () => {
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Đang tải...
+                  {t("loadMore.loading")}
                 </span>
               ) : (
-                "Xem thêm gia sư"
+                t("loadMore.button")
               )}
             </button>
           </div>

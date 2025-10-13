@@ -1,0 +1,17 @@
+{
+  "verified": "Verified",
+  "rating": {
+    "noRating": "No rating yet"
+  },
+  "subjects": {
+    "more": "+{count} more"
+  },
+  "stats": {
+    "students": "Students",
+    "courses": "Courses",
+    "years": "Years"
+  },
+  "button": {
+    "startLearning": "Start Learning"
+  }
+}

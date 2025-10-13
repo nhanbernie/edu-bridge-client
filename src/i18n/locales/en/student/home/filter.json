@@ -1,0 +1,42 @@
+{
+  "title": "Advanced Filters",
+  "priceRange": {
+    "title": "Price Range (VND/hour)",
+    "from": "From",
+    "to": "To",
+    "fromPlaceholder": "100,000",
+    "toPlaceholder": "500,000"
+  },
+  "subjects": {
+    "title": "Subjects"
+  },
+  "gradeLevel": {
+    "title": "Grade Level",
+    "all": "All Levels"
+  },
+  "rating": {
+    "title": "Minimum Rating"
+  },
+  "sessionDuration": {
+    "title": "Session Duration",
+    "all": "All Durations"
+  },
+  "actions": {
+    "reset": "Reset",
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "options": {
+    "all": "All",
+    "rating_desc": "Highest Rating",
+    "price_asc": "Lowest Price",
+    "price_desc": "Highest Price",
+    "experience_desc": "Most Experience",
+    "online": "Online"
+  },
+  "button": "Filter",
+  "tags": {
+    "highestRating": "Highest Rating",
+    "newest": "Newest"
+  }
+}

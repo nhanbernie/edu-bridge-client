@@ -1,0 +1,37 @@
+{
+  "title": "Gia sư phù hợp",
+  "subtitle": {
+    "loading": "Đang tìm kiếm gia sư...",
+    "error": "Có lỗi xảy ra khi tải dữ liệu",
+    "found": "Tìm thấy {count} gia sư phù hợp với yêu cầu của bạn"
+  },
+  "search": {
+    "placeholder": "Tìm gia sư theo tên hoặc môn học..."
+  },
+  "filter": {
+    "button": "Bộ lọc",
+    "options": {
+      "all": "Tất cả",
+      "rating_desc": "Đánh giá cao nhất",
+      "price_asc": "Giá thấp nhất",
+      "price_desc": "Giá cao nhất",
+      "experience_desc": "Kinh nghiệm nhiều",
+      "online": "Online"
+    },
+    "tags": {
+      "highestRating": "Đánh giá cao nhất",
+      "newest": "Mới nhất"
+    }
+  },
+  "empty": {
+    "title": "Không tìm thấy gia sư phù hợp với tiêu chí tìm kiếm",
+    "button": "Xóa bộ lọc"
+  },
+  "error": {
+    "button": "Thử lại"
+  },
+  "loadMore": {
+    "button": "Xem thêm gia sư",
+    "loading": "Đang tải..."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Find Your Tutor",
+  "subtitle": {
+    "loading": "Searching for tutors...",
+    "error": "An error occurred while loading data",
+    "found": "Found {count} tutors matching your criteria"
+  },
+  "search": {
+    "placeholder": "Search tutors by name or subject..."
+  },
+  "filter": {
+    "button": "Filters",
+    "options": {
+      "all": "All",
+      "rating_desc": "Highest Rating",
+      "price_asc": "Lowest Price",
+      "price_desc": "Highest Price",
+      "experience_desc": "Most Experience",
+      "online": "Online"
+    },
+    "tags": {
+      "highestRating": "Highest Rating",
+      "newest": "Newest"
+    }
+  },
+  "empty": {
+    "title": "No tutors found matching your search criteria",
+    "button": "Clear Filters"
+  },
+  "error": {
+    "button": "Try Again"
+  },
+  "loadMore": {
+    "button": "Load More Tutors",
+    "loading": "Loading..."
+  }
+}

@@ -19,9 +19,11 @@ import {
   PAGE_TITLE,
   PAGE_SUBTITLE,
 } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 const StudentMySchedulePage: React.FC = () => {
   const { push } = useLocaleRouter();
+  const t = useTranslations("student.mySchedule");
   const [activeTab, setActiveTab] = useState<"upcoming" | "history">("upcoming");
 
   const {
@@ -54,7 +56,7 @@ const StudentMySchedulePage: React.FC = () => {
   const isPageLoading = isLoadingUpcoming || isLoadingUserId || isLoadingHistory;
 
   if (isPageLoading) {
-    return <EBPageLoading message="Đang tải lịch học..." />;
+    return <EBPageLoading message={t("loading")} />;
   }
 
   return (
@@ -62,8 +64,8 @@ const StudentMySchedulePage: React.FC = () => {
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
         <div className={PAGE_HEADER}>
-          <h1 className={PAGE_TITLE}>Lịch học của tôi</h1>
-          <p className={PAGE_SUBTITLE}>Xem lịch học và quản lý các buổi học sắp tới</p>
+          <h1 className={PAGE_TITLE}>{t("title")}</h1>
+          <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
         </div>
 
         {/* Stats Cards */}
@@ -72,7 +74,7 @@ const StudentMySchedulePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi học hôm nay
+                  {t("stats.todaySessions")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">{todaySessions}</p>
               </div>
@@ -84,7 +86,7 @@ const StudentMySchedulePage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi học tuần này
+                  {t("stats.weekSessions")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {thisWeekSessions}
@@ -97,7 +99,9 @@ const StudentMySchedulePage: React.FC = () => {
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Gia sư</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {t("stats.tutors")}
+                </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueTutors}</p>
               </div>
               <Users className="h-8 w-8 text-orange-500" />
@@ -110,7 +114,9 @@ const StudentMySchedulePage: React.FC = () => {
           <div className="p-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lịch học</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  {t("scheduleTitle")}
+                </h2>
               </div>
             </div>
 
