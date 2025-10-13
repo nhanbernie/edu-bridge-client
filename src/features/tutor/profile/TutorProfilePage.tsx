@@ -10,7 +10,7 @@ import { EBPageLoading } from "@/components/common";
 import EBTutorProfileForm from "./components/EBTutorProfileForm";
 import MediaUploadModal from "./components/MediaUploadModal";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
-import { useTutorProfile } from "@/hooks/useTutorProfile";
+import { useTutorProfile } from "@/features/tutor/profile/hooks/useTutorProfile";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 interface TutorProfileFormData {

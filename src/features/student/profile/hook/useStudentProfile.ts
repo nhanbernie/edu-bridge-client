@@ -24,12 +24,11 @@ export const useStudentProfile = (props?: UseStudentProfileProps) => {
 
   // Handlers
   const handleAvatarUpload = async (file: File) => {
-    if (!effectiveUserId) return null;
+    if (!effectiveUserId) return;
     const avatarUrl = await handleUploadAvatar(effectiveUserId, file);
     if (avatarUrl) {
       refetch();
     }
-    return avatarUrl;
   };
 
   // Handle profile update

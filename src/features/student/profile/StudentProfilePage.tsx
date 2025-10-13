@@ -1,9 +1,16 @@
 "use client";
 
 import React from "react";
-import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { useStudentProfile } from "@/features/student/profile/hook/useStudentProfile";
 import EBStudentProfileForm from "./components/EBStudentProfileForm";
 import { EBPageLoading } from "@/components/common";
+import {
+  PAGE_CONTAINER,
+  CONTENT_WRAPPER,
+  PAGE_HEADER,
+  PAGE_TITLE,
+  PAGE_SUBTITLE,
+} from "@/common/constants/className.constant";
 
 const StudentProfilePage: React.FC = () => {
   const {
@@ -23,11 +30,12 @@ const StudentProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Hồ sơ cá nhân</h1>
-          <p className="mt-2 text-gray-600">Quản lý thông tin cá nhân và học tập của bạn</p>
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
+        {/* Header */}
+        <div className={PAGE_HEADER}>
+          <h1 className={PAGE_TITLE}>Hồ sơ cá nhân</h1>
+          <p className={PAGE_SUBTITLE}>Quản lý thông tin cá nhân và học tập của bạn</p>
         </div>
 
         <EBStudentProfileForm
