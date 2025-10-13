@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
 import EBSidebarButton from "@/components/common/EBSidebarButton";
@@ -34,6 +35,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const pathname = usePathname();
+  const { getCurrentLocale } = useLocaleRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,9 +45,11 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Check if route is active
+  // Check if route is active (handle locale in pathname)
   const isRouteActive = (href: string) => {
-    return pathname === href || (href !== "/tutor" && pathname.startsWith(href));
+    const locale = getCurrentLocale();
+    const fullHref = `/${locale}${href}`;
+    return pathname === fullHref || (href !== "/tutor" && pathname.startsWith(fullHref));
   };
 
   return (

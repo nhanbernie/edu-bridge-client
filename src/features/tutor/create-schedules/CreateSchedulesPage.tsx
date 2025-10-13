@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import EBSchedule from "@/components/common/EBSchedule";
@@ -11,7 +12,7 @@ import { useAvailabilityBlock, useTutorId } from "@/hooks";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
 
 const CreateSchedulesPage = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { tutorId } = useTutorId();
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -23,7 +24,7 @@ const CreateSchedulesPage = () => {
   const scheduleSummary = getScheduleSummary(availabilityBlocks);
 
   const handleBack = () => {
-    router.push("/tutor/schedules");
+    push(ROUTES.TUTOR_SCHEDULES);
   };
 
   const handleSaveSuccess = () => {};

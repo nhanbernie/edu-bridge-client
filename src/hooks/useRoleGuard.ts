@@ -1,7 +1,8 @@
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "./useLocaleRouter";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { UserDto } from "@/services/api/type";
+import { ROUTES } from "@/common/constants/route.constant";
 
 export type UserRole = "ADMIN" | "STUDENT" | "TUTOR" | "PENDING";
 export type UserStatus = "PENDING" | "APPROVED" | "REJECTED";
@@ -17,7 +18,7 @@ interface RoleGuardOptions {
  * Custom hook for role-based access control
  */
 export const useRoleGuard = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   const getUserData = useCallback(async (): Promise<UserDto | null> => {
     try {
@@ -52,19 +53,19 @@ export const useRoleGuard = () => {
   const getDefaultRouteForRole = useCallback((role: UserRole, status: UserStatus): string => {
     // If user is pending approval, go to home (profile page)
     if (status === "PENDING") {
-      return "/home";
+      return ROUTES.HOME;
     }
 
     // If user is approved, route based on role
     switch (role) {
       case "ADMIN":
-        return "/admin";
+        return ROUTES.ADMIN;
       case "STUDENT":
-        return "/student";
+        return ROUTES.STUDENT;
       case "TUTOR":
-        return "/tutor";
+        return ROUTES.TUTOR;
       default:
-        return "/home";
+        return ROUTES.HOME;
     }
   }, []);
 
@@ -75,9 +76,9 @@ export const useRoleGuard = () => {
         userData.role as UserRole,
         userData.status as UserStatus
       );
-      router.replace(defaultRoute);
+      push(defaultRoute);
     }
-  }, [getUserData, getDefaultRouteForRole, router]);
+  }, [getUserData, getDefaultRouteForRole, push]);
 
   const guardRoute = useCallback(
     async (options: RoleGuardOptions): Promise<void> => {
@@ -92,14 +93,14 @@ export const useRoleGuard = () => {
             userData.role as UserRole,
             userData.status as UserStatus
           );
-          router.replace(defaultRoute);
+          push(defaultRoute);
         } else {
           // No user data, redirect to login
-          router.replace("/login");
+          push(ROUTES.LOGIN);
         }
       }
     },
-    [checkRoleAccess, getUserData, getDefaultRouteForRole, router]
+    [checkRoleAccess, getUserData, getDefaultRouteForRole, push]
   );
 
   return {

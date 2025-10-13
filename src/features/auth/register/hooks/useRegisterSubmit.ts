@@ -2,13 +2,14 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRegisterMutation } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 const useRegisterSubmit = () => {
   const dispatch = useAppDispatch();
   const [registerMutation] = useRegisterMutation();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   return useCallback(
     async (data: { email: string; password: string; fullName: string }) => {
@@ -23,7 +24,7 @@ const useRegisterSubmit = () => {
         const result = await registerMutation(registerPayload).unwrap();
         if (result.success && result.data) {
           toast.success(result.message || "Registration successful");
-          router.push("/login");
+          push(ROUTES.LOGIN);
         } else {
           throw new Error(result.message || "Registration failed");
         }
@@ -36,7 +37,7 @@ const useRegisterSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, registerMutation, router]
+    [dispatch, registerMutation, push]
   );
 };
 

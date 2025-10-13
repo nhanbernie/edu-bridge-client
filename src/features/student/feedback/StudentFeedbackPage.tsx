@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +28,7 @@ interface StudentFeedbackPageProps {
 }
 
 const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { userId: studentId } = useUserId();
   const { createFeedback, isLoading } = useCreateFeedback();
   const { refetchAllSessions } = useRefetchSessions();
@@ -97,9 +98,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
             Không tìm thấy khóa học
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">Bạn chưa đăng ký khóa học này.</p>
-          <Button onClick={() => router.push("/student/feedback")}>
-            Quay lại danh sách khóa học
-          </Button>
+          <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>Quay lại danh sách khóa học</Button>
         </div>
       </div>
     );
@@ -115,7 +114,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
         <div className={PAGE_HEADER}>
-          <Button variant="ghost" onClick={() => router.push("/student/feedback")} className="mb-4">
+          <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Quay lại danh sách khóa học
           </Button>

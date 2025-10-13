@@ -2,7 +2,11 @@
 
 import React, { useState } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import {
+  buildMeetingRoute,
+  buildStudentFeedbackDetailRoute,
+} from "@/common/constants/route.constant";
 import { useStudentMySchedule } from "./hooks/useStudentMySchedule";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
@@ -17,7 +21,7 @@ import {
 } from "@/common/constants/className.constant";
 
 const StudentMySchedulePage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [activeTab, setActiveTab] = useState<"upcoming" | "history">("upcoming");
 
   const {
@@ -39,11 +43,11 @@ const StudentMySchedulePage: React.FC = () => {
   const historySessions = historyData?.data || [];
 
   const handleJoinSession = (sessionId: string) => {
-    router.push(`/meeting/${sessionId}`);
+    push(buildMeetingRoute(sessionId));
   };
 
   const handleViewFeedback = (courseId: string) => {
-    router.push(`/student/feedback/${courseId}`);
+    push(buildStudentFeedbackDetailRoute(courseId));
   };
 
   // Only show page loading for initial data

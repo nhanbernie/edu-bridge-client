@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import TutorCard from "./components/TutorCard";
@@ -19,7 +19,7 @@ const initialSearchParams = {
 };
 
 const StudentHomePage = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
@@ -55,7 +55,7 @@ const StudentHomePage = () => {
   ];
 
   const handleViewDetails = (tutorId: string) => {
-    router.push(`/student/tutor/${tutorId}`);
+    push(`/student/tutor/${tutorId}`);
   };
 
   const handleContact = (tutorId: string) => {};

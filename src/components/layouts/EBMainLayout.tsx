@@ -3,7 +3,7 @@
 import React from "react";
 import EBHeader from "./EBHeader";
 import EBFooter from "./EBFooter";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { HeaderConfig, BuildHeaderFunction, HeaderActionButton } from "./types";
 
 interface MainLayoutProps {
@@ -23,9 +23,9 @@ const EBMainLayout: React.FC<MainLayoutProps> = ({
   showTheme,
   showUserMenu,
 }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
-  const go = (path: string) => router.push(path);
+  const go = (path: string) => push(path);
 
   const headerConfig = buildHeader ? buildHeader({ go }) : undefined;
 

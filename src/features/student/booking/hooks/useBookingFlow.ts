@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import { toast } from "sonner";
 import { selectUser } from "@/redux/selectors/auth.selectors";
 import { useCreateBookingMutation } from "@/services/booking";
@@ -26,7 +27,7 @@ interface BookingData {
 }
 
 export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const user = useSelector(selectUser);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [showQRDialog, setShowQRDialog] = useState(false);
@@ -130,9 +131,9 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
     setBookingId(null);
     // Optionally redirect to cancel page
     if (bookingId) {
-      router.push(`/student/booking/cancel?bookingId=${bookingId}&reason=user_cancelled`);
+      push(`/student/booking/cancel?bookingId=${bookingId}&reason=user_cancelled`);
     }
-  }, [bookingId, router]);
+  }, [bookingId, push]);
 
   // Close QR dialog
   const handleCloseQRDialog = useCallback(() => {

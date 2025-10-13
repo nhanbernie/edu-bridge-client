@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import { TutorOnboardingSteps, TutorStep1, TutorStep2 } from "./components";
 import { useTutorOnboarding, TutorFormData } from "./hooks/useTutorOnboarding";
+import { ROUTES } from "@/common/constants/route.constant";
 
 const TutorOnboardingPage = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [step1Data, setStep1Data] = useState<TutorFormData | null>(null);
   const [step1Completed, setStep1Completed] = useState(false);
@@ -38,7 +40,7 @@ const TutorOnboardingPage = () => {
       return;
     }
 
-    router.push("/home");
+    push(ROUTES.HOME);
   };
 
   return (

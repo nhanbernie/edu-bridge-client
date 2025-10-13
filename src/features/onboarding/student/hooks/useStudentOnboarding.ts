@@ -1,9 +1,11 @@
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import { useSelectRoleMutation } from "@/services/user";
 import { useRefreshToken } from "@/hooks/useRefreshToken";
 import { StudentOnboardingRequest } from "@/services/api/type";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 interface StudentFormData {
   grade: string;
@@ -12,7 +14,7 @@ interface StudentFormData {
 }
 
 export const useStudentOnboarding = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
   const { refreshToken } = useRefreshToken();
 
@@ -25,13 +27,13 @@ export const useStudentOnboarding = () => {
 
       if (!userData?.userId) {
         toast.error("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
-        router.push("/login");
+        push(ROUTES.LOGIN);
         return { success: false, message: "User not found" };
       }
 
       if (isTokenExpired) {
         toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
-        router.push("/login");
+        push(ROUTES.LOGIN);
         return { success: false, message: "Token expired" };
       }
 

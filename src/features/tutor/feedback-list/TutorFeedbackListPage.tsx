@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { buildTutorFeedbackDetailRoute } from "@/common/constants/route.constant";
 import { BookOpen, GraduationCap } from "lucide-react";
 import { useGetTutorTeachingsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
@@ -11,7 +12,7 @@ import { EnrolledCourseCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 const TutorFeedbackListPage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { userId: tutorId } = useUserId();
 
   const {
@@ -30,7 +31,7 @@ const TutorFeedbackListPage: React.FC = () => {
   }, [teachings]);
 
   const handleViewDetails = (courseId: string) => {
-    router.push(`/tutor/feedback/${courseId}`);
+    push(buildTutorFeedbackDetailRoute(courseId));
   };
 
   if (isLoading) {

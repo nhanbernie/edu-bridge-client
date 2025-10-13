@@ -2,12 +2,13 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useVerifyOtpMutation, useResendOtpMutation } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 const useVerifyOtpSubmit = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [verifyOtpMutation] = useVerifyOtpMutation();
   const [resendOtpMutation] = useResendOtpMutation();
 
@@ -24,6 +25,7 @@ const useVerifyOtpSubmit = () => {
           toast.success(result.message || "Xác thực OTP thành công");
           // Store the token temporarily for reset password
           sessionStorage.setItem("resetToken", result.data);
+          // Don't redirect, stay on current page to continue flow
         } else {
           throw new Error(result.message || "Xác thực OTP thất bại");
         }

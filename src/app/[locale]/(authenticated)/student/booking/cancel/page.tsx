@@ -1,7 +1,8 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { motion } from "motion/react";
 import {
   XCircle,
@@ -29,7 +30,7 @@ const itemVariants = slideUpVariants;
 const cancelVariants = scaleVariants;
 
 const BookingCancelContent = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const searchParams = useSearchParams();
   const [shake, setShake] = useState(false);
 
@@ -46,11 +47,11 @@ const BookingCancelContent = () => {
   }, []);
 
   const handleGoHome = () => {
-    router.push("/student");
+    push("/student");
   };
 
   const handleTryAgain = () => {
-    router.push("/student");
+    push("/student");
   };
 
   const handleContactSupport = () => {
@@ -286,7 +287,7 @@ const BookingCancelContent = () => {
           <MotionItem variants={itemVariants}>
             <div className="text-center">
               <motion.button
-                onClick={() => router.push("/student")}
+                onClick={() => push("/student")}
                 className="inline-flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 shadow-lg hover:shadow-xl font-medium text-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

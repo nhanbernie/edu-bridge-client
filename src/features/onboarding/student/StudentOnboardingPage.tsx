@@ -1,13 +1,15 @@
 "use client";
 
 import * as Yup from "yup";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import EBButton from "@/components/common/EBButton";
 import EBFormProvider from "@/components/form/EBFormProvider";
 import EBSelectField from "@/components/form/EBSelectField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
 import EBTextField from "@/components/form/EBTextField";
 import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
+import { ROUTES } from "@/common/constants/route.constant";
 
 interface StudentFormData {
   grade: string;
@@ -16,7 +18,7 @@ interface StudentFormData {
 }
 
 const StudentOnboardingPage = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { submitOnboarding, isLoading } = useStudentOnboarding();
 
   const handleSubmit = async (data: StudentFormData) => {
@@ -24,7 +26,7 @@ const StudentOnboardingPage = () => {
 
     if (result.success) {
       // Student is approved immediately, redirect to dashboard
-      router.push("/student/dashboard");
+      push(ROUTES.STUDENT_DASHBOARD);
     }
   };
 

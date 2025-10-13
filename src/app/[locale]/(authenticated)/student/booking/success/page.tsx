@@ -1,7 +1,8 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { motion } from "motion/react";
 import {
   CheckCircle,
@@ -18,7 +19,7 @@ import {
 import { EBMotionCard, MotionContainer, MotionItem, slideUpVariants } from "@/components/motion";
 
 const BookingSuccessContent = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const searchParams = useSearchParams();
   const [confetti, setConfetti] = useState(true);
 
@@ -37,11 +38,11 @@ const BookingSuccessContent = () => {
   }, []);
 
   const handleGoHome = () => {
-    router.push("/student");
+    push("/student");
   };
 
   const handleViewBookings = () => {
-    router.push("/student/bookings");
+    push("/student/my-schedule");
   };
 
   const handleDownloadReceipt = () => {

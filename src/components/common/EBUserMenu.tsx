@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ActionItem } from "./EBActionsMenu";
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import {
 
 const EBUserMenu = () => {
   const { logout, user } = useAuth();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   // Determine profile route based on user role
@@ -38,7 +38,7 @@ const EBUserMenu = () => {
 
   const handleProfileClick = () => {
     const profileRoute = getProfileRoute();
-    router.push(profileRoute);
+    push(profileRoute);
   };
 
   const userActions: ActionItem[] = [

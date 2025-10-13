@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import EBMediaCard from "@/components/common/EBMediaCard";
 import EBEmptyState from "@/components/common/EBEmptyState";
@@ -25,6 +26,8 @@ interface TutorProfileFormData {
 }
 
 const TutorProfilePage = () => {
+  const t = useTranslations("tutor.profile");
+
   const {
     userData,
     videoIntro,
@@ -73,15 +76,15 @@ const TutorProfilePage = () => {
   };
 
   if (isLoading) {
-    return <EBPageLoading message="Đang tải thông tin..." />;
+    return <EBPageLoading message={t("loading")} />;
   }
 
   return (
     <div className="min-h-screen">
       {/* Header */}
       <div className={PAGE_HEADER}>
-        <h1 className={PAGE_TITLE}>Hồ sơ gia sư</h1>
-        <p className={PAGE_SUBTITLE}>Quản lý thông tin cá nhân và hồ sơ của bạn</p>
+        <h1 className={PAGE_TITLE}>{t("title")}</h1>
+        <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
       </div>
 
       {/* 2 Column Layout */}

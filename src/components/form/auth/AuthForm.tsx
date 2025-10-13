@@ -5,10 +5,11 @@ import EBFormProvider from "../EBFormProvider";
 import { EBTextField } from "../EBTextField";
 import { EBOTPInput } from "../EBOTPInput";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useFormContext } from "react-hook-form";
 import validatorSchema from "@/lib/validator/authValidator";
 import { INPUT_FIELDS, BUTTON_TITLES } from "@/common/constants/form.constant";
+import { ROUTES } from "@/common/constants/route.constant";
 
 export interface IAuthFormProps {
   type: "login" | "register" | "forgotPassword" | "verifyOTP" | "resetPassword";
@@ -18,7 +19,7 @@ export interface IAuthFormProps {
 }
 
 const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormProps) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -112,7 +113,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => router.push("/forgot-password")}
+                  onClick={() => push(ROUTES.FORGOT_PASSWORD)}
                   className="text-primary hover:text-primary/80 text-sm"
                 >
                   Quên mật khẩu?
@@ -143,7 +144,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
               Chưa có tài khoản?
               <button
                 type="button"
-                onClick={() => router.push("/register")}
+                onClick={() => push(ROUTES.REGISTER)}
                 className="text-primary hover:text-primary/80 font-medium ml-1"
               >
                 Đăng ký
@@ -159,7 +160,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
               Đã có tài khoản?
               <button
                 type="button"
-                onClick={() => router.push("/login")}
+                onClick={() => push(ROUTES.LOGIN)}
                 className="text-primary hover:text-primary/80 font-medium ml-1"
               >
                 Đăng nhập

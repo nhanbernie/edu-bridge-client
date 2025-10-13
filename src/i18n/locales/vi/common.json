@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất"
+  },
+  "actions": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "create": "Tạo mới",
+    "update": "Cập nhật",
+    "submit": "Gửi",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "clear": "Xóa",
+    "confirm": "Xác nhận",
+    "refresh": "Làm mới"
+  },
+  "messages": {
+    "loading": "Đang tải...",
+    "success": "Thành công!",
+    "error": "Đã xảy ra lỗi",
+    "no_data": "Không có dữ liệu",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa mục này?"
+  }
+}

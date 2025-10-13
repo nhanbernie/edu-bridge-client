@@ -2,12 +2,13 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useResetPasswordMutation } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 const useResetPasswordSubmit = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [resetPasswordMutation] = useResetPasswordMutation();
 
   return useCallback(
@@ -35,7 +36,8 @@ const useResetPasswordSubmit = () => {
           toast.success(result.message || "Mật khẩu đã được đặt lại thành công");
           // Clear the token
           sessionStorage.removeItem("resetToken");
-          router.push("/login");
+          // Redirect to login after successful reset
+          push(ROUTES.LOGIN);
         } else {
           throw new Error(result.message || "Đặt lại mật khẩu thất bại");
         }
@@ -48,7 +50,7 @@ const useResetPasswordSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, router, resetPasswordMutation]
+    [dispatch, push, resetPasswordMutation]
   );
 };
 

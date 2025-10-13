@@ -1,5 +1,3 @@
-import i18n from "@/i18n";
-
 export interface IInputFieldProps {
   name: string;
   label?: string;
@@ -8,21 +6,6 @@ export interface IInputFieldProps {
   className?: string;
   length?: number; // For OTP input
 }
-
-const getCommonFields = (): IInputFieldProps[] => [
-  {
-    label: i18n.t("auth.fields.email.label"),
-    name: "email",
-    type: "email",
-    placeholder: i18n.t("auth.fields.email.placeholder"),
-  },
-  {
-    label: i18n.t("auth.fields.password.label"),
-    name: "password",
-    type: "password",
-    placeholder: i18n.t("auth.fields.password.placeholder"),
-  },
-];
 
 // export const INPUT_FIELDS = (
 //   type: 'register' | 'login' | 'forgotPassword' | 'verifyOTP' | 'resetPassword'
@@ -137,30 +120,14 @@ export const BUTTON_TITLES = {
   verifyOTP: "Xác thực",
   resetPassword: "Đặt lại mật khẩu",
 };
-const getButtonTitle = (type: string): string => {
-  const buttonKeys: Record<string, string> = {
-    login: "auth.login.button",
-    register: "auth.register.button",
-    forgotPassword: "auth.forgotPassword.button",
-    verifyOTP: "auth.verifyOtp.button",
-    resetPassword: "auth.resetPassword.button",
-  };
-
-  return i18n.t(buttonKeys[type]) || i18n.t("common.submit");
-};
-
-export const BUTTON_TITLE = (type: string): string => {
-  return getButtonTitle(type);
-};
-
 export const getProcessingText = (type: string): string => {
-  const processingKeys: Record<string, string> = {
-    login: "auth.login.processing",
-    register: "auth.register.processing",
-    forgotPassword: "auth.forgotPassword.processing",
-    verifyOTP: "auth.verifyOtp.processing",
-    resetPassword: "auth.resetPassword.processing",
+  const processingTexts: Record<string, string> = {
+    login: "Đang đăng nhập...",
+    register: "Đang đăng ký...",
+    forgotPassword: "Đang gửi liên kết...",
+    verifyOTP: "Đang xác thực...",
+    resetPassword: "Đang đặt lại mật khẩu...",
   };
 
-  return i18n.t(processingKeys[type]) || i18n.t("common.loading");
+  return processingTexts[type] || "Đang xử lý...";
 };

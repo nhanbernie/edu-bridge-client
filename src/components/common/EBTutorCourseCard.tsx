@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
   actions = [],
   onClick,
 }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   // Hard coded data - dễ dàng thêm trường mới
   const hardCodedCourses: CourseData[] = [
@@ -97,7 +97,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
 
   const handleBooking = () => {
     // Navigate to booking page với tutor ID và course ID
-    router.push(`/student/booking/${courseData.tutorId}?courseId=${courseData.id}`);
+    push(`/student/booking/${courseData.tutorId}?courseId=${courseData.id}`);
   };
 
   const handleCardClick = () => {

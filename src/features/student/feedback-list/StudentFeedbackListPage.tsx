@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { buildStudentFeedbackDetailRoute, ROUTES } from "@/common/constants/route.constant";
 import { BookOpen, GraduationCap } from "lucide-react";
 import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
@@ -16,7 +17,7 @@ import {
 } from "@/common/constants/className.constant";
 
 const StudentFeedbackListPage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { userId: studentId } = useUserId();
 
   const {
@@ -36,7 +37,7 @@ const StudentFeedbackListPage: React.FC = () => {
 
   const handleViewDetails = (courseId: string) => {
     // Navigate to feedback page for the course
-    router.push(`/student/feedback/${courseId}`);
+    push(buildStudentFeedbackDetailRoute(courseId));
   };
 
   // Show skeleton only on initial load (no data yet)
@@ -134,7 +135,7 @@ const StudentFeedbackListPage: React.FC = () => {
                 Bạn chưa tham gia khóa học nào. Hãy tìm gia sư phù hợp và bắt đầu học ngay!
               </p>
               <button
-                onClick={() => router.push("/student")}
+                onClick={() => push(ROUTES.STUDENT)}
                 className="px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors"
               >
                 Tìm gia sư

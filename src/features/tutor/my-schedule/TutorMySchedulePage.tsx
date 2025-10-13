@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import {
+  buildMeetingRoute,
+  buildTutorFeedbackDetailRoute,
+} from "@/common/constants/route.constant";
 import { useTutorMySchedule } from "./hooks/useTutorMySchedule";
 import { useGetTutorHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
@@ -12,7 +16,7 @@ import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeleton
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 const TutorMySchedulePage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [activeTab, setActiveTab] = useState<"upcoming" | "history">("upcoming");
 
   const {
@@ -40,16 +44,16 @@ const TutorMySchedulePage: React.FC = () => {
 
   const handleJoinSession = useCallback(
     (sessionId: string) => {
-      router.push(`/meeting/${sessionId}`);
+      push(buildMeetingRoute(sessionId));
     },
-    [router]
+    [push]
   );
 
   const handleViewFeedback = useCallback(
     (courseId: string) => {
-      router.push(`/tutor/feedback/${courseId}`);
+      push(buildTutorFeedbackDetailRoute(courseId));
     },
-    [router]
+    [push]
   );
 
   // Memoize stats data to prevent unnecessary re-renders

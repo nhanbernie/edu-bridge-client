@@ -1,17 +1,23 @@
 import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useAppDispatch } from "@/redux/hooks";
-import { useForgotPasswordMutation, useVerifyOtpMutation, useResetPasswordMutation, useResendOtpMutation } from "@/services/auth/auth.service";
+import {
+  useForgotPasswordMutation,
+  useVerifyOtpMutation,
+  useResetPasswordMutation,
+  useResendOtpMutation,
+} from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 type ForgotPasswordStep = "email" | "otp" | "reset";
 
 const useForgotPasswordFlow = () => {
   const [step, setStep] = useState<ForgotPasswordStep>("email");
   const [email, setEmail] = useState<string>("");
-  const router = useRouter();
-  
+  const { push } = useLocaleRouter();
+
   const dispatch = useAppDispatch();
   const [forgotPasswordMutation] = useForgotPasswordMutation();
   const [verifyOtpMutation] = useVerifyOtpMutation();
@@ -25,9 +31,9 @@ const useForgotPasswordFlow = () => {
       try {
         dispatch(setLoading(true));
         setEmail(data.email);
-        
+
         const result = await forgotPasswordMutation(data).unwrap();
-        
+
         if (result.success) {
           toast.success(result.message || "OTP đã được gửi đến email của bạn");
           setStep("otp");
@@ -102,7 +108,7 @@ const useForgotPasswordFlow = () => {
           toast.success(result.message || "Mật khẩu đã được đặt lại thành công");
           // Clear the token
           sessionStorage.removeItem("resetToken");
-          router.push("/login");
+          push(ROUTES.LOGIN);
         } else {
           throw new Error(result.message || "Đặt lại mật khẩu thất bại");
         }
@@ -115,36 +121,33 @@ const useForgotPasswordFlow = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, router, resetPasswordMutation, email]
+    [dispatch, push, resetPasswordMutation, email]
   );
 
   // Resend OTP
-  const handleResendOtp = useCallback(
-    async () => {
-      if (!email) return;
-      
-      try {
-        setIsResending(true);
-        dispatch(setLoading(true));
-        const result = await resendOtpMutation({ email }).unwrap();
+  const handleResendOtp = useCallback(async () => {
+    if (!email) return;
 
-        if (result.success) {
-          toast.success(result.message || "OTP đã được gửi lại");
-        } else {
-          throw new Error(result.message || "Không thể gửi lại OTP");
-        }
-      } catch (error: any) {
-        let errorMessage = "Không thể gửi lại OTP. Vui lòng thử lại.";
-        if (error?.data?.message) errorMessage = error.data.message;
-        else if (error?.message) errorMessage = error.message;
-        toast.error(errorMessage);
-      } finally {
-        setIsResending(false);
-        dispatch(setLoading(false));
+    try {
+      setIsResending(true);
+      dispatch(setLoading(true));
+      const result = await resendOtpMutation({ email }).unwrap();
+
+      if (result.success) {
+        toast.success(result.message || "OTP đã được gửi lại");
+      } else {
+        throw new Error(result.message || "Không thể gửi lại OTP");
       }
-    },
-    [dispatch, resendOtpMutation, email]
-  );
+    } catch (error: any) {
+      let errorMessage = "Không thể gửi lại OTP. Vui lòng thử lại.";
+      if (error?.data?.message) errorMessage = error.data.message;
+      else if (error?.message) errorMessage = error.message;
+      toast.error(errorMessage);
+    } finally {
+      setIsResending(false);
+      dispatch(setLoading(false));
+    }
+  }, [dispatch, resendOtpMutation, email]);
 
   return {
     step,

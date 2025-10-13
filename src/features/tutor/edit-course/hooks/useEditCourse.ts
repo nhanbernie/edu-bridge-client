@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { toast } from "sonner";
 import {
   useUpdateCourseMutation,
@@ -11,7 +12,7 @@ import { CourseFormData } from "@/components/form/course";
 import { useTutorId } from "@/hooks/useTutorId";
 
 export const useEditCourse = (courseId: string) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { tutorId, isLoading: tutorLoading } = useTutorId();
 
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
@@ -65,7 +66,7 @@ export const useEditCourse = (courseId: string) => {
 
         if (response.success) {
           toast.success("Cập nhật khóa học thành công!");
-          router.push("/tutor/courses");
+          push(ROUTES.TUTOR_COURSES);
         } else {
           toast.error(response.message || "Có lỗi xảy ra khi cập nhật khóa học");
         }
@@ -80,12 +81,12 @@ export const useEditCourse = (courseId: string) => {
         }
       }
     },
-    [courseId, updateCourse, router]
+    [courseId, updateCourse, push]
   );
 
   const handleCancel = useCallback(() => {
-    router.push("/tutor/courses");
-  }, [router]);
+    push(ROUTES.TUTOR_COURSES);
+  }, [push]);
 
   // Handle loading error
   if (courseError) {
