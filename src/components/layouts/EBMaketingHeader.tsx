@@ -9,6 +9,7 @@ import { EBThemeToggle, EBLogo } from "@/components/common/";
 import EBNavigation from "./components/EBNavigation";
 import { HeaderConfig } from "./types";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { useTranslations } from "next-intl";
 
 interface MaketingHeaderProps {
   headerConfig?: HeaderConfig;
@@ -19,6 +20,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { push } = useLocaleRouter();
+  const t = useTranslations("marketing.header");
 
   // Handle scroll effect
   useEffect(() => {
@@ -97,14 +99,14 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                     size="sm"
                     className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   >
-                    Log in
+                    {t("login")}
                   </EBButton>
                   <EBButton
                     onClick={() => push("/register")}
                     size="sm"
                     className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Đăng ký
+                    {t("register")}
                   </EBButton>
                 </div>
               )}
@@ -189,7 +191,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               size="lg"
               className="w-full border-emerald-200 text-emerald-600 hover:bg-emerald-50"
             >
-              Đăng nhập
+              {t("mobileLogin")}
             </EBButton>
             <EBButton
               onClick={() => {
@@ -199,13 +201,13 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               size="lg"
               className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
             >
-              Đăng ký miễn phí
+              {t("mobileRegister")}
             </EBButton>
           </div>
 
           {/* Mobile Settings */}
           <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-            <span className="text-sm text-gray-600">Cài đặt</span>
+            <span className="text-sm text-gray-600">{t("settings")}</span>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}

@@ -67,6 +67,81 @@ export interface IInputFieldProps {
 //   return fields[type];
 // };
 
+// This will be replaced by a function that uses i18n
+export const getInputFields = (t: any) => ({
+  login: [
+    {
+      name: "email",
+      type: "email" as const,
+      placeholder: t("login.email"),
+      label: t("login.email"),
+    },
+    {
+      name: "password",
+      type: "password" as const,
+      placeholder: t("login.password"),
+      label: t("login.password"),
+    },
+  ],
+  register: [
+    {
+      name: "fullName",
+      type: "text" as const,
+      placeholder: t("register.fullName"),
+      label: t("register.fullName"),
+    },
+    {
+      name: "email",
+      type: "email" as const,
+      placeholder: t("register.email"),
+      label: t("register.email"),
+    },
+    {
+      name: "password",
+      type: "password" as const,
+      placeholder: t("register.password"),
+      label: t("register.password"),
+    },
+    {
+      name: "confirmPassword",
+      type: "password" as const,
+      placeholder: t("register.confirmPassword"),
+      label: t("register.confirmPassword"),
+    },
+  ],
+  forgotPassword: [
+    {
+      name: "email",
+      type: "email" as const,
+      placeholder: t("forgotPassword.email"),
+      label: t("forgotPassword.email"),
+    },
+  ],
+  verifyOTP: [
+    {
+      name: "code",
+      type: "otp" as const,
+      placeholder: t("verifyOTP.code"),
+      length: 6,
+    },
+  ],
+  resetPassword: [
+    {
+      name: "password",
+      type: "password" as const,
+      placeholder: t("resetPassword.password"),
+      label: t("resetPassword.password"),
+    },
+    {
+      name: "confirmPassword",
+      type: "password" as const,
+      placeholder: t("resetPassword.confirmPassword"),
+      label: t("resetPassword.confirmPassword"),
+    },
+  ],
+});
+
+// Keep the old constant for backward compatibility
 export const INPUT_FIELDS = {
   login: [
     { name: "email", type: "email" as const, placeholder: "Nhập email của bạn", label: "Email" },
@@ -113,6 +188,16 @@ export const INPUT_FIELDS = {
   ],
 };
 
+// Function to get button titles with i18n
+export const getButtonTitles = (t: any) => ({
+  login: t("login.loginButton"),
+  register: t("register.registerButton"),
+  forgotPassword: t("forgotPassword.sendButton"),
+  verifyOTP: t("verifyOTP.verifyButton"),
+  resetPassword: t("resetPassword.resetButton"),
+});
+
+// Keep the old constant for backward compatibility
 export const BUTTON_TITLES = {
   login: "Tiếp tục",
   register: "Đăng ký",
@@ -120,6 +205,21 @@ export const BUTTON_TITLES = {
   verifyOTP: "Xác thực",
   resetPassword: "Đặt lại mật khẩu",
 };
+
+// Function to get processing text with i18n
+export const getProcessingTextI18n = (type: string, t: any): string => {
+  const processingTexts: Record<string, string> = {
+    login: t("messages.loginSuccess"),
+    register: t("messages.registerSuccess"),
+    forgotPassword: t("messages.forgotPasswordSuccess"),
+    verifyOTP: t("messages.otpVerified"),
+    resetPassword: t("messages.passwordReset"),
+  };
+
+  return processingTexts[type] || t("messages.loginSuccess");
+};
+
+// Keep the old function for backward compatibility
 export const getProcessingText = (type: string): string => {
   const processingTexts: Record<string, string> = {
     login: "Đang đăng nhập...",

@@ -25,10 +25,14 @@ export default async function LocaleLayout({ children, params }: Props) {
   try {
     const common = await import(`@/i18n/locales/${locale}/common.json`);
     const tutor = await import(`@/i18n/locales/${locale}/tutor.json`);
+    const auth = await import(`@/i18n/locales/${locale}/auth.json`);
+    const marketing = await import(`@/i18n/locales/${locale}/marketing.json`);
 
     messages = {
       common: common.default,
       tutor: tutor.default,
+      auth: auth.default,
+      marketing: marketing.default,
     };
   } catch (error) {
     console.error(`Failed to load messages for locale: ${locale}`, error);

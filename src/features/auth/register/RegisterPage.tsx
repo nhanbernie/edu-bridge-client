@@ -4,8 +4,10 @@ import React from "react";
 import EBAuthLayout from "@/components/layouts/EBAuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
 import useRegisterFlow from "./hooks/useRegisterFlow";
+import { useTranslations } from "next-intl";
 
 const RegisterFeature = () => {
+  const t = useTranslations("auth");
   const { step, email, isResending, handleRegisterSubmit, handleVerifyOtpSubmit, handleResendOtp } =
     useRegisterFlow();
 
@@ -13,7 +15,7 @@ const RegisterFeature = () => {
     switch (step) {
       case "register":
         return {
-          title: "Tạo tài khoản mới",
+          title: t("register.title"),
           description: "Tham gia EduBridge để kết nối với các gia sư tốt nhất",
           formType: "register" as const,
           onSubmit: handleRegisterSubmit,
@@ -21,15 +23,15 @@ const RegisterFeature = () => {
         };
       case "verifyEmail":
         return {
-          title: "Xác thực email",
-          description: "Nhập mã OTP đã được gửi đến email của bạn",
+          title: t("verifyOTP.title"),
+          description: t("verifyOTP.subtitle"),
           formType: "verifyOTP" as const,
           onSubmit: handleVerifyOtpSubmit,
           showResendButton: true,
         };
       default:
         return {
-          title: "Tạo tài khoản mới",
+          title: t("register.title"),
           description: "Tham gia EduBridge để kết nối với các gia sư tốt nhất",
           formType: "register" as const,
           onSubmit: handleRegisterSubmit,
@@ -66,7 +68,7 @@ const RegisterFeature = () => {
                 disabled={isResending}
                 className="text-primary hover:text-primary/80 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isResending ? "Đang gửi lại..." : "Gửi lại mã OTP"}
+                {isResending ? "Đang gửi lại..." : t("verifyOTP.resendButton")}
               </button>
             </div>
           )}

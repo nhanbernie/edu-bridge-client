@@ -4,8 +4,11 @@ import { GraduationCap, Users, Star, BookOpen } from "lucide-react";
 import { StatsCard } from "@/features/marketing/components";
 import React from "react";
 import { EBLogo, EBThemeToggle } from "@/components/common";
+import { useTranslations } from "next-intl";
 
 const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
+  const t = useTranslations("marketing.auth");
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-100 via-teal-50 to-cyan-50 relative overflow-hidden">
       {/* Background decorative elements */}
@@ -24,14 +27,12 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
               {/* Main Headline */}
               <div className="space-y-4">
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Chào mừng đến với{" "}
+                  {t("welcome")}{" "}
                   <span className="bg-gradient-to-r from-primary to-teal-600 bg-clip-text text-transparent">
                     EduBridge
                   </span>
                 </h2>
-                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
-                  Kết nối với các gia sư có trình độ để học tập cá nhân hóa
-                </p>
+                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">{t("subtitle")}</p>
               </div>
 
               {/* Stats Cards */}
@@ -39,19 +40,19 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
                 <StatsCard
                   icon={Users}
                   number="10,000+"
-                  label="Học sinh"
+                  label={t("stats.students")}
                   iconColor="text-primary"
                 />
                 <StatsCard
                   icon={BookOpen}
                   number="500+"
-                  label="Gia sư chuyên nghiệp"
+                  label={t("stats.tutors")}
                   iconColor="text-teal-600"
                 />
                 <StatsCard
                   icon={Star}
                   number="4.9"
-                  label="Đánh giá trung bình"
+                  label={t("stats.rating")}
                   iconColor="text-yellow-400"
                 />
               </div>

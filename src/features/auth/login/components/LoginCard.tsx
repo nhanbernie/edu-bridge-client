@@ -3,9 +3,12 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import EBButton from "@/components/common/EBButton";
-import Link from "next/link";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { useTranslations } from "next-intl";
 
 const LoginCard = () => {
+  const { push } = useLocaleRouter();
+  const t = useTranslations("auth.login");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,7 +33,7 @@ const LoginCard = () => {
       <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
         {/* EBHeader */}
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">Chào mừng đến với EduBridge</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">{t("title")}</h3>
         </div>
 
         {/* Form */}
@@ -38,7 +41,7 @@ const LoginCard = () => {
           {/* Email Field */}
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -47,7 +50,7 @@ const LoginCard = () => {
               value={formData.email}
               onChange={handleInputChange}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
-              placeholder="Nhập email của bạn"
+              placeholder={t("email")}
               required
             />
           </div>
@@ -55,7 +58,7 @@ const LoginCard = () => {
           {/* Password Field */}
           <div className="space-y-2">
             <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Mật khẩu
+              {t("password")}
             </label>
             <div className="relative">
               <input
@@ -65,7 +68,7 @@ const LoginCard = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
-                placeholder="Nhập mật khẩu"
+                placeholder={t("password")}
                 required
               />
               <button
@@ -84,20 +87,20 @@ const LoginCard = () => {
             size="lg"
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            Tiếp tục
+            {t("loginButton")}
           </EBButton>
         </form>
 
         {/* EBFooter */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Chưa có tài khoản?{" "}
-            <Link
-              href="/register"
+            {t("noAccount")}{" "}
+            <button
+              onClick={() => push("/register")}
               className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
             >
-              Đăng ký
-            </Link>
+              {t("registerLink")}
+            </button>
           </p>
         </div>
       </div>

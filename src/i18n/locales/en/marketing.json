@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Enjoy The Trip With Good Moments",
+    "subtitle": "Find qualified tutors and teachers to enhance your knowledge and skills most effectively",
+    "searchForm": {
+      "subject": "Subject",
+      "subjectPlaceholder": "Choose subject",
+      "level": "Level",
+      "levelPlaceholder": "Choose level",
+      "location": "Location",
+      "locationPlaceholder": "Choose location",
+      "budget": "Budget",
+      "budgetPlaceholder": "Choose price range",
+      "searchButton": "Find Tutors Now"
+    },
+    "subjects": {
+      "math": "Mathematics",
+      "english": "English",
+      "physics": "Physics",
+      "chemistry": "Chemistry",
+      "biology": "Biology"
+    },
+    "levels": {
+      "elementary": "Elementary",
+      "middle": "Middle School",
+      "high": "High School",
+      "university": "University"
+    },
+    "locations": {
+      "hanoi": "Hanoi",
+      "hcm": "Ho Chi Minh City",
+      "danang": "Da Nang",
+      "online": "Online"
+    },
+    "budgets": {
+      "100-200": "100k - 200k/session",
+      "200-500": "200k - 500k/session",
+      "500+": "Above 500k/session"
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to EduBridge",
+    "subtitle": "Connect with qualified tutors for personalized learning",
+    "stats": {
+      "students": "Students",
+      "tutors": "Professional Tutors",
+      "rating": "Average Rating"
+    }
+  },
+  "header": {
+    "login": "Log in",
+    "register": "Sign up",
+    "mobileLogin": "Sign in",
+    "mobileRegister": "Sign up for free",
+    "settings": "Settings"
+  }
+}
