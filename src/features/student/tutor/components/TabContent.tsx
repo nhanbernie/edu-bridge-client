@@ -18,7 +18,7 @@ import { useState } from "react";
 interface TimeSlot {
   start: string;
   end: string;
-  isBooked?: boolean;
+  status?: string; // AVAILABLE/BOOKED/RESERVED
 }
 
 interface DaySchedule {
