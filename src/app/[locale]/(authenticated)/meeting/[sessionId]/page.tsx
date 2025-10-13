@@ -1,13 +1,13 @@
-import React from "react";
 import MeetingPage from "@/features/meeting/MeetingPage";
 
-interface StudentMeetingProps {
+interface MeetingProps {
   params: Promise<{ sessionId: string }>;
 }
 
-const StudentMeeting = async ({ params }: StudentMeetingProps) => {
+const Meeting = async ({ params }: MeetingProps) => {
   const { sessionId } = await params;
+
   return <MeetingPage sessionId={sessionId} />;
 };
 
-export default StudentMeeting;
+export default Meeting;

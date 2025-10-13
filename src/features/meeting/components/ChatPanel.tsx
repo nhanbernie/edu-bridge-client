@@ -1,121 +1,63 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { MessageSquare, Send } from "lucide-react";
-
-interface ChatMessage {
-  userId: string;
-  message: string;
-  timestamp: string;
-}
+import React, { useState } from "react";
+import { X, Send } from "lucide-react";
 
 interface ChatPanelProps {
-  messages: ChatMessage[];
-  onSendMessage: (message: string) => void;
-  currentUserId: string;
-  isJoined: boolean;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const ChatPanel: React.FC<ChatPanelProps> = ({
-  messages,
-  onSendMessage,
-  currentUserId,
-  isJoined,
-}) => {
-  const [newMessage, setNewMessage] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
+  const [message, setMessage] = useState("");
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSendMessage = () => {
-    if (newMessage.trim() && isJoined) {
-      onSendMessage(newMessage.trim());
-      setNewMessage("");
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString("vi-VN", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  if (!isOpen) return null;
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
-      {/* Chat Header */}
-      <div className="flex items-center gap-2 p-4 border-b border-gray-200">
-        <MessageSquare className="h-5 w-5 text-gray-600" />
-        <h3 className="font-semibold text-gray-900">Chat</h3>
-        <span className="text-sm text-gray-600">({messages?.length || 0})</span>
+    <div className="w-80 h-full bg-white dark:bg-gray-800 shadow-xl flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">In-call messages</h3>
+        <button
+          onClick={onClose}
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+        >
+          <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+        </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {!messages || !Array.isArray(messages) || messages.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">
-            <MessageSquare className="h-12 w-12 mx-auto mb-2 opacity-50" />
-            <p>Chưa có tin nhắn nào</p>
-            <p className="text-sm">Hãy bắt đầu cuộc trò chuyện!</p>
+      {/* Messages Area - Takes remaining space */}
+      <div className="flex-1 p-4 overflow-y-auto">
+        {/* Empty State */}
+        <div className="flex flex-col items-center justify-center h-full text-center">
+          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+            <span className="text-2xl">💬</span>
           </div>
-        ) : (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${msg.userId === currentUserId ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-xs px-3 py-2 rounded-lg ${
-                  msg.userId === currentUserId
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-900 border border-gray-200"
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-medium">
-                    {msg.userId === currentUserId ? "Bạn" : msg.userId}
-                  </span>
-                  <span className="text-xs opacity-70">{formatTime(msg.timestamp)}</span>
-                </div>
-                <p className="text-sm">{msg.message}</p>
-              </div>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
+          <p className="text-gray-500 dark:text-gray-400 text-sm">No chat messages yet</p>
+        </div>
       </div>
 
-      {/* Message Input */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex gap-2">
+      {/* Message Input - Fixed at bottom */}
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2">
           <input
             type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={isJoined ? "Nhập tin nhắn..." : "Tham gia phòng để chat"}
-            disabled={!isJoined}
-            className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Send a message"
+            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
           />
           <button
-            onClick={handleSendMessage}
-            disabled={!isJoined || !newMessage.trim()}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+            onClick={() => {
+              if (message.trim()) {
+                // Handle send message
+                setMessage("");
+              }
+            }}
+            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+            disabled={!message.trim()}
           >
-            <Send className="h-4 w-4" />
+            <Send className="w-4 h-4" />
           </button>
         </div>
       </div>

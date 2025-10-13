@@ -1,181 +1,181 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useUserId } from "@/hooks/useUserId";
 import {
-  Video,
   Mic,
   MicOff,
+  Video,
   VideoOff,
+  Monitor,
+  Hand,
+  MessageCircle,
   Phone,
-  PhoneOff,
-  Users,
-  Settings,
-  MessageSquare,
-  Loader2,
+  Maximize2,
+  MoreVertical,
 } from "lucide-react";
-import { useMeeting } from "./hooks/useMeeting";
-import { Whiteboard, ChatPanel, VideoPanel } from "./components";
-
+import ChatPanel from "./components/ChatPanel";
+import WhiteboardPanel from "./components/WhiteboardPanel";
+import UserLoading from "./components/UserLoading";
+import { useSignalR } from "./hooks/useSignalR";
 interface MeetingPageProps {
   sessionId: string;
 }
 
 const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId }) => {
-  const {
-    isJoined,
-    isVideoOn,
-    isMicOn,
-    messages,
-    localStream,
-    remoteStreams,
-    isLoading,
-    userId,
-    userRole,
-    handleJoinMeeting,
-    handleLeaveMeeting,
-    handleSendMessage,
-    toggleVideo,
-    toggleMic,
-    setupEditorListener,
-  } = useMeeting({ sessionId });
+  const { userId, userRole } = useUserId();
+  const t = useTranslations("meeting");
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVideoOff, setIsVideoOff] = useState(false);
+  const [isHandRaised, setIsHandRaised] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  if (isLoading) {
+  // SignalR connection
+  const {
+    isConnected,
+    messages,
+    peerId,
+    micOn,
+    camOn,
+    joined,
+    isJoining,
+    sendChatMessage,
+    joinSession,
+    toggleMedia,
+    handleMount,
+  } = useSignalR({
+    userId: userId || "",
+    userRole: userRole || "",
+    sessionId,
+  });
+
+  const currentTime = new Date().toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  // Auto join session when connected
+  useEffect(() => {
+    if (isConnected && !joined && !isJoining) {
+      joinSession(sessionId);
+    }
+  }, [isConnected, joined, isJoining, sessionId, joinSession]);
+
+  // Loading state - AFTER all hooks
+  if (!isConnected) {
     return (
-      <div className="min-h-screen bg-white text-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-blue-500" />
-          <p className="text-lg">Đang khởi tạo phòng học...</p>
-          <p className="text-sm text-gray-600 mt-2">Vui lòng chờ trong giây lát</p>
-        </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <UserLoading userType="tutor" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Header */}
-      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900">Meeting Room</h1>
-            <p className="text-sm text-gray-600">Session ID: {sessionId}</p>
-            <p className="text-xs text-gray-500">
-              User: {userId} ({userRole})
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white overflow-hidden">
+      {/* Main Content Area */}
+      <main className="relative h-screen w-full flex">
+        {/* Video/Whiteboard Content */}
+        <div className={`flex-1 bg-gray-100 dark:bg-gray-900 transition-all duration-300}`}>
+          {/* Whiteboard - Hiển thị ngay khi có userId */}
+          <div className="w-full h-full pb-20">
+            <WhiteboardPanel onMount={handleMount} />
           </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-gray-200 rounded-lg text-gray-700">
-              <Settings className="h-5 w-5" />
-            </button>
-            <button className="p-2 hover:bg-gray-200 rounded-lg text-gray-700">
-              <Users className="h-5 w-5" />
-            </button>
+
+          {/* Top Left - Room Info */}
+          <div className="absolute top-4 left-4 bg-black/50 dark:bg-black/50 backdrop-blur-sm rounded-lg px-4 py-2 z-10">
+            <div className="text-sm">
+              <div className="font-medium text-white">Room: {sessionId.slice(0, 8)}</div>
+              <div className="text-gray-300 text-xs">{currentTime}</div>
+            </div>
           </div>
+
+          {/* Video controls overlay */}
+          {/* <div className="absolute top-4 right-4 flex gap-2 z-10">
+            <button className="p-2 bg-gray-800/50 dark:bg-black/50 rounded-full hover:bg-gray-800/70 dark:hover:bg-black/70 transition-colors">
+              <Maximize2 className="w-4 h-4 text-gray-700 dark:text-white" />
+            </button>
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="p-2 bg-gray-800/50 dark:bg-black/50 rounded-full hover:bg-gray-800/70 dark:hover:bg-black/70 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4 text-gray-700 dark:text-white" />
+            </button>
+          </div> */}
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)]">
-        {/* Video Area */}
-        <div className="flex-1 flex flex-col">
-          {!isJoined ? (
-            // Pre-join screen
-            <div className="flex-1 flex items-center justify-center bg-gray-50">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Video className="h-16 w-16 text-gray-600" />
-                </div>
-                <h2 className="text-2xl font-bold mb-4 text-gray-900">Sẵn sàng tham gia?</h2>
-                <p className="text-gray-600 mb-6">
-                  Kiểm tra camera và microphone trước khi tham gia
-                </p>
-                <button
-                  onClick={handleJoinMeeting}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-                >
-                  Tham gia ngay
-                </button>
-              </div>
-            </div>
-          ) : (
-            // Meeting screen - Show both video and whiteboard
-            <div className="flex-1 bg-gray-50 relative flex">
-              {/* Video Panel - Left side */}
-              <div className="flex-1">
-                <VideoPanel
-                  localStream={localStream}
-                  remoteStreams={remoteStreams}
-                  isVideoOn={isVideoOn}
-                  isMicOn={isMicOn}
-                  onToggleVideo={toggleVideo}
-                  onToggleMic={toggleMic}
-                  isJoined={isJoined}
-                />
-              </div>
-
-              {/* Whiteboard Panel - Right side */}
-              <div className="w-1/2 border-l border-gray-200">
-                <Whiteboard onMount={setupEditorListener} isJoined={isJoined} />
-              </div>
-            </div>
-          )}
-
-          {/* Controls */}
-          <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div className="flex items-center justify-center gap-4">
+        {/* Bottom Control Bar */}
+        <div
+          className={`absolute bottom-0 left-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 z-30 transition-all duration-300 ${isChatOpen ? "right-80" : "right-0"}`}
+        >
+          <div className="flex items-center justify-center px-6 py-4">
+            {/* Center - Main Controls */}
+            <div className="flex items-center gap-4">
+              {/* Mic Toggle */}
               <button
-                onClick={toggleMic}
-                disabled={!isJoined}
+                onClick={() => setIsMuted(!isMuted)}
                 className={`p-3 rounded-full transition-colors ${
-                  isMicOn
-                    ? "bg-gray-200 hover:bg-gray-300 text-gray-700"
-                    : "bg-red-500 hover:bg-red-600 text-white"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  isMuted ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+                }`}
               >
-                {isMicOn ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
+                {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
               </button>
 
+              {/* Video Toggle */}
               <button
-                onClick={toggleVideo}
-                disabled={!isJoined}
+                onClick={() => setIsVideoOff(!isVideoOff)}
                 className={`p-3 rounded-full transition-colors ${
-                  isVideoOn
-                    ? "bg-gray-200 hover:bg-gray-300 text-gray-700"
-                    : "bg-red-500 hover:bg-red-600 text-white"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  isVideoOff ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+                }`}
               >
-                {isVideoOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
+                {isVideoOff ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
               </button>
 
-              {isJoined ? (
-                <button
-                  onClick={handleLeaveMeeting}
-                  className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
-                >
-                  <PhoneOff className="h-5 w-5" />
-                </button>
-              ) : (
-                <button
-                  onClick={handleJoinMeeting}
-                  className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors"
-                >
-                  <Phone className="h-5 w-5" />
-                </button>
-              )}
+              {/* Screen Share */}
+              <button className="p-3 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors">
+                <Monitor className="w-5 h-5" />
+              </button>
+
+              {/* Raise Hand */}
+              <button
+                onClick={() => setIsHandRaised(!isHandRaised)}
+                className={`p-3 rounded-full transition-colors ${
+                  isHandRaised
+                    ? "bg-yellow-600 hover:bg-yellow-700"
+                    : "bg-gray-700 hover:bg-gray-600"
+                }`}
+              >
+                <Hand className="w-5 h-5" />
+              </button>
+
+              {/* Chat Button */}
+              <button
+                onClick={() => setIsChatOpen(true)}
+                className="p-3 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
+              >
+                <MessageCircle className="w-5 h-5" />
+              </button>
+
+              <button className="p-3 rounded-full bg-red-600 hover:bg-red-700 transition-colors">
+                <Phone className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">
-          <ChatPanel
-            messages={messages}
-            onSendMessage={handleSendMessage}
-            currentUserId={userId || "unknown"}
-            isJoined={isJoined}
-          />
-        </div>
-      </div>
+        {/* Chat Panel - Part of main layout */}
+        {isChatOpen && (
+          <div className="border-l border-gray-200 dark:border-gray-700">
+            <ChatPanel
+              isOpen={isChatOpen}
+              onClose={() => setIsChatOpen(false)}
+              messages={messages}
+              onSendMessage={sendChatMessage}
+            />
+          </div>
+        )}
+      </main>
     </div>
   );
 };

@@ -47,6 +47,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       `@/i18n/locales/${locale}/student/transactions/status.json`
     );
 
+    // Load meeting translations
+    const meeting = await import(`@/i18n/locales/${locale}/meeting/meeting.json`);
+
     messages = {
       common: common.default,
       tutor: tutor.default,
@@ -67,6 +70,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           status: studentTransactionsStatus.default,
         },
       },
+      meeting: meeting.default,
     };
   } catch (error) {
     console.error(`Failed to load messages for locale: ${locale}`, error);

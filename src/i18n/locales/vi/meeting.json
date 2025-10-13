@@ -1,0 +1,15 @@
+{
+  "title": "Phòng học trực tuyến",
+  "subtitle": "Đang chuẩn bị phòng học...",
+  "sessionInfo": {
+    "sessionId": "Mã phiên học",
+    "userId": "Mã người dùng",
+    "role": "Vai trò"
+  },
+  "actions": {
+    "startVideo": "Bắt đầu Video",
+    "chat": "Chat",
+    "whiteboard": "Bảng trắng"
+  },
+  "loading": "Đang tải thông tin người dùng..."
+}
