@@ -10,7 +10,18 @@ export function middleware(req: NextRequest) {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (hasLocale) return NextResponse.next();
+  if (hasLocale) {
+    // Validate that the locale is supported
+    const currentLocale = pathname.split("/")[1];
+    if (SUPPORTED_LOCALES.includes(currentLocale as any)) {
+      return NextResponse.next();
+    } else {
+      // Invalid locale, redirect to default
+      const url = req.nextUrl.clone();
+      url.pathname = `/${DEFAULT_LOCALE}${pathname.replace(`/${currentLocale}`, "")}`;
+      return NextResponse.redirect(url);
+    }
+  }
 
   // Redirect to default locale
   const url = req.nextUrl.clone();

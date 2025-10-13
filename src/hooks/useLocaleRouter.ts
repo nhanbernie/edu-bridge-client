@@ -2,35 +2,50 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useCallback } from "react";
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/i18n/config";
 
 export const useLocaleRouter = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Extract current locale from pathname
-  const getCurrentLocale = () => {
+  // Extract current locale from pathname with validation
+  const getCurrentLocale = useCallback(() => {
     const segments = pathname.split("/");
-    return segments[1] || "en"; // Default to 'en' if no locale found
-  };
+    const locale = segments[1];
 
-  // Navigate with current locale
+    // Validate locale is supported
+    if (locale && SUPPORTED_LOCALES.includes(locale as any)) {
+      return locale;
+    }
+
+    // Fallback to default locale
+    return DEFAULT_LOCALE;
+  }, [pathname]);
+
+  // Navigate with current locale (validated)
   const push = useCallback(
     (path: string) => {
       const locale = getCurrentLocale();
       const newPath = path.startsWith("/") ? path : `/${path}`;
-      router.push(`/${locale}${newPath}`);
+
+      // Ensure locale is valid before navigation
+      const validLocale = SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE;
+      router.push(`/${validLocale}${newPath}`);
     },
-    [router, pathname, getCurrentLocale]
+    [router, getCurrentLocale]
   );
 
-  // Navigate to specific locale
+  // Navigate to specific locale (with validation)
   const pushWithLocale = useCallback(
-    (path: string, locale?: string) => {
-      const targetLocale = locale || getCurrentLocale();
+    (path: string, targetLocale?: string) => {
+      const locale = targetLocale || getCurrentLocale();
       const newPath = path.startsWith("/") ? path : `/${path}`;
-      router.push(`/${targetLocale}${newPath}`);
+
+      // Validate target locale
+      const validLocale = SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE;
+      router.push(`/${validLocale}${newPath}`);
     },
-    [router, pathname, getCurrentLocale]
+    [router, getCurrentLocale]
   );
 
   return {

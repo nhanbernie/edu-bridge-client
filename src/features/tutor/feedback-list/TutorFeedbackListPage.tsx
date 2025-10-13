@@ -21,7 +21,7 @@ const TutorFeedbackListPage: React.FC = () => {
     error,
   } = useGetTutorTeachingsQuery({ tutorId: tutorId || "" }, { skip: !tutorId });
 
-  const teachings = teachingsData?.data || [];
+  const teachings = useMemo(() => teachingsData?.data || [], [teachingsData?.data]);
 
   // Separate completed and in-progress courses
   const { completedCourses, inProgressCourses } = useMemo(() => {

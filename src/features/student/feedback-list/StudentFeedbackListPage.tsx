@@ -28,7 +28,7 @@ const StudentFeedbackListPage: React.FC = () => {
     error,
   } = useGetStudentEnrollmentsQuery({ studentId: studentId || "" }, { skip: !studentId });
 
-  const enrollments = enrollmentsData?.data || [];
+  const enrollments = useMemo(() => enrollmentsData?.data || [], [enrollmentsData?.data]);
 
   // Separate completed and in-progress courses
   const { completedCourses, inProgressCourses } = useMemo(() => {
