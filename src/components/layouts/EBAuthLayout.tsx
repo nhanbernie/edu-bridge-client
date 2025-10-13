@@ -3,7 +3,6 @@
 import { GraduationCap, Users, Star, BookOpen } from "lucide-react";
 import { StatsCard } from "@/features/marketing/components";
 import React from "react";
-import Link from "next/link";
 import { EBLogo, EBThemeToggle } from "@/components/common";
 
 const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {

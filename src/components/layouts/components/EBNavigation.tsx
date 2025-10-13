@@ -1,8 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
-import Link from "next/link";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 const EBNavigation = ({ items }: { items: any[] }) => {
+  const { push } = useLocaleRouter();
+
   return (
     <>
       {items.map((item, index) => (
@@ -12,8 +15,8 @@ const EBNavigation = ({ items }: { items: any[] }) => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: index * 0.1, duration: 0.5 }}
         >
-          <Link
-            href={item.href}
+          <button
+            onClick={() => push(item.href)}
             className={`relative text-sm font-medium transition-colors hover:text-emerald-600 ${
               item.active ? "text-emerald-600" : "text-gray-700"
             }`}
@@ -26,7 +29,7 @@ const EBNavigation = ({ items }: { items: any[] }) => {
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}
-          </Link>
+          </button>
         </motion.div>
       ))}
     </>
