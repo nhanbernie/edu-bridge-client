@@ -1,7 +1,7 @@
 import { EndpointBuilder } from "@reduxjs/toolkit/query/react";
 import { TutorSearchRequest, TutorSearchResponse } from "../type";
 
-export const searchTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
+export const filterTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
   builder.query<TutorSearchResponse, TutorSearchRequest>({
     query: (params) => {
       // Build query string from params
@@ -38,7 +38,7 @@ export const searchTutorsEndpoint = (builder: EndpointBuilder<any, any, any>) =>
       }
 
       return {
-        url: `/api/tutor/search?${searchParams.toString()}`,
+        url: `/api/tutor/filter?${searchParams.toString()}`,
         method: "GET",
       };
     },
