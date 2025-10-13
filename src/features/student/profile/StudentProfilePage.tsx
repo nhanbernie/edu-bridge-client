@@ -5,11 +5,10 @@ import { useStudentProfile } from "@/features/student/profile/hook/useStudentPro
 import EBStudentProfileForm from "./components/EBStudentProfileForm";
 import { EBPageLoading } from "@/components/common";
 import {
-  PAGE_CONTAINER,
-  CONTENT_WRAPPER,
   PAGE_HEADER,
   PAGE_TITLE,
   PAGE_SUBTITLE,
+  PAGE_CONTAINER,
 } from "@/common/constants/className.constant";
 
 const StudentProfilePage: React.FC = () => {
@@ -31,7 +30,7 @@ const StudentProfilePage: React.FC = () => {
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className={CONTENT_WRAPPER}>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
         <div className={PAGE_HEADER}>
           <h1 className={PAGE_TITLE}>Hồ sơ cá nhân</h1>
