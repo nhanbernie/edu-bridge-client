@@ -4,7 +4,7 @@ import React from "react";
 import { useStudentTransactions } from "./hooks/useStudentTransactions";
 import {
   TransactionStatsCard,
-  TransactionList,
+  UserTransactionList,
   TransactionHeader,
   EBPageLoading,
 } from "@/components/common";
@@ -16,7 +16,7 @@ const ManageTransactionsPage: React.FC = () => {
     transactions,
     isLoading,
     totalSpent,
-    totalServiceFees,
+    totalReceived,
     completedTransactions,
     pendingTransactions,
     failedTransactions,
@@ -45,14 +45,19 @@ const ManageTransactionsPage: React.FC = () => {
         />
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <TransactionStatsCard
             title="Tổng chi tiêu"
             value={formatCurrency(totalSpent)}
-            description="Tổng số tiền đã thanh toán"
+            description="Tiền chuyển đi"
             icon={CreditCard}
           />
-
+          <TransactionStatsCard
+            title="Tổng nhận"
+            value={formatCurrency(totalReceived)}
+            description="Tiền nhận vào"
+            icon={TrendingDown}
+          />
           <TransactionStatsCard
             title="Hoàn thành"
             value={completedTransactions}
@@ -68,11 +73,7 @@ const ManageTransactionsPage: React.FC = () => {
         </div>
 
         {/* Transactions List */}
-        <TransactionList
-          transactions={transactions}
-          formatCurrency={formatCurrency}
-          userRole="student"
-        />
+        <UserTransactionList transactions={transactions} formatCurrency={formatCurrency} />
       </div>
     </div>
   );

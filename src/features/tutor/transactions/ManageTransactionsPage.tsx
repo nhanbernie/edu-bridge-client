@@ -4,7 +4,7 @@ import React from "react";
 import { useTutorTransactions } from "./hooks/useTutorTransactions";
 import {
   TransactionStatsCard,
-  TransactionList,
+  UserTransactionList,
   TransactionHeader,
   EBPageLoading,
 } from "@/components/common";
@@ -16,7 +16,7 @@ const ManageTransactionsPage: React.FC = () => {
     transactions,
     isLoading,
     totalEarnings,
-    totalServiceFees,
+    totalSpent,
     completedTransactions,
     pendingTransactions,
     failedTransactions,
@@ -50,13 +50,13 @@ const ManageTransactionsPage: React.FC = () => {
         <TransactionStatsCard
           title="Tổng thu nhập"
           value={formatCurrency(totalEarnings)}
-          description="Sau khi trừ phí dịch vụ"
+          description="Tiền nhận vào"
           icon={DollarSign}
         />
         <TransactionStatsCard
-          title="Phí dịch vụ"
-          value={formatCurrency(totalServiceFees)}
-          description="Phí hệ thống"
+          title="Tổng chi tiêu"
+          value={formatCurrency(totalSpent)}
+          description="Tiền chuyển đi"
           icon={TrendingUp}
         />
         <TransactionStatsCard
@@ -74,7 +74,7 @@ const ManageTransactionsPage: React.FC = () => {
       </div>
 
       {/* Transactions List */}
-      <TransactionList transactions={transactions} formatCurrency={formatCurrency} />
+      <UserTransactionList transactions={transactions} formatCurrency={formatCurrency} />
     </div>
   );
 };
