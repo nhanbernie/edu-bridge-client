@@ -1,2 +1,10 @@
-// Shell page: re-exports original forgot password
-export { default } from "@/app/(unauthenticated)/(auth)/forgot-password/page";
+"use client";
+
+import React from "react";
+import ForgotPasswordPage from "@/features/auth/forgot/ForgotPasswordPage";
+
+const ForgotPassword = () => {
+  return <ForgotPasswordPage />;
+};
+
+export default ForgotPassword;

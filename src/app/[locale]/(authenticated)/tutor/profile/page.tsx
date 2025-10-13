@@ -1,2 +1,10 @@
-// Shell page: re-exports original tutor profile
-export { default } from "@/app/(authenticated)/tutor/profile/page";
+"use client";
+
+import React from "react";
+import TutorProfilePage from "@/features/tutor/profile/TutorProfilePage";
+
+const TutorProfile = () => {
+  return <TutorProfilePage />;
+};
+
+export default TutorProfile;

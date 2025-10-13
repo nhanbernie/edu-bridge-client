@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "title": "Hồ sơ gia sư",
+    "subtitle": "Quản lý hồ sơ và thông tin cá nhân",
+    "loading": "Đang tải thông tin hồ sơ..."
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển gia sư",
+    "subtitle": "Quản lý khóa học và lịch dạy"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "profile": {
+    "title": "Tutor Profile",
+    "subtitle": "Manage your profile and credentials",
+    "loading": "Loading profile information..."
+  },
+  "dashboard": {
+    "title": "Tutor Dashboard",
+    "subtitle": "Manage your courses and schedule"
+  }
+}

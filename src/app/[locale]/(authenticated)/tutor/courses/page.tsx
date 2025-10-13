@@ -1,2 +1,9 @@
-// Shell page: re-exports original courses management
-export { default } from "@/app/(authenticated)/tutor/courses/page";
+"use client";
+
+import TutorCoursesPage from "@/features/tutor/courses/ManageCoursesPage";
+
+const TutorCourses = () => {
+  return <TutorCoursesPage />;
+};
+
+export default TutorCourses;
