@@ -6,9 +6,11 @@ import { X, Send } from "lucide-react";
 interface ChatPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  messages: { userId: string; message: string }[];
+  onSendMessage: (message: string) => void;
 }
 
-const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
+const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose, messages, onSendMessage }) => {
   const [message, setMessage] = useState("");
 
   if (!isOpen) return null;

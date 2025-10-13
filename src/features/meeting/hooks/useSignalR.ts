@@ -470,7 +470,11 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
   useEffect(() => {
     console.log("🔄 Initializing PeerJS...");
 
-    let timeout: NodeJS.Timeout;
+    const timeout: NodeJS.Timeout = setTimeout(() => {
+      console.warn("⏰ PeerJS connection timeout - proceeding without video calls");
+      setPeerId("fallback-no-video");
+    }, 10000); // 10 giây timeout
+
     let fallbackTimeout: NodeJS.Timeout;
 
     const attachPeerEventListeners = (fallbackTimeoutRef: NodeJS.Timeout) => {
@@ -534,12 +538,6 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
     };
 
     fallbackTimeout = tryPeerConnection();
-
-    // Set timeout để không đợi quá lâu
-    timeout = setTimeout(() => {
-      console.warn("⏰ PeerJS connection timeout - proceeding without video calls");
-      setPeerId("fallback-no-video");
-    }, 10000); // 10 giây timeout
 
     // Attach event listeners cho lần đầu
     attachPeerEventListeners(fallbackTimeout);
