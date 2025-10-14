@@ -21,6 +21,10 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
   const [joined, setJoined] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
 
+  const receivePeerIdCallbackRef = useRef<((peerId: string, userId: string) => void) | null>(null);
+
+  const recentMessagesRef = useRef<Set<string>>(new Set());
+
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const currentVersionRef = useRef(0);
 
@@ -33,7 +37,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
   const localStreamRef = useRef<MediaStream | null>(null);
   const editorRef = useRef<any>(null);
   const sendSnapshotDebounceRef = useRef<any>(null);
-  const saveDebounceRef = useRef<any>(null);
+  const saveDebounceRef = useRef<any>(null); // send data to database
   const isLoadingSnapshot = useRef(false);
   const sessionRef = useRef({ sessionId: "", joined: false });
 
@@ -130,11 +134,6 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
 
   // --- Send snapshot to SignalR hub ---
   const sendSnapshotToHub = (snapshot: any) => {
-    console.log("\n🎨 === GỬI CẬP NHẬT WHITEBOARD ===");
-    console.log("🔌 Phương thức: SignalR invoke - BroadcastWhiteboard");
-    console.log("👤 User:", userId);
-    console.log("📌 Version:", Date.now());
-
     const currentSession = sessionRef.current;
     if (
       !connectionRef.current ||
@@ -142,7 +141,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       !currentSession.sessionId ||
       !currentSession.joined
     ) {
-      console.log("⚠️ Không gửi được - connection chưa sẵn sàng");
+      console.log("Không gửi được - connection chưa sẵn sàng");
       return;
     }
     const dto = {
@@ -152,14 +151,11 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       ClientId: userId,
       Timestamp: Date.now(),
     };
-    console.log("📊 Snapshot size:", dto.SnapshotJson.length, "characters");
-    connectionRef.current
-      .invoke("BroadcastWhiteboard", dto)
-      .then(() => {
-        console.log("✅ Đã gửi snapshot qua SignalR");
-        console.log("⏳ Chờ server broadcast đến các clients khác...\n");
-      })
-      .catch((err) => console.error("❌ BroadcastWhiteboard failed", err));
+    console.log("Snapshot size:", dto.SnapshotJson.length, "characters");
+    connectionRef.current.invoke("BroadcastWhiteboard", dto).then(() => {
+      console.log("Đã gửi snapshot qua SignalR");
+      console.log("Chờ server broadcast đến các clients khác...\n");
+    });
   };
 
   // --- Save snapshot to server ---
@@ -186,13 +182,6 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       if (isLoadingSnapshot.current || changes.source !== "user") {
         return;
       }
-
-      console.log("\n✏️ === PHÁT HIỆN THAY ĐỔI TRÊN WHITEBOARD ===");
-      console.log("📝 Source:", changes.source);
-      console.log("➕ Added:", changes.added?.length || 0);
-      console.log("✏️ Updated:", changes.updated?.length || 0);
-      console.log("🗑️ Removed:", changes.removed?.length || 0);
-
       let hasShapeUpdate = false;
       const updatedShapes: any[] = [];
       for (const change of changes.added || []) {
@@ -211,7 +200,6 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
         if (change.typeName === "shape") hasShapeUpdate = true;
       }
       if (hasShapeUpdate) {
-        console.log("🎨 Có thay đổi shape, gửi shape update...");
         updatedShapes.forEach((shape) => sendShapeUpdateToHub(shape));
       }
       const snapshot = getSnapshotFromEditor();
@@ -225,13 +213,13 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       console.log("⏱️ Debounce 3000ms để lưu snapshot vào database...\n");
       saveDebounceRef.current = setTimeout(() => saveSnapshotToServer(snapshot), 3000);
     },
-    [userId]
+    [userId, sendShapeUpdateToHub, sendSnapshotToHub]
   );
 
   // --- SignalR setup ---
   useEffect(() => {
     if (!userId || !userRole || !sessionId) {
-      console.log("⏭️ Skipping SignalR setup - missing userId, userRole, or sessionId");
+      console.log("Skipping SignalR setup - missing userId, userRole, or sessionId");
       return;
     }
 
@@ -250,10 +238,10 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       setCamOn(false);
 
       if (err) {
-        console.log("🔄 SignalR will attempt to reconnect automatically...");
+        console.log("SignalR will attempt to reconnect automatically...");
         // Không cần alert vì có automatic reconnect
       } else {
-        console.log("🔌 SignalR connection closed by user");
+        console.log("SignalR connection closed by user");
       }
     });
 
@@ -278,18 +266,13 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
     });
 
     conn.on("ReceiveWhiteboardUpdate", (snapshotJson, meta) => {
-      console.log("\n🎨 === NHẬN CẬP NHẬT WHITEBOARD TỪ SIGNALR ===");
-      console.log("🔌 Event: ReceiveWhiteboardUpdate");
-      console.log("👤 Client gửi:", meta?.ClientId);
-      console.log("📌 Version:", meta?.Version);
-
       if (meta && meta.ClientId === userId) {
-        console.log("⏭️ Bỏ qua update từ chính mình");
+        console.log("Bỏ qua update từ chính mình");
         return;
       }
       if (meta.Version <= currentVersionRef.current) {
         console.log(
-          "⏭️ Bỏ qua snapshot cũ, currentVersion:",
+          "Bỏ qua snapshot cũ, currentVersion:",
           currentVersionRef.current,
           "received:",
           meta.Version
@@ -298,17 +281,16 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       }
       try {
         const snapshot = typeof snapshotJson === "string" ? JSON.parse(snapshotJson) : snapshotJson;
-        console.log("📊 Snapshot data:", JSON.stringify(snapshot, null, 2));
+        console.log("Snapshot data:", JSON.stringify(snapshot, null, 2));
         if (!snapshot.document?.schema || !snapshot.document.schema.schemaVersion) {
-          console.warn("❌ Invalid snapshot from SignalR:", snapshot);
+          console.warn("Invalid snapshot from SignalR:", snapshot);
           return;
         }
-        console.log("✅ Đang load snapshot vào editor...");
+        console.log("Đang load snapshot vào editor...");
         loadSnapshotIntoEditor(snapshot);
         currentVersionRef.current = meta.Version;
-        console.log("✅ Đã cập nhật whiteboard\n");
       } catch (e) {
-        console.error("❌ ReceiveWhiteboardUpdate: invalid snapshotJson", e, snapshotJson);
+        console.error("ReceiveWhiteboardUpdate: invalid snapshotJson", e, snapshotJson);
       }
     });
 
@@ -335,17 +317,41 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       }
     });
 
-    conn.on("ReceiveMessage", (userId, message) => {
-      console.log("\n📨 === NHẬN TIN NHẮN TỪ SIGNALR ===");
-      console.log("👤 Người gửi:", userId);
-      console.log("📝 Nội dung:", message);
-      console.log("🔌 Event: ReceiveMessage");
-      console.log("✅ Đang cập nhật UI...\n");
-      setMessages((prev) => [...prev, { userId, message }]);
+    conn.on("ReceiveMessage", (receivedUserId, message) => {
+      // Create unique key for message deduplication
+      const messageKey = `${receivedUserId}:${message}:${Date.now()}`;
+      const messageKeyShort = `${receivedUserId}:${message}`;
+
+      // Check if this exact message was received recently (within 1 second)
+      if (recentMessagesRef.current.has(messageKeyShort)) {
+        console.log("🚫 Duplicate message detected, ignoring:", messageKeyShort);
+        return;
+      }
+
+      // Only add message if it's from another user (not from current user)
+      // Current user's message was already added optimistically
+      if (receivedUserId !== userId) {
+        setMessages((prev) => [...prev, { userId: receivedUserId, message }]);
+
+        // Track this message to prevent duplicates
+        recentMessagesRef.current.add(messageKeyShort);
+
+        // Clear the tracking after 2 seconds
+        setTimeout(() => {
+          recentMessagesRef.current.delete(messageKeyShort);
+        }, 2000);
+      }
     });
 
     conn.on("ReceivePeerId", (newPeerId, remoteUserId) => {
-      console.log("Received peerId:", newPeerId, "from user:", remoteUserId);
+      console.log("📡 [SignalR] Received peerId:", newPeerId, "from user:", remoteUserId);
+
+      // ✨ NEW: Call external callback (useWebRTC will handle the actual peer connection)
+      if (receivePeerIdCallbackRef.current) {
+        receivePeerIdCallbackRef.current(newPeerId, remoteUserId);
+      }
+
+      // ⚠️ OLD WebRTC logic - will be removed after testing
       if (newPeerId !== peerId) {
         const call = peerRef.current.call(newPeerId, localStreamRef.current);
         callsRef.current[newPeerId] = call;
@@ -381,7 +387,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
           // Thử reconnect call sau 3 giây
           setTimeout(() => {
             if (peerRef.current && !callsRef.current[newPeerId]) {
-              console.log("🔄 Retrying WebRTC call to peer:", newPeerId);
+              console.log("Retrying WebRTC call to peer:", newPeerId);
               const retryCall = peerRef.current.call(newPeerId, localStreamRef.current);
               callsRef.current[newPeerId] = retryCall;
               // Re-attach event listeners...
@@ -468,10 +474,10 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
 
   // --- PeerJS setup ---
   useEffect(() => {
-    console.log("🔄 Initializing PeerJS...");
+    console.log("Initializing PeerJS...");
 
     const timeout: NodeJS.Timeout = setTimeout(() => {
-      console.warn("⏰ PeerJS connection timeout - proceeding without video calls");
+      console.warn("PeerJS connection timeout - proceeding without video calls");
       setPeerId("fallback-no-video");
     }, 10000); // 10 giây timeout
 
@@ -481,22 +487,17 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       peerRef.current.on("open", (id: string) => {
         if (fallbackTimeoutRef) clearTimeout(fallbackTimeoutRef);
         if (timeout) clearTimeout(timeout);
-        console.log("✅ PeerJS connected! My Peer ID:", id);
         setPeerId(id);
       });
 
       peerRef.current.on("error", (err: any) => {
-        console.error("❌ PeerJS error:", err);
         if (err.type === "network" || err.type === "server-error") {
-          console.log("🔄 Network error, will try fallback...");
         }
       });
     };
 
     // Thử kết nối với local PeerJS server trước
     const tryPeerConnection = () => {
-      console.log("🔄 Trying local PeerJS server on port 9000...");
-
       // Cách 1: Sử dụng local server
       peerRef.current = new Peer(undefined as any, {
         host: ENV.PEER.HOST,
@@ -515,7 +516,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
 
       // Fallback sau 5 giây nếu local server không hoạt động
       fallbackTimeout = setTimeout(() => {
-        console.warn("⚠️ Local server timeout, trying cloud server...");
+        console.warn("Local server timeout, trying cloud server...");
         if (peerRef.current) {
           peerRef.current.destroy();
         }
@@ -543,7 +544,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
     attachPeerEventListeners(fallbackTimeout);
 
     peerRef.current.on("disconnected", () => {
-      console.warn("⚠️ PeerJS disconnected");
+      console.warn("PeerJS disconnected");
     });
 
     peerRef.current.on("call", (call: any) => {
@@ -593,14 +594,14 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       });
     });
 
+    // connect peer js
     peerRef.current.on("error", (err: any) => {
-      console.error("❌ PeerJS error:", err);
       console.error("Error type:", err.type);
       console.error("Error message:", err.message);
 
       // Thử khởi tạo lại PeerJS sau 3 giây nếu gặp lỗi
       if (err.type === "network" || err.type === "server-error") {
-        console.log("🔄 Retrying PeerJS connection in 3 seconds...");
+        console.log("Retrying PeerJS connection in 3 seconds...");
         setTimeout(() => {
           if (peerRef.current) {
             peerRef.current.destroy();
@@ -608,7 +609,7 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
           peerRef.current = new Peer();
           // Re-attach event listeners
           peerRef.current.on("open", (id: string) => {
-            console.log("✅ PeerJS reconnected! My Peer ID:", id);
+            console.log("PeerJS reconnected! My Peer ID:", id);
             setPeerId(id);
           });
         }, 3000);
@@ -665,11 +666,6 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
   // --- Join session ---
   const joinSession = useCallback(
     async (roomId: string) => {
-      console.log("=== 🚀 BẮT ĐẦU JOIN SESSION ===");
-      console.log("📋 Session ID:", roomId);
-      console.log("👤 User ID:", userId);
-      console.log("🎓 Role:", userRole);
-
       if (!roomId || !userId) {
         alert("Vui lòng nhập session ID và user ID");
         return;
@@ -682,20 +678,19 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
         return;
       }
 
-      if (!peerId) {
-        const proceed = window.confirm(
-          "PeerJS chưa sẵn sàng (video call sẽ không hoạt động). Bạn có muốn tiếp tục chỉ với whiteboard và chat không?"
-        );
-        if (!proceed) {
-          return;
-        }
-        console.log("⚠️ Proceeding without PeerJS - video calls will not work");
-      }
+      // ⚠️ OLD: Commented out - peerId now managed by useWebRTC hook
+      // if (!peerId) {
+      //   const proceed = window.confirm(
+      //     "PeerJS chưa sẵn sàng (video call sẽ không hoạt động). Bạn có muốn tiếp tục chỉ với whiteboard và chat không?"
+      //   );
+      //   if (!proceed) {
+      //     return;
+      //   }
+      // }
+
       setIsJoining(true);
       try {
-        console.log("\n📡 BƯỚC 1: Call REST API - POST /api/class-session/join");
         const body = { userId: userId, isTutor: userRole === "TUTOR" };
-        console.log("   Request body:", JSON.stringify(body, null, 2));
 
         const response = await fetch(`${ENV.API.BASE_URL}/api/class-session/${roomId}/join`, {
           method: "POST",
@@ -703,65 +698,37 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
           body: JSON.stringify(body),
         });
         const json = await response.json();
-        console.log("   ✅ Response:", JSON.stringify(json, null, 2));
 
         if (!json.success) throw new Error(json.message);
-
-        console.log("\n🔌 BƯỚC 2: SignalR invoke - JoinSession");
-        console.log(
-          "   Tham số: roomId =",
-          roomId,
-          ", userId =",
-          userId,
-          ", isTutor =",
-          userRole === "TUTOR"
-        );
         await conn.invoke("JoinSession", roomId, userId, userRole === "TUTOR");
-        console.log("   ✅ Đã join SignalR group");
 
-        if (peerId && peerId !== "fallback-no-video") {
-          console.log("\n🔌 BƯỚC 3: SignalR invoke - SendPeerId");
-          console.log("   Tham số: roomId =", roomId, ", peerId =", peerId);
-          await conn.invoke("SendPeerId", roomId, peerId, userId);
-          console.log("   ✅ Đã gửi PeerId cho WebRTC");
-        } else {
-          console.log("\n⚠️ BƯỚC 3: Bỏ qua SendPeerId (PeerJS không khả dụng hoặc fallback)");
-        }
+        // ⚠️ OLD: This sends old peerId from useSignalR (not used anymore)
+        // if (peerId && peerId !== "fallback-no-video") {
+        //   await conn.invoke("SendPeerId", roomId, peerId, userId);
+        // }
 
         sessionRef.current = { sessionId: roomId, joined: true };
         setJoined(true);
+        console.log("✅ [useSignalR] Joined session successfully, joined =", true);
 
-        console.log("\n📡 BƯỚC 4: Call REST API - GET /whiteboard (lấy dữ liệu đã lưu)");
         const whiteboardRes = await fetch(
           `${ENV.API.BASE_URL}/api/class-session/${roomId}/whiteboard`
         );
         const whiteboardJson = await whiteboardRes.json();
-        console.log(
-          "   Response:",
-          whiteboardJson.success ? "✅ Có dữ liệu whiteboard" : "⚠️ Không có dữ liệu"
-        );
 
         if (whiteboardJson && whiteboardJson.success && whiteboardJson.data) {
           try {
             const snapshot = JSON.parse(whiteboardJson.data);
-            console.log("   📝 Đang load snapshot vào editor...");
+            console.log("Đang load snapshot vào editor...");
             setTimeout(() => {
               loadSnapshotIntoEditor(snapshot);
               currentVersionRef.current = Date.now();
-              console.log("   ✅ Đã load whiteboard data");
             }, 500);
-          } catch (e) {
-            console.warn("   ❌ Failed to parse saved snapshot", e);
-          }
+          } catch (e) {}
         }
 
-        console.log("\n📡 BƯỚC 5: Call REST API - GET /chat (lấy lịch sử chat)");
         const chatRes = await fetch(`${ENV.API.BASE_URL}/api/class-session/${roomId}/chat`);
         const chatJson = await chatRes.json();
-        console.log(
-          "   Response:",
-          chatJson.Success ? "✅ Có lịch sử chat" : "⚠️ Không có lịch sử"
-        );
 
         if (chatJson && chatJson.Success && chatJson.Data) {
           try {
@@ -773,15 +740,9 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
                 timestamp: msg.Timestamp,
               }))
             );
-            console.log("   ✅ Đã load", chatHistory.length, "tin nhắn");
-          } catch (e) {
-            console.warn("   ❌ Failed to parse chat history", e);
-          }
+          } catch (e) {}
         }
-
-        console.log("\n✅ === HOÀN THÀNH JOIN SESSION ===\n");
       } catch (e: any) {
-        console.error("❌ joinSession failed:", e);
         sessionRef.current = { sessionId: "", joined: false };
         setJoined(false);
         alert(`Lỗi khi join: ${e.message}`);
@@ -794,12 +755,11 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
 
   // --- Send chat message ---
   const sendChatMessage = async (message: string) => {
-    console.log("\n💬 === GỬI TIN NHẮN CHAT ===");
-    console.log("📝 Nội dung:", message);
-    console.log("👤 Người gửi:", userId);
-    console.log("🔌 Phương thức: SignalR invoke - SendMessage");
-
     if (!message || !sessionRef.current.sessionId) return;
+
+    // Optimistic update: Add message immediately for current user
+    setMessages((prev) => [...prev, { userId, message }]);
+
     try {
       await connectionRef.current?.invoke(
         "SendMessage",
@@ -807,10 +767,8 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
         userId,
         message
       );
-      console.log("✅ Tin nhắn đã gửi qua SignalR");
-      console.log("⏳ Chờ server broadcast đến tất cả clients...\n");
     } catch (e) {
-      console.error("❌ SendMessage invoke failed", e);
+      console.error("Failed to send message:", e);
     }
   };
 
@@ -912,6 +870,34 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
     };
   }, [peerId, userId]);
 
+  // ✨ NEW: Send peerId to SignalR for signaling
+  const sendPeerId = useCallback(
+    async (myPeerId: string) => {
+      if (!connectionRef.current || !sessionRef.current.sessionId) {
+        console.warn("⚠️ Cannot send peerId: Not connected or not joined");
+        return;
+      }
+
+      try {
+        await connectionRef.current.invoke(
+          "SendPeerId",
+          sessionRef.current.sessionId,
+          myPeerId,
+          userId
+        );
+        console.log("✅ [SignalR] Sent peerId:", myPeerId);
+      } catch (error) {
+        console.error("❌ [SignalR] Failed to send peerId:", error);
+      }
+    },
+    [userId]
+  );
+
+  // ✨ NEW: Register callback for receiving peer IDs
+  const onReceivePeerId = useCallback((callback: (peerId: string, userId: string) => void) => {
+    receivePeerIdCallbackRef.current = callback;
+  }, []);
+
   return {
     isConnected,
     messages,
@@ -925,5 +911,8 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
     toggleMedia,
     handleMount,
     connection: connectionRef.current,
+    // ✨ NEW: Peer signaling methods
+    sendPeerId,
+    onReceivePeerId,
   };
 };
