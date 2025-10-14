@@ -30,13 +30,27 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose, messages, onSend
 
       {/* Messages Area - Takes remaining space */}
       <div className="flex-1 p-4 overflow-y-auto">
-        {/* Empty State */}
-        <div className="flex flex-col items-center justify-center h-full text-center">
-          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
-            <span className="text-2xl">💬</span>
+        {messages.length === 0 ? (
+          /* Empty State */
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+              <span className="text-2xl">💬</span>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">No chat messages yet</p>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">No chat messages yet</p>
-        </div>
+        ) : (
+          /* Messages List */
+          <div className="space-y-3">
+            {messages.map((msg, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                <div className="font-semibold text-sm text-gray-900 dark:text-white mb-1">
+                  {msg.userId}
+                </div>
+                <div className="text-sm text-gray-700 dark:text-gray-300">{msg.message}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Message Input - Fixed at bottom */}
@@ -46,13 +60,19 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose, messages, onSend
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && message.trim()) {
+                onSendMessage(message.trim());
+                setMessage("");
+              }
+            }}
             placeholder="Send a message"
             className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
           />
           <button
             onClick={() => {
               if (message.trim()) {
-                // Handle send message
+                onSendMessage(message.trim());
                 setMessage("");
               }
             }}
