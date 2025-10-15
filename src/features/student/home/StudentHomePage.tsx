@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
-import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
 import type { TutorCardData, TutorSearchRequest, TutorSearchDto } from "@/services/tutor/type";
@@ -12,7 +12,6 @@ import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
 import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery } from "@/services/tutor";
-import { useSelector } from "react-redux";
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
@@ -89,6 +88,7 @@ const StudentHomePage = () => {
 
   useEffect(() => {
     loadInitialTutors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

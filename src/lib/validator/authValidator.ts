@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-
 const AUTH_PASSWORD = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{6,}$/;
 const AUTH_CODE_VERIFICATION = /^[0-9]+$/;
 
