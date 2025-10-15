@@ -180,7 +180,7 @@ export function useMediaDevices(options: UseMediaDevicesOptions = {}): UseMediaD
         console.log("🧹 Cleaned up media devices");
       }
     };
-  }, [autoStart]); // Only run on mount
+  }, [autoStart, initialAudioEnabled, initialVideoEnabled, startMedia]);
 
   return {
     localStream,
