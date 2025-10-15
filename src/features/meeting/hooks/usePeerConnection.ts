@@ -51,37 +51,41 @@ export function usePeerConnection(options: UsePeerConnectionOptions): UsePeerCon
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   /**
-   * Initialize PeerJS with local server, fallback to cloud
+   * Initialize PeerJS with cloud or self-hosted server
    */
   const initializePeer = useCallback(
-    (useCloud = false) => {
+    (useCloud = true) => {
+      // Changed default to true (use cloud)
       try {
         setIsConnecting(true);
         setError(null);
 
-        const peerConfig = useCloud
-          ? {
-              debug: 2,
-              config: {
-                iceServers: [
-                  { urls: "stun:stun.l.google.com:19302" },
-                  { urls: "stun:stun1.l.google.com:19302" },
-                  { urls: "stun:stun2.l.google.com:19302" },
-                ],
-              },
-            }
-          : {
-              host: config?.host || "localhost",
-              port: config?.port || 9000,
-              path: config?.path || "/",
-              debug: config?.debug || 2,
-              config: {
-                iceServers: [
-                  { urls: "stun:stun.l.google.com:19302" },
-                  { urls: "stun:stun1.l.google.com:19302" },
-                ],
-              },
-            };
+        const peerConfig =
+          useCloud || !config?.host
+            ? {
+                // Cloud PeerJS (0.peerjs.com) - Free tier
+                debug: 2,
+                config: {
+                  iceServers: [
+                    { urls: "stun:stun.l.google.com:19302" },
+                    { urls: "stun:stun1.l.google.com:19302" },
+                    { urls: "stun:stun2.l.google.com:19302" },
+                  ],
+                },
+              }
+            : {
+                // Self-hosted PeerJS server
+                host: config.host,
+                port: config.port || 9000,
+                path: config.path || "/",
+                debug: config?.debug || 2,
+                config: {
+                  iceServers: [
+                    { urls: "stun:stun.l.google.com:19302" },
+                    { urls: "stun:stun1.l.google.com:19302" },
+                  ],
+                },
+              };
 
         console.log(
           useCloud ? "🌐 Initializing PeerJS (Cloud)" : "🏠 Initializing PeerJS (Local)",
@@ -136,12 +140,12 @@ export function usePeerConnection(options: UsePeerConnectionOptions): UsePeerCon
           setError(err);
           setIsConnecting(false);
 
-          // Retry with cloud if local fails
+          // If using self-hosted and it fails, fallback to cloud
           if (!useCloud && (err.type === "network" || err.type === "server-error")) {
-            console.log("🔄 Local server failed, trying cloud server in 3s...");
+            console.log("🔄 Self-hosted server failed, falling back to cloud in 3s...");
             retryTimeoutRef.current = setTimeout(() => {
               peer.destroy();
-              initializePeer(true);
+              initializePeer(true); // Retry with cloud
             }, 3000);
           }
         });
@@ -244,10 +248,12 @@ export function usePeerConnection(options: UsePeerConnectionOptions): UsePeerCon
   }, []);
 
   /**
-   * Initialize on mount
+   * Initialize peer on mount
+   * Default to cloud (useCloud = true) unless config.host is provided
    */
   useEffect(() => {
-    initializePeer(false);
+    const useCloudByDefault = !config?.host;
+    initializePeer(useCloudByDefault);
 
     return () => {
       if (retryTimeoutRef.current) {

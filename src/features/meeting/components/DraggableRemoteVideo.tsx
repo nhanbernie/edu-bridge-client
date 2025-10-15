@@ -86,10 +86,7 @@ export const DraggableRemoteVideo: React.FC<DraggableRemoteVideoProps> = ({
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "fixed z-30 transition-shadow p-2",
-        isDragging ? "cursor-grabbing shadow-2xl" : "cursor-grab"
-      )}
+      className={cn("fixed z-30 p-2", isDragging ? "cursor-grabbing" : "cursor-grab")}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -97,7 +94,7 @@ export const DraggableRemoteVideo: React.FC<DraggableRemoteVideoProps> = ({
       onMouseDown={handleMouseDown}
     >
       {/* Wrapper with rounded corners and shadow */}
-      <div className="rounded-2xl overflow-hidden shadow-2xl">
+      <div className="rounded-2xl overflow-hidden shadow-2xl bg-black/80 backdrop-blur-xl">
         {/* Header - Drag handle + Controls */}
         <div className="drag-handle bg-black/70 backdrop-blur-xl px-3 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">

@@ -1,51 +1,173 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
-import { useTutorSearch } from "./hooks/useTutorSearch";
-import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
+import type { TutorCardData, TutorSearchRequest, TutorSearchDto } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
+import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery } from "@/services/tutor";
+import { useSelector } from "react-redux";
+import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useDebounce } from "@/hooks";
 
-// Initial search params
-const initialSearchParams = {
-  PageNumber: 1,
-  PageSize: 10,
-};
+const transformTutorData = (dto: TutorSearchDto): TutorCardData => ({
+  id: dto.tutorId,
+  name: dto.fullName || "Unknown Tutor",
+  avatar: dto.avatarUrl || dto.avatar || dto.fullName?.charAt(0).toUpperCase() || "T",
+  rating: dto.averageTutorRating || 0,
+  reviewCount: dto.totalFeedbacks || 0,
+  location: dto.location || "Chưa cập nhật",
+  subjects: dto.subjects || [],
+  experience: `${dto.yearsOfExperience || 0} năm kinh nghiệm`,
+  yearsOfExperience: dto.yearsOfExperience || 0,
+  studentCount: dto.totalStudents || 0,
+  courseCount: dto.totalCourses || 0,
+  price: dto.hourlyRate || 0,
+  currency: dto.currency || "VND",
+  status: dto.status || "Offline",
+  verified: dto.verifiedStatus === "VERIFIED",
+  avatarUrl: dto.avatarUrl,
+  totalStudents: dto.totalStudents,
+  totalCourses: dto.totalCourses,
+  totalFeedbacks: dto.totalFeedbacks,
+  bio: dto.bio,
+  languages: dto.languages,
+  educationLevel: dto.educationLevel,
+  email: dto.email,
+  phone: dto.phone,
+});
 
 const StudentHomePage = () => {
   const { push } = useLocaleRouter();
+  const dispatch = useAppDispatch();
   const t = useTranslations("student.home");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState<TutorSearchRequest>({});
+  const [allTutors, setAllTutors] = useState<TutorCardData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isSearchMode, setIsSearchMode] = useState(false);
+  const observerTarget = useRef<HTMLDivElement>(null);
+  const isLoadingRef = useRef(false);
 
-  // Use tutor search hook
-  const {
-    tutors,
-    totalCount,
-    isLoading,
-    error,
-    searchTutors,
-    updateFilters,
-    toggleFavorite,
-    isTutorFavorited,
-  } = useTutorSearch({
-    searchParams: initialSearchParams,
-    enabled: true,
-  });
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Load initial data
+  const [triggerFilter, { isLoading: isLoadingFilter }] = useLazyFilterTutorsQuery();
+  const [triggerSearch, { isLoading: isLoadingSearch }] = useLazySearchTutorsQuery();
+
+  const isLoadingMore = isSearchMode ? isLoadingSearch : isLoadingFilter;
+
+  const loadInitialTutors = useCallback(async () => {
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: 6,
+        ...advancedFilters,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setCurrentPage(1);
+        setHasMore(tutors.length >= 6);
+        setIsSearchMode(false);
+      }
+    } catch (err) {
+      console.error("Error loading tutors:", err);
+    }
+  }, [triggerFilter, advancedFilters]);
+
   useEffect(() => {
-    searchTutors(initialSearchParams);
-  }, [searchTutors]);
+    loadInitialTutors();
+  }, []);
+
+  useEffect(() => {
+    const performSearch = async () => {
+      if (!debouncedSearchQuery.trim()) {
+        setIsSearchMode(false);
+        loadInitialTutors();
+        return;
+      }
+
+      setIsSearchMode(true);
+      setCurrentPage(1);
+      setAllTutors([]);
+      setHasMore(true);
+
+      try {
+        const result = await triggerSearch({
+          SearchTerm: debouncedSearchQuery,
+          PageNumber: 1,
+          PageSize: 6,
+        }).unwrap();
+
+        if (result.success && result.data) {
+          const tutors = result.data.map(transformTutorData);
+          setAllTutors(tutors);
+          setHasMore(tutors.length >= 6);
+        }
+      } catch (err) {
+        console.error("Error searching tutors:", err);
+      }
+    };
+
+    performSearch();
+  }, [debouncedSearchQuery, triggerSearch, loadInitialTutors]);
+
+  const loadMoreTutors = useCallback(async () => {
+    if (!hasMore || isLoadingMore || isLoadingRef.current) return;
+
+    isLoadingRef.current = true;
+    const nextPage = currentPage + 1;
+
+    try {
+      let result;
+
+      if (isSearchMode && debouncedSearchQuery.trim()) {
+        result = await triggerSearch({
+          SearchTerm: debouncedSearchQuery,
+          PageNumber: nextPage,
+          PageSize: 6,
+        }).unwrap();
+      } else {
+        result = await triggerFilter({
+          PageNumber: nextPage,
+          PageSize: 6,
+          ...advancedFilters,
+        }).unwrap();
+      }
+
+      if (result.success && result.data) {
+        const newTutors = result.data.map(transformTutorData);
+        setAllTutors((prev) => [...prev, ...newTutors]);
+        setCurrentPage(nextPage);
+        setHasMore(newTutors.length >= 6);
+      }
+    } catch (err) {
+      console.error("Error loading more tutors:", err);
+    } finally {
+      isLoadingRef.current = false;
+    }
+  }, [
+    currentPage,
+    hasMore,
+    isLoadingMore,
+    advancedFilters,
+    isSearchMode,
+    debouncedSearchQuery,
+    triggerSearch,
+    triggerFilter,
+  ]);
 
   const filterOptions = [
     { label: t("filter.options.all"), value: "all" },
@@ -63,23 +185,37 @@ const StudentHomePage = () => {
   const handleContact = (tutorId: string) => {};
 
   const handleFavorite = (tutorId: string) => {
-    toggleFavorite(tutorId);
+    dispatch(toggleFavoriteTutor(tutorId));
   };
 
-  // Filter and sort tutors based on search and selected filter
-  const filteredTutors: TutorCardData[] = tutors
-    .filter((tutor: TutorCardData) => {
-      const matchesSearch =
-        tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tutor.subjects.some((subject: string) =>
-          subject.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMoreTutors();
+        }
+      },
+      { threshold: 0.5, rootMargin: "100px" }
+    );
 
-      if (selectedFilter === "online") {
-        return matchesSearch && tutor.status === "Online";
+    const currentTarget = observerTarget.current;
+    if (currentTarget && hasMore) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
+    };
+  }, [loadMoreTutors, hasMore]);
 
-      return matchesSearch;
+  const filteredTutors: TutorCardData[] = allTutors
+    .filter((tutor: TutorCardData) => {
+      if (selectedFilter === "online") {
+        return tutor.status === "Online";
+      }
+      return true;
     })
     .sort((a: TutorCardData, b: TutorCardData) => {
       switch (selectedFilter) {
@@ -90,7 +226,6 @@ const StudentHomePage = () => {
         case "price_desc":
           return b.price - a.price;
         case "experience_desc":
-          // Assuming experience is a string like "5 năm", extract number
           const aExp = parseInt(a.experience) || 0;
           const bExp = parseInt(b.experience) || 0;
           return bExp - aExp;
@@ -99,48 +234,39 @@ const StudentHomePage = () => {
       }
     });
 
-  // Handle search input change with debounce
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
-
-    // Trigger API search with debounce
-    const timeoutId = setTimeout(() => {
-      if (value.trim()) {
-        // For now, we'll use client-side filtering
-        // In the future, we can add server-side search by calling:
-        // searchTutors({ ...initialSearchParams, SearchQuery: value });
-      }
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
   };
 
-  // Handle filter change
   const handleFilterChange = (filterValue: string) => {
     setSelectedFilter(filterValue);
+  };
 
-    // For advanced filtering, we could trigger API search with specific parameters
-    if (filterValue === "rating_desc") {
-      // searchTutors({ ...initialSearchParams, MinRating: 4.0 });
-    } else if (filterValue === "online") {
-      // searchTutors({ ...initialSearchParams, OnlineOnly: true });
+  const handleAdvancedFilterApply = async (filters: TutorSearchRequest) => {
+    setAdvancedFilters(filters);
+    setCurrentPage(1);
+    setAllTutors([]);
+    setHasMore(true);
+    setIsSearchMode(false);
+    setSearchQuery("");
+
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: 6,
+        ...filters,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setHasMore(tutors.length >= 6);
+      }
+    } catch (err) {
+      console.error("Error applying filters:", err);
     }
   };
 
-  // Handle advanced filter apply
-  const handleAdvancedFilterApply = (filters: TutorSearchRequest) => {
-    setAdvancedFilters(filters);
-
-    // Trigger API search with advanced filters
-    const searchParams = {
-      ...initialSearchParams,
-      ...filters,
-    };
-
-    searchTutors(searchParams);
-  };
-
-  // Handle advanced filter open
   const handleAdvancedFilterOpen = () => {
     setIsAdvancedFilterOpen(true);
   };
@@ -152,16 +278,7 @@ const StudentHomePage = () => {
         <div className={PAGE_HEADER}>
           <h1 className={`${PAGE_TITLE} text-4xl`}>{t("title")}</h1>
           <p className={`${PAGE_SUBTITLE} text-lg`}>
-            {isLoading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                {t("subtitle.loading")}
-              </span>
-            ) : error ? (
-              <span className="text-red-500">{t("subtitle.error")}</span>
-            ) : (
-              t("subtitle.found", { count: filteredTutors.length })
-            )}
+            {t("subtitle.found", { count: filteredTutors.length })}
           </p>
         </div>
 
@@ -236,28 +353,14 @@ const StudentHomePage = () => {
         </div>
 
         {/* Tutors Grid */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <TutorCardSkeleton count={6} />
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <p className="text-red-500 mb-4">{error}</p>
-            <button
-              onClick={() => searchTutors(initialSearchParams)}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
-            >
-              {t("error.button")}
-            </button>
-          </div>
-        ) : filteredTutors.length === 0 ? (
+        {allTutors.length === 0 && !isLoadingMore ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">{t("empty.title")}</p>
             <button
               onClick={() => {
                 setSearchQuery("");
                 setSelectedFilter("all");
-                searchTutors(initialSearchParams);
+                loadInitialTutors();
               }}
               className="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90"
             >
@@ -265,49 +368,31 @@ const StudentHomePage = () => {
             </button>
           </div>
         ) : (
-          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredTutors.map((tutor) => (
-              <MotionItem key={tutor.id}>
-                <TutorCard
-                  tutor={tutor}
-                  onViewDetails={handleViewDetails}
-                  onContact={handleContact}
-                  onFavorite={handleFavorite}
-                  isFavorited={isTutorFavorited(tutor.id)}
-                />
-              </MotionItem>
-            ))}
-          </MotionContainer>
-        )}
+          <>
+            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {filteredTutors.map((tutor) => (
+                <MotionItem key={tutor.id}>
+                  <TutorCard
+                    tutor={tutor}
+                    onViewDetails={handleViewDetails}
+                    onContact={handleContact}
+                    onFavorite={handleFavorite}
+                    isFavorited={false}
+                  />
+                </MotionItem>
+              ))}
+            </MotionContainer>
 
-        {/* Load More Section */}
-        {!isLoading && !error && filteredTutors.length > 0 && (
-          <div className="text-center pb-12">
-            <button
-              onClick={() => {
-                // Load more tutors with pagination
-                const nextPage = Math.floor(tutors.length / 10) + 1;
-                searchTutors({
-                  ...initialSearchParams,
-                  PageNumber: nextPage,
-                  PageSize: 10,
-                });
-              }}
-              disabled={isLoading}
-              className="px-8 py-3 bg-card border border-border rounded-lg
-                               hover:bg-secondary transition-colors duration-200 font-medium
-                               disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  {t("loadMore.loading")}
-                </span>
-              ) : (
-                t("loadMore.button")
-              )}
-            </button>
-          </div>
+            {hasMore && (
+              <div ref={observerTarget} className="min-h-[100px]">
+                {isLoadingMore && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <TutorCardSkeleton count={6} />
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
 

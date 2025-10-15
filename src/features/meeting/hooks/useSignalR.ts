@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -245,8 +246,27 @@ export const useSignalR = ({ userId, userRole, sessionId }: UseSignalRProps) => 
       }
     });
 
-    conn.on("UserJoined", (userId, role) => {
-      console.log(`User joined: ${userId} (${role})`);
+    conn.on("UserJoined", (joinedUserId, role) => {
+      console.log(`User joined: ${joinedUserId} (${role})`);
+
+      // ✨ FIX: Resend peerId to new user (workaround for race condition)
+      // When user A joins first and user B joins later, B misses A's peerId
+      // So A resends peerId when notified that B joined
+      if (
+        peerId &&
+        peerId !== "fallback-no-video" &&
+        joinedUserId !== userId &&
+        sessionRef.current.joined
+      ) {
+        console.log("🔄 Resending peerId to new user:", joinedUserId);
+        setTimeout(() => {
+          console.log("📤 Sending peerId:", peerId, "to session:", sessionRef.current.sessionId);
+          connectionRef.current
+            ?.invoke("SendPeerId", sessionRef.current.sessionId, peerId, userId)
+            .then(() => console.log("✅ Resend peerId success!"))
+            .catch((err) => console.error("❌ Failed to resend peerId:", err));
+        }, 1000); // Delay 1000ms to ensure new user has setup listeners
+      }
     });
 
     conn.on("UserLeft", (peerId, userId) => {

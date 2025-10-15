@@ -86,6 +86,7 @@ export const API_ENDPOINTS = {
   },
   PAYMENT: {
     CHARITY: "/api/payment/charity",
+    VERIFY_QR: "/api/payment/tutor/verify-qr",
   },
 } as const;
 

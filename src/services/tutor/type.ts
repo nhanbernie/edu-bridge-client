@@ -23,6 +23,7 @@ export interface TutorSearchDto {
   hourlyRate?: number;
   currency: string;
   verifiedStatus: "VERIFIED" | "TRUSTED_BEGINNER" | "PENDING";
+  isBankAccountVerified?: boolean;
   averageTutorRating: number;
   fullName: string;
   email: string;
