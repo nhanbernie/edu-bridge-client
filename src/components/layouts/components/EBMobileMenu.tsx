@@ -1,6 +1,5 @@
 import React from "react";
 import { X } from "lucide-react";
-import EBLanguageSelector from "@/components/common/EBLanguageSelector";
 
 interface NavItem {
   label: string;
@@ -57,9 +56,7 @@ const EBMobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationIt
         </nav>
 
         {/* Language Selector */}
-        <div className="p-4 border-t border-slate-700">
-          <EBLanguageSelector />
-        </div>
+        <div className="p-4 border-t border-slate-700">{/* <EBLanguageSelector /> */}</div>
       </div>
     </>
   );

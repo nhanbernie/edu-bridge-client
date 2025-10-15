@@ -7,7 +7,6 @@ import ChatPanel from "./components/ChatPanel";
 import WhiteboardPanel from "./components/WhiteboardPanel";
 import UserLoading from "./components/UserLoading";
 import { useSignalR } from "./hooks/useSignalR";
-
 import { VideoGrid, MediaControls } from "./components";
 import { useWebRTC } from "./hooks";
 

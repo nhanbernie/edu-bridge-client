@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, MessageSquare, Menu, Globe } from "lucide-react";
-import EBLanguageSelector from "../common/EBLanguageSelector";
+import { Search, MessageSquare, Menu } from "lucide-react";
 import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
 import {
@@ -12,7 +11,7 @@ import {
 } from "@/constants/navigate.constant";
 import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
-import { EBThemeToggle, EBLogo, EBUserMenu } from "@/components/common/";
+import { EBThemeToggle, EBUserMenu, EBChangeLanguage } from "@/components/common/";
 import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
 
@@ -21,12 +20,14 @@ interface ActionButtonsProps {
   actionButtons?: HeaderActionButton[];
   showTheme?: boolean;
   showUserMenu?: boolean;
+  showLanguageToggle?: boolean;
 }
 
 interface HeaderProps {
   actionButtons?: HeaderActionButton[];
   showTheme?: boolean;
   showUserMenu?: boolean;
+  showLanguageToggle?: boolean;
   headerConfig?: HeaderConfig;
 }
 
@@ -36,6 +37,7 @@ const ActionButtons = ({
   actionButtons = defaultHeaderActionButtons,
   showTheme = true,
   showUserMenu = true,
+  showLanguageToggle = true,
 }: ActionButtonsProps) => (
   <div className="flex items-center gap-3">
     {/* Action buttons */}
@@ -53,6 +55,9 @@ const ActionButtons = ({
         </EBButtonAction>
       );
     })}
+
+    {/* Language Toggle - show unless disabled */}
+    {showLanguageToggle && <EBChangeLanguage />}
 
     {/* Theme Toggle - always show unless disabled */}
     {showTheme && <EBThemeToggle />}
@@ -94,6 +99,7 @@ const EBHeader = ({
   actionButtons = defaultHeaderActionButtons,
   showTheme = true,
   showUserMenu = true,
+  showLanguageToggle = true,
   headerConfig,
 }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -121,7 +127,9 @@ const EBHeader = ({
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-          isScrolled ? "backdrop-blur-sm  header-glass-effect" : "bg-transparent"
+          isScrolled
+            ? "bg-gradient-to-br from-card/60 via-card/40 to-card/60 backdrop-blur-xl shadow-lg shadow-primary/5"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,6 +152,7 @@ const EBHeader = ({
                 actionButtons={headerConfig?.actionButtons ?? actionButtons}
                 showTheme={headerConfig?.showTheme ?? showTheme}
                 showUserMenu={headerConfig?.showUserMenu ?? showUserMenu}
+                showLanguageToggle={headerConfig?.showLanguageToggle ?? showLanguageToggle}
                 onMobileMenuToggle={handleMobileMenuToggle}
               />
             </div>

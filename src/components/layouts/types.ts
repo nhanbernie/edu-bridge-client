@@ -25,6 +25,7 @@ export interface HeaderConfig {
   showSearch?: boolean;
   showMessage?: boolean;
   showLanguage?: boolean;
+  showLanguageToggle?: boolean;
   showTheme?: boolean;
   showUserMenu?: boolean;
 }

@@ -53,11 +53,11 @@ export const defaultHeaderActionButtons: HeaderActionButton[] = [
   //   icon: MessageSquare,
   //   show: true,
   // },
-  {
-    key: "language",
-    icon: Globe,
-    show: true,
-  },
+  // {
+  //   key: "language",
+  //   icon: Globe,
+  //   show: true,
+  // },
 ];
 export interface SidebarItem {
   label: string;
