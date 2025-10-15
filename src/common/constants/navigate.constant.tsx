@@ -36,10 +36,9 @@ export const navigationItems: NavItem[] = [
 ];
 
 export const navigateMarketItems: NavItem[] = [
-  { label: "Home", href: "/", active: true },
-  { label: "Packages", href: "/packages" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Trang chủ", href: "/", active: true },
+  { label: "Giáo viên", href: "/" },
+  { label: "Liên hệ", href: "/" },
 ];
 
 // Default Header Action Buttons
