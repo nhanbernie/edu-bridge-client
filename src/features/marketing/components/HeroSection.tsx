@@ -5,11 +5,9 @@ import { MapPin, BookOpen, Search, GraduationCap } from "lucide-react";
 import Image from "next/image";
 import EBButton from "@/components/common/EBButton";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
-import { useTranslations } from "next-intl";
 
 const HeroSection = () => {
   const { push } = useLocaleRouter();
-  const t = useTranslations("marketing.hero");
   const [searchForm, setSearchForm] = useState({
     subject: "",
     level: "",
@@ -37,9 +35,12 @@ const HeroSection = () => {
             <div className="space-y-8">
               <div className="space-y-6">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  {t("title")}
+                  Kết Nối Với Gia Sư Chất Lượng Cao
                 </h1>
-                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">{t("subtitle")}</p>
+                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
+                  Tìm kiếm và kết nối với hàng nghìn gia sư được xác thực. Nâng cao kiến thức và đạt
+                  mục tiêu học tập của bạn.
+                </p>
               </div>
 
               {/* Search Form */}
@@ -48,71 +49,69 @@ const HeroSection = () => {
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.subject")}
+                      Môn học
                     </label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       value={searchForm.subject}
                       onChange={(e) => setSearchForm({ ...searchForm, subject: e.target.value })}
                     >
-                      <option value="">{t("searchForm.subjectPlaceholder")}</option>
-                      <option value="math">{t("subjects.math")}</option>
-                      <option value="english">{t("subjects.english")}</option>
-                      <option value="physics">{t("subjects.physics")}</option>
-                      <option value="chemistry">{t("subjects.chemistry")}</option>
-                      <option value="biology">{t("subjects.biology")}</option>
+                      <option value="">Chọn môn</option>
+                      <option value="math">Toán học</option>
+                      <option value="english">Tiếng Anh</option>
+                      <option value="physics">Vật lý</option>
+                      <option value="chemistry">Hóa học</option>
+                      <option value="biology">Sinh học</option>
                     </select>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                       <GraduationCap className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.level")}
+                      Cấp độ
                     </label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       value={searchForm.level}
                       onChange={(e) => setSearchForm({ ...searchForm, level: e.target.value })}
                     >
-                      <option value="">{t("searchForm.levelPlaceholder")}</option>
-                      <option value="elementary">{t("levels.elementary")}</option>
-                      <option value="middle">{t("levels.middle")}</option>
-                      <option value="high">{t("levels.high")}</option>
-                      <option value="university">{t("levels.university")}</option>
+                      <option value="">Chọn cấp</option>
+                      <option value="elementary">Tiểu học</option>
+                      <option value="middle">THCS</option>
+                      <option value="high">THPT</option>
+                      <option value="university">Đại học</option>
                     </select>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.location")}
+                      Địa điểm
                     </label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       value={searchForm.location}
                       onChange={(e) => setSearchForm({ ...searchForm, location: e.target.value })}
                     >
-                      <option value="">{t("searchForm.locationPlaceholder")}</option>
-                      <option value="hanoi">{t("locations.hanoi")}</option>
-                      <option value="hcm">{t("locations.hcm")}</option>
-                      <option value="danang">{t("locations.danang")}</option>
-                      <option value="online">{t("locations.online")}</option>
+                      <option value="">Chọn nơi</option>
+                      <option value="hanoi">Hà Nội</option>
+                      <option value="hcm">TP. HCM</option>
+                      <option value="danang">Đà Nẵng</option>
+                      <option value="online">Trực tuyến</option>
                     </select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      {t("searchForm.budget")}
-                    </label>
+                    <label className="text-sm font-medium text-gray-700">Ngân sách</label>
                     <select
                       className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                       value={searchForm.budget}
                       onChange={(e) => setSearchForm({ ...searchForm, budget: e.target.value })}
                     >
-                      <option value="">{t("searchForm.budgetPlaceholder")}</option>
-                      <option value="100-200">{t("budgets.100-200")}</option>
-                      <option value="200-500">{t("budgets.200-500")}</option>
-                      <option value="500+">{t("budgets.500+")}</option>
+                      <option value="">Chọn mức</option>
+                      <option value="100-200">&lt; 200k/giờ</option>
+                      <option value="200-500">200k - 500k/giờ</option>
+                      <option value="500+">&gt; 500k/giờ</option>
                     </select>
                   </div>
                 </div>
@@ -124,7 +123,7 @@ const HeroSection = () => {
                   icon={Search}
                   iconPosition="left"
                 >
-                  {t("searchForm.searchButton")}
+                  Tìm Gia Sư
                 </EBButton>
               </div>
             </div>
