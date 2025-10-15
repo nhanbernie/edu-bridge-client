@@ -43,34 +43,61 @@ const transformTutorData = (dto: TutorSearchDto): TutorCardData => ({
   phone: dto.phone,
 });
 
+// Constants
+const SUBJECT_OPTIONS = [
+  "Toán học",
+  "Môn nhạc",
+  "Tiếng Anh",
+  "Vật lý",
+  "Hóa học",
+  "Sinh học",
+  "Văn học",
+  "Lịch sử",
+  "Địa lý",
+  "Tin học",
+];
+
+const QUICK_FILTER_SUBJECTS = ["Môn toán", "Môn nhạc", "Tiếng Anh", "Vật lý"];
+
+const PAGE_SIZE = 6;
+
 const StudentHomePage = () => {
   const { push } = useLocaleRouter();
   const dispatch = useAppDispatch();
   const t = useTranslations("student.home");
 
+  // State
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState<TutorSearchRequest>({});
   const [allTutors, setAllTutors] = useState<TutorCardData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [quickFilters, setQuickFilters] = useState({
+    highRating: false,
+    subjects: [] as string[],
+  });
+
+  // Refs
   const observerTarget = useRef<HTMLDivElement>(null);
   const isLoadingRef = useRef(false);
 
+  // Hooks
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
   const [triggerFilter, { isLoading: isLoadingFilter }] = useLazyFilterTutorsQuery();
   const [triggerSearch, { isLoading: isLoadingSearch }] = useLazySearchTutorsQuery();
 
   const isLoadingMore = isSearchMode ? isLoadingSearch : isLoadingFilter;
 
+  // API Calls
   const loadInitialTutors = useCallback(async () => {
     try {
       const result = await triggerFilter({
         PageNumber: 1,
-        PageSize: 6,
+        PageSize: PAGE_SIZE,
         ...advancedFilters,
       }).unwrap();
 
@@ -78,7 +105,7 @@ const StudentHomePage = () => {
         const tutors = result.data.map(transformTutorData);
         setAllTutors(tutors);
         setCurrentPage(1);
-        setHasMore(tutors.length >= 6);
+        setHasMore(tutors.length >= PAGE_SIZE);
         setIsSearchMode(false);
       }
     } catch (err) {
@@ -108,13 +135,13 @@ const StudentHomePage = () => {
         const result = await triggerSearch({
           SearchTerm: debouncedSearchQuery,
           PageNumber: 1,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
         }).unwrap();
 
         if (result.success && result.data) {
           const tutors = result.data.map(transformTutorData);
           setAllTutors(tutors);
-          setHasMore(tutors.length >= 6);
+          setHasMore(tutors.length >= PAGE_SIZE);
         }
       } catch (err) {
         console.error("Error searching tutors:", err);
@@ -137,12 +164,12 @@ const StudentHomePage = () => {
         result = await triggerSearch({
           SearchTerm: debouncedSearchQuery,
           PageNumber: nextPage,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
         }).unwrap();
       } else {
         result = await triggerFilter({
           PageNumber: nextPage,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
           ...advancedFilters,
         }).unwrap();
       }
@@ -151,7 +178,7 @@ const StudentHomePage = () => {
         const newTutors = result.data.map(transformTutorData);
         setAllTutors((prev) => [...prev, ...newTutors]);
         setCurrentPage(nextPage);
-        setHasMore(newTutors.length >= 6);
+        setHasMore(newTutors.length >= PAGE_SIZE);
       }
     } catch (err) {
       console.error("Error loading more tutors:", err);
@@ -234,12 +261,85 @@ const StudentHomePage = () => {
       }
     });
 
-  const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
+  // Handlers
+  const handleQuickFilterToggle = async (filterType: "highRating") => {
+    const newQuickFilters = { ...quickFilters };
+    const filterParams: TutorSearchRequest = {};
+
+    if (filterType === "highRating") {
+      // Toggle high rating filter
+      newQuickFilters.highRating = !newQuickFilters.highRating;
+      if (newQuickFilters.highRating) {
+        filterParams.Grades = "Đánh giá cao nhất";
+      }
+    }
+
+    setQuickFilters(newQuickFilters);
+    setAdvancedFilters(filterParams);
+    setCurrentPage(1);
+    setAllTutors([]);
+    setHasMore(true);
+    setIsSearchMode(false);
+    setSearchQuery("");
+
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: PAGE_SIZE,
+        ...filterParams,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setHasMore(tutors.length >= PAGE_SIZE);
+      }
+    } catch (err) {
+      console.error("Error applying quick filter:", err);
+    }
   };
 
-  const handleFilterChange = (filterValue: string) => {
-    setSelectedFilter(filterValue);
+  const handleSubjectFilterToggle = async (subject: string) => {
+    let newSubjects = [...quickFilters.subjects];
+
+    if (newSubjects.includes(subject)) {
+      // Remove subject
+      newSubjects = newSubjects.filter((s) => s !== subject);
+    } else {
+      // Add subject
+      newSubjects.push(subject);
+    }
+
+    const newQuickFilters = { ...quickFilters, subjects: newSubjects };
+    setQuickFilters(newQuickFilters);
+
+    const filterParams: TutorSearchRequest = {
+      Subjects: newSubjects.length > 0 ? newSubjects : undefined,
+      Grades: newQuickFilters.highRating ? "Đánh giá cao nhất" : undefined,
+    };
+
+    setAdvancedFilters(filterParams);
+    setCurrentPage(1);
+    setAllTutors([]);
+    setHasMore(true);
+    setIsSearchMode(false);
+    setSearchQuery("");
+
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: PAGE_SIZE,
+        ...filterParams,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setHasMore(tutors.length >= PAGE_SIZE);
+      }
+    } catch (err) {
+      console.error("Error applying subject filter:", err);
+    }
   };
 
   const handleAdvancedFilterApply = async (filters: TutorSearchRequest) => {
@@ -253,22 +353,18 @@ const StudentHomePage = () => {
     try {
       const result = await triggerFilter({
         PageNumber: 1,
-        PageSize: 6,
+        PageSize: PAGE_SIZE,
         ...filters,
       }).unwrap();
 
       if (result.success && result.data) {
         const tutors = result.data.map(transformTutorData);
         setAllTutors(tutors);
-        setHasMore(tutors.length >= 6);
+        setHasMore(tutors.length >= PAGE_SIZE);
       }
     } catch (err) {
       console.error("Error applying filters:", err);
     }
-  };
-
-  const handleAdvancedFilterOpen = () => {
-    setIsAdvancedFilterOpen(true);
   };
 
   return (
@@ -283,73 +379,116 @@ const StudentHomePage = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8 space-y-4">
-          {/* Search and Filter Row */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search Bar */}
+        <div className="mb-8 bg-card border border-border rounded-3xl p-8 shadow-sm">
+          {/* Search Row */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <input
                 type="text"
                 placeholder={t("search.placeholder")}
                 value={searchQuery}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-lg
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 bg-background border border-border rounded-xl
                            focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
                            transition-all duration-200"
               />
             </div>
 
-            {/* Filter Dropdown */}
-            <div className="relative">
+            <div className="relative min-w-[200px]">
               <select
-                value={selectedFilter}
-                onChange={(e) => handleFilterChange(e.target.value)}
-                className="appearance-none bg-card border border-border rounded-lg px-4 py-3 pr-10
+                value={selectedSubject}
+                onChange={(e) => {
+                  setSelectedSubject(e.target.value);
+                  if (e.target.value) {
+                    handleSubjectFilterToggle(e.target.value);
+                  }
+                }}
+                className="appearance-none bg-background border border-border rounded-xl px-4 py-3.5 pr-10 w-full
                            focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
                            transition-all duration-200 cursor-pointer"
               >
-                {filterOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
+                <option value="">Tất cả môn học</option>
+                {SUBJECT_OPTIONS.map((subject) => (
+                  <option key={subject} value={subject}>
+                    {subject}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5 pointer-events-none" />
             </div>
 
-            {/* Advanced Filter Button */}
             <button
-              onClick={handleAdvancedFilterOpen}
-              className="flex items-center space-x-2 px-4 py-3 bg-card border border-border
-                               rounded-lg hover:bg-secondary transition-colors duration-200"
+              onClick={() => setIsAdvancedFilterOpen(true)}
+              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground
+                         rounded-xl hover:bg-primary/90 transition-colors duration-200 font-medium whitespace-nowrap"
             >
               <SlidersHorizontal className="w-5 h-5" />
-              <span>{t("filter.button")}</span>
+              <span>Bộ lọc</span>
             </button>
           </div>
 
-          {/* Filter Tags */}
-          <div className="flex flex-wrap gap-2">
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.highestRating")}</span>
+          {/* Quick Filters */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <SlidersHorizontal className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-muted-foreground">Lọc nhanh:</span>
             </div>
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.newest")}</span>
-            </div>
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.newest")}</span>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => handleQuickFilterToggle("highRating")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium
+                            border transition-all duration-200 ${
+                              quickFilters.highRating
+                                ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                                : "bg-background text-foreground border-border hover:bg-secondary"
+                            }`}
+              >
+                <span className="text-base">⭐</span>
+                <span>Đánh giá cao nhất</span>
+              </button>
+
+              {QUICK_FILTER_SUBJECTS.map((subject) => (
+                <button
+                  key={subject}
+                  onClick={() => handleSubjectFilterToggle(subject)}
+                  className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-all duration-200 ${
+                    quickFilters.subjects.includes(subject)
+                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                      : "bg-background text-foreground border-border hover:bg-secondary"
+                  }`}
+                >
+                  {subject}
+                </button>
+              ))}
             </div>
           </div>
+
+          {/* Advanced Filter Tags */}
+          {(advancedFilters.MinHourlyRate ||
+            advancedFilters.MaxHourlyRate ||
+            advancedFilters.MinRating ||
+            advancedFilters.HoursPerSession) && (
+            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
+              {advancedFilters.MinHourlyRate && advancedFilters.MaxHourlyRate && (
+                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
+                  Giá: {advancedFilters.MinHourlyRate.toLocaleString()} -{" "}
+                  {advancedFilters.MaxHourlyRate.toLocaleString()} đ
+                </div>
+              )}
+              {advancedFilters.MinRating && (
+                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
+                  Đánh giá: ≥ {advancedFilters.MinRating} ⭐
+                </div>
+              )}
+              {advancedFilters.HoursPerSession && (
+                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
+                  Thời lượng: {advancedFilters.HoursPerSession} giờ
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Tutors Grid */}
