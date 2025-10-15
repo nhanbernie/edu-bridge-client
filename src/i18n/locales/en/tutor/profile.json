@@ -1,0 +1,36 @@
+{
+  "title": "Tutor Profile",
+  "subtitle": "Manage your profile and credentials",
+  "loading": "Loading information...",
+  "personalInfo": {
+    "title": "Personal Information",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "location": "Location"
+  },
+  "education": {
+    "title": "Education & Experience",
+    "educationLevel": "Education Level",
+    "yearsOfExperience": "Years of Experience",
+    "bio": "Bio"
+  },
+  "subjects": {
+    "title": "Subjects & Languages",
+    "subjects": "Subjects",
+    "languages": "Languages"
+  },
+  "media": {
+    "title": "Media",
+    "videoIntro": "Video Introduction",
+    "certificates": "Certificates",
+    "uploadVideo": "Upload Video",
+    "uploadCertificate": "Upload Certificate"
+  },
+  "actions": {
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
+  }
+}

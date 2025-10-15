@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "title": "Enjoy The Trip With Good Moments",
+    "subtitle": "Tìm kiếm giảng viên và gia sư uy tín, chất lượng cao để nâng cao kiến thức và kỹ năng của bạn một cách hiệu quả nhất",
+    "searchForm": {
+      "subject": "Môn học",
+      "subjectPlaceholder": "Chọn môn học",
+      "level": "Cấp độ",
+      "levelPlaceholder": "Chọn cấp độ",
+      "location": "Khu vực",
+      "locationPlaceholder": "Chọn khu vực",
+      "budget": "Ngân sách",
+      "budgetPlaceholder": "Chọn mức giá",
+      "searchButton": "Tìm Gia Sư Ngay"
+    },
+    "subjects": {
+      "math": "Toán học",
+      "english": "Tiếng Anh",
+      "physics": "Vật lý",
+      "chemistry": "Hóa học",
+      "biology": "Sinh học"
+    },
+    "levels": {
+      "elementary": "Tiểu học",
+      "middle": "THCS",
+      "high": "THPT",
+      "university": "Đại học"
+    },
+    "locations": {
+      "hanoi": "Hà Nội",
+      "hcm": "TP.HCM",
+      "danang": "Đà Nẵng",
+      "online": "Online"
+    },
+    "budgets": {
+      "100-200": "100k - 200k/buổi",
+      "200-500": "200k - 500k/buổi",
+      "500+": "Trên 500k/buổi"
+    }
+  },
+  "auth": {
+    "welcome": "Chào mừng đến với EduBridge",
+    "subtitle": "Kết nối với các gia sư có trình độ để học tập cá nhân hóa",
+    "stats": {
+      "students": "Học sinh",
+      "tutors": "Gia sư chuyên nghiệp",
+      "rating": "Đánh giá trung bình"
+    }
+  },
+  "header": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "mobileLogin": "Đăng nhập",
+    "mobileRegister": "Đăng ký miễn phí",
+    "settings": "Cài đặt"
+  }
+}

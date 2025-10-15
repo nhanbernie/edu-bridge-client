@@ -1,0 +1,36 @@
+{
+  "title": "Đánh giá khóa học",
+  "subtitle": "Xem và tạo đánh giá cho các khóa học của bạn",
+  "loading": "Đang tải đánh giá...",
+  "create": {
+    "title": "Tạo đánh giá mới",
+    "subtitle": "Chia sẻ trải nghiệm của bạn về khóa học này",
+    "tutorRating": "Đánh giá gia sư",
+    "courseRating": "Đánh giá khóa học",
+    "comment": "Nhận xét",
+    "commentPlaceholder": "Chia sẻ trải nghiệm của bạn...",
+    "submit": "Gửi đánh giá",
+    "cancel": "Hủy"
+  },
+  "list": {
+    "title": "Khóa học đã tham gia",
+    "subtitle": "Xem lại và đánh giá các khóa học bạn đã tham gia",
+    "viewFeedback": "Xem đánh giá",
+    "createFeedback": "Tạo đánh giá",
+    "noCourses": "Chưa có khóa học nào",
+    "stats": {
+      "totalCourses": "Tổng khóa học",
+      "completedCourses": "Đang học",
+      "canCreateFeedback": "Đã hoàn thành"
+    }
+  },
+  "detail": {
+    "title": "Đánh giá khóa học",
+    "subtitle": "Xem tất cả đánh giá cho khóa học này",
+    "summary": "Tổng quan",
+    "allFeedbacks": "Tất cả đánh giá",
+    "noFeedbacks": "Chưa có đánh giá nào",
+    "averageRating": "Đánh giá trung bình",
+    "totalFeedbacks": "Tổng số đánh giá"
+  }
+}
