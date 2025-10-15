@@ -93,6 +93,7 @@ export const API_ENDPOINTS = {
 export const API_CONFIG = {
   BASE_URL: ENV.API.BASE_URL,
   TIMEOUT: ENV.API.TIMEOUT,
+  LICENSE_KEY: ENV.TLDRAW.LICENSE_KEY,
 } as const;
 
 export const PUBLIC_ENDPOINTS = [

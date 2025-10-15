@@ -21,9 +21,10 @@ const EBFooter = () => {
           <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-white/5 rounded-full"></div>
 
           <div className="relative z-10 text-center space-y-6">
-            <h3 className="text-3xl font-bold text-white">Đăng Ký Nhận Thông Tin Cập Nhật</h3>
+            <h3 className="text-3xl font-bold text-white">Nhận Thông Tin Gia Sư Mới Nhất</h3>
             <p className="text-emerald-100 max-w-2xl mx-auto">
-              Có nhiều biến thể của các đoạn văn Lorem Ipsum có sẵn, nhưng phần lớn đã bị thay đổi
+              Đăng ký để nhận thông báo về gia sư chất lượng, khóa học mới và các ưu đãi đặc biệt từ
+              EduBridge
             </p>
 
             {/* Email Subscription Form */}
@@ -54,8 +55,8 @@ const EBFooter = () => {
           <div className="space-y-4">
             <h4 className="text-emerald-600 text-lg font-bold">EduBridge</h4>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Lorem Ipsum chỉ đơn giản là văn bản giả của ngành in ấn và sắp chữ. Lorem Ipsum đã trở
-              thành tiêu chuẩn của ngành
+              Nền tảng kết nối gia sư và học viên hàng đầu Việt Nam. Chúng tôi cam kết mang đến trải
+              nghiệm học tập chất lượng với đội ngũ gia sư được xác thực.
             </p>
 
             {/* Social Media Icons */}
@@ -63,81 +64,84 @@ const EBFooter = () => {
               <a
                 href="#"
                 className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
+                aria-label="LinkedIn"
               >
                 <span className="text-sm font-bold">in</span>
               </a>
               <a
                 href="#"
                 className="w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
+                aria-label="Facebook"
               >
                 <span className="text-sm font-bold">f</span>
               </a>
               <a
                 href="#"
                 className="w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
+                aria-label="Twitter"
               >
                 <span className="text-sm font-bold">t</span>
               </a>
             </div>
           </div>
 
-          {/* About Us */}
+          {/* For Students */}
           <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Về Chúng Tôi</h4>
+            <h4 className="text-gray-800 font-semibold">Dành Cho Học Viên</h4>
             <ul className="space-y-2 text-gray-600 text-sm">
               <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Chúng tôi là ai?
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Tìm gia sư
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Tính năng
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Khóa học trực tuyến
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Tin tức mới nhất
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Đánh giá gia sư
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Liên hệ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Service */}
-          <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Dịch Vụ</h4>
-            <ul className="space-y-2 text-gray-600 text-sm">
-              <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
-                  Hỗ trợ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-green-600 transition-colors">
+                <a href="#" className="hover:text-emerald-600 transition-colors">
                   Thanh toán
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* For Tutors */}
           <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Công Ty</h4>
+            <h4 className="text-gray-800 font-semibold">Dành Cho Gia Sư</h4>
+            <ul className="space-y-2 text-gray-600 text-sm">
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Đăng ký dạy học
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Hướng dẫn sử dụng
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Chính sách thu nhập
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Hỗ trợ gia sư
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div className="space-y-4">
+            <h4 className="text-gray-800 font-semibold">Hỗ Trợ</h4>
             <ul className="space-y-2 text-gray-600 text-sm">
               <li>
                 <a href="#" className="hover:text-emerald-600 transition-colors">
@@ -146,12 +150,17 @@ const EBFooter = () => {
               </li>
               <li>
                 <a href="#" className="hover:text-emerald-600 transition-colors">
-                  Nghề nghiệp
+                  Câu hỏi thường gặp
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-emerald-600 transition-colors">
-                  Liên hệ chúng tôi
+                  Liên hệ
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-emerald-600 transition-colors">
+                  Điều khoản sử dụng
                 </a>
               </li>
             </ul>
