@@ -85,7 +85,6 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   enrollment.totalStudents !== null &&
                   enrollment.totalStudents > 0 && (
                     <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-gray-500" />
                       <span className="text-gray-600 dark:text-gray-400 text-xs">
                         {enrollment.totalStudents} học sinh
                       </span>
@@ -105,7 +104,9 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   : "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
               }`}
             >
-              <span className="text-xs font-medium">{isCompleted ? "Hoàn thành" : "Đang học"}</span>
+              <span className="text-xs font-medium">
+                {isCompleted ? "Hoàn thành" : role === "tutor" ? "Đang dạy" : "Đang học"}
+              </span>
             </div>
           </div>
         </div>
