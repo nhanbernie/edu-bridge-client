@@ -261,7 +261,8 @@ export function usePeerConnection(options: UsePeerConnectionOptions): UsePeerCon
       }
       closePeer();
     };
-  }, [config?.host, initializePeer, closePeer]);
+  }, []);
+  // [config?.host, initializePeer, closePeer]);
 
   return {
     peerId,

@@ -37,15 +37,13 @@ export const VideoTile: React.FC<VideoTileProps> = ({
    * Attach stream to video element when available
    */
   useEffect(() => {
-    const videoElement = videoRef.current;
-    if (videoElement && stream) {
-      videoElement.srcObject = stream;
-      console.log(`📹 Video stream attached for: ${userId}`);
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
     }
 
     return () => {
-      if (videoElement) {
-        videoElement.srcObject = null;
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
       }
     };
   }, [stream, userId]);

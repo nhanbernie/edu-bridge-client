@@ -228,7 +228,8 @@ export function useWebRTC(options: UseWebRTCOptions): UseWebRTCReturn {
         }
       });
     };
-  }, [participants]);
+  }, []);
+  // }, [participants]);
 
   const isReady = !isMediaLoading && isConnected && !!localStream;
 
