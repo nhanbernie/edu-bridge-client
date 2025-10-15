@@ -25,7 +25,9 @@ const StudentOnboardingPage = () => {
     const result = await submitOnboarding(data);
 
     if (result.success) {
-      push(ROUTES.STUDENT);
+      // Navigate về HOME, để HomePage tự check và redirect đúng
+      // Đã fetch + update localStorage ở hook rồi nên HomePage sẽ redirect ngay
+      push(ROUTES.HOME);
     }
   };
 

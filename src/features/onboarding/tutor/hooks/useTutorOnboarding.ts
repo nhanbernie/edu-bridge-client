@@ -5,6 +5,8 @@ import { TutorOnboardingRequest } from "@/services/api/type";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
 import { ROUTES } from "@/common/constants/route.constant";
+import { useState } from "react";
+import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 
 export interface TutorFormData {
   educationLevel: string;
@@ -19,6 +21,13 @@ export const useTutorOnboarding = () => {
   const { push } = useLocaleRouter();
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
   const { refreshToken } = useRefreshToken();
+  const [userId, setUserId] = useState<string>("");
+
+  // Hook tự động fetch và store user data
+  const { refetch: refetchUser } = useGetAndStoreUser({
+    userId: userId,
+    enabled: false, // Disable auto-fetch, chỉ dùng refetch manual
+  });
 
   const submitOnboarding = async (
     data: TutorFormData
@@ -58,7 +67,26 @@ export const useTutorOnboarding = () => {
       if (result.success) {
         toast.success("Thiết lập hồ sơ gia sư thành công!");
 
+        // Step 1: Refresh token to get updated role
         const refreshSuccess = await refreshToken();
+
+        if (refreshSuccess) {
+          try {
+            // Step 2: Set userId để enable hook, sau đó refetch
+            // Hook useGetAndStoreUser sẽ tự động fetch và lưu vào localStorage
+            setUserId(userData.userId);
+            await refetchUser();
+
+            return {
+              success: true,
+              message: result.message,
+              needsRefresh: true,
+            };
+          } catch (fetchError) {
+            console.error("Failed to fetch updated user data:", fetchError);
+            // Vẫn return success vì role đã update, chỉ việc fetch data bị lỗi
+          }
+        }
 
         return {
           success: true,

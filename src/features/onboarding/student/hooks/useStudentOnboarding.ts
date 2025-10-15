@@ -6,6 +6,8 @@ import { StudentOnboardingRequest } from "@/services/api/type";
 import { StorageService } from "@/services/storage/secureStorage.service";
 import { toast } from "sonner";
 import { ROUTES } from "@/common/constants/route.constant";
+import { useState } from "react";
+import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 
 interface StudentFormData {
   grade: string;
@@ -17,6 +19,12 @@ export const useStudentOnboarding = () => {
   const { push } = useLocaleRouter();
   const [selectRole, { isLoading, error }] = useSelectRoleMutation();
   const { refreshToken } = useRefreshToken();
+  const [userId, setUserId] = useState<string>("");
+
+  const { refetch: refetchUser } = useGetAndStoreUser({
+    userId: userId,
+    enabled: false,
+  });
 
   const submitOnboarding = async (
     data: StudentFormData
@@ -54,8 +62,24 @@ export const useStudentOnboarding = () => {
       if (result.success) {
         toast.success("Thiết lập hồ sơ thành công!");
 
-        // Refresh token to get updated role
+        // Step 1: Refresh token to get updated role
         const refreshSuccess = await refreshToken();
+
+        if (refreshSuccess) {
+          try {
+            setUserId(userData.userId);
+            await refetchUser();
+
+            return {
+              success: true,
+              message: result.message,
+              needsRefresh: true,
+            };
+          } catch (fetchError) {
+            console.error("Failed to fetch updated user data:", fetchError);
+            // Vẫn return success vì role đã   update, chỉ việc fetch data bị lỗi
+          }
+        }
 
         return {
           success: true,
