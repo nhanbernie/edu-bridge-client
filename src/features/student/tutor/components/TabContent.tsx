@@ -189,7 +189,7 @@ const TabContent: React.FC<TabContentProps> = ({
         {/* Right side - Reviews List */}
         <div className="flex-1 space-y-4">
           {feedbacksData?.feedbacks?.map((feedback, index) => (
-            <Card key={index} className="border-0 shadow-sm">
+            <Card key={index} className="border-0 shadow-sm p-0">
               <CardContent className="p-4">
                 <div className="mb-3">
                   <div className="font-medium text-lg mb-1">{feedback.studentName}</div>

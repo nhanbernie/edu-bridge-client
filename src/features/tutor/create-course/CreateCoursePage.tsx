@@ -29,7 +29,6 @@ const CreateCoursePage: React.FC = () => {
         {/* EBHeader */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-2">
-            <BookOpen className="h-6 w-6 text-emerald-600" />
             <h1 className="text-2xl font-bold text-gray-900">Tạo khóa học mới</h1>
           </div>
           <p className="text-gray-600 mb-4">Khóa học được xuất bản, chi tiết có thể thay đổi sau</p>
