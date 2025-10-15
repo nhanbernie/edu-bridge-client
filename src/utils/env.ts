@@ -9,6 +9,9 @@ const createEnvConfig = () => {
       PATH: process.env.NEXT_PUBLIC_PEER_PATH || "/",
       SECURE: process.env.NEXT_PUBLIC_PEER_SECURE === "true" || false,
     },
+    TLDRAW: {
+      LICENSE_KEY: process.env.NEXT_PUBLIC_TLDRAW_LICENSE_KEY || "",
+    },
   };
 };
 
