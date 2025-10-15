@@ -62,25 +62,22 @@ const EBFooter = () => {
             {/* Social Media Icons */}
             <div className="flex space-x-3">
               <a
-                href="#"
-                className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <span className="text-sm font-bold">in</span>
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
+                href="https://www.facebook.com/edubridge.sv/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors"
                 aria-label="Facebook"
               >
                 <span className="text-sm font-bold">f</span>
               </a>
               <a
-                href="#"
-                className="w-10 h-10 bg-emerald-400 rounded-full flex items-center justify-center text-white hover:bg-emerald-600 transition-colors"
-                aria-label="Twitter"
+                href="https://www.tiktok.com/@edubridge.tt"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors"
+                aria-label="TikTok"
               >
-                <span className="text-sm font-bold">t</span>
+                <span className="text-sm font-bold">T</span>
               </a>
             </div>
           </div>
