@@ -12,13 +12,13 @@ import { AnimatePresence, motion } from "motion/react";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
-import { 
-  FORM_FIELD_BASE, 
-  FORM_FIELD_ERROR, 
-  FORM_FIELD_NORMAL, 
-  FORM_ERROR_MESSAGE, 
-  FORM_LABEL, 
-  FORM_FIELD_CONTAINER 
+import {
+  FORM_FIELD_BASE,
+  FORM_FIELD_ERROR,
+  FORM_FIELD_NORMAL,
+  FORM_ERROR_MESSAGE,
+  FORM_LABEL,
+  FORM_FIELD_CONTAINER,
 } from "@/common/constants/className.constant";
 
 interface MultipleSelectOption {
@@ -87,7 +87,7 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
     }
     const option = onCreateOption
       ? onCreateOption(textToAdd)
-      : { value: `custom:${slugify(textToAdd)}`, label: textToAdd };
+      : { value: `{slugify(textToAdd)}`, label: textToAdd };
     setLocalOptions((prev) => [...prev, option]);
     const next = Array.from(new Set([...(values || []), option.value]));
     onChange(next);
@@ -96,7 +96,7 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
   };
 
   // Filter options based on search
-  const filteredOptions = localOptions.filter(option =>
+  const filteredOptions = localOptions.filter((option) =>
     option.label.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -116,7 +116,7 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
             className={cn(
               FORM_FIELD_BASE,
               error ? FORM_FIELD_ERROR : FORM_FIELD_NORMAL,
-              triggerClassName,
+              triggerClassName
             )}
             disabled={disabled}
           >
@@ -125,8 +125,8 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
         </motion.div>
         <MultiSelectContent search={false}>
           <div className="p-2">
-            <CommandInput 
-              placeholder="Tìm kiếm..." 
+            <CommandInput
+              placeholder="Tìm kiếm hoặc nhập tên khác..."
               value={searchQuery}
               onValueChange={setSearchQuery}
               className="mb-2"
@@ -158,9 +158,7 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="text-sm text-gray-500 text-center py-4">
-                  Không có dữ liệu
-                </div>
+                <div className="text-sm text-gray-500 text-center py-4">Không có dữ liệu</div>
               )}
             </div>
           </div>
@@ -171,15 +169,15 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
 
       <AnimatePresence mode="wait">
         {error && (
-            <motion.p
-              className={FORM_ERROR_MESSAGE}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.2 }}
-            >
-              {error.message as any}
-            </motion.p>
+          <motion.p
+            className={FORM_ERROR_MESSAGE}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+          >
+            {error.message as any}
+          </motion.p>
         )}
       </AnimatePresence>
     </div>
