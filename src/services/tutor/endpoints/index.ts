@@ -1,1 +1,1 @@
-export { searchTutorsEndpoint } from "./searchTutors";
+export { filterTutorsEndpoint } from "./filterTutors";

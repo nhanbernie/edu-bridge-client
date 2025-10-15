@@ -1,12 +1,13 @@
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { toast } from "sonner";
 import { useCreateCourseMutation, type CreateCourseRequest } from "@/services/course";
 import { useTutorId } from "@/hooks/useTutorId";
 import { CourseFormData } from "@/components/form/course";
 
 export const useCreateCourse = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { tutorId, isLoading: tutorLoading } = useTutorId();
   const [createCourse, { isLoading: isCreating }] = useCreateCourseMutation();
 
@@ -32,7 +33,7 @@ export const useCreateCourse = () => {
 
         if (response.success) {
           toast.success("Tạo khóa học thành công!");
-          router.push("/tutor/courses");
+          push(ROUTES.TUTOR_COURSES);
         } else {
           toast.error(response.message || "Có lỗi xảy ra khi tạo khóa học");
         }
@@ -47,12 +48,12 @@ export const useCreateCourse = () => {
         }
       }
     },
-    [tutorId, createCourse, router]
+    [tutorId, createCourse, push]
   );
 
   const handleCancel = useCallback(() => {
-    router.push("/tutor/courses");
-  }, [router]);
+    push(ROUTES.TUTOR_COURSES);
+  }, [push]);
 
   return {
     // Data

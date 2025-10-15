@@ -39,6 +39,9 @@ interface FeedbackState {
   // Real-time updates
   recentFeedback: RealtimeFeedbackUpdate | null;
 
+  // Tutor feedbacks list
+  tutorFeedbacks: Record<string, any[]>; // tutorId -> feedbacks array
+
   // UI state
   isLoading: boolean;
   error: string | null;
@@ -55,6 +58,7 @@ const initialState: FeedbackState = {
     errors: {},
   },
   recentFeedback: null,
+  tutorFeedbacks: {},
   isLoading: false,
   error: null,
 };
@@ -106,6 +110,17 @@ const feedbackSlice = createSlice({
       state.recentFeedback = action.payload;
     },
 
+    // Tutor feedbacks actions
+    setTutorFeedbacks: (state, action: PayloadAction<{ tutorId: string; feedbacks: any[] }>) => {
+      const { tutorId, feedbacks } = action.payload;
+      state.tutorFeedbacks[tutorId] = feedbacks;
+    },
+
+    clearTutorFeedbacks: (state, action: PayloadAction<string>) => {
+      const tutorId = action.payload;
+      delete state.tutorFeedbacks[tutorId];
+    },
+
     // Loading and error states
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -121,6 +136,7 @@ const feedbackSlice = createSlice({
       state.courseRatings = {};
       state.feedbackForm = initialState.feedbackForm;
       state.recentFeedback = null;
+      state.tutorFeedbacks = {};
       state.isLoading = false;
       state.error = null;
     },
@@ -134,6 +150,8 @@ export const {
   setFeedbackFormErrors,
   clearFeedbackForm,
   setRecentFeedback,
+  setTutorFeedbacks,
+  clearTutorFeedbacks,
   setLoading,
   setError,
   clearFeedbackState,
@@ -158,3 +176,6 @@ export const selectFeedbackLoading = (state: { feedback: FeedbackState }) =>
   state.feedback.isLoading;
 
 export const selectFeedbackError = (state: { feedback: FeedbackState }) => state.feedback.error;
+
+export const selectTutorFeedbacks = (state: { feedback: FeedbackState }, tutorId: string) =>
+  state.feedback.tutorFeedbacks[tutorId] || [];

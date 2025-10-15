@@ -1,12 +1,13 @@
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import { toast } from "sonner";
 import { selectUser } from "@/redux/selectors/auth.selectors";
 import { useCreateBookingMutation } from "@/services/booking";
 import { useCreatePaymentMutation } from "@/services/payment";
 import type { CreateBookingRequest, SlotRequest } from "@/services/booking/type";
-import type { CreatePaymentRequest } from "@/services/payment/type";
+import type { CreatePaymentRequest, CreatePaymentData } from "@/services/payment/type";
 
 interface SelectedSession {
   date: Date;
@@ -26,10 +27,12 @@ interface BookingData {
 }
 
 export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const user = useSelector(selectUser);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [showQRDialog, setShowQRDialog] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const [paymentData, setPaymentData] = useState<CreatePaymentData | null>(null);
 
   // API mutations
   const [createBooking, { isLoading: isCreatingBooking }] = useCreateBookingMutation();
@@ -90,7 +93,7 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
     [studentId, courseId, createBooking]
   );
 
-  // Step 2: Create payment and redirect
+  // Step 2: Create payment and show QR code
   const handleConfirmPayment = useCallback(async () => {
     if (!bookingId || !studentId) {
       toast.error("Thông tin đặt lịch không hợp lệ.");
@@ -106,12 +109,12 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
       const result = await createPayment(paymentRequest).unwrap();
 
       if (result.success && result.data) {
-        toast.success(result.message || "Tạo thanh toán thành công! Đang chuyển hướng...");
+        toast.success(result.message || "Tạo thanh toán thành công!");
 
-        // Open payment URL in new tab
-        window.open(result.data.paymentUrl, "_blank");
-
-        // Redirect to success page with booking info
+        // Store payment data for QR code dialog
+        setPaymentData(result.data);
+        setShowPaymentDialog(false);
+        setShowQRDialog(true);
       } else {
         toast.error(result.message || "Có lỗi xảy ra khi tạo thanh toán.");
       }
@@ -128,20 +131,29 @@ export const useBookingFlow = ({ tutorId, courseId }: UseBookingFlowProps) => {
     setBookingId(null);
     // Optionally redirect to cancel page
     if (bookingId) {
-      router.push(`/student/booking/cancel?bookingId=${bookingId}&reason=user_cancelled`);
+      push(`/student/booking/cancel?bookingId=${bookingId}&reason=user_cancelled`);
     }
-  }, [bookingId, router]);
+  }, [bookingId, push]);
+
+  // Close QR dialog
+  const handleCloseQRDialog = useCallback(() => {
+    setShowQRDialog(false);
+    setPaymentData(null);
+  }, []);
 
   return {
     // State
     showPaymentDialog,
+    showQRDialog,
     bookingId,
+    paymentData,
     isLoading: isCreatingBooking || isCreatingPayment,
 
     // Actions
     handleCreateBooking,
     handleConfirmPayment,
     handleCancelPayment,
+    handleCloseQRDialog,
 
     // Utils
     studentId,

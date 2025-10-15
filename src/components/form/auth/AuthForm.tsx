@@ -5,10 +5,17 @@ import EBFormProvider from "../EBFormProvider";
 import { EBTextField } from "../EBTextField";
 import { EBOTPInput } from "../EBOTPInput";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useFormContext } from "react-hook-form";
 import validatorSchema from "@/lib/validator/authValidator";
-import { INPUT_FIELDS, BUTTON_TITLES } from "@/common/constants/form.constant";
+import {
+  INPUT_FIELDS,
+  BUTTON_TITLES,
+  getInputFields,
+  getButtonTitles,
+} from "@/common/constants/form.constant";
+import { ROUTES } from "@/common/constants/route.constant";
+import { useTranslations } from "next-intl";
 
 export interface IAuthFormProps {
   type: "login" | "register" | "forgotPassword" | "verifyOTP" | "resetPassword";
@@ -18,7 +25,8 @@ export interface IAuthFormProps {
 }
 
 const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormProps) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
+  const t = useTranslations("auth");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -64,10 +72,14 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
     const { formState } = useFormContext();
     const { isValid } = formState;
 
+    // Get i18n fields and button titles
+    const inputFields = getInputFields(t);
+    const buttonTitles = getButtonTitles(t);
+
     return (
       <div className="w-full">
         <div className="space-y-5">
-          {INPUT_FIELDS[type].map((field) => {
+          {inputFields[type].map((field) => {
             if (field.type === "otp") {
               return (
                 <EBOTPInput
@@ -85,7 +97,9 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         {/* Display email when in verifyOTP mode */}
         {type === "verifyOTP" && email && (
           <div className="mt-2">
-            <p className="text-gray-500 text-center text-sm">Mã đã được gửi đến {email}</p>
+            <p className="text-gray-500 text-center text-sm">
+              {t("verifyOTP.subtitle")} {email}
+            </p>
           </div>
         )}
 
@@ -106,16 +120,16 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
                 >
                   {rememberMe && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
-                <span className="text-gray-700 text-sm">Ghi nhớ đăng nhập</span>
+                <span className="text-gray-700 text-sm">{t("login.rememberMe")}</span>
               </button>
 
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => router.push("/forgot-password")}
+                  onClick={() => push(ROUTES.FORGOT_PASSWORD)}
                   className="text-primary hover:text-primary/80 text-sm"
                 >
-                  Quên mật khẩu?
+                  {t("login.forgotPassword")}
                 </button>
               </div>
             </div>
@@ -132,7 +146,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
             )}
             disabled={!isValid || isSubmitting}
           >
-            {isSubmitting ? "Đang xử lý..." : BUTTON_TITLES[type]}
+            {isSubmitting ? "Đang xử lý..." : buttonTitles[type]}
           </button>
         </div>
 
@@ -140,13 +154,13 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         {type === "login" && (
           <div className="mt-4 text-center">
             <span className="text-gray-600 text-sm">
-              Chưa có tài khoản?
+              {t("login.noAccount")}{" "}
               <button
                 type="button"
-                onClick={() => router.push("/register")}
+                onClick={() => push(ROUTES.REGISTER)}
                 className="text-primary hover:text-primary/80 font-medium ml-1"
               >
-                Đăng ký
+                {t("login.registerLink")}
               </button>
             </span>
           </div>
@@ -156,13 +170,13 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
         {type === "register" && (
           <div className="mt-4 text-center">
             <span className="text-gray-600 text-sm">
-              Đã có tài khoản?
+              {t("register.hasAccount")}{" "}
               <button
                 type="button"
-                onClick={() => router.push("/login")}
+                onClick={() => push(ROUTES.LOGIN)}
                 className="text-primary hover:text-primary/80 font-medium ml-1"
               >
-                Đăng nhập
+                {t("register.loginLink")}
               </button>
             </span>
           </div>

@@ -24,7 +24,7 @@ interface TimeSlot {
   extendedProps?: {
     blockId?: string;
     slotIndex?: number;
-    isBooked?: boolean;
+    status?: string; // AVAILABLE/BOOKED/RESERVED
     originalSlot?: any;
   };
 }
@@ -81,14 +81,29 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
             id: `${block.blockId}-slot-${slotIndex}`,
             start: startTime,
             end: endTime,
-            title: slot.isBooked ? "Đã đặt" : "Rảnh",
-            backgroundColor: slot.isBooked ? "#f97316" : "#10b981",
-            borderColor: slot.isBooked ? "#ea580c" : "#059669",
+            title:
+              slot.status === "BOOKED"
+                ? "Đã đặt"
+                : slot.status === "RESERVED"
+                  ? "Đang giữ"
+                  : "Rảnh",
+            backgroundColor:
+              slot.status === "BOOKED"
+                ? "#ef4444"
+                : slot.status === "RESERVED"
+                  ? "#eab308"
+                  : "#10b981",
+            borderColor:
+              slot.status === "BOOKED"
+                ? "#dc2626"
+                : slot.status === "RESERVED"
+                  ? "#ca8a04"
+                  : "#059669",
             isTemp: false,
             extendedProps: {
               blockId: block.blockId,
               slotIndex: slotIndex,
-              isBooked: slot.isBooked,
+              status: slot.status,
               originalSlot: slot,
             },
           };
@@ -353,7 +368,7 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
         const timeRanges = slots.map((slot) => ({
           startTime: slot.start.replace("T", " ").substring(0, 16),
           endTime: slot.end.replace("T", " ").substring(0, 16),
-          isBooked: false,
+          status: "AVAILABLE",
         }));
 
         await handleCreateBlock({

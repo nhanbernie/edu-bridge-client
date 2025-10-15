@@ -8,6 +8,8 @@ export * from "./payment";
 export * from "./tutor";
 export * from "./feedback";
 export * from "./transactions";
+export * from "./classSession";
+export * from "./meeting";
 
 // Export API types
 export * from "./api/type";

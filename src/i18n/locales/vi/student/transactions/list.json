@@ -1,0 +1,15 @@
+{
+  "title": "Lịch sử giao dịch",
+  "empty": {
+    "title": "Chưa có giao dịch",
+    "description": "Bạn chưa có giao dịch nào trong hệ thống"
+  },
+  "flowType": {
+    "outgoing": "Tiền chuyển",
+    "incoming": "Tiền nhận",
+    "default": "Giao dịch"
+  },
+  "fee": "Phí",
+  "income": "Thu nhập",
+  "updated": "Cập nhật"
+}

@@ -4,16 +4,19 @@ import React, { useState } from "react";
 import { useParams } from "next/navigation";
 import { Star, MapPin, Users, Clock, Award, Heart, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { EBPageLoading } from "@/components/common";
 import TabNavigation from "@/components/common/EBTabNavigation";
 import TabContent from "./components/TabContent";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
+import { useGetUser } from "@/hooks/useGetUser";
 
 interface DetailTutorPageProps {
   tutorId?: string;
 }
 
-// Mock tutor data
+// Mock tutor data - COMMENTED OUT, using real API data now
+/*
 const mockTutor = {
   id: "1",
   name: "Nguyễn Văn An",
@@ -34,6 +37,7 @@ const mockTutor = {
   specialties: ["Đại số", "Hình học", "Giải tích", "Xác suất thống kê"],
   achievements: ["Giải nhất Olympic Toán toàn quốc", "Giáo viên xuất sắc 2023"],
 };
+*/
 
 const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   const params = useParams();
@@ -44,6 +48,15 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   const currentTutorId = tutorId || (params?.id as string);
 
   // API hooks
+  const {
+    userData,
+    isLoading: isLoadingUser,
+    error: userError,
+  } = useGetUser({
+    userId: currentTutorId || "",
+    enabled: !!currentTutorId,
+  });
+
   const coursesHook = useManageCourses(currentTutorId || "", selectedCourseId);
   const availabilityHook = useAvailabilityBlock({
     tutorId: currentTutorId,
@@ -60,6 +73,34 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   const handleContact = () => {
     // Implement contact functionality
   };
+
+  // Loading state
+  if (isLoadingUser) {
+    return <EBPageLoading message="Đang tải thông tin gia sư..." />;
+  }
+
+  // Error state
+  if (userError || !userData) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center py-12">
+            <p className="text-red-500 mb-4">Không thể tải thông tin gia sư</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+            >
+              Thử lại
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Extract tutor data from API response
+  const tutor = userData.tutor;
+  const user = userData;
 
   const renderTabContent = () => {
     return (
@@ -81,20 +122,30 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
         <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 mb-8 shadow-xl">
           <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-6 lg:space-y-0 lg:space-x-8">
             {/* Left Side - Avatar and Basic Info */}
-            <div className="flex items-start space-x-6">
+            <div className="flex items-start space-x-8">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-primary font-bold text-3xl">
-                  {mockTutor.avatar}
-                </div>
-                {mockTutor.status === "Online" && (
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-3 border-white dark:border-gray-800 animate-pulse" />
+                {user.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt={user.fullName || "Tutor"}
+                    className="w-44 h-44 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-44 h-44 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-primary font-bold text-8xl">
+                    {user.fullName?.charAt(0).toUpperCase() || "T"}
+                  </div>
+                )}
+                {user.status === "APPROVED" && (
+                  <div className="absolute bottom-2 right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-gray-800 animate-pulse" />
                 )}
               </div>
 
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <h1 className="text-3xl font-bold text-foreground">{mockTutor.name}</h1>
-                  {mockTutor.verified && (
+                  <h1 className="text-5xl font-bold text-foreground">
+                    {user.fullName || "Gia sư"}
+                  </h1>
+                  {tutor?.verifiedStatus === "VERIFIED" && (
                     <div className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20">
                       Verified
                     </div>
@@ -104,29 +155,31 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-1">
                     <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                    <span className="font-semibold text-foreground">{mockTutor.rating}</span>
+                    <span className="font-semibold text-foreground">
+                      {tutor?.averageTutorRating || 0}
+                    </span>
                     <span className="text-muted-foreground">
-                      ({mockTutor.reviewCount} đánh giá)
+                      ({tutor?.totalFeedbacks || 0} đánh giá)
                     </span>
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground">
                     <MapPin className="w-4 h-4" />
-                    <span>{mockTutor.location}</span>
+                    <span>{user.location || "Chưa cập nhật"}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
                     <Users className="w-4 h-4" />
-                    <span>{mockTutor.studentCount} học sinh</span>
+                    <span>{tutor?.totalStudents || 0} học sinh</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
-                    <span>{mockTutor.experience}</span>
+                    <span>{tutor?.yearsOfExperience || 0} năm kinh nghiệm</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Award className="w-4 h-4" />
-                    <span>{mockTutor.courseCount} khóa học</span>
+                    <span>{tutor?.totalCourses || 0} khóa học</span>
                   </div>
                 </div>
               </div>
@@ -134,13 +187,13 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
             {/* Right Side - Actions and Price */}
             <div className="flex-1 lg:text-right space-y-4">
-              <div className="text-right">
+              {/* <div className="text-right">
                 <div className="text-3xl font-bold text-primary">
-                  {mockTutor.price.toLocaleString()}
-                  {mockTutor.currency}
+                  {tutor?.hourlyRate?.toLocaleString() || "Liên hệ"}
+                  {tutor?.currency || ""}
                 </div>
                 <div className="text-muted-foreground">/ buổi học</div>
-              </div>
+              </div> */}
 
               <div className="flex flex-col sm:flex-row lg:justify-end space-y-3 sm:space-y-0 sm:space-x-3">
                 <button
@@ -163,12 +216,12 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   </span>
                 </button>
 
-                <button
+                {/* <button
                   onClick={handleContact}
                   className="flex items-center justify-center space-x-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
                 >
                   <MessageCircle className="w-4 h-4" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -180,38 +233,44 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-3">Về tôi</h3>
-              <p className="text-muted-foreground leading-relaxed">{mockTutor.bio}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {tutor?.bio || "Chưa có thông tin giới thiệu"}
+              </p>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-3">Học vấn</h3>
-              <p className="text-muted-foreground">{mockTutor.education}</p>
+              <p className="text-muted-foreground">
+                {tutor?.educationLevel || "Chưa cập nhật thông tin học vấn"}
+              </p>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-3">Chuyên môn</h3>
               <div className="flex flex-wrap gap-2">
-                {mockTutor.specialties.map((specialty, index) => (
+                {tutor?.subjects?.map((subject, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20"
                   >
-                    {specialty}
+                    {subject}
                   </span>
-                ))}
+                )) || <span className="text-muted-foreground">Chưa cập nhật chuyên môn</span>}
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-3">Thành tích nổi bật</h3>
-              <ul className="space-y-2">
-                {mockTutor.achievements.map((achievement, index) => (
-                  <li key={index} className="flex items-center space-x-2 text-muted-foreground">
-                    <Award className="w-4 h-4 text-primary" />
-                    <span>{achievement}</span>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="text-lg font-semibold text-foreground mb-3">Ngôn ngữ</h3>
+              <div className="flex flex-wrap gap-2">
+                {tutor?.languages?.map((language, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-secondary text-secondary-foreground text-sm font-medium rounded-full"
+                  >
+                    {language}
+                  </span>
+                )) || <span className="text-muted-foreground">Chưa cập nhật ngôn ngữ</span>}
+              </div>
             </div>
           </div>
         </div>

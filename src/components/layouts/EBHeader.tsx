@@ -5,48 +5,62 @@ import { Search, MessageSquare, Menu, Globe } from "lucide-react";
 import EBLanguageSelector from "../common/EBLanguageSelector";
 import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
-import { navigationItems, NavItem } from "@/constants/navigate.constant";
+import {
+  navigationItems,
+  NavItem,
+  defaultHeaderActionButtons,
+} from "@/constants/navigate.constant";
 import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBLogo, EBUserMenu } from "@/components/common/";
 import { EBButtonAction } from "../motion/EBButtonMotion";
-import { HeaderItem, HeaderCTA, HeaderConfig } from "./types";
+import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
 
-interface AcitonButtonProps {
+interface ActionButtonsProps {
   onMobileMenuToggle: () => void;
-  showMessage?: boolean;
+  actionButtons?: HeaderActionButton[];
+  showTheme?: boolean;
+  showUserMenu?: boolean;
 }
 
 interface HeaderProps {
-  showMessage?: boolean;
+  actionButtons?: HeaderActionButton[];
+  showTheme?: boolean;
+  showUserMenu?: boolean;
   headerConfig?: HeaderConfig;
 }
 
 // Action buttons component
-const ActionButtons = ({ onMobileMenuToggle, showMessage = true }: AcitonButtonProps) => (
+const ActionButtons = ({
+  onMobileMenuToggle,
+  actionButtons = defaultHeaderActionButtons,
+  showTheme = true,
+  showUserMenu = true,
+}: ActionButtonsProps) => (
   <div className="flex items-center gap-3">
-    {/* Search button */}
-    <EBButtonAction>
-      <Search size={20} />
-    </EBButtonAction>
+    {/* Action buttons */}
+    {actionButtons.map((button) => {
+      if (button.show === false) return null;
+      const IconComponent = button.icon;
+      return (
+        <EBButtonAction key={button.key} onClick={button.onClick}>
+          <div className="relative">
+            <IconComponent size={20} />
+            {button.badge && (
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+            )}
+          </div>
+        </EBButtonAction>
+      );
+    })}
 
-    {/* Messages button */}
-    {showMessage && (
-      <EBButtonAction>
-        <MessageSquare size={20} />
-      </EBButtonAction>
-    )}
+    {/* Theme Toggle - always show unless disabled */}
+    {showTheme && <EBThemeToggle />}
 
-    {/* Language selector */}
-    <EBButtonAction>
-      <Globe className="w-5 h-5" />
-    </EBButtonAction>
-    {/* User Menu */}
+    {/* User Menu - always show unless disabled */}
+    {showUserMenu && <EBUserMenu />}
 
-    <EBThemeToggle />
-
-    <EBUserMenu />
-    {/* Mobile menu button */}
+    {/* Mobile menu button - always show */}
     <button
       onClick={onMobileMenuToggle}
       className="md:hidden p-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
@@ -76,7 +90,12 @@ const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
 );
 
 // Main EBHeader component
-const EBHeader = ({ showMessage, headerConfig }: HeaderProps) => {
+const EBHeader = ({
+  actionButtons = defaultHeaderActionButtons,
+  showTheme = true,
+  showUserMenu = true,
+  headerConfig,
+}: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -120,9 +139,11 @@ const EBHeader = ({ showMessage, headerConfig }: HeaderProps) => {
             <div className="flex items-center gap-3">
               {headerConfig?.cta && <CTAButton cta={headerConfig.cta} />}
 
-              {/* Default action buttons */}
+              {/* Action buttons */}
               <ActionButtons
-                showMessage={showMessage}
+                actionButtons={headerConfig?.actionButtons ?? actionButtons}
+                showTheme={headerConfig?.showTheme ?? showTheme}
+                showUserMenu={headerConfig?.showUserMenu ?? showUserMenu}
                 onMobileMenuToggle={handleMobileMenuToggle}
               />
             </div>

@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBLogo } from "@/components/common";
 import EBThemeToggle from "@/components/common/EBThemeToggle";
 import EBSidebarButton from "@/components/common/EBSidebarButton";
@@ -14,6 +15,7 @@ import {
   defaultTutorSidebarItems,
   defaultTutorActionButtons,
 } from "@/common/constants/navigate.constant";
+import { MAX_WIDTH_8XL } from "@/common/constants/className.constant";
 
 interface EBManageLayoutProps {
   children: ReactNode;
@@ -31,8 +33,9 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   showNotifications = true,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const pathname = usePathname();
+  const { getCurrentLocale } = useLocaleRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,9 +45,11 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Check if route is active
+  // Check if route is active (handle locale in pathname)
   const isRouteActive = (href: string) => {
-    return pathname === href || (href !== "/tutor" && pathname.startsWith(href));
+    const locale = getCurrentLocale();
+    const fullHref = `/${locale}${href}`;
+    return pathname === fullHref || (href !== "/tutor" && pathname.startsWith(fullHref));
   };
 
   return (
@@ -200,7 +205,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
 
           {/* Main Content - Scrollable */}
           <main className="flex-1 overflow-y-auto overflow-x-hidden">
-            <div className="max-w-8xl mx-auto p-6">{children}</div>
+            <div className={MAX_WIDTH_8XL}>{children}</div>
           </main>
         </div>
       </div>

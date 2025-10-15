@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Calendar, Loader2, Clock } from "lucide-reac
 import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
 import type { AvailabilityBlockDto } from "@/services/availability-block/type";
+import { SlotStatus } from "@/common/enums";
 
 interface SelectedSession {
   date: Date;
@@ -18,6 +19,7 @@ interface ScheduleSelectorProps {
   selectedDate: Date | null;
   selectedTime: string | null;
   selectedBlockId: string | null;
+  selectedPackage?: string | null; // Add to check if package is selected
   onDateChange: (date: Date | null) => void;
   onTimeChange: (time: string | null, blockId: string | null) => void;
   onAddSession: () => void;
@@ -35,6 +37,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   selectedDate,
   selectedTime,
   selectedBlockId,
+  selectedPackage,
   onDateChange,
   onTimeChange,
   onAddSession,
@@ -125,7 +128,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
     const availableSlots: {
       id: string;
       label: string;
-      isBooked: boolean;
+      status: string;
       start: string;
       end: string;
       startMinutes: number;
@@ -168,7 +171,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
             availableSlots.push({
               id: `${startTime}-${endTime}`,
               label: `${startTime} - ${endTime}`,
-              isBooked: slot.isBooked,
+              status: slot.status,
               start: startTime,
               end: endTime,
               startMinutes,
@@ -239,7 +242,15 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   };
 
   const isDateDisabled = (date: Date) => {
-    return date < today || date.getDay() === 0; // Disable past dates and Sundays
+    // Normalize date to start of day for proper comparison
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+
+    const todayStart = new Date(today);
+    todayStart.setHours(0, 0, 0, 0);
+
+    // Only disable dates before today (past dates)
+    return checkDate < todayStart;
   };
 
   const isDateSelected = (date: Date) => {
@@ -317,7 +328,10 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
               return (
                 <button
                   key={index}
-                  onClick={() => !isDisabled && onDateChange(date)}
+                  onClick={() => {
+                    if (isDisabled) return;
+                    onDateChange(date);
+                  }}
                   disabled={isDisabled}
                   className={cn(
                     "aspect-square text-sm rounded-lg transition-colors relative",
@@ -426,7 +440,10 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                     session.timeSlot === slot.id &&
                     session.date.toDateString() === selectedDate?.toDateString()
                 );
-                const isDisabledSlot = !selectedDate || slot.isBooked || isConflicted;
+                const isBooked = slot.status === SlotStatus.BOOKED;
+                const isReserved = slot.status === SlotStatus.RESERVED;
+                const isAvailable = slot.status === SlotStatus.AVAILABLE;
+                const isDisabledSlot = !selectedDate || isBooked || isReserved || isConflicted;
 
                 return (
                   <button
@@ -437,22 +454,29 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                       "py-3 px-3 text-sm rounded-lg border transition-colors text-center relative",
                       !selectedDate
                         ? "cursor-not-allowed opacity-50 border-border text-muted-foreground"
-                        : slot.isBooked
+                        : isBooked
                           ? "cursor-not-allowed opacity-50 border-red-200 bg-red-50 text-red-400"
-                          : isConflicted
-                            ? "cursor-not-allowed opacity-50 border-orange-200 bg-orange-50 text-orange-400"
-                            : isAlreadySelected
-                              ? "bg-green-100 border-green-300 text-green-700"
-                              : selectedTime === slot.id
-                                ? "bg-primary border-primary text-primary-foreground"
-                                : "border-border text-foreground hover:border-primary hover:bg-muted"
+                          : isReserved
+                            ? "cursor-not-allowed opacity-50 border-yellow-200 bg-yellow-50 text-yellow-400"
+                            : isConflicted
+                              ? "cursor-not-allowed opacity-50 border-orange-200 bg-orange-50 text-orange-400"
+                              : isAlreadySelected
+                                ? "bg-green-100 border-green-300 text-green-700"
+                                : selectedTime === slot.id
+                                  ? "bg-primary border-primary text-primary-foreground"
+                                  : "border-border text-foreground hover:border-primary hover:bg-muted"
                     )}
                   >
                     {slot.label}
-                    {slot.isBooked && (
+                    {isBooked && (
                       <span className="absolute top-1 right-1 text-xs text-red-500">Đã đặt</span>
                     )}
-                    {isConflicted && !slot.isBooked && (
+                    {isReserved && (
+                      <span className="absolute top-1 right-1 text-xs text-yellow-500">
+                        Đang giữ
+                      </span>
+                    )}
+                    {isConflicted && isAvailable && (
                       <span className="absolute top-1 right-1 text-xs text-orange-500">Trùng</span>
                     )}
                     {isAlreadySelected && (

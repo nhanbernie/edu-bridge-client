@@ -23,9 +23,14 @@ export interface TutorSearchDto {
   hourlyRate?: number;
   currency: string;
   verifiedStatus: "VERIFIED" | "TRUSTED_BEGINNER" | "PENDING";
+  isBankAccountVerified?: boolean;
   averageTutorRating: number;
   fullName: string;
   email: string;
+  avatarUrl?: string;
+  totalStudents?: number;
+  totalCourses?: number;
+  totalFeedbacks?: number;
   // Additional fields that might be in response
   phone?: string;
   avatar?: string;
@@ -61,4 +66,10 @@ export interface TutorCardData {
   educationLevel?: string;
   email?: string;
   phone?: string;
+  // New fields from API
+  avatarUrl?: string;
+  totalStudents?: number;
+  totalCourses?: number;
+  totalFeedbacks?: number;
+  yearsOfExperience?: number;
 }

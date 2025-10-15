@@ -1,6 +1,16 @@
 import { ApiResponse } from "../api/type";
 
-// Transaction Types
+// New DTO for tutor and student
+export interface UserTransactionHistoryDto {
+  transactionId: string;
+  date: string;
+  description: string;
+  amount: number;
+  flowType: string;
+  status: string;
+}
+
+// Old DTO for admin (keep unchanged)
 export interface TransactionDto {
   transactionId: string;
   paymentId: string;
@@ -17,7 +27,7 @@ export interface TransactionDto {
 }
 
 // API Response Types
-export type GetTutorTransactionsResponse = ApiResponse<TransactionDto[]>;
-export type GetStudentTransactionsResponse = ApiResponse<TransactionDto[]>;
+export type GetTutorTransactionsResponse = ApiResponse<UserTransactionHistoryDto[]>;
+export type GetStudentTransactionsResponse = ApiResponse<UserTransactionHistoryDto[]>;
 export type GetAdminTransactionsResponse = ApiResponse<TransactionDto[]>;
 export type GetServiceFeesResponse = ApiResponse<number>;

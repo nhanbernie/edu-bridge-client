@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ActionItem } from "./EBActionsMenu";
 import {
   DropdownMenu,
@@ -15,21 +16,43 @@ import {
 
 const EBUserMenu = () => {
   const { logout, user } = useAuth();
+  const { push } = useLocaleRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Determine profile route based on user role
+  const getProfileRoute = () => {
+    if (!user?.role) return "/";
+
+    const role = user.role.toLowerCase();
+    switch (role) {
+      case "tutor":
+        return "/tutor/profile";
+      case "student":
+        return "/student/profile";
+      case "admin":
+        return "/admin/dashboard";
+      default:
+        return "/";
+    }
+  };
+
+  const handleProfileClick = () => {
+    const profileRoute = getProfileRoute();
+    push(profileRoute);
+  };
 
   const userActions: ActionItem[] = [
     {
       label: "Profile",
       icon: User,
-      onClick: () => {
-        // Navigate to profile page
-      },
+      onClick: handleProfileClick,
     },
     {
       label: "Settings",
       icon: Settings,
       onClick: () => {
-        // Navigate to settings page
+        // TODO: Navigate to settings page
+        console.log("Settings clicked");
       },
     },
     {

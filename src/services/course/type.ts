@@ -14,17 +14,17 @@ export interface CourseDto {
 
 // Package types
 export enum PackageType {
-  TRIAL = 0,
-  BASIC = 1,
-  STANDARD = 2,
-  PREMIUM = 3,
-  CUSTOM = 4,
+  TRIAL = "TRIAL",
+  SINGLE = "SINGLE",
+  FOUR = "FOUR",
+  EIGHT = "EIGHT",
+  TWELVE = "TWELVE",
 }
 
 export interface PackageDto {
   packageId: string;
   courseId: string;
-  packageType: PackageType;
+  packageType: string; // Changed to string to accept "TRIAL", "SINGLE", etc.
   numberOfSessions: number;
   price: number;
   serviceFeePercentage: number;
@@ -91,6 +91,42 @@ export interface GetCoursePackagesResponse {
 export interface UpdateCourseResponse {
   success: boolean;
   data: CourseDto;
+  message: string;
+  errors: any[] | null;
+}
+
+// Enrollment types
+export interface EnrollmentDto {
+  courseId: string;
+  courseTitle: string;
+  tutorId: string;
+  tutorName: string;
+  tutorAvatarUrl: string;
+  totalSessionsBooked: number;
+  completedSessions: number;
+  progressStatus: string; // "In Progress" | "Completed"
+  totalStudents: number | null;
+}
+
+export interface GetStudentEnrollmentsRequest {
+  studentId: string;
+}
+
+export interface GetStudentEnrollmentsResponse {
+  success: boolean;
+  data: EnrollmentDto[];
+  message: string;
+  errors: any[] | null;
+}
+
+// Tutor teachings (same structure as enrollments)
+export interface GetTutorTeachingsRequest {
+  tutorId: string;
+}
+
+export interface GetTutorTeachingsResponse {
+  success: boolean;
+  data: EnrollmentDto[];
   message: string;
   errors: any[] | null;
 }

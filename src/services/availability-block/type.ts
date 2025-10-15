@@ -2,7 +2,7 @@
 export interface SlotDto {
   startTime: string;
   endTime: string;
-  isBooked: boolean;
+  status: string; // AVAILABLE/BOOKED/RESERVED
 }
 
 // Availability Block types
@@ -24,7 +24,7 @@ export interface CreateAvailabilityBlockRequest {
   timeRanges: {
     startTime: string;
     endTime: string;
-    isBooked: boolean;
+    status: string; // AVAILABLE/BOOKED/RESERVED
   }[];
   isRecurring: boolean;
   recurrenceWeeks: number;

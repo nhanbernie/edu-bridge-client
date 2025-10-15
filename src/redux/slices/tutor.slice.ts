@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { TutorCardData, TutorSearchRequest } from "@/services/tutor/type";
 
@@ -176,12 +176,20 @@ export const selectTutorById = (state: RootState, tutorId: string) =>
 export const selectTutorSearchFilters = (state: RootState) => state.tutor.searchFilters;
 export const selectTutorLoading = (state: RootState) => state.tutor.isLoading;
 export const selectTutorError = (state: RootState) => state.tutor.error;
-export const selectTutorPagination = (state: RootState) => ({
-  currentPage: state.tutor.currentPage,
-  pageSize: state.tutor.pageSize,
-  hasNextPage: state.tutor.hasNextPage,
-  totalCount: state.tutor.totalCount,
-});
+export const selectTutorPagination = createSelector(
+  [
+    (state: RootState) => state.tutor.currentPage,
+    (state: RootState) => state.tutor.pageSize,
+    (state: RootState) => state.tutor.hasNextPage,
+    (state: RootState) => state.tutor.totalCount,
+  ],
+  (currentPage, pageSize, hasNextPage, totalCount) => ({
+    currentPage,
+    pageSize,
+    hasNextPage,
+    totalCount,
+  })
+);
 export const selectSelectedTutor = (state: RootState) => {
   if (!state.tutor.selectedTutorId) return null;
   return state.tutor.tutors.find((tutor: any) => tutor.id === state.tutor.selectedTutorId) || null;

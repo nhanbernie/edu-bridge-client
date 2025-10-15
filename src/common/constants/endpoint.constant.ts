@@ -10,21 +10,32 @@ export const API_ENDPOINTS = {
     REFRESH: `${AUTH_ENDPOINT}/refresh-token`,
     LOGOUT: `${AUTH_ENDPOINT}/logout`,
     PROFILE: `${AUTH_ENDPOINT}/profile`,
+    // Reset password flow
     FORGOT_PASSWORD: `${AUTH_ENDPOINT}/forgot-password`,
-    VERIFY_OTP: `${AUTH_ENDPOINT}/verify-otp`,
+    VERIFY_OTP: `${AUTH_ENDPOINT}/verify-otp-reset`,
     RESET_PASSWORD: `${AUTH_ENDPOINT}/reset-password`,
+    RESEND_OTP: `${AUTH_ENDPOINT}/resend-otp-reset`,
+    // Email verification flow (for registration)
+    SEND_OTP_REGISTER: `${AUTH_ENDPOINT}/send-otp-register`,
+    VERIFY_OTP_REGISTER: `${AUTH_ENDPOINT}/verify-otp-register`,
+
     CHANGE_PASSWORD: `${AUTH_ENDPOINT}/change-password`,
     CREATE_OTP: `${AUTH_ENDPOINT}/create-otp`,
-    RESEND_OTP: `${AUTH_ENDPOINT}/resend-otp`,
   },
   USER: {
     GET_ALL_USERS: "/api/user",
     GET_USER: "/api/user/{id}",
     DELETE_USER: "/api/user/{id}",
     SELECT_ROLE: "/api/user/{id}/select-role",
+    UPLOAD_AVATAR: "/api/user/{userId}/avatar",
     UPLOAD_VERIFICATION_DOC: "/api/user/{tutorId}/upload-verification-doc",
     GET_VERIFICATION_DOCS: "/api/user/{tutorId}/verification-docs",
     VERIFY_ALL_DOCUMENTS: "/api/user/{tutorId}/verify-all-documents",
+    CHECK_VERIFICATION: "/api/user/{tutorId}/check-verification",
+    UPLOAD_MEDIA: "/api/user/tutor/{tutorId}/media",
+    GET_MEDIA: "/api/user/tutor/{tutorId}/media",
+    UPDATE_MEDIA: "/api/user/tutor/{tutorId}/media/{mediaId}",
+    UPDATE_USER_PROFILE: "/api/user/{userId}",
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",
@@ -34,6 +45,8 @@ export const API_ENDPOINTS = {
     CREATE_COURSE: "/api/course",
     UPDATE_COURSE: "/api/course/{courseId}",
     GET_COURSE_PACKAGES: "/api/course/{courseId}/packages",
+    GET_STUDENT_ENROLLMENTS: "/api/course/student/{studentId}/enrollments",
+    GET_TUTOR_TEACHINGS: "/api/course/tutor/{tutorId}/teachings",
   },
   AVAILABILITY_BLOCK: {
     GET_AVAILABILITY_BLOCKS: "/api/availability-block/tutor/{tutorId}",
@@ -45,12 +58,35 @@ export const API_ENDPOINTS = {
     CREATE_FEEDBACK: "/api/feedback/course/{courseId}",
     GET_TUTOR_RATING: "/api/feedback/tutor/{tutorId}/rating",
     GET_COURSE_RATING: "/api/feedback/course/{courseId}/rating",
+    GET_TUTOR_FEEDBACKS: "/api/feedback/tutor/{tutorId}/feedbacks",
+    GET_COURSE_FEEDBACKS: "/api/feedback/course/{courseId}/feedbacks",
   },
   TRANSACTION: {
     GET_TUTOR_TRANSACTIONS: "/api/transaction/tutor",
     GET_STUDENT_TRANSACTIONS: "/api/transaction/student",
     GET_ADMIN_TRANSACTIONS: "/api/transaction/admin",
     GET_SERVICE_FEES: "/api/transaction/admin/service-fees",
+  },
+  CLASS_SESSION: {
+    GET_STUDENT_UPCOMING_SESSIONS: "/api/class-session/student/{studentId}/upcoming",
+    GET_STUDENT_HISTORY_SESSIONS: "/api/class-session/student/{studentId}/history",
+    GET_TUTOR_UPCOMING_SESSIONS: "/api/class-session/tutor/{tutorId}/upcoming",
+    GET_TUTOR_HISTORY_SESSIONS: "/api/class-session/tutor/{tutorId}/history",
+    GET_TUTOR_UPCOMING_SESSIONS_BY_COURSE:
+      "/api/class-session/tutor/{tutorId}/course/{courseId}/upcoming",
+    GET_STUDENT_SCHEDULE: "/api/class-session/student/{studentId}/schedule",
+    JOIN_SESSION: "/api/class-session/{sessionId}/join",
+  },
+  MEETING: {
+    GET_WHITEBOARD: "/api/class-session/{sessionId}/whiteboard",
+    SAVE_WHITEBOARD: "/api/class-session/{sessionId}/whiteboard",
+    JOIN_MEETING: "/api/class-session/{sessionId}/join",
+    GET_CHAT_HISTORY: "/api/class-session/{sessionId}/chat",
+    SEND_MESSAGE: "/api/class-session/{sessionId}/chat",
+  },
+  PAYMENT: {
+    CHARITY: "/api/payment/charity",
+    VERIFY_QR: "/api/payment/tutor/verify-qr",
   },
 } as const;
 
@@ -66,5 +102,8 @@ export const PUBLIC_ENDPOINTS = [
   API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
   API_ENDPOINTS.AUTH.VERIFY_OTP,
   API_ENDPOINTS.AUTH.RESET_PASSWORD,
+  API_ENDPOINTS.AUTH.RESEND_OTP,
+  API_ENDPOINTS.AUTH.SEND_OTP_REGISTER,
+  API_ENDPOINTS.AUTH.VERIFY_OTP_REGISTER,
   API_ENDPOINTS.AUTH.CREATE_OTP,
 ];

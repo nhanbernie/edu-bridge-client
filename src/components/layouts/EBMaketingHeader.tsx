@@ -5,10 +5,11 @@ import { motion } from "motion/react";
 import { GraduationCap, Menu, X, Sun, Moon, Globe } from "lucide-react";
 import { navigateMarketItems } from "@/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
-import Link from "next/link";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
 import EBNavigation from "./components/EBNavigation";
 import { HeaderConfig } from "./types";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { useTranslations } from "next-intl";
 
 interface MaketingHeaderProps {
   headerConfig?: HeaderConfig;
@@ -18,6 +19,8 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { push } = useLocaleRouter();
+  const t = useTranslations("marketing.header");
 
   // Handle scroll effect
   useEffect(() => {
@@ -48,7 +51,9 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 {headerConfig.items.map((item) => (
                   <button
                     key={item.key}
-                    onClick={item.onClick || (() => item.href && (window.location.href = item.href))}
+                    onClick={
+                      item.onClick || (() => item.href && (window.location.href = item.href))
+                    }
                     className="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
                   >
                     {item.label}
@@ -88,23 +93,21 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 </div>
               ) : (
                 <div className="hidden sm:flex items-center space-x-3">
-                  <Link href="/login">
-                    <EBButton
-                      variant="ghost"
-                      size="sm"
-                      className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
-                    >
-                      Log in
-                    </EBButton>
-                  </Link>
-                  <Link href="/register">
-                    <EBButton
-                      size="sm"
-                      className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      Đăng ký
-                    </EBButton>
-                  </Link>
+                  <EBButton
+                    onClick={() => push("/login")}
+                    variant="ghost"
+                    size="sm"
+                    className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                  >
+                    {t("login")}
+                  </EBButton>
+                  <EBButton
+                    onClick={() => push("/register")}
+                    size="sm"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {t("register")}
+                  </EBButton>
                 </div>
               )}
 
@@ -160,45 +163,51 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.3 }}
               >
-                <Link
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    push(item.href);
+                  }}
+                  className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                     item.active
                       ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
                       : "text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
                   }`}
                 >
                   {item.label}
-                </Link>
+                </button>
               </motion.div>
             ))}
           </nav>
 
           {/* Mobile Auth Buttons */}
           <div className="space-y-3 pt-6 border-t border-gray-200">
-            <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-              <EBButton
-                variant="outline"
-                size="lg"
-                className="w-full border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-              >
-                Đăng nhập
-              </EBButton>
-            </Link>
-            <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
-              <EBButton
-                size="lg"
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
-              >
-                Đăng ký miễn phí
-              </EBButton>
-            </Link>
+            <EBButton
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                push("/login");
+              }}
+              variant="outline"
+              size="lg"
+              className="w-full border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+            >
+              {t("mobileLogin")}
+            </EBButton>
+            <EBButton
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                push("/register");
+              }}
+              size="lg"
+              className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+            >
+              {t("mobileRegister")}
+            </EBButton>
           </div>
 
           {/* Mobile Settings */}
           <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-            <span className="text-sm text-gray-600">Cài đặt</span>
+            <span className="text-sm text-gray-600">{t("settings")}</span>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}

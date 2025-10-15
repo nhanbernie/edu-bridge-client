@@ -26,6 +26,14 @@ export interface TutorDto {
   bio?: string;
   subjects?: string[];
   languages?: string[];
+  currency?: string;
+  hourlyRate?: number;
+  verifiedStatus?: "VERIFIED" | "TRUSTED_BEGINNER" | "PENDING";
+  isBankAccountVerified?: boolean;
+  totalStudents?: number;
+  totalCourses?: number;
+  totalFeedbacks?: number;
+  averageTutorRating?: number;
   verificationType?: TutorType;
 }
 
@@ -35,12 +43,22 @@ export interface StudentDto {
   learningGoal?: string;
 }
 
+// Verification types
+export interface CheckVerificationResponse {
+  success: boolean;
+  data: boolean;
+  message: string;
+  errors: null;
+}
+
 export interface UserDto {
   userId: string;
   email: string;
   role: UserRole;
   fullName?: string | null;
   phone?: string | null;
+  location?: string | null;
+  avatarUrl?: string | null;
   status?: UserStatus | null;
   tutor?: TutorDto | null;
   student?: StudentDto | null;
@@ -152,6 +170,7 @@ export interface StudentOnboardingRequest {
   student: {
     grade: string;
     learningGoal: string;
+    location: string;
   };
 }
 
@@ -163,6 +182,7 @@ export interface TutorOnboardingRequest {
     bio: string;
     subjects: string[];
     languages: string[];
+    location: string;
   };
 }
 
@@ -173,9 +193,9 @@ export type DocumentType =
   | "CCCD"
   | "CERTIFICATE"
   | "SELFIE"
+  | "DEGREE"
   | "STUDENT_CARD"
-  | "TRANSCRIPT"
-  | "ENROLLMENT_CONFIRMATION";
+  | "TRANSCRIPT";
 
 export interface UploadDocumentRequest {
   tutorId: string;

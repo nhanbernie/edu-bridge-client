@@ -9,13 +9,19 @@ import {
   verifyAllDocumentsEndpoint,
   getAllUsersEndpoint,
   deleteUserEndpoint,
+  checkVerificationEndpoint,
+  uploadAvatarEndpoint,
+  uploadMediaEndpoint,
+  getMediaEndpoint,
+  updateMediaEndpoint,
+  updateUserProfileEndpoint,
 } from "./endpoints/index";
 import { getSubjectsEndpoint } from "@/services/common";
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["UserProfile", "UserOnboarding"],
+  tagTypes: ["UserProfile", "UserOnboarding", "UserVerification", "TutorMedia"],
   endpoints: (builder) => ({
     getAllUsers: getAllUsersEndpoint(builder),
     getUser: getUserEndpoint(builder),
@@ -26,8 +32,12 @@ export const userApi = createApi({
     getVerificationDocs: getVerificationDocsEndpoint(builder),
     verifyAllDocuments: verifyAllDocumentsEndpoint(builder),
     deleteUser: deleteUserEndpoint(builder),
-    // TODO: Implement these endpoints when needed
-    // updateProfile: updateProfileEndpoint(builder),
+    checkVerification: checkVerificationEndpoint(builder),
+    uploadAvatar: uploadAvatarEndpoint(builder),
+    uploadMedia: uploadMediaEndpoint(builder),
+    getMedia: getMediaEndpoint(builder),
+    updateMedia: updateMediaEndpoint(builder),
+    updateUserProfile: updateUserProfileEndpoint(builder),
     // getProfile: getProfileEndpoint(builder),
     // deleteAccount: deleteAccountEndpoint(builder),
   }),
@@ -43,4 +53,12 @@ export const {
   useGetVerificationDocsQuery,
   useVerifyAllDocumentsMutation,
   useDeleteUserMutation,
+  useCheckVerificationQuery,
+  useLazyCheckVerificationQuery,
+  useUploadAvatarMutation,
+  useUploadMediaMutation,
+  useGetMediaQuery,
+  useLazyGetMediaQuery,
+  useUpdateMediaMutation,
+  useUpdateUserProfileMutation,
 } = userApi;

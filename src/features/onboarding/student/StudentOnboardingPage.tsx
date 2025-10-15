@@ -1,20 +1,24 @@
 "use client";
 
 import * as Yup from "yup";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import EBButton from "@/components/common/EBButton";
 import EBFormProvider from "@/components/form/EBFormProvider";
 import EBSelectField from "@/components/form/EBSelectField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
+import EBTextField from "@/components/form/EBTextField";
 import { useStudentOnboarding } from "./hooks/useStudentOnboarding";
+import { ROUTES } from "@/common/constants/route.constant";
 
 interface StudentFormData {
   grade: string;
   learningGoal: string;
+  location: string;
 }
 
 const StudentOnboardingPage = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const { submitOnboarding, isLoading } = useStudentOnboarding();
 
   const handleSubmit = async (data: StudentFormData) => {
@@ -22,7 +26,7 @@ const StudentOnboardingPage = () => {
 
     if (result.success) {
       // Student is approved immediately, redirect to dashboard
-      router.push("/student/dashboard");
+      push(ROUTES.STUDENT_DASHBOARD);
     }
   };
 
@@ -42,15 +46,20 @@ const StudentOnboardingPage = () => {
       .min(10, "Mục tiêu học tập phải có ít nhất 10 ký tự")
       .max(300, "Mục tiêu học tập không được quá 300 ký tự")
       .required("Trường này là bắt buộc"),
+    location: Yup.string()
+      .min(2, "Địa điểm phải có ít nhất 2 ký tự")
+      .max(100, "Địa điểm không được quá 100 ký tự")
+      .required("Vui lòng nhập địa điểm"),
   });
 
   const defaultValues: StudentFormData = {
     grade: "",
     learningGoal: "",
+    location: "",
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-32">
+    <div className="min-h-screen bg-gray-50 pt-32">
       <div className="max-w-2xl mx-auto p-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">Thiết lập hồ sơ học sinh</h1>
@@ -64,7 +73,18 @@ const StudentOnboardingPage = () => {
             defaultValues={defaultValues}
           >
             <div className="space-y-6">
-              <EBSelectField name="grade" label="Lớp học hiện tại" options={gradeOptions} allowCustom/>
+              <EBSelectField
+                name="grade"
+                label="Lớp học hiện tại"
+                options={gradeOptions}
+                allowCustom
+              />
+
+              <EBTextField
+                name="location"
+                label="Địa điểm"
+                placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+              />
 
               <EBTextAreaField
                 name="learningGoal"

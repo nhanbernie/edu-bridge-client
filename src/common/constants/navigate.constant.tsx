@@ -14,10 +14,14 @@ import {
   Bell,
   UserCheck,
   GraduationCap,
+  CalendarCheck,
+  Search,
+  MessageSquare,
+  Globe,
 } from "lucide-react";
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import { HeaderItem } from "@/components/layouts/types";
+import { HeaderItem, HeaderActionButton } from "@/components/layouts/types";
 
 export interface NavItem {
   label: string;
@@ -36,6 +40,25 @@ export const navigateMarketItems: NavItem[] = [
   { label: "Packages", href: "/packages" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact Us", href: "/contact" },
+];
+
+// Default Header Action Buttons
+export const defaultHeaderActionButtons: HeaderActionButton[] = [
+  // {
+  //   key: "search",
+  //   icon: Search,
+  //   show: true,
+  // },
+  // {
+  //   key: "message",
+  //   icon: MessageSquare,
+  //   show: true,
+  // },
+  {
+    key: "language",
+    icon: Globe,
+    show: true,
+  },
 ];
 export interface SidebarItem {
   label: string;
@@ -107,6 +130,11 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     href: "/tutor",
   },
   {
+    label: "Lịch dạy của tôi",
+    icon: CalendarCheck,
+    href: "/tutor/my-schedule",
+  },
+  {
     label: "Khóa học",
     icon: BookOpen,
     href: "/tutor/courses",
@@ -121,21 +149,21 @@ export const defaultTutorSidebarItems: EBSidebarItem[] = [
     icon: CreditCard,
     href: "/tutor/transactions",
   },
-  {
-    label: "Thống kê",
-    icon: BarChart3,
-    href: "/tutor/statistics",
-  },
+  // {
+  //   label: "Thống kê",
+  //   icon: BarChart3,
+  //   href: "/tutor/statistics",
+  // },
   {
     label: "Đánh giá",
     icon: Star,
-    href: "/tutor/reviews",
+    href: "/tutor/feedback",
   },
-  {
-    label: "Học sinh",
-    icon: Users,
-    href: "/tutor/students",
-  },
+  // {
+  //   label: "Học sinh",
+  //   icon: Users,
+  //   href: "/tutor/students",
+  // },
 ];
 
 export const defaultTutorActionButtons: EBActionButton[] = [
@@ -320,10 +348,22 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
             onClick: () => go("/student"),
           },
           {
+            key: "my-schedule",
+            label: "Lịch học của tôi",
+            href: "/student/my-schedule",
+            onClick: () => go("/student/my-schedule"),
+          },
+          {
             key: "transactions",
             label: "Giao dịch",
             href: "/student/transactions",
             onClick: () => go("/student/transactions"),
+          },
+          {
+            key: "feedback",
+            label: "Đánh giá",
+            href: "/student/feedback",
+            onClick: () => go("/student/feedback"),
           }
         );
         break;
@@ -332,19 +372,25 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
           { key: "dashboard", label: "Dashboard", href: "/tutor", onClick: () => go("/tutor") },
           {
             key: "courses",
-            label: "Courses",
+            label: "Khóa học",
             href: "/tutor/courses",
             onClick: () => go("/tutor/courses"),
           },
           {
             key: "schedules",
-            label: "Schedules",
+            label: "Lịch rảnh",
             href: "/tutor/schedules",
             onClick: () => go("/tutor/schedules"),
           },
           {
+            key: "my-schedule",
+            label: "Lịch dạy",
+            href: "/tutor/my-schedule",
+            onClick: () => go("/tutor/my-schedule"),
+          },
+          {
             key: "transactions",
-            label: "Transactions",
+            label: "Giao dịch",
             href: "/tutor/transactions",
             onClick: () => go("/tutor/transactions"),
           }

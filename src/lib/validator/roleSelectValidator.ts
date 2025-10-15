@@ -4,22 +4,26 @@ const roleSelectValidatorSchema = {
   tutorStep1Schema: Yup.object().shape({
     educationLevel: Yup.string().required("Vui lòng chọn trình độ học vấn"),
     yearsOfExperience: Yup.mixed()
-      .test('is-number', 'Số năm kinh nghiệm phải là số', (value) => {
-        if (value === undefined || value === null || value === '') return false;
+      .test("is-number", "Số năm kinh nghiệm phải là số", (value) => {
+        if (value === undefined || value === null || value === "") return false;
         const num = Number(value);
         return !isNaN(num) && isFinite(num);
       })
-      .test('is-positive', 'Số năm kinh nghiệm không được âm', (value) => {
-        if (value === undefined || value === null || value === '') return false;
+      .test("is-positive", "Số năm kinh nghiệm không được âm", (value) => {
+        if (value === undefined || value === null || value === "") return false;
         const num = Number(value);
         return num >= 0;
       })
-      .test('is-not-too-large', 'Số năm kinh nghiệm không được vượt quá 50', (value) => {
-        if (value === undefined || value === null || value === '') return false;
+      .test("is-not-too-large", "Số năm kinh nghiệm không được vượt quá 50", (value) => {
+        if (value === undefined || value === null || value === "") return false;
         const num = Number(value);
         return num <= 50;
       })
       .required("Vui lòng nhập số năm kinh nghiệm"),
+    location: Yup.string()
+      .min(2, "Địa điểm phải có ít nhất 2 ký tự")
+      .max(100, "Địa điểm không được quá 100 ký tự")
+      .required("Vui lòng nhập địa điểm"),
     bio: Yup.string()
       .min(50, "Mô tả cần ít nhất 50 ký tự")
       .max(100, "Mô tả không được vượt quá 100 ký tự")

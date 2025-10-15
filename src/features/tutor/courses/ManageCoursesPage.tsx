@@ -7,6 +7,7 @@ import {
   EBConfirmDialog,
   EBTutorCourseCard,
   CourseData,
+  EBPageLoading,
 } from "@/components/common";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
@@ -24,21 +25,14 @@ const ManageCoursesPage: React.FC = () => {
     handleEditCourse,
     handleDeleteCourse,
     handleRefresh,
-  } = useManageCourses(tutorId || ""); 
+  } = useManageCourses(tutorId || "");
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<CourseData | null>(null);
 
   // Show loading if tutor ID is still loading
   if (tutorLoading || !tutorId) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Đang xác thực thông tin...</p>
-        </div>
-      </div>
-    );
+    return <EBPageLoading message="Đang xác thực thông tin..." />;
   }
 
   const handleDeleteClick = (course: CourseData) => {
@@ -69,41 +63,36 @@ const ManageCoursesPage: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto py-6 px-4">
-      {/* EBHeader */}
-      <div className="flex justify-between items-center mb-6">
+    <>
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold">Quản lý khóa học</h1>
-          <p className="text-muted-foreground">Quản lý tất cả khóa học của bạn</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Quản lý khóa học</h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Quản lý tất cả các khóa học của bạn
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            onClick={handleRefresh}
-            disabled={isLoading}
-            className="flex items-center gap-2"
-          >
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-            Làm mới
           </Button>
           <Button onClick={handleCreateCourse} className="flex items-center gap-2">
-            <PlusCircle className="h-4 w-4" />
+            <PlusCircle className="h-5 w-5" />
             Tạo khóa học mới
           </Button>
         </div>
       </div>
 
-      {/* Content */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải khóa học...</span>
+          <Loader2 className="w-8 h-8 animate-spin mr-2" />
+          <span>Đang tải khóa học...</span>
         </div>
       ) : courses.length === 0 ? (
         <EmptyState
+          icon={<PlusCircle className="w-12 h-12" />}
           title="Chưa có khóa học nào"
-          description="Bạn chưa tạo khóa học nào. Hãy tạo khóa học đầu tiên để bắt đầu dạy học."
-          actionLabel="Tạo khóa học đầu tiên"
+          description="Tạo khóa học đầu tiên của bạn để bắt đầu giảng dạy"
+          actionLabel="Tạo khóa học mới"
           onAction={handleCreateCourse}
           className="max-w-md mx-auto"
         />
@@ -135,7 +124,7 @@ const ManageCoursesPage: React.FC = () => {
         onConfirm={handleDeleteConfirm}
         variant="destructive"
       />
-    </div>
+    </>
   );
 };
 
