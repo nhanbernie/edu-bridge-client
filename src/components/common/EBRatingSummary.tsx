@@ -278,9 +278,18 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
         <div className="text-center mb-6">
           <div className="text-4xl font-bold text-primary mb-2">{displayRating}</div>
           <div className="flex items-center justify-center gap-1 mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-            ))}
+            {[...Array(5)].map((_, i) => {
+              const starRating = i + 1;
+              const isFilled = starRating <= Math.round(displayRating);
+              return (
+                <Star
+                  key={i}
+                  className={`h-5 w-5 ${
+                    isFilled ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"
+                  }`}
+                />
+              );
+            })}
           </div>
           <div className="text-sm text-muted-foreground">{displayTotal} đánh giá</div>
         </div>
