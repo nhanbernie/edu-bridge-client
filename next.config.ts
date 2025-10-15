@@ -4,11 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // @ts-expect-error - This is valid but TS doesn't know about it yet
-    reactRefresh: true,
-  },
-
   images: {
     remotePatterns: [
       {

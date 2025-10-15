@@ -73,6 +73,6 @@ export const buildTutorCoursesEditRoute = (courseId: string) => `/tutor/courses/
 
 export const buildTutorFeedbackDetailRoute = (courseId: string) => `/tutor/feedback/${courseId}`;
 
-export const buildAdminTutorDetailRoute = (tutorId: string) => `/admin/tutor/${tutorId}`;
+export const buildAdminTutorDetailRoute = (tutorId: string) => `/admin/user/${tutorId}`;
 
 export const buildMeetingRoute = (sessionId: string) => `/meeting/${sessionId}`;
