@@ -25,8 +25,7 @@ const StudentOnboardingPage = () => {
     const result = await submitOnboarding(data);
 
     if (result.success) {
-      // Student is approved immediately, redirect to dashboard
-      push(ROUTES.STUDENT_DASHBOARD);
+      push(ROUTES.STUDENT);
     }
   };
 

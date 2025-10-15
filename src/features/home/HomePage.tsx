@@ -6,25 +6,54 @@ import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBMotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
+import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+
 const HomeFeature = () => {
   const { user, logout } = useAuth();
   const { push } = useLocaleRouter();
+  const [isCheckingStatus, setIsCheckingStatus] = useState(true);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
   const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR";
 
-  // Call the hook at the top level
   useGetAndStoreUser({ userId: user?.userId });
 
   useEffect(() => {
-    if (user?.status === "APPROVED" && user?.role === "STUDENT") {
-      push("/student");
+    if (!user || isNavigating) {
+      setIsCheckingStatus(true);
+      return;
     }
-  }, [user?.status, user?.role, push]);
+
+    if (user?.status === "APPROVED") {
+      if (user?.role === "STUDENT") {
+        push("/student");
+      } else if (user?.role === "TUTOR") {
+        push("/tutor");
+      }
+    } else {
+      setIsCheckingStatus(false);
+    }
+  }, [user?.status, user?.role, push, user, isNavigating]);
+
+  const handleNavigateToOnboarding = (path: string) => {
+    setIsNavigating(true);
+    push(path);
+  };
+
+  if (isCheckingStatus) {
+    return (
+      <EBMainLayout footer={false}>
+        <div className="min-h-screen flex items-center justify-center">
+          <EBLoadingSpinner size="lg" message="Đang kiểm tra trạng thái tài khoản..." />
+        </div>
+      </EBMainLayout>
+    );
+  }
 
   return (
     <EBMainLayout footer={true}>
@@ -47,7 +76,7 @@ const HomeFeature = () => {
               <MotionItem>
                 <EBMotionCard
                   variants={choiceCardVariants}
-                  onClick={() => push("/onboarding/student")}
+                  onClick={() => handleNavigateToOnboarding("/onboarding/student")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
                             hover:shadow-xl hover:shadow-emerald-100/50
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
@@ -82,7 +111,7 @@ const HomeFeature = () => {
               <MotionItem>
                 <EBMotionCard
                   variants={choiceCardVariants}
-                  onClick={() => push("/onboarding/tutor")}
+                  onClick={() => handleNavigateToOnboarding("/onboarding/tutor")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
                             hover:shadow-xl hover:shadow-emerald-100/50
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
