@@ -100,14 +100,14 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                 </div>
 
                 {/* Rating - show for all sessions if available */}
-                {session.averageCourseRating != null && session.averageCourseRating > 0 && (
+                {/* {session.averageCourseRating != null && session.averageCourseRating > 0 && (
                   <div className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Đánh giá trung bình: {session.averageCourseRating.toFixed(1)}/5
                     </span>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>
