@@ -146,19 +146,21 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
                     <button
                       type="button"
                       onClick={() => addCustom(searchQuery)}
-                      className="w-full flex items-center gap-2 p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors"
+                      className="w-full flex items-center gap-2 p-2 text-primary hover:text-primary/80 hover:bg-primary/10 rounded-md transition-colors"
                     >
                       <Plus className="h-4 w-4" />
                       <span>Thêm &quot;{searchQuery}&quot;</span>
                     </button>
                   ) : (
-                    <div className="text-sm text-gray-500 text-center py-2">
+                    <div className="text-sm text-muted-foreground text-center py-2">
                       Không tìm thấy kết quả
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="text-sm text-gray-500 text-center py-4">Không có dữ liệu</div>
+                <div className="text-sm text-muted-foreground text-center py-4">
+                  Không có dữ liệu
+                </div>
               )}
             </div>
           </div>

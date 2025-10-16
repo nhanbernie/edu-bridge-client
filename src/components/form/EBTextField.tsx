@@ -5,13 +5,13 @@ import { useController, useFormContext } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  FORM_FIELD_BASE, 
-  FORM_FIELD_ERROR, 
-  FORM_FIELD_NORMAL, 
-  FORM_ERROR_MESSAGE, 
-  FORM_LABEL, 
-  FORM_FIELD_CONTAINER 
+import {
+  FORM_FIELD_BASE,
+  FORM_FIELD_ERROR,
+  FORM_FIELD_NORMAL,
+  FORM_ERROR_MESSAGE,
+  FORM_LABEL,
+  FORM_FIELD_CONTAINER,
 } from "@/common/constants/className.constant";
 
 interface TextFieldProps
@@ -76,7 +76,7 @@ export const EBTextField = forwardRef<HTMLInputElement, TextFieldProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground focus:outline-none transition-colors"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>

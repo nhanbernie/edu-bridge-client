@@ -44,11 +44,11 @@ const TutorOnboardingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32">
+    <div className="min-h-screen bg-background pt-32">
       {/* Form Content */}
       <div className="py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-emerald-100 overflow-hidden">
+          <div className="bg-card/95 backdrop-blur-sm rounded-xl shadow-xl border border-border overflow-hidden">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <TutorOnboardingSteps steps={steps} currentStep={currentStep} />
             </div>
@@ -75,7 +75,7 @@ const TutorOnboardingPage = () => {
 
             {currentStep === 1 && !step1Completed && (
               <div className="p-8 text-center">
-                <p className="text-gray-600">Đang xử lý thông tin bước 1...</p>
+                <p className="text-muted-foreground">Đang xử lý thông tin bước 1...</p>
               </div>
             )}
           </div>

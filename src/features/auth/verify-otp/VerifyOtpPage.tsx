@@ -24,7 +24,7 @@ const VerifyOtpFeature = ({ searchParams }: VerifyOtpPageProps) => {
 
   const handleResendOtp = async () => {
     if (!email) return;
-    
+
     try {
       setIsResending(true);
       dispatch(setLoading(true));
@@ -50,10 +50,10 @@ const VerifyOtpFeature = ({ searchParams }: VerifyOtpPageProps) => {
     return (
       <EBAuthLayout>
         <div className="w-full max-w-md">
-          <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+          <div className="bg-card/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-border">
             <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Lỗi</h3>
-              <p className="text-gray-600">Email không hợp lệ. Vui lòng thử lại.</p>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Lỗi</h3>
+              <p className="text-muted-foreground">Email không hợp lệ. Vui lòng thử lại.</p>
             </div>
           </div>
         </div>
@@ -64,21 +64,17 @@ const VerifyOtpFeature = ({ searchParams }: VerifyOtpPageProps) => {
   return (
     <EBAuthLayout>
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+        <div className="bg-card/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-border">
           {/* EBHeader */}
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Xác thực OTP</h3>
-            <p className="text-gray-600 text-sm">
+            <h3 className="text-2xl font-bold text-foreground mb-2">Xác thực OTP</h3>
+            <p className="text-muted-foreground text-sm">
               Nhập mã OTP đã được gửi đến email của bạn
             </p>
           </div>
 
           {/* Auth Form with verifyOTP type */}
-          <AuthForm 
-            type="verifyOTP" 
-            onSubmit={handleVerifyOtpSubmit} 
-            email={email}
-          />
+          <AuthForm type="verifyOTP" onSubmit={handleVerifyOtpSubmit} email={email} />
 
           {/* Resend OTP Button */}
           <div className="mt-4 text-center">

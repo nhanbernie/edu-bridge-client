@@ -60,14 +60,14 @@ const StudentOnboardingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32">
+    <div className="min-h-screen bg-background pt-32">
       <div className="max-w-2xl mx-auto p-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">Thiết lập hồ sơ học sinh</h1>
           <p className="text-muted-foreground">Giúp chúng tôi hiểu về mục tiêu học tập của bạn</p>
         </div>
 
-        <div className="bg-card rounded-lg p-6 shadow-lg">
+        <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-border">
           <EBFormProvider<StudentFormData>
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -97,7 +97,7 @@ const StudentOnboardingPage = () => {
               <div className="pt-4">
                 <EBButton
                   type="submit"
-                  className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
                   disabled={isLoading}
                 >
                   {isLoading ? "Đang xử lý..." : "Hoàn thành thiết lập"}
