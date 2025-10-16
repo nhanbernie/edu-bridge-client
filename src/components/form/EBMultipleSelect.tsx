@@ -87,7 +87,7 @@ const EBMultipleSelect: React.FC<MultipleSelectProps> = ({
     }
     const option = onCreateOption
       ? onCreateOption(textToAdd)
-      : { value: `{slugify(textToAdd)}`, label: textToAdd };
+      : { value: `${slugify(textToAdd)}`, label: textToAdd };
     setLocalOptions((prev) => [...prev, option]);
     const next = Array.from(new Set([...(values || []), option.value]));
     onChange(next);

@@ -76,7 +76,7 @@ const EBCharityCounter: React.FC = () => {
             </p>
             <p className="text-lg font-bold text-primary">{formatFullAmount(amount)} VND</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              Cảm ơn sự đóng góp của bạn! 💚
+              Cảm ơn sự đóng góp của bạn! 🩵
             </p>
           </div>
         </TooltipContent>

@@ -50,9 +50,22 @@ export default async function LocaleLayout({ children, params }: Props) {
     // Load meeting translations
     const meeting = await import(`@/i18n/locales/${locale}/meeting/meeting.json`);
 
+    // Load tutor onboarding translations
+    const tutorOnboardProfileUnderPreview = await import(
+      `@/i18n/locales/${locale}/tutor/onboard/profile-under-preview.json`
+    );
+
+    // Load validation translations
+    const validationAuth = await import(`@/i18n/locales/${locale}/validation/auth.json`);
+
     messages = {
       common: common.default,
-      tutor: tutor.default,
+      tutor: {
+        ...tutor.default,
+        onboard: {
+          "profile-under-preview": tutorOnboardProfileUnderPreview.default,
+        },
+      },
       auth: auth.default,
       marketing: marketing.default,
       student: {
@@ -71,6 +84,9 @@ export default async function LocaleLayout({ children, params }: Props) {
         },
       },
       meeting: meeting.default,
+      validation: {
+        auth: validationAuth.default,
+      },
     };
   } catch (error) {
     console.error(`Failed to load messages for locale: ${locale}`, error);

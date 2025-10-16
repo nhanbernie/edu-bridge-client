@@ -53,18 +53,19 @@ const HomeFeature = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden pt-32">
+    <MotionContainer className="min-h-screen bg-background relative overflow-hidden pt-32">
       {/* Logo and Title Section */}
-      <div className="max-w-6xl mx-auto p-8 text-center">
-        <div className="mb-16">
-          <div className="flex justify-center mb-6">
-            <EBLogo imageSize={60} textClassName="text-2xl" />
+      <MotionItem className="max-w-6xl mx-auto p-8 text-center">
+        {!shouldShowUserInfo && (
+          <div className="mb-16">
+            <div className="flex justify-center mb-6">
+              <EBLogo imageSize={60} textClassName="text-2xl" />
+            </div>
+            <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
+              How would you like to use EduBridge?
+            </h2>
           </div>
-          <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
-            How would you like to use EduBridge?
-          </h2>
-        </div>
-
+        )}
         {/* Choice Cards - Only show for PENDING status and PENDING role */}
         {shouldShowChoiceCards && (
           <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-3xl mx-auto mb-12">
@@ -142,18 +143,16 @@ const HomeFeature = () => {
 
         {/* User Info - Only show for PENDING status and TUTOR role */}
         {shouldShowUserInfo && (
-          <div className="max-w-2xl mx-auto mb-8">
+          <MotionItem className="max-w-2xl mx-auto mb-8">
             <ProfileUnderReview
-              title="Hồ sơ đang được xem xét"
-              description="Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn."
               currentStep="review"
               onGoToDashboard={() => push("/tutor/dashboard")}
-              className="bg-transparent p-0"
+              className=""
             />
-          </div>
+          </MotionItem>
         )}
-      </div>
-    </div>
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

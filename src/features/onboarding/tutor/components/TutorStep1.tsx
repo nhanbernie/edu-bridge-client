@@ -37,8 +37,10 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Thông tin cơ bản</h2>
-        <p className="text-gray-600">Hãy cho chúng tôi biết về trình độ và kinh nghiệm của bạn</p>
+        <h2 className="text-2xl font-bold text-foreground mb-2">Thông tin cơ bản</h2>
+        <p className="text-muted-foreground">
+          Hãy cho chúng tôi biết về trình độ và kinh nghiệm của bạn
+        </p>
       </div>
 
       <EBFormProvider
@@ -101,7 +103,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
               variant="default"
               size="lg"
               loading={isLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Tiếp theo
             </EBButton>

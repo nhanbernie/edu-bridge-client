@@ -78,7 +78,8 @@
   --popover-foreground: oklch(0.19 0.01 270);
 
   /* Primary - Xanh biển #1EB5E5 */
-  --primary: hsl(199, 61%, 62%); /* Màu chủ đạo */
+  --primary-light: hsl(199, 61%, 62%); /* Màu chủ đạo */
+  --primary: hsl(199, 68%, 48%);
   --primary-foreground: oklch(1 0 0);
 
   /* Secondary - Xanh ngọc #06B6D4 */

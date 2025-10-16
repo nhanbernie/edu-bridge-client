@@ -81,16 +81,16 @@ const FileUploadInput = ({
   return (
     <div className="space-y-3">
       {/* Label */}
-      <label className="block text-sm font-semibold text-gray-800">
-        {label} {required && <span className="text-red-500">*</span>}
+      <label className="block text-sm font-semibold text-foreground">
+        {label} {required && <span className="text-destructive">*</span>}
       </label>
 
       {/* Upload Area */}
       <div
         className={`relative border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${
           file
-            ? "border-emerald-300 bg-emerald-50/50"
-            : "border-gray-300 bg-gray-50 hover:border-emerald-400 hover:bg-emerald-50/30"
+            ? "border-primary/50 bg-primary/10"
+            : "border-border bg-muted/50 hover:border-primary/60 hover:bg-primary/5"
         }`}
       >
         <input
@@ -103,7 +103,7 @@ const FileUploadInput = ({
         {!file ? (
           <div className="text-center py-2">
             <svg
-              className="mx-auto h-10 w-10 text-gray-400"
+              className="mx-auto h-10 w-10 text-muted-foreground"
               stroke="currentColor"
               fill="none"
               viewBox="0 0 48 48"
@@ -115,17 +115,19 @@ const FileUploadInput = ({
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="mt-2 text-sm text-gray-600">
-              <span className="font-semibold text-emerald-600">Nhấn để chọn file</span> hoặc kéo thả
+            <p className="mt-2 text-sm text-muted-foreground">
+              <span className="font-semibold text-primary">Nhấn để chọn file</span> hoặc kéo thả
             </p>
-            <p className="text-xs text-gray-500 mt-1">PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">
+              PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)
+            </p>
           </div>
         ) : (
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center space-x-3 flex-1 min-w-0">
               <div className="flex-shrink-0">
                 <svg
-                  className="h-8 w-8 text-emerald-600"
+                  className="h-8 w-8 text-primary"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -139,14 +141,16 @@ const FileUploadInput = ({
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
-                <p className="text-xs text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {(file.size / (1024 * 1024)).toFixed(2)} MB
+                </p>
               </div>
             </div>
             <button
               type="button"
               onClick={handleRemoveFile}
-              className="ml-3 flex-shrink-0 text-red-600 hover:text-red-800 transition-colors z-20"
+              className="ml-3 flex-shrink-0 text-destructive hover:text-destructive/80 transition-colors z-20"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -162,7 +166,7 @@ const FileUploadInput = ({
       </div>
 
       {/* Description */}
-      <p className="text-xs text-gray-600 italic">{description}</p>
+      <p className="text-xs text-muted-foreground italic">{description}</p>
     </div>
   );
 };
@@ -181,10 +185,10 @@ const VerificationForm = ({
   return (
     <div className="space-y-6">
       {/* Verification Type Selection */}
-      <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
+      <div className="border border-border rounded-xl p-6 bg-card shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <svg
-            className="h-5 w-5 text-gray-700"
+            className="h-5 w-5 text-foreground"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -196,7 +200,7 @@ const VerificationForm = ({
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
             />
           </svg>
-          <h3 className="text-base font-semibold text-gray-900">Loại xác minh</h3>
+          <h3 className="text-base font-semibold text-foreground">Loại xác minh</h3>
         </div>
 
         <EBSelectField
@@ -206,10 +210,10 @@ const VerificationForm = ({
           placeholder="Chọn loại gia sư bạn muốn đăng ký"
         />
 
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+        <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
           <div className="flex items-start space-x-2">
             <svg
-              className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0"
+              className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -220,8 +224,8 @@ const VerificationForm = ({
               />
             </svg>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-blue-800 mb-2">Lưu ý:</p>
-              <ul className="space-y-2 text-sm text-blue-700">
+              <p className="text-sm font-semibold text-primary mb-2">Lưu ý:</p>
+              <ul className="space-y-2 text-sm text-primary/80">
                 <li className="flex items-start">
                   <span className="font-semibold mr-2">•</span>
                   <span>
@@ -244,10 +248,10 @@ const VerificationForm = ({
 
       {/* Verified Tutor Documents */}
       {verificationType === "verified" && (
-        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm space-y-6">
+        <div className="border border-border rounded-xl p-6 bg-card shadow-sm space-y-6">
           <div className="flex items-center space-x-2">
             <svg
-              className="h-6 w-6 text-emerald-600"
+              className="h-6 w-6 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -259,7 +263,7 @@ const VerificationForm = ({
                 d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
               />
             </svg>
-            <h3 className="text-lg font-semibold text-gray-900">Tài liệu cho Verified Tutor</h3>
+            <h3 className="text-lg font-semibold text-foreground">Tài liệu cho Verified Tutor</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FileUploadInput
@@ -291,10 +295,10 @@ const VerificationForm = ({
 
       {/* Trusted Beginner Tutor Documents */}
       {verificationType === "trusted" && (
-        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm space-y-6">
+        <div className="border border-border rounded-xl p-6 bg-card shadow-sm space-y-6">
           <div className="flex items-center space-x-2">
             <svg
-              className="h-6 w-6 text-blue-600"
+              className="h-6 w-6 text-secondary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -306,7 +310,7 @@ const VerificationForm = ({
                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
               />
             </svg>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-foreground">
               Tài liệu cho Trusted Beginner Tutor
             </h3>
           </div>
@@ -346,10 +350,10 @@ const VerificationForm = ({
 
       {/* Important Notes */}
       {verificationType && (
-        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-5 shadow-sm">
+        <div className="bg-gradient-to-r from-accent/10 to-accent/5 border border-accent/20 rounded-xl p-5 shadow-sm">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-yellow-600" viewBox="0 0 20 20" fill="currentColor">
+              <svg className="h-6 w-6 text-accent" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
                   d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -358,24 +362,24 @@ const VerificationForm = ({
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-yellow-900 mb-2">Lưu ý quan trọng</h3>
-              <ul className="space-y-2 text-sm text-yellow-800">
+              <h3 className="text-sm font-semibold text-accent mb-2">Lưu ý quan trọng</h3>
+              <ul className="space-y-2 text-sm text-accent/80">
                 <li className="flex items-start">
-                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span className="text-accent mr-2 font-bold">✓</span>
                   <span>Tất cả tài liệu sẽ được xem xét để xác minh tính xác thực</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span className="text-accent mr-2 font-bold">✓</span>
                   <span>
                     Chỉ tải lên các file có định dạng được hỗ trợ (PDF, JPG, PNG, DOC, DOCX)
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span className="text-accent mr-2 font-bold">✓</span>
                   <span>Kích thước file tối đa là 5MB</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-yellow-600 mr-2 font-bold">✓</span>
+                  <span className="text-accent mr-2 font-bold">✓</span>
                   <span>Thông tin cá nhân trong tài liệu sẽ được bảo mật tuyệt đối</span>
                 </li>
               </ul>
@@ -390,7 +394,7 @@ const VerificationForm = ({
           variant="outline"
           size="lg"
           onClick={onBack}
-          className="flex-1 bg-white font-semibold py-4 border-1 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          className="flex-1 font-semibold py-4 border-1 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
           Quay lại
         </EBButton>
@@ -400,7 +404,7 @@ const VerificationForm = ({
           size="lg"
           loading={isUploading}
           disabled={!verificationType || isUploading}
-          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          className="flex-1 font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
           {isUploading ? "Đang tải lên..." : "Hoàn tất đăng ký"}
         </EBButton>
@@ -466,8 +470,8 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
     <div className="space-y-6">
       {/* EBHeader */}
       <div className="text-center md:text-left">
-        <h2 className="text-3xl font-bold text-gray-900 mb-3">Tải lên hồ sơ</h2>
-        <p className="text-gray-600 text-lg">
+        <h2 className="text-3xl font-bold text-foreground mb-3">Tải lên hồ sơ</h2>
+        <p className="text-muted-foreground text-lg">
           Vui lòng chọn loại xác minh và tải lên các tài liệu tương ứng
         </p>
       </div>

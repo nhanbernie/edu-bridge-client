@@ -48,7 +48,7 @@ const TutorOnboardingPage = () => {
       {/* Form Content */}
       <div className="py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-card/95 backdrop-blur-sm rounded-xl shadow-xl border border-border overflow-hidden">
+          <div className="bg-card/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-border overflow-hidden">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <TutorOnboardingSteps steps={steps} currentStep={currentStep} />
             </div>

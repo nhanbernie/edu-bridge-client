@@ -67,7 +67,7 @@ const StudentOnboardingPage = () => {
           <p className="text-muted-foreground">Giúp chúng tôi hiểu về mục tiêu học tập của bạn</p>
         </div>
 
-        <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-border">
+        <div className="bg-card/70 backdrop-blur-sm rounded-3xl p-6 shadow-2xl border border-border">
           <EBFormProvider<StudentFormData>
             onSubmit={handleSubmit}
             validationSchema={validationSchema}

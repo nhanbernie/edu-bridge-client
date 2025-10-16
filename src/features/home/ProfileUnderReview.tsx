@@ -6,6 +6,7 @@ import { EBMotionCard } from "@/components/motion";
 import { CheckCircle, Clock, Circle, Mail, Phone, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { simpleCardVariants } from "@/constants/motion/cardMotion.constant";
+import { useTranslations } from "next-intl";
 
 interface ProfileUnderReviewProps {
   title?: string;
@@ -16,29 +17,31 @@ interface ProfileUnderReviewProps {
 }
 
 const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
-  title = "Hồ sơ đang được xem xét",
-  description = "Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn.",
+  title,
+  description,
   currentStep = "review",
   onGoToDashboard,
   className,
 }) => {
+  const t = useTranslations("tutor.onboard.profile-under-preview");
+
   const steps = [
     {
       id: "submitted",
-      label: "Đã gửi hồ sơ",
+      label: t("steps.submitted"),
       icon: CheckCircle,
       status: "completed",
     },
     {
       id: "review",
-      label: "Đang xem xét",
+      label: t("steps.review"),
       icon: Clock,
       status:
         currentStep === "submitted" ? "pending" : currentStep === "review" ? "active" : "completed",
     },
     {
       id: "pending",
-      label: "Chờ phê duyệt",
+      label: t("steps.pending"),
       icon: Circle,
       status:
         currentStep === "pending"
@@ -52,15 +55,17 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
   return (
     <EBMotionCard
       className={cn(
-        "max-w-lg mx-auto bg-white border border-gray-200 shadow-sm rounded-4xl",
+        "max-w-lg mx-auto bg-card/70 backdrop-blur-sm border border-border shadow-2xl rounded-3xl",
         className
       )}
       variants={simpleCardVariants}
     >
       <div className="p-6 text-center">
-        <h1 className="text-xl font-semibold text-gray-900 mb-2">{title}</h1>
+        <h1 className="text-xl font-semibold text-foreground mb-2">{title || t("title")}</h1>
 
-        <p className="text-gray-600 text-sm mb-6 leading-relaxed">{description}</p>
+        <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+          {description || t("description")}
+        </p>
 
         {/* Progress Steps */}
         <div className="flex justify-center items-center mb-8 space-x-8">
@@ -76,9 +81,10 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
                 <div
                   className={cn(
                     "w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300",
-                    isCompleted && "bg-emerald-100 text-emerald-600",
-                    isActive && "bg-orange-100 text-orange-600 animate-pulse scale-110",
-                    isPending && "bg-gray-100 text-gray-400"
+                    isCompleted &&
+                      "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
+                    isActive && "bg-accent/10 text-accent animate-pulse scale-110",
+                    isPending && "bg-muted text-muted-foreground"
                   )}
                 >
                   <Icon className="w-8 h-8" />
@@ -88,9 +94,9 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
                 <span
                   className={cn(
                     "text-sm font-medium transition-colors duration-300",
-                    isCompleted && "text-emerald-600",
-                    isActive && "text-orange-600",
-                    isPending && "text-gray-500"
+                    isCompleted && "text-emerald-600 dark:text-emerald-400",
+                    isActive && "text-accent",
+                    isPending && "text-muted-foreground"
                   )}
                 >
                   {step.label}
@@ -101,26 +107,20 @@ const ProfileUnderReview: React.FC<ProfileUnderReviewProps> = ({
         </div>
 
         {/* What happens next section */}
-        <div className="bg-teal-50 rounded-4xl p-4 mb-6">
-          <h3 className="text-base font-medium text-teal-900 mb-3">Điều gì sẽ xảy ra tiếp theo?</h3>
+        <div className="bg-primary/5 border border-primary/20 rounded-4xl px-3 py-4 mb-6">
+          <h3 className="text-base font-medium text-primary mb-3">{t("nextSteps.title")}</h3>
           <div className="space-y-2 text-left">
             <div className="flex items-start space-x-2">
-              <Eye className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
-              <span className="text-teal-800 text-sm">
-                Đội ngũ của chúng tôi sẽ xem xét hồ sơ trong vòng 24-48 giờ
-              </span>
+              <Eye className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <span className="text-foreground text-sm">{t("nextSteps.review")}</span>
             </div>
             <div className="flex items-start space-x-2">
-              <Mail className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
-              <span className="text-teal-800 text-sm">
-                Bạn sẽ nhận được email thông báo khi hồ sơ được phê duyệt
-              </span>
+              <Mail className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <span className="text-foreground text-sm">{t("nextSteps.email")}</span>
             </div>
             <div className="flex items-start space-x-2">
-              <Phone className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
-              <span className="text-teal-800 text-sm">
-                Chúng tôi có thể liên hệ nếu cần thêm thông tin
-              </span>
+              <Phone className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <span className="text-foreground text-sm">{t("nextSteps.contact")}</span>
             </div>
           </div>
         </div>

@@ -23,10 +23,10 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
     <Card className="border-0 shadow-sm">
       <CardContent className="p-4">
         {/* Header: Student Name */}
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{studentName}</h3>
+        <h3 className="font-semibold text-foreground mb-1">{studentName}</h3>
 
         {/* Course Title and Date */}
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+        <p className="text-sm text-muted-foreground mb-3">
           {courseTitle} • {new Date(createdAt).toLocaleDateString("vi-VN")}
         </p>
 
@@ -34,15 +34,13 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
         <div className="space-y-2 mb-3">
           {/* Tutor Rating */}
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400 min-w-[50px]">
-              Tutor:
-            </span>
+            <span className="text-sm font-medium text-muted-foreground min-w-[50px]">Tutor:</span>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
                   className={`h-4 w-4 ${
-                    i < tutorRating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                    i < tutorRating ? "text-accent fill-accent" : "text-muted-foreground/30"
                   }`}
                 />
               ))}
@@ -51,15 +49,13 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
 
           {/* Course Rating */}
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-600 dark:text-gray-400 min-w-[50px]">
-              Course:
-            </span>
+            <span className="text-sm font-medium text-muted-foreground min-w-[50px]">Course:</span>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
                   className={`h-4 w-4 ${
-                    i < courseRating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+                    i < courseRating ? "text-accent fill-accent" : "text-muted-foreground/30"
                   }`}
                 />
               ))}
@@ -68,9 +64,7 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
         </div>
 
         {/* Comment */}
-        {comment && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{comment}</p>
-        )}
+        {comment && <p className="text-sm text-muted-foreground leading-relaxed">{comment}</p>}
       </CardContent>
     </Card>
   );
