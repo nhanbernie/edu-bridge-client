@@ -54,8 +54,8 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
 
   return (
     <div className="h-screen flex relative overflow-hidden">
-      {/* Background with gradient - lighter colors */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-gray-900 dark:via-slate-900 dark:to-gray-900">
+      {/* Background with gradient - using theme colors */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-background">
         {/* Enhanced blur pattern overlay */}
         <div
           className="absolute inset-0 opacity-20 dark:opacity-10"
@@ -68,7 +68,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
       </div>
 
       {/* Main glassmorphism container */}
-      <div className="relative z-10 flex w-full h-screen bg-white/20 dark:bg-gray-900/20 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-gray-700/20 overflow-hidden shadow-2xl shadow-black/10">
+      <div className="relative z-10 flex w-full h-screen bg-card/20 backdrop-blur-xl backdrop-saturate-150 border border-border/20 overflow-hidden shadow-2xl shadow-black/10">
         {/* Sidebar - Fixed */}
         <aside
           className={`
@@ -84,7 +84,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
               <EBLogo
                 imageSize={sidebarExpanded ? 36 : 28}
                 showText={sidebarExpanded}
-                textClassName="text-lg font-bold text-gray-700 dark:text-gray-300"
+                textClassName="text-lg font-bold text-foreground"
                 animated={false}
               />
             </div>
@@ -100,7 +100,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
               icon={sidebarExpanded ? ChevronLeft : ChevronRight}
               iconSize={16}
               onClick={() => setSidebarExpanded(!sidebarExpanded)}
-              className="w-8 h-8 bg-gray-100/80 dark:bg-gray-700/80 text-gray-600 dark:text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-600/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50 shadow-sm rounded-lg transition-all duration-200"
+              className="w-8 h-8 bg-muted/80 text-muted-foreground hover:bg-muted backdrop-blur-sm border border-border/50 shadow-sm rounded-lg transition-all duration-200"
               title={sidebarExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
             />
           </div>
@@ -146,12 +146,12 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
               ${
                 sidebarExpanded
                   ? "gap-3 px-4 py-3 rounded-lg justify-start"
-                  : "justify-center w-12 h-12 rounded-lg bg-gray-100/60 dark:bg-gray-700/60"
+                  : "justify-center w-12 h-12 rounded-lg bg-muted/60"
               }
               ${
                 sidebarExpanded
-                  ? "text-gray-600 dark:text-gray-400"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-200/80 dark:hover:bg-gray-600/80"
+                  ? "text-muted-foreground"
+                  : "text-muted-foreground hover:bg-muted/80"
               }
             `}
             >
@@ -169,18 +169,18 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
         <div className="flex-1 flex flex-col h-screen">
           {/* Header - Fixed */}
           <header
-            className={`h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 ${isScrolled ? "backdrop-blur-sm  header-glass-effect" : "bg-transparent"}`}
+            className={`h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 ${isScrolled ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50" : "bg-transparent"}`}
           >
             {/* Right side - Search, Notifications, User */}
             <div className="flex items-center gap-3">
               {/* Search */}
               {showSearch && (
-                <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/30 dark:bg-gray-700/30 backdrop-blur-sm rounded-2xl border border-white/20 dark:border-gray-600/20 min-w-[300px]">
-                  <Search className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-card/30 backdrop-blur-sm rounded-2xl border border-border/20 min-w-[300px]">
+                  <Search className="w-4 h-4 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="flex-1 bg-transparent text-sm text-gray-700 dark:text-gray-300 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none"
+                    className="flex-1 bg-transparent text-sm text-foreground placeholder-muted-foreground focus:outline-none"
                   />
                 </div>
               )}
@@ -192,7 +192,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
                   size="icon"
                   icon={Bell}
                   iconSize={20}
-                  className="relative p-2 rounded-xl hover:bg-white/20 dark:hover:bg-gray-700/20 text-gray-600 dark:text-gray-400"
+                  className="relative p-2 rounded-xl hover:bg-muted/20 text-muted-foreground"
                 >
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
                 </EBButton>

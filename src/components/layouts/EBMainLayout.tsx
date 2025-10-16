@@ -30,7 +30,7 @@ const EBMainLayout: React.FC<MainLayoutProps> = ({
   const headerConfig = buildHeader ? buildHeader({ go }) : undefined;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
       <EBHeader
         headerConfig={headerConfig}
         actionButtons={actionButtons}

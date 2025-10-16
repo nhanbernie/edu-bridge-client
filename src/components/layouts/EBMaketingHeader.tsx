@@ -38,7 +38,9 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-          isScrolled ? "backdrop-blur-sm header-glass-effect" : "bg-transparent"
+          isScrolled
+            ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,7 +135,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           x: isMobileMenuOpen ? "0%" : "100%",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed top-0 right-0 h-full w-80 bg-card shadow-2xl z-40 md:hidden ${
+        className={`fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-40 md:hidden ${
           isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
@@ -230,7 +232,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 md:hidden"
         />
       )}
     </>

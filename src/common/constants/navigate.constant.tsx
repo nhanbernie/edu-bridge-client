@@ -171,14 +171,14 @@ export const defaultTutorActionButtons: EBActionButton[] = [
     icon: Settings,
     href: "/tutor/settings",
   },
-  {
-    label: "Trợ giúp",
-    icon: HelpCircle,
-    onClick: () => {
-      // Open help modal or navigate to help page
-      window.open("/help", "_blank");
-    },
-  },
+  // {
+  //   label: "Trợ giúp",
+  //   icon: HelpCircle,
+  //   onClick: () => {
+  //     // Open help modal or navigate to help page
+  //     window.open("/help", "_blank");
+  //   },
+  // },
 ];
 
 // Admin Dashboard Default Data
