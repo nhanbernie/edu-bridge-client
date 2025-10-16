@@ -12,10 +12,10 @@ const EBFooter = () => {
   };
 
   return (
-    <footer className="bg-emerald-50 py-16">
+    <footer className="bg-muted/30 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Newsletter Section */}
-        <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-3xl p-8 mb-16 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-primary to-secondary rounded-3xl p-8 mb-16 relative overflow-hidden">
           {/* Background decorative elements */}
           <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full"></div>
           <div className="absolute bottom-4 left-4 w-16 h-16 bg-white/10 rounded-full"></div>
@@ -23,7 +23,7 @@ const EBFooter = () => {
 
           <div className="relative z-10 text-center space-y-6">
             <h3 className="text-3xl font-bold text-white">Nhận Thông Tin Gia Sư Mới Nhất</h3>
-            <p className="text-emerald-100 max-w-2xl mx-auto">
+            <p className="text-white/90 max-w-2xl mx-auto">
               Đăng ký để nhận thông báo về gia sư chất lượng, khóa học mới và các ưu đãi đặc biệt từ
               EduBridge
             </p>
@@ -36,12 +36,12 @@ const EBFooter = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Nhập email của bạn"
-                  className="flex-1 px-4 py-2 bg-transparent text-gray-700 placeholder-gray-500 focus:outline-none"
+                  className="flex-1 px-4 py-2 bg-transparent text-foreground placeholder-muted-foreground focus:outline-none"
                   required
                 />
                 <button
                   type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-medium transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-full font-medium transition-colors"
                 >
                   Đăng Ký
                 </button>
@@ -54,8 +54,8 @@ const EBFooter = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div className="space-y-4">
-            <h4 className="text-emerald-600 text-lg font-bold">EduBridge</h4>
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <h4 className="text-primary text-lg font-bold">EduBridge</h4>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               Nền tảng kết nối gia sư và học viên hàng đầu Việt Nam. Chúng tôi cam kết mang đến trải
               nghiệm học tập chất lượng với đội ngũ gia sư được xác thực.
             </p>
@@ -92,25 +92,25 @@ const EBFooter = () => {
 
           {/* For Students */}
           <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Dành Cho Học Viên</h4>
-            <ul className="space-y-2 text-gray-600 text-sm">
+            <h4 className="text-foreground font-semibold">Dành Cho Học Viên</h4>
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Tìm gia sư
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Khóa học trực tuyến
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Đánh giá gia sư
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Thanh toán
                 </a>
               </li>
@@ -119,25 +119,25 @@ const EBFooter = () => {
 
           {/* For Tutors */}
           <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Dành Cho Gia Sư</h4>
-            <ul className="space-y-2 text-gray-600 text-sm">
+            <h4 className="text-foreground font-semibold">Dành Cho Gia Sư</h4>
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Đăng ký dạy học
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Hướng dẫn sử dụng
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Chính sách thu nhập
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Hỗ trợ gia sư
                 </a>
               </li>
@@ -146,25 +146,25 @@ const EBFooter = () => {
 
           {/* Support */}
           <div className="space-y-4">
-            <h4 className="text-gray-800 font-semibold">Hỗ Trợ</h4>
-            <ul className="space-y-2 text-gray-600 text-sm">
+            <h4 className="text-foreground font-semibold">Hỗ Trợ</h4>
+            <ul className="space-y-2 text-muted-foreground text-sm">
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Về chúng tôi
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Câu hỏi thường gặp
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Liên hệ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-emerald-600 transition-colors">
+                <a href="#" className="hover:text-primary transition-colors">
                   Điều khoản sử dụng
                 </a>
               </li>
@@ -173,8 +173,8 @@ const EBFooter = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-emerald-200 pt-8">
-          <p className="text-center text-gray-500 text-sm">
+        <div className="border-t border-border pt-8">
+          <p className="text-center text-muted-foreground text-sm">
             © 2024 EduBridge. Tất cả quyền được bảo lưu.
           </p>
         </div>

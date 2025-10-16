@@ -54,7 +54,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                     onClick={
                       item.onClick || (() => item.href && (window.location.href = item.href))
                     }
-                    className="text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium"
+                    className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium"
                   >
                     {item.label}
                   </button>
@@ -75,7 +75,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                className="p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
               >
                 <Globe className="w-5 h-5" />
               </motion.button>
@@ -86,7 +86,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                   <EBButton
                     onClick={headerConfig.cta.onClick}
                     size="sm"
-                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     {headerConfig.cta.label}
                   </EBButton>
@@ -97,14 +97,14 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                     onClick={() => push("/login")}
                     variant="ghost"
                     size="sm"
-                    className="transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                    className="transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                   >
                     {t("login")}
                   </EBButton>
                   <EBButton
                     onClick={() => push("/register")}
                     size="sm"
-                    className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     {t("register")}
                   </EBButton>
@@ -116,7 +116,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                className="md:hidden p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </motion.button>
@@ -133,7 +133,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           x: isMobileMenuOpen ? "0%" : "100%",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-40 md:hidden ${
+        className={`fixed top-0 right-0 h-full w-80 bg-card shadow-2xl z-40 md:hidden ${
           isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
@@ -141,14 +141,14 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           {/* Mobile EBHeader */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-gray-900">EduBridge</span>
+              <span className="text-lg font-bold text-foreground">EduBridge</span>
             </div>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+              className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted"
             >
               <X className="w-5 h-5" />
             </button>
@@ -170,8 +170,8 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                   }}
                   className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                     item.active
-                      ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                      : "text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
+                      ? "bg-primary/10 text-primary border border-primary/20"
+                      : "text-muted-foreground hover:text-primary hover:bg-muted"
                   }`}
                 >
                   {item.label}
@@ -181,7 +181,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           </nav>
 
           {/* Mobile Auth Buttons */}
-          <div className="space-y-3 pt-6 border-t border-gray-200">
+          <div className="space-y-3 pt-6 border-t border-border">
             <EBButton
               onClick={() => {
                 setIsMobileMenuOpen(false);
@@ -189,7 +189,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               }}
               variant="outline"
               size="lg"
-              className="w-full border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+              className="w-full border-primary/20 text-primary hover:bg-primary/10"
             >
               {t("mobileLogin")}
             </EBButton>
@@ -199,23 +199,23 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 push("/register");
               }}
               size="lg"
-              className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+              className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground"
             >
               {t("mobileRegister")}
             </EBButton>
           </div>
 
           {/* Mobile Settings */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-            <span className="text-sm text-gray-600">{t("settings")}</span>
+          <div className="flex items-center justify-between pt-6 border-t border-border">
+            <span className="text-sm text-muted-foreground">{t("settings")}</span>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsDarkMode(!isDarkMode)}
-                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted"
               >
                 {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
-              <button className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+              <button className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted">
                 <Globe className="w-4 h-4" />
               </button>
             </div>

@@ -68,7 +68,7 @@ const ActionButtons = ({
     {/* Mobile menu button - always show */}
     <button
       onClick={onMobileMenuToggle}
-      className="md:hidden p-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+      className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
     >
       <Menu size={20} />
     </button>
@@ -88,7 +88,7 @@ const convertToNavItems = (items: HeaderItem[]): NavItem[] => {
 const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
   <button
     onClick={cta.onClick}
-    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+    className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors duration-200"
   >
     {cta.label}
   </button>
@@ -128,7 +128,7 @@ const EBHeader = ({
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
           isScrolled
-            ? "bg-gradient-to-br from-card/60 via-card/40 to-card/60 backdrop-blur-xl shadow-lg shadow-primary/5"
+            ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
             : "bg-transparent"
         }`}
       >

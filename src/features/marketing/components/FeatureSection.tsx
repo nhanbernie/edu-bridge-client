@@ -27,10 +27,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   const D = R * 2;
 
   return (
-    <div
-      className="relative shadow-lg bg-white p-8 hover:shadow-2xl transition-all duration-300 rounded-3xl border border-transparent hover:border-current overflow-hidden"
-      style={{ borderColor: "transparent" }}
-    >
+    <div className="relative shadow-lg p-8 hover:shadow-2xl transition-all duration-300 rounded-3xl border border-border hover:border-primary/50 overflow-hidden">
       {/* Top-right corner arc (quarter-circle) */}
       <svg
         width={D}
@@ -79,9 +76,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
           <Icon className="w-8 h-8 text-white" />
         </div>
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <p className="text-gray-600 leading-relaxed text-sm">{description}</p>
-          <button className="flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors">
+          <h3 className="text-xl font-bold text-foreground">{title}</h3>
+          <p className="text-muted-foreground leading-relaxed text-sm">{description}</p>
+          <button className="flex items-center gap-2 text-primary font-medium hover:text-primary/80 transition-colors">
             {linkText}
             <ArrowRight className="w-4 h-4" />
           </button>
@@ -120,12 +117,12 @@ const FeatureSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section EBHeader */}
         <div className="text-center space-y-6 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Tại Sao Chọn Chúng Tôi</h2>
-          <p className="text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <h2 className="text-4xl lg:text-5xl font-bold text-foreground">Tại Sao Chọn Chúng Tôi</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Nền tảng kết nối giảng viên và gia sư hàng đầu với nhiều ưu điểm vượt trội,
             <br />
             mang đến trải nghiệm học tập tốt nhất cho học viên
@@ -150,13 +147,13 @@ const FeatureSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left - Education Image */}
           <div className="relative">
-            <div className="bg-gray-100 rounded-3xl overflow-hidden h-96">
-              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+            <div className="bg-muted rounded-3xl overflow-hidden h-96">
+              <div className="w-full h-full bg-gradient-to-br from-muted to-muted/80 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="w-24 h-24 bg-gray-400 rounded-full mx-auto flex items-center justify-center">
-                    <span className="text-white text-2xl font-bold">📚</span>
+                  <div className="w-24 h-24 bg-primary rounded-full mx-auto flex items-center justify-center">
+                    <span className="text-primary-foreground text-2xl font-bold">📚</span>
                   </div>
-                  <p className="text-gray-600 font-medium">Education Experience Image</p>
+                  <p className="text-muted-foreground font-medium">Education Experience Image</p>
                 </div>
               </div>
             </div>
@@ -165,12 +162,12 @@ const FeatureSection = () => {
           {/* Right - Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h3 className="text-4xl font-bold text-gray-900 leading-tight">
+              <h3 className="text-4xl font-bold text-foreground leading-tight">
                 Kinh Nghiệm Của Chúng Tôi
                 <br />
                 Mang Đến Kết Quả Tốt Nhất.
               </h3>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 Với nhiều năm kinh nghiệm trong lĩnh vực giáo dục, chúng tôi đã kết nối thành công
                 hàng nghìn học viên với các giảng viên chất lượng cao, tạo nên những câu chuyện
                 thành công đáng nhớ.
@@ -179,13 +176,13 @@ const FeatureSection = () => {
 
             {/* Stats */}
             <div className="grid grid-cols-2 gap-8">
-              <div className="text-center bg-red-50 rounded-2xl p-6">
-                <div className="text-4xl font-bold text-red-500 mb-2">500+</div>
-                <div className="text-gray-600">Giảng Viên Chuyên Nghiệp</div>
+              <div className="text-center bg-card border border-border rounded-2xl p-6">
+                <div className="text-4xl font-bold text-primary mb-2">500+</div>
+                <div className="text-muted-foreground">Giảng Viên Chuyên Nghiệp</div>
               </div>
-              <div className="text-center bg-blue-50 rounded-2xl p-6">
-                <div className="text-4xl font-bold text-blue-500 mb-2">4.9★</div>
-                <div className="text-gray-600">Đánh Giá Trung Bình</div>
+              <div className="text-center bg-card border border-border rounded-2xl p-6">
+                <div className="text-4xl font-bold text-accent mb-2">4.9★</div>
+                <div className="text-muted-foreground">Đánh Giá Trung Bình</div>
               </div>
             </div>
           </div>

@@ -46,3 +46,23 @@ export const PAGE_TITLE = "text-3xl font-bold text-foreground mb-2";
 
 // Page subtitle
 export const PAGE_SUBTITLE = "text-muted-foreground";
+
+/**
+ * Card Component CSS Constants - Card system với rounded-3xl và shadow đẹp
+ */
+
+// Base card styles (no border, rounded-3xl, beautiful shadow)
+export const CARD_BASE = "eb-card-base";
+export const CARD_GLASS = "eb-card-glass";
+export const CARD_ELEVATED = "eb-card-elevated";
+export const CARD_INTERACTIVE = "eb-card-interactive";
+
+// Card padding utilities
+export const CARD_PADDING = "eb-card-padding"; // p-6
+export const CARD_PADDING_SM = "eb-card-padding-sm"; // p-4
+export const CARD_PADDING_LG = "eb-card-padding-lg"; // p-8
+
+// Card header styles
+export const CARD_HEADER = "eb-card-header";
+export const CARD_TITLE = "eb-card-title";
+export const CARD_DESCRIPTION = "eb-card-description";

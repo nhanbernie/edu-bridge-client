@@ -332,3 +332,54 @@
 .animate-border-flow {
   animation: border-flow 3s ease infinite;
 }
+
+/* ===================================
+   CARD COMPONENT SYSTEM
+   =================================== */
+
+/* Base Card - Clean & Simple */
+.eb-card-base {
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl border border-border transition-all duration-300;
+}
+
+/* Glass Card - With backdrop blur */
+.eb-card-glass {
+  @apply bg-card/70 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl hover:bg-card/80 border border-border transition-all duration-300;
+}
+
+/* Elevated Card - More prominent shadow */
+.eb-card-elevated {
+  @apply bg-card rounded-3xl shadow-xl hover:shadow-2xl  border border-border transition-all duration-300;
+}
+
+/* Interactive Card - Clickable with hover effects */
+.eb-card-interactive {
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl hover:scale-[1.02]
+         cursor-pointer transition-all duration-300 active:scale-[0.98];
+}
+
+/* Card Padding Utilities */
+.eb-card-padding {
+  @apply p-6;
+}
+
+.eb-card-padding-sm {
+  @apply p-4;
+}
+
+.eb-card-padding-lg {
+  @apply p-8;
+}
+
+/* Card Header */
+.eb-card-header {
+  @apply border-b border-border pb-4 mb-4;
+}
+
+.eb-card-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+.eb-card-description {
+  @apply text-sm text-muted-foreground mt-1;
+}

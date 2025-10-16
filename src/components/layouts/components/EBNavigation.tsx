@@ -17,15 +17,15 @@ const EBNavigation = ({ items }: { items: any[] }) => {
         >
           <button
             onClick={() => push(item.href)}
-            className={`relative text-sm font-medium transition-colors hover:text-emerald-600 ${
-              item.active ? "text-emerald-600" : "text-gray-700"
+            className={`relative text-sm font-medium transition-colors hover:text-primary ${
+              item.active ? "text-primary" : "text-muted-foreground"
             }`}
           >
             {item.label}
             {item.active && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute -bottom-1 left-0 right-0 h-0.5 bg-emerald-500 rounded-full"
+                className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}

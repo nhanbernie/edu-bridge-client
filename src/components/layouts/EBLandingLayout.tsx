@@ -18,7 +18,7 @@ const EBLandingLayout = ({ children, buildHeader }: LandingLayoutProps) => {
   const headerConfig = buildHeader ? buildHeader({ go }) : undefined;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <EBMaketingHeader headerConfig={headerConfig} />
       <main className="flex-1">{children}</main>
       <EBFooter />

@@ -3,13 +3,39 @@
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export const EBButtonAction = ({ children, onClick, className }: { children: React.ReactNode, onClick?: () => void, className?: string }) => {
+interface EBButtonActionProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+}
+
+export const EBButtonAction: React.FC<EBButtonActionProps> = ({
+  children,
+  onClick,
+  className,
+  disabled = false,
+  type = "button",
+}) => {
   return (
     <motion.button
-      whileHover={{ scale: 1.2 }}
-      whileTap={{ scale: 0.95 }}
-      className={cn("p-2 rounded-lg transition-colors text-gray-600", className)}
+      type={type}
+      whileHover={disabled ? undefined : { scale: 1.05 }}
+      whileTap={disabled ? undefined : { scale: 0.95 }}
+      className={cn(
+        // Base styles with semantic theme
+        "p-2 rounded-lg transition-colors",
+        // Text color with theme support
+        "text-muted-foreground hover:text-foreground",
+        // Hover background
+        "hover:bg-muted",
+        // Disabled state
+        disabled && "opacity-50 cursor-not-allowed",
+        className
+      )}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </motion.button>
