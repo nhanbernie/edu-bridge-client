@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 
 import { TutorOnboardingSteps, TutorStep1, TutorStep2 } from "./components";
@@ -8,13 +9,14 @@ import { useTutorOnboarding, TutorFormData } from "./hooks/useTutorOnboarding";
 import { ROUTES } from "@/common/constants/route.constant";
 
 const TutorOnboardingPage = () => {
+  const t = useTranslations("tutor.onboard");
   const { push } = useLocaleRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [step1Data, setStep1Data] = useState<TutorFormData | null>(null);
   const [step1Completed, setStep1Completed] = useState(false);
   const { submitOnboarding, isLoading } = useTutorOnboarding();
 
-  const steps = ["Thông tin cơ bản", "Tải lên hồ sơ"];
+  const steps = [t("steps.step1"), t("steps.step2")];
 
   // Step 1: Call API selectRole first
   const handleStep1Next = async (data: TutorFormData) => {
@@ -75,7 +77,7 @@ const TutorOnboardingPage = () => {
 
             {currentStep === 1 && !step1Completed && (
               <div className="p-8 text-center">
-                <p className="text-muted-foreground">Đang xử lý thông tin bước 1...</p>
+                <p className="text-muted-foreground">{t("messages.processing")}</p>
               </div>
             )}
           </div>

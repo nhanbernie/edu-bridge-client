@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import EBButton from "@/components/common/EBButton";
 import { useDocumentUpload, DocumentUpload } from "../hooks/useDocumentUpload";
 import { toast } from "sonner";
@@ -15,36 +16,39 @@ interface TutorStep2Props {
   isLoading?: boolean;
 }
 
-const tutorVerificationSchema = Yup.object().shape({
-  verificationType: Yup.string().required("Vui lòng chọn loại xác minh"),
-  cccd: Yup.mixed().when("verificationType", {
-    is: (val: string) => val === "verified" || val === "trusted",
-    then: (schema) => schema.required("Vui lòng tải lên CCCD"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  selfie: Yup.mixed().when("verificationType", {
-    is: (val: string) => val === "verified" || val === "trusted",
-    then: (schema) => schema.required("Vui lòng tải lên ảnh Selfie"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  degree: Yup.mixed().when("verificationType", {
-    is: "verified",
-    then: (schema) => schema.required("Vui lòng tải lên bằng cấp"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  certificate: Yup.mixed().nullable(),
-  studentCard: Yup.mixed().when("verificationType", {
-    is: "trusted",
-    then: (schema) => schema.required("Vui lòng tải lên thẻ sinh viên"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  transcript: Yup.mixed().when("verificationType", {
-    is: "trusted",
-    then: (schema) => schema.required("Vui lòng tải lên bảng điểm"),
-    otherwise: (schema) => schema.nullable(),
-  }),
-  certificate_trusted: Yup.mixed().nullable(),
-});
+// Validation schema will be created with translations in the component
+const createTutorVerificationSchema = (t: any) => {
+  return Yup.object().shape({
+    verificationType: Yup.string().required(t("validation.verificationType")),
+    cccd: Yup.mixed().when("verificationType", {
+      is: (val: string) => val === "verified" || val === "trusted",
+      then: (schema) => schema.required(t("validation.cccd")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    selfie: Yup.mixed().when("verificationType", {
+      is: (val: string) => val === "verified" || val === "trusted",
+      then: (schema) => schema.required(t("validation.selfie")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    degree: Yup.mixed().when("verificationType", {
+      is: "verified",
+      then: (schema) => schema.required(t("validation.degree")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    certificate: Yup.mixed().nullable(),
+    studentCard: Yup.mixed().when("verificationType", {
+      is: "trusted",
+      then: (schema) => schema.required(t("validation.studentCard")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    transcript: Yup.mixed().when("verificationType", {
+      is: "trusted",
+      then: (schema) => schema.required(t("validation.transcript")),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    certificate_trusted: Yup.mixed().nullable(),
+  });
+};
 
 // File Upload Input Component with improved UI
 const FileUploadInput = ({
@@ -58,6 +62,7 @@ const FileUploadInput = ({
   description: string;
   required?: boolean;
 }) => {
+  const t = useTranslations("tutor.onboard.step2");
   const { setValue, watch } = useFormContext();
   const file = watch(name);
 
@@ -66,7 +71,7 @@ const FileUploadInput = ({
     if (selectedFile) {
       // Validate file size (max 5MB)
       if (selectedFile.size > 5 * 1024 * 1024) {
-        toast.error("Kích thước file không được vượt quá 5MB");
+        toast.error(t("messages.fileSizeError"));
         e.target.value = "";
         return;
       }
@@ -116,11 +121,10 @@ const FileUploadInput = ({
               />
             </svg>
             <p className="mt-2 text-sm text-muted-foreground">
-              <span className="font-semibold text-primary">Nhấn để chọn file</span> hoặc kéo thả
+              <span className="font-semibold text-primary">{t("upload.clickToSelect")}</span>{" "}
+              {t("upload.orDragDrop")}
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">
-              PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)
-            </p>
+            <p className="text-xs text-muted-foreground/70 mt-1">{t("upload.supportedFormats")}</p>
           </div>
         ) : (
           <div className="flex items-center justify-between py-2">
@@ -180,6 +184,7 @@ const VerificationForm = ({
   onBack: () => void;
   isUploading: boolean;
 }) => {
+  const t = useTranslations("tutor.onboard.step2");
   const verificationType = useWatch({ name: "verificationType" });
 
   return (
@@ -200,14 +205,16 @@ const VerificationForm = ({
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
             />
           </svg>
-          <h3 className="text-base font-semibold text-foreground">Loại xác minh</h3>
+          <h3 className="text-base font-semibold text-foreground">
+            {t("sections.verificationType")}
+          </h3>
         </div>
 
         <EBSelectField
           name="verificationType"
-          label="Chọn loại xác minh"
+          label={t("fields.verificationType.label")}
           options={verificationOptions}
-          placeholder="Chọn loại gia sư bạn muốn đăng ký"
+          placeholder={t("fields.verificationType.placeholder")}
         />
 
         <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
@@ -224,21 +231,15 @@ const VerificationForm = ({
               />
             </svg>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-primary mb-2">Lưu ý:</p>
+              <p className="text-sm font-semibold text-primary mb-2">{t("info.title")}:</p>
               <ul className="space-y-2 text-sm text-primary/80">
                 <li className="flex items-start">
                   <span className="font-semibold mr-2">•</span>
-                  <span>
-                    <strong>Verified Tutor:</strong> Upload CCCD, SELFIE, DEGREE, (CERTIFICATE - tùy
-                    chọn)
-                  </span>
+                  <span>{t("info.verified")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="font-semibold mr-2">•</span>
-                  <span>
-                    <strong>Trusted Beginner Tutor:</strong> Upload CCCD, SELFIE, STUDENT_CARD (thẻ
-                    sv), TRANSCRIPT (bảng điểm), (CERTIFICATE - tùy chọn)
-                  </span>
+                  <span>{t("info.trusted")}</span>
                 </li>
               </ul>
             </div>
@@ -263,31 +264,33 @@ const VerificationForm = ({
                 d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
               />
             </svg>
-            <h3 className="text-lg font-semibold text-foreground">Tài liệu cho Verified Tutor</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("sections.verifiedDocuments")}
+            </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FileUploadInput
               name="cccd"
-              label="CCCD (Căn cước công dân)"
-              description="Ảnh mặt trước và mặt sau CCCD rõ nét"
+              label={t("documents.cccd.label")}
+              description={t("documents.cccd.description")}
               required
             />
             <FileUploadInput
               name="selfie"
-              label="Ảnh Selfie cầm CCCD"
-              description="Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+              label={t("documents.selfie.label")}
+              description={t("documents.selfie.description")}
               required
             />
             <FileUploadInput
               name="degree"
-              label="Bằng cấp (DEGREE)"
-              description="Bằng tốt nghiệp đại học/cao đẳng"
+              label={t("documents.degree.label")}
+              description={t("documents.degree.description")}
               required
             />
             <FileUploadInput
               name="certificate"
-              label="Chứng chỉ (tùy chọn)"
-              description="Chứng chỉ chuyên môn nếu có"
+              label={t("documents.certificate.label")}
+              description={t("documents.certificate.description")}
             />
           </div>
         </div>
@@ -311,38 +314,38 @@ const VerificationForm = ({
               />
             </svg>
             <h3 className="text-lg font-semibold text-foreground">
-              Tài liệu cho Trusted Beginner Tutor
+              {t("sections.trustedDocuments")}
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FileUploadInput
               name="cccd"
-              label="CCCD (Căn cước công dân)"
-              description="Ảnh mặt trước và mặt sau CCCD rõ nét"
+              label={t("documents.cccd.label")}
+              description={t("documents.cccd.description")}
               required
             />
             <FileUploadInput
               name="selfie"
-              label="Ảnh Selfie cầm CCCD"
-              description="Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+              label={t("documents.selfie.label")}
+              description={t("documents.selfie.description")}
               required
             />
             <FileUploadInput
               name="studentCard"
-              label="Thẻ sinh viên"
-              description="Thẻ sinh viên còn hiệu lực"
+              label={t("documents.studentCard.label")}
+              description={t("documents.studentCard.description")}
               required
             />
             <FileUploadInput
               name="transcript"
-              label="Bảng điểm"
-              description="Bảng điểm chứng minh kết quả học tập"
+              label={t("documents.transcript.label")}
+              description={t("documents.transcript.description")}
               required
             />
             <FileUploadInput
               name="certificate_trusted"
-              label="Chứng chỉ (tùy chọn)"
-              description="Chứng chỉ chuyên môn nếu có"
+              label={t("documents.certificate.label")}
+              description={t("documents.certificate.description")}
             />
           </div>
         </div>
@@ -362,25 +365,23 @@ const VerificationForm = ({
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-accent mb-2">Lưu ý quan trọng</h3>
+              <h3 className="text-sm font-semibold text-accent mb-2">{t("notes.title")}</h3>
               <ul className="space-y-2 text-sm text-accent/80">
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>Tất cả tài liệu sẽ được xem xét để xác minh tính xác thực</span>
+                  <span>{t("notes.verification")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>
-                    Chỉ tải lên các file có định dạng được hỗ trợ (PDF, JPG, PNG, DOC, DOCX)
-                  </span>
+                  <span>{t("notes.formats")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>Kích thước file tối đa là 5MB</span>
+                  <span>{t("notes.fileSize")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>Thông tin cá nhân trong tài liệu sẽ được bảo mật tuyệt đối</span>
+                  <span>{t("notes.privacy")}</span>
                 </li>
               </ul>
             </div>
@@ -396,7 +397,7 @@ const VerificationForm = ({
           onClick={onBack}
           className="flex-1 font-semibold py-4 border-1 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          Quay lại
+          {t("buttons.back")}
         </EBButton>
         <EBButton
           type="submit"
@@ -406,7 +407,7 @@ const VerificationForm = ({
           disabled={!verificationType || isUploading}
           className="flex-1 font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          {isUploading ? "Đang tải lên..." : "Hoàn tất đăng ký"}
+          {isUploading ? t("buttons.uploading") : t("buttons.submit")}
         </EBButton>
       </div>
     </div>
@@ -414,11 +415,12 @@ const VerificationForm = ({
 };
 
 const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = false }) => {
+  const t = useTranslations("tutor.onboard.step2");
   const { uploadDocuments, isLoading: isUploading } = useDocumentUpload();
 
   const verificationOptions = [
-    { value: "verified", label: "Verified Tutor (Gia sư đã xác minh)" },
-    { value: "trusted", label: "Trusted Beginner Tutor (Gia sư mới đáng tin cậy)" },
+    { value: "verified", label: t("options.verified") },
+    { value: "trusted", label: t("options.trusted") },
   ];
 
   const defaultValues = {
@@ -455,7 +457,7 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
 
     // Validate that at least one document is uploaded
     if (documents.length === 0) {
-      toast.error("Vui lòng tải lên đầy đủ tài liệu");
+      toast.error(t("messages.noDocuments"));
       return;
     }
 
@@ -470,13 +472,11 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
     <div className="space-y-6">
       {/* EBHeader */}
       <div className="text-center md:text-left">
-        <h2 className="text-3xl font-bold text-foreground mb-3">Tải lên hồ sơ</h2>
-        <p className="text-muted-foreground text-lg">
-          Vui lòng chọn loại xác minh và tải lên các tài liệu tương ứng
-        </p>
+        <h2 className="text-3xl font-bold text-foreground mb-3">{t("title")}</h2>
+        <p className="text-muted-foreground text-lg">{t("subtitle")}</p>
       </div>
       <EBFormProvider
-        validationSchema={tutorVerificationSchema}
+        validationSchema={createTutorVerificationSchema(t)}
         defaultValues={defaultValues}
         onSubmit={handleFormSubmit}
         formType="tutorVerification"

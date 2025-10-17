@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import EBFormProvider from "@/components/form/EBFormProvider";
 import EBTextField from "@/components/form/EBTextField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
@@ -20,6 +21,7 @@ interface TutorStep1Props {
 }
 
 const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoading = false }) => {
+  const t = useTranslations("tutor.onboard.step1");
   const defaultValues: TutorFormData = {
     educationLevel: "",
     yearsOfExperience: undefined,
@@ -37,10 +39,8 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">Thông tin cơ bản</h2>
-        <p className="text-muted-foreground">
-          Hãy cho chúng tôi biết về trình độ và kinh nghiệm của bạn
-        </p>
+        <h2 className="text-2xl font-bold text-foreground mb-2">{t("title")}</h2>
+        <p className="text-muted-foreground">{t("subtitle")}</p>
       </div>
 
       <EBFormProvider
@@ -54,15 +54,15 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
           <EBSelectField
             allowCustom
             name="educationLevel"
-            label="Trình độ học vấn"
+            label={t("fields.educationLevel.label")}
             options={EDUCATION_LEVEL_OPTIONS}
           />
           {/* Years of Experience */}
           <EBTextField
             name="yearsOfExperience"
-            label="Số năm kinh nghiệm dạy học"
+            label={t("fields.yearsOfExperience.label")}
             type="number"
-            placeholder="Nhập số năm kinh nghiệm"
+            placeholder={t("fields.yearsOfExperience.placeholder")}
             min="0"
             max="80"
             step="1"
@@ -70,15 +70,15 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
           {/* Location */}
           <EBTextField
             name="location"
-            label="Địa điểm"
-            placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+            label={t("fields.location.label")}
+            placeholder={t("fields.location.placeholder")}
           />
 
           {/* Bio */}
           <EBTextAreaField
             name="bio"
-            label="Mô tả về bản thân"
-            placeholder="Hãy chia sẻ về phong cách dạy học, thành tích và kinh nghiệm của bạn..."
+            label={t("fields.bio.label")}
+            placeholder={t("fields.bio.placeholder")}
             rows={4}
           />
 
@@ -86,14 +86,14 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
           <EBMultipleSelect
             allowCustom
             name="subjects"
-            label="Môn học dạy (có thể chọn nhiều)"
+            label={t("fields.subjects.label")}
             options={SUBJECT_OPTIONS}
           />
           {/* Languages (multiple) */}
           <EBMultipleSelect
             allowCustom
             name="languages"
-            label="Ngôn ngữ (có thể chọn nhiều)"
+            label={t("fields.languages.label")}
             options={LANGUAGE_OPTIONS}
           />
           {/* Submit Button */}
@@ -105,7 +105,7 @@ const TutorStep1: React.FC<TutorStep1Props> = ({ onNext, initialData = {}, isLoa
               loading={isLoading}
               className="w-full font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              Tiếp theo
+              {t("buttons.next")}
             </EBButton>
           </div>
         </div>
