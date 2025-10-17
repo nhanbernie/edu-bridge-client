@@ -1,0 +1,44 @@
+{
+  "videoIntro": {
+    "title": "Video giới thiệu",
+    "edit": "Chỉnh sửa",
+    "upload": "Tải lên Video giới thiệu",
+    "placeholder": "Video giới thiệu của bạn sẽ hiển thị ở đây",
+    "noSupport": "Trình duyệt của bạn không hỗ trợ video."
+  },
+  "certificates": {
+    "title": "Chứng chỉ & Giải thưởng",
+    "add": "Thêm mới",
+    "empty": {
+      "title": "Chưa có chứng chỉ nào",
+      "description": "Thêm chứng chỉ để nâng cao uy tín của bạn",
+      "action": "Thêm chứng chỉ đầu tiên"
+    }
+  },
+  "modal": {
+    "editVideo": "Chỉnh sửa Video giới thiệu",
+    "editCertificate": "Chỉnh sửa Chứng chỉ",
+    "uploadVideo": "Tải lên Video giới thiệu",
+    "addCertificate": "Thêm Chứng chỉ",
+    "titleLabel": "Tiêu đề",
+    "titlePlaceholder": "VD: Video giới thiệu",
+    "certificatePlaceholder": "VD: Chứng chỉ TESOL",
+    "fileLabel": "File",
+    "fileOptional": "(Tùy chọn - Để trống nếu không đổi)",
+    "fileRequired": "(Bắt buộc)",
+    "selectFile": "Click để chọn {type}",
+    "supportedFormats": "{formats} (tối đa {size}MB)",
+    "videoFormats": "MP4, MOV, AVI",
+    "imageFormats": "JPG, PNG, GIF",
+    "buttons": {
+      "cancel": "Hủy",
+      "upload": "Tải lên",
+      "update": "Cập nhật"
+    },
+    "validation": {
+      "fileSizeError": "Kích thước file không được vượt quá {size}MB",
+      "fileRequired": "Vui lòng chọn file",
+      "titleRequired": "Vui lòng nhập tiêu đề"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Thông tin khóa học",
+  "fields": {
+    "title": {
+      "label": "Tên khóa học *",
+      "placeholder": "Ví dụ: Toán học cơ bản lớp 10"
+    },
+    "subjects": {
+      "label": "Môn học (có thể chọn nhiều) *",
+      "placeholder": "Chọn hoặc thêm môn học"
+    },
+    "description": {
+      "label": "Mô tả khóa học *",
+      "placeholder": "Mô tả chi tiết về nội dung, phương pháp giảng dạy..."
+    },
+    "hoursPerSession": {
+      "label": "Thời gian / buổi (giờ) *",
+      "placeholder": "2"
+    },
+    "hourlyRate": {
+      "label": "Giá / buổi (VNĐ) *",
+      "placeholder": "100000"
+    },
+    "isPublished": {
+      "label": "Xuất bản khóa học",
+      "description": "Khóa học được xuất bản, chi tiết có thể thay đổi sau"
+    }
+  },
+  "buttons": {
+    "create": "Tạo khóa học",
+    "update": "Hoàn tất chỉnh sửa",
+    "processing": "Đang xử lý..."
+  },
+  "validation": {
+    "titleRequired": "Vui lòng nhập tên khóa học",
+    "titleMinLength": "Tên khóa học cần ít nhất 5 ký tự",
+    "titleMaxLength": "Tên khóa học không được vượt quá 100 ký tự",
+    "subjectsRequired": "Chọn ít nhất 1 môn học",
+    "descriptionRequired": "Vui lòng nhập mô tả khóa học",
+    "descriptionMinLength": "Mô tả khóa học cần ít nhất 20 ký tự",
+    "descriptionMaxLength": "Mô tả không được vượt quá 500 ký tự",
+    "hoursPerSessionRequired": "Vui lòng nhập thời gian/buổi",
+    "hoursPerSessionInvalid": "Thời gian/buổi phải từ 0.5 đến 8 giờ",
+    "hourlyRateRequired": "Vui lòng nhập giá/buổi",
+    "hourlyRateInvalid": "Giá/buổi phải từ 500 đến 2,000,000 VNĐ"
+  }
+}

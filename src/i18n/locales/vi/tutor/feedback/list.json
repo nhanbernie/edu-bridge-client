@@ -1,0 +1,20 @@
+{
+  "title": "Đánh giá khóa học",
+  "subtitle": "Xem đánh giá từ học sinh của bạn",
+  "stats": {
+    "totalCourses": "Tổng khóa học",
+    "inProgress": "Đang dạy",
+    "completed": "Đã hoàn thành"
+  },
+  "sections": {
+    "inProgress": "Đang dạy ({count})",
+    "completed": "Đã hoàn thành ({count})"
+  },
+  "empty": {
+    "title": "Chưa có khóa học nào",
+    "description": "Bạn chưa có khóa học nào đang được dạy."
+  },
+  "loading": "Đang tải khóa học...",
+  "error": "Có lỗi xảy ra",
+  "errorMessage": "Không thể tải danh sách khóa học. Vui lòng thử lại sau."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Lịch sử giao dịch",
+  "subtitle": "Theo dõi thu nhập và giao dịch của bạn",
+  "buttons": {
+    "refresh": "Làm mới"
+  },
+  "stats": {
+    "totalEarnings": {
+      "title": "Tổng thu nhập",
+      "description": "Tiền nhận vào"
+    },
+    "totalSpent": {
+      "title": "Tổng chi tiêu",
+      "description": "Tiền chuyển đi"
+    },
+    "completed": {
+      "title": "Hoàn thành",
+      "description": "Giao dịch thành công"
+    },
+    "pending": {
+      "title": "Đang chờ",
+      "description": "Chờ xử lý"
+    }
+  },
+  "list": {
+    "title": "Danh sách giao dịch"
+  }
+}

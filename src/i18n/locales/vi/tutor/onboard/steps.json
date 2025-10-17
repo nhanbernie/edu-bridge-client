@@ -12,5 +12,7 @@
     "schedule": "Lịch rảnh",
     "verification": "Xác minh danh tính",
     "review": "Xem lại & Gửi"
-  }
+  },
+  "step1": "Thông tin cá nhân",
+  "step2": "Học vấn & Kinh nghiệm"
 }

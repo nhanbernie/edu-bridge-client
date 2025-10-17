@@ -1,0 +1,10 @@
+{
+  "title": "Create New Course",
+  "subtitle": "Course is published, details can be changed later",
+  "buttons": {
+    "back": "Back"
+  },
+  "messages": {
+    "loading": "Loading..."
+  }
+}

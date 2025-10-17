@@ -1,0 +1,65 @@
+{
+  "title": "Hồ sơ gia sư",
+  "subtitle": "Quản lý hồ sơ và thông tin giảng dạy của bạn",
+  "sections": {
+    "personalInfo": "Thông tin cá nhân",
+    "teachingInfo": "Thông tin giảng dạy"
+  },
+  "fields": {
+    "fullName": {
+      "label": "Họ và tên",
+      "placeholder": "Nhập họ và tên của bạn"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email không thể thay đổi"
+    },
+    "phone": {
+      "label": "Số điện thoại",
+      "placeholder": "Nhập số điện thoại"
+    },
+    "location": {
+      "label": "Địa điểm",
+      "placeholder": "Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+    },
+    "educationLevel": {
+      "label": "Trình độ học vấn"
+    },
+    "yearsOfExperience": {
+      "label": "Số năm kinh nghiệm dạy học",
+      "placeholder": "Nhập số năm kinh nghiệm"
+    },
+    "bio": {
+      "label": "Mô tả về bản thân",
+      "placeholder": "Hãy chia sẻ về phong cách dạy học, thành tích và kinh nghiệm của bạn..."
+    },
+    "subjects": {
+      "label": "Môn học dạy (có thể chọn nhiều)",
+      "currentSubjects": "Các môn hiện tại:"
+    },
+    "languages": {
+      "label": "Ngôn ngữ (có thể chọn nhiều)"
+    }
+  },
+  "stats": {
+    "students": "Học sinh",
+    "courses": "Khóa học",
+    "rating": "Đánh giá"
+  },
+  "buttons": {
+    "edit": "Chỉnh sửa hồ sơ",
+    "save": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "changeAvatar": "Thay đổi ảnh đại diện"
+  },
+  "messages": {
+    "loading": "Đang tải hồ sơ...",
+    "defaultName": "Gia sư"
+  },
+  "verification": {
+    "verified": "Đã xác minh",
+    "trustedBeginner": "Người mới uy tín",
+    "pending": "Đang chờ xác minh"
+  }
+}

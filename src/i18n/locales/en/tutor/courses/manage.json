@@ -1,0 +1,35 @@
+{
+  "title": "Manage Courses",
+  "subtitle": "Manage all your courses",
+  "buttons": {
+    "create": "Create New Course",
+    "refresh": "Refresh",
+    "edit": "Edit",
+    "delete": "Delete Course"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "empty": {
+    "title": "No courses yet",
+    "description": "Create your first course to start teaching",
+    "actionLabel": "Create New Course"
+  },
+  "loading": {
+    "message": "Loading courses..."
+  },
+  "dialog": {
+    "deleteTitle": "Confirm Delete Course",
+    "deleteDescription": "Are you sure you want to delete the course \"{courseTitle}\"? This action cannot be undone.",
+    "confirmLabel": "Delete Course"
+  },
+  "delete": {
+    "title": "Confirm Delete Course",
+    "description": "Are you sure you want to delete the course \"{title}\"? This action cannot be undone.",
+    "confirm": "Delete Course"
+  },
+  "messages": {
+    "authenticating": "Authenticating information..."
+  }
+}

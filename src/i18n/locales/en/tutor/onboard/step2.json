@@ -1,0 +1,95 @@
+{
+  "title": "Upload Profile",
+  "subtitle": "Please select verification type and upload corresponding documents",
+  "verificationType": {
+    "label": "Verification Type",
+    "placeholder": "Select the type of tutor you want to register as",
+    "verified": "Verified Tutor (Verified Tutor)",
+    "trusted": "Trusted Beginner Tutor (Trusted Beginner Tutor)"
+  },
+  "info": {
+    "title": "Note:",
+    "verified": {
+      "title": "Verified Tutor:",
+      "description": "Upload CCCD, SELFIE, DEGREE, (CERTIFICATE - optional)"
+    },
+    "trusted": {
+      "title": "Trusted Beginner Tutor:",
+      "description": "Upload CCCD, SELFIE, STUDENT_CARD (student ID), TRANSCRIPT (transcript), (CERTIFICATE - optional)"
+    }
+  },
+  "documents": {
+    "verified": {
+      "title": "Documents for Verified Tutor",
+      "cccd": {
+        "label": "CCCD (Citizen ID)",
+        "description": "Clear front and back photos of CCCD"
+      },
+      "selfie": {
+        "label": "Selfie with CCCD",
+        "description": "Face and CCCD information must be clear"
+      },
+      "degree": {
+        "label": "Degree (DEGREE)",
+        "description": "University/College diploma"
+      },
+      "certificate": {
+        "label": "Certificate (optional)",
+        "description": "Professional certificate if available"
+      }
+    },
+    "trusted": {
+      "title": "Documents for Trusted Beginner Tutor",
+      "cccd": {
+        "label": "CCCD (Citizen ID)",
+        "description": "Clear front and back photos of CCCD"
+      },
+      "selfie": {
+        "label": "Selfie with CCCD",
+        "description": "Face and CCCD information must be clear"
+      },
+      "studentCard": {
+        "label": "Student Card",
+        "description": "Valid student ID"
+      },
+      "transcript": {
+        "label": "Transcript",
+        "description": "Transcript proving academic results"
+      },
+      "certificate": {
+        "label": "Certificate (optional)",
+        "description": "Professional certificate if available"
+      }
+    }
+  },
+  "fileUpload": {
+    "selectFile": "Click to select file",
+    "dragDrop": "or drag and drop",
+    "supportedFormats": "PDF, JPG, PNG, DOC, DOCX (max 5MB)",
+    "maxSize": "File size must not exceed 5MB",
+    "selectedFiles": "Selected files ({count})"
+  },
+  "importantNotes": {
+    "title": "Important Notes",
+    "notes": [
+      "All documents will be reviewed to verify authenticity",
+      "Only upload files in supported formats (PDF, JPG, PNG, DOC, DOCX)",
+      "Maximum file size is 5MB",
+      "Personal information in documents will be kept strictly confidential"
+    ]
+  },
+  "buttons": {
+    "back": "Back",
+    "submit": "Complete Registration",
+    "uploading": "Uploading..."
+  },
+  "validation": {
+    "verificationTypeRequired": "Please select verification type",
+    "cccdRequired": "Please upload CCCD",
+    "selfieRequired": "Please upload Selfie",
+    "degreeRequired": "Please upload Degree",
+    "studentCardRequired": "Please upload Student Card",
+    "transcriptRequired": "Please upload Transcript",
+    "documentsRequired": "Please upload all required documents"
+  }
+}

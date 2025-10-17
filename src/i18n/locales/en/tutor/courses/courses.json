@@ -1,0 +1,8 @@
+{
+  "create": {
+    "buttons": {
+      "submit": "Create Course",
+      "back": "Back"
+    }
+  }
+}

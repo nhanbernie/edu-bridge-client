@@ -12,5 +12,7 @@
     "schedule": "Availability",
     "verification": "Identity Verification",
     "review": "Review & Submit"
-  }
+  },
+  "step1": "Personal Information",
+  "step2": "Education & Experience"
 }
