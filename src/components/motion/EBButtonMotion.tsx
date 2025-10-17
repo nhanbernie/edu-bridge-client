@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { Variants, motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
   sidebarButtonVariants,
@@ -19,9 +19,11 @@ interface EBButtonActionProps {
   // Animation customization
   enableIconAnimation?: boolean;
   enableTextAnimation?: boolean;
+  variants?: Variants;
 }
 
 export const EBButtonAction: React.FC<EBButtonActionProps> = ({
+  variants = sidebarButtonVariants,
   children,
   onClick,
   className,
@@ -37,7 +39,7 @@ export const EBButtonAction: React.FC<EBButtonActionProps> = ({
     <motion.button
       type={type}
       title={title}
-      variants={sidebarButtonVariants}
+      variants={variants}
       initial="initial"
       whileHover="hover"
       whileTap={{ scale: 0.98 }}

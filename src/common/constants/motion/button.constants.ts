@@ -70,3 +70,37 @@ export const sidebarTextVariants: Variants = {
     },
   },
 };
+
+export const flashButtonVariants: Variants = {
+  initial: {
+    opacity: 0,
+    y: 4,
+    scale: 0.98,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+      ease: [0.22, 0.61, 0.36, 1],
+    },
+  },
+  hover: {
+    scale: 1.04,
+    y: -1,
+    transition: {
+      duration: 0, // instant response
+    },
+  },
+  focus: {
+    scale: 1.03,
+    transition: { duration: 0.05, ease: "easeOut" },
+  },
+  disabled: {
+    opacity: 0.6,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0 },
+  },
+};
