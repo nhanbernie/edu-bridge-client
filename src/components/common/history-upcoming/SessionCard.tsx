@@ -5,7 +5,7 @@ import { useSessionUtils } from "@/hooks/useSessionUtils";
 import { useTranslations } from "next-intl";
 import { EBMotionCard } from "@/components/motion";
 import Image from "next/image";
-
+import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
 interface SessionCardProps {
   session: ClassSessionDto;
   index: number;
@@ -70,7 +70,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
 
     return (
       <EBMotionCard
-        variant="base"
+        variants={smoothCardVariants}
         className={`${cardClasses} hover:cursor-pointer`}
         initial="hidden"
         animate="visible"

@@ -55,3 +55,35 @@ export const tutorCardVariants: Variants = {
     },
   },
 };
+
+export const smoothCardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 8,
+    scale: 0.985,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 420,
+      damping: 28,
+      mass: 0.5,
+    },
+  },
+  hover: {
+    y: -2,
+    scale: 1.01,
+    transition: {
+      type: "tween",
+      duration: 0,
+      ease: "linear",
+    },
+  },
+  tap: {
+    scale: 0.99,
+    transition: { duration: 0.1 },
+  },
+};
