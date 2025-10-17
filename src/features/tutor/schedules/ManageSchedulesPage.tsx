@@ -10,6 +10,7 @@ import { EBPageLoading } from "@/components/common";
 import EBSchedule from "@/components/common/EBSchedule";
 import { useAvailabilityBlock, useTutorId } from "@/hooks/index";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
+import { MotionContainer, MotionItem } from "@/components/motion";
 
 const ManageSchedulesPage = () => {
   const { push } = useLocaleRouter();
@@ -34,40 +35,91 @@ const ManageSchedulesPage = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* EBHeader */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Quản lý lịch rảnh</h1>
-          <p className="text-gray-600 mt-1">
-            Tạo và quản lý lịch rảnh để học sinh có thể đặt lịch • {scheduleSummary.totalSlots}{" "}
-            khung giờ ({scheduleSummary.availableSlots} rảnh, {scheduleSummary.bookedSlots} đã đặt)
-          </p>
+    <MotionContainer className="space-y-8">
+      {/* Header */}
+      <MotionItem>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <h1 className="text-4xl font-bold text-foreground">Quản lý lịch rảnh</h1>
+            </div>
+            <p className="text-lg text-muted-foreground">
+              Tạo và quản lý lịch rảnh để học sinh có thể đặt lịch • {scheduleSummary.totalSlots}{" "}
+              khung giờ ({scheduleSummary.availableSlots} rảnh, {scheduleSummary.bookedSlots} đã
+              đặt)
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button
+              onClick={refetchBlocks}
+              variant="outline"
+              size="sm"
+              className="border-border text-muted-foreground hover:text-foreground hover:bg-muted"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Làm mới
+            </Button>
+            <Button
+              onClick={handleCreateSchedule}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Thêm lịch rảnh mới
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={refetchBlocks} variant="outline" size="sm">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Làm mới
-          </Button>
-          <Button
-            onClick={handleCreateSchedule}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Thêm lịch rảnh mới
-          </Button>
+      </MotionItem>
+
+      {/* Stats Cards */}
+      <MotionItem>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-primary/10 rounded-xl">
+                <Clock className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Tổng khung giờ</p>
+                <p className="text-2xl font-bold text-foreground">{scheduleSummary.totalSlots}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-xl">
+                <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Đang rảnh</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {scheduleSummary.availableSlots}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-xl">
+                <PlusCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Đã đặt lịch</p>
+                <p className="text-2xl font-bold text-foreground">{scheduleSummary.bookedSlots}</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </MotionItem>
 
       {/* Current Schedules */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            Lịch rảnh hiện tại
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      <MotionItem>
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <Calendar className="h-6 w-6 text-primary" />
+            <h2 className="text-2xl font-bold text-foreground">Lịch rảnh hiện tại</h2>
+          </div>
           <EBSchedule
             scheduleData={currentSchedules}
             mode="week"
@@ -75,9 +127,9 @@ const ManageSchedulesPage = () => {
             showHeader={false}
             onDateChange={setCurrentDate}
           />
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

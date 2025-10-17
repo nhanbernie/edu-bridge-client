@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, Edit, Trash2, Loader2, RefreshCw } from "lucide-react";
 import { useManageCourses } from "./hooks/useManageCourses";
 import { useTutorId } from "@/hooks/useTutorId";
+import { MotionContainer, MotionItem, EBMotionCard } from "@/components/motion";
 
 const ManageCoursesPage: React.FC = () => {
   const { tutorId, isLoading: tutorLoading } = useTutorId();
@@ -64,51 +65,74 @@ const ManageCoursesPage: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Quản lý khóa học</h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Quản lý tất cả các khóa học của bạn
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
-            <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
-          </Button>
-          <Button onClick={handleCreateCourse} className="flex items-center gap-2">
-            <PlusCircle className="h-5 w-5" />
-            Tạo khóa học mới
-          </Button>
-        </div>
-      </div>
+      <MotionContainer className="min-h-screen">
+        {/* Header */}
+        <MotionItem>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground">Quản lý khóa học</h1>
+              <p className="mt-2 text-lg text-muted-foreground">
+                Quản lý tất cả các khóa học của bạn
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
+                <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+              </Button>
+              <Button onClick={handleCreateCourse} className="flex items-center gap-2">
+                <PlusCircle className="h-5 w-5" />
+                Tạo khóa học mới
+              </Button>
+            </div>
+          </div>
+        </MotionItem>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin mr-2" />
-          <span>Đang tải khóa học...</span>
-        </div>
-      ) : courses.length === 0 ? (
-        <EmptyState
-          icon={<PlusCircle className="w-12 h-12" />}
-          title="Chưa có khóa học nào"
-          description="Tạo khóa học đầu tiên của bạn để bắt đầu giảng dạy"
-          actionLabel="Tạo khóa học mới"
-          onAction={handleCreateCourse}
-          className="max-w-md mx-auto"
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course, index) => (
-            <EBTutorCourseCard
-              key={course.id}
-              course={index + 1}
-              mode="tutor"
-              courseData={course}
-              actions={getActionsForCourse(course)}
-            />
-          ))}
-        </div>
-      )}
+        {/* Content */}
+        <MotionItem>
+          {isLoading ? (
+            <EBMotionCard
+              variant="base"
+              className="flex items-center justify-center py-12"
+              initial={undefined}
+              animate={undefined}
+              whileHover={undefined}
+              whileTap={undefined}
+            >
+              <Loader2 className="w-8 h-8 animate-spin mr-2 text-primary" />
+              <span className="text-muted-foreground">Đang tải khóa học...</span>
+            </EBMotionCard>
+          ) : courses.length === 0 ? (
+            <EBMotionCard
+              variant="base"
+              className="max-w-md mx-auto"
+              initial={undefined}
+              animate={undefined}
+              whileHover={undefined}
+              whileTap={undefined}
+            >
+              <EmptyState
+                icon={<PlusCircle className="w-12 h-12" />}
+                title="Chưa có khóa học nào"
+                description="Tạo khóa học đầu tiên của bạn để bắt đầu giảng dạy"
+                actionLabel="Tạo khóa học mới"
+                onAction={handleCreateCourse}
+              />
+            </EBMotionCard>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course, index) => (
+                <EBTutorCourseCard
+                  key={course.id}
+                  course={index + 1}
+                  mode="tutor"
+                  courseData={course}
+                  actions={getActionsForCourse(course)}
+                />
+              ))}
+            </div>
+          )}
+        </MotionItem>
+      </MotionContainer>
 
       {/* Delete Confirmation Dialog */}
       <EBConfirmDialog

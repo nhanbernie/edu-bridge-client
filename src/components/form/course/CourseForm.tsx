@@ -126,7 +126,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
                 variant="default"
                 size="lg"
                 loading={isLoading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 {isLoading ? "Đang xử lý..." : submitButtonText}
               </EBButton>

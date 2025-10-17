@@ -55,6 +55,12 @@ export default async function LocaleLayout({ children, params }: Props) {
       `@/i18n/locales/${locale}/tutor/onboard/profile-under-preview.json`
     );
 
+    // Load tutor dashboard translations
+    const tutorDashboard = await import(`@/i18n/locales/${locale}/tutor/dashboard/dashboard.json`);
+
+    // Load tutor schedules translations
+    const tutorSchedules = await import(`@/i18n/locales/${locale}/tutor/schedules/schedules.json`);
+
     // Load validation translations
     const validationAuth = await import(`@/i18n/locales/${locale}/validation/auth.json`);
 
@@ -62,6 +68,8 @@ export default async function LocaleLayout({ children, params }: Props) {
       common: common.default,
       tutor: {
         ...tutor.default,
+        dashboard: tutorDashboard.default,
+        schedules: tutorSchedules.default,
         onboard: {
           "profile-under-preview": tutorOnboardProfileUnderPreview.default,
         },

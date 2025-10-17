@@ -48,15 +48,15 @@ const SessionCard: React.FC<SessionCardProps> = memo(
     // Memoize styling classes
     const stylingClasses = useMemo(() => {
       const cardClasses = isHistory
-        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300"
-        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300";
+        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300"
+        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300";
 
       const iconClasses = isHistory
-        ? "w-10 h-10 bg-emerald-100 dark:bg-emerald-900 rounded-xl flex items-center justify-center"
+        ? "w-10 h-10 bg-primary/10 dark:bg-primary/20 rounded-xl flex items-center justify-center"
         : "w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center";
 
       const textClasses = isHistory
-        ? "text-emerald-600 dark:text-emerald-400 font-bold text-sm"
+        ? "text-primary dark:text-primary font-bold text-sm"
         : "text-gray-600 dark:text-gray-400 font-bold text-sm";
 
       return { cardClasses, iconClasses, textClasses };
@@ -130,7 +130,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary rounded-lg">
                   <span className="text-xs font-medium">Hoàn thành</span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                 {onJoinSession && (
                   <button
                     onClick={() => onJoinSession(session.sessionId)}
-                    className="group/btn flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                    className="group/btn flex items-center gap-3 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <Video className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
                     <span>Tham gia</span>
@@ -167,7 +167,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
 
         {/* Decorative elements */}
         <div
-          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-emerald-400" : "bg-gray-400"} rounded-full opacity-60`}
+          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-primary" : "bg-gray-400"} rounded-full opacity-60`}
         ></div>
       </div>
     );

@@ -1,0 +1,15 @@
+{
+  "page": {
+    "title": "Lịch dạy của tôi",
+    "subtitle": "Xem lịch dạy và quản lý các buổi học sắp tới",
+    "loading": "Đang tải lịch dạy..."
+  },
+  "stats": {
+    "todaySessions": "Buổi dạy hôm nay",
+    "thisWeekSessions": "Buổi dạy tuần này",
+    "students": "Học sinh"
+  },
+  "schedule": {
+    "title": "Lịch dạy"
+  }
+}

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Users, Info } from "lucide-react";
 import EBActionsMenu, { type ActionItem } from "./EBActionsMenu";
+import { EBMotionCard } from "@/components/motion";
 
 // Types
 interface CourseData {
@@ -107,15 +108,25 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
   };
 
   return (
-    <Card
-      className="hover:shadow-lg transition-shadow border-0 shadow-sm cursor-pointer"
+    <EBMotionCard
+      variant="base"
+      className="hover:shadow-lg transition-shadow cursor-pointer"
+      initial={undefined}
+      animate={undefined}
+      whileHover={undefined}
+      whileTap={undefined}
       onClick={handleCardClick}
     >
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{courseData.title}</CardTitle>
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="text-lg font-bold text-foreground">{courseData.title}</h3>
           <div className="flex items-center gap-2">
-            {courseData.popular && <Badge variant="secondary">Phổ biến</Badge>}
+            {courseData.popular && (
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                Phổ biến
+              </Badge>
+            )}
             {mode === "tutor" && actions.length > 0 && (
               <div onClick={(e) => e.stopPropagation()}>
                 <EBActionsMenu actions={actions} />
@@ -123,15 +134,15 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
             )}
           </div>
         </div>
-      </CardHeader>
-      <CardContent className="pt-0">
+
+        {/* Content */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Users className="h-4 w-4" />
+            <Users className="h-4 w-4 text-primary" />
             <span>{courseData.students} học sinh đã đăng ký</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4" />
+            <Clock className="h-4 w-4 text-primary" />
             <span>{courseData.duration}</span>
           </div>
           <div className="flex justify-between items-center pt-2">
@@ -148,6 +159,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
             {mode === "user" && (
               <Button
                 size="sm"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent card click
                   handleBooking();
@@ -158,8 +170,8 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
             )}
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </EBMotionCard>
   );
 };
 
