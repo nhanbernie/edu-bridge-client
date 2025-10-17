@@ -13,16 +13,8 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = await params;
-
-  // Validate locale
-  if (!SUPPORTED_LOCALES.includes(locale as Locale)) {
-    notFound();
-  }
-
-  // Load messages dynamically with parallel imports
-  let messages;
+// Cache messages loading to avoid redundant imports
+const getMessages = cache(async (locale: string) => {
   try {
     // Parallel import all translation files
     const [
@@ -145,7 +137,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
 
-    messages = {
+    return {
       common: {
         ...common.default,
         sessionUtils: sessionUtils.default,
@@ -239,6 +231,18 @@ export default async function LocaleLayout({ children, params }: Props) {
     console.error(`Failed to load messages for locale: ${locale}`, error);
     notFound();
   }
+});
+
+export default async function LocaleLayout({ children, params }: Props) {
+  const { locale } = await params;
+
+  // Validate locale
+  if (!SUPPORTED_LOCALES.includes(locale as Locale)) {
+    notFound();
+  }
+
+  // Load messages with caching
+  const messages = await getMessages(locale);
 
   // Child layout - NO html/body tags (parent layout already has them)
   return (

@@ -13,19 +13,21 @@
   gap: 0.5rem;
 }
 
+/* Light theme buttons */
 .fc-button {
   background: transparent !important;
-  border: 1px solid #d1d5db62 !important;
-  color: #374151 !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
   padding: 0.25rem 0.75rem !important;
   font-size: 0.875rem !important;
   border-radius: 0.375rem !important;
   font-weight: 500 !important;
+  transition: all 0.2s ease !important;
 }
 
 .fc-button:hover {
-  background: #f9fafb !important;
-  border-color: #9ca3af59 !important;
+  background: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
 }
 
 .fc-button:focus {
@@ -53,7 +55,7 @@
 .fc-toolbar-title {
   font-size: 1.125rem !important;
   font-weight: 600 !important;
-  color: #111827 !important;
+  color: hsl(var(--foreground)) !important;
 }
 
 /* Header Days Styling */
@@ -76,7 +78,7 @@
 .fc-col-header-cell-cushion .fc-daygrid-day-number {
   font-size: 0.75rem !important;
   font-weight: 500 !important;
-  color: #6b7280 !important;
+  color: hsl(var(--muted-foreground)) !important;
   line-height: 1 !important;
 }
 
@@ -84,7 +86,7 @@
 .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
   font-size: 1.25rem !important;
   font-weight: 700 !important;
-  color: #111827 !important;
+  color: hsl(var(--foreground)) !important;
   width: 2rem !important;
   height: 2rem !important;
   display: flex !important;
@@ -94,14 +96,127 @@
   transition: all 0.2s ease !important;
 }
 
-/* Active/Today styling - Green background */
+/* Cả cái bảng tắt border được header */
+.fc-scrollgrid thead th {
+  border: 0 !important;
+}
+
+/* Tắt border cho tbody, tr, td */
+.fc-scrollgrid tbody,
+.fc-scrollgrid tbody tr,
+.fc-scrollgrid tbody td {
+  border: 0 !important;
+}
+
+/* Dark theme cũng tắt border */
+.dark .fc-scrollgrid tbody,
+.dark .fc-scrollgrid tbody tr,
+.dark .fc-scrollgrid tbody td {
+  border: 0 !important;
+}
+
+/* Header styling - navigation, date range, view buttons */
+.fc-header-toolbar {
+  background-color: hsl(var(--card)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+  padding: 1rem 0 !important;
+}
+
+.fc-toolbar-chunk {
+  background-color: transparent !important;
+}
+
+/* Chỉnh sủa customize navigation buttons trong fc-toolbar-chunk */
+.fc-toolbar-chunk .fc-button {
+  background-color: hsl(var(--muted) / 0.3) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.fc-toolbar-chunk .fc-button:hover {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.fc-toolbar-chunk .fc-button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.fc-toolbar-chunk .fc-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark theme cho navigation buttons */
+.dark .fc-toolbar-chunk .fc-button {
+  background-color: hsl(var(--muted) / 0.3) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .fc-toolbar-chunk .fc-button:hover {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+/* Kết thúc nhé */
+
+.fc-toolbar-title {
+  color: hsl(var(--foreground)) !important;
+  background-color: transparent !important;
+}
+
+/* Day headers styling */
+.fc-col-header {
+  background-color: hsl(var(--card)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+
+.fc-col-header-cell {
+  background-color: hsl(var(--card)) !important;
+  border: none !important;
+}
+
+/* Dark theme cho header */
+.dark .fc-header-toolbar {
+  background-color: hsl(var(--card)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+
+.dark .fc-toolbar-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-col-header {
+  background-color: hsl(var(--card)) !important;
+  border-bottom: 1px solid hsl(var(--border)) !important;
+}
+
+.dark .fc-col-header-cell {
+  background-color: hsl(var(--card)) !important;
+}
+
+/* Active/Today styling - Primary background */
 .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
-  background-color: #10b981 !important;
-  color: white !important;
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
 
 .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:first-child {
-  color: #10b981 !important;
+  color: hsl(var(--primary)) !important;
   font-weight: 600 !important;
 }
 
@@ -111,9 +226,92 @@
   border-radius: 0 !important;
 }
 
+.fc-scrollgrid,
+.fc-timegrid-body table thead th,
+.fc-timegrid-body table tbody td {
+  border: 1px solid #e5e7eb !important; /* Light theme border */
+  border-collapse: collapse !important;
+}
+
+/* Dark theme for the new border classes */
+.dark .fc-scrollgrid,
+.dark .fc-timegrid-body table thead th,
+.dark .fc-timegrid-body table tbody td {
+  border: 1px solid #374151 !important;
+  border-collapse: collapse !important;
+}
+
+/* Dark theme - tắt border cho toàn bộ bảng (viền ngoài) */
+.dark .fc-scrollgrid {
+  border: none !important;
+}
+
+/* .dark .fc-scrollgrid table {
+  border: none !important;
+} */
+
+.dark .fc-scrollgrid thead {
+  border: none !important;
+}
+
+.dark .fc-scrollgrid tbody {
+  border: none !important;
+}
+
+/* Fix màu active cho ngày hôm nay */
+.fc-day-today {
+  background-color: hsl(var(--primary) / 0.1) !important;
+}
+
+.fc-day-today .fc-col-header-cell-cushion {
+  background-color: hsl(var(--primary) / 0.1) !important;
+}
+
+.fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:first-child {
+  color: hsl(var(--primary)) !important;
+  font-weight: 600 !important;
+}
+
+.fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 4px hsl(var(--primary) / 0.3) !important;
+}
+
+/* Dark theme cho active state */
+.dark .fc-day-today {
+  background-color: hsl(var(--primary) / 0.15) !important;
+}
+
+.dark .fc-day-today .fc-col-header-cell-cushion {
+  background-color: hsl(var(--primary) / 0.15) !important;
+}
+
+.dark .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:first-child {
+  color: hsl(var(--primary)) !important;
+}
+
+.dark .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  box-shadow: 0 2px 4px hsl(var(--primary) / 0.4) !important;
+}
+
+/* Hover cả dòng */
+.fc-timegrid-slot-lane:hover {
+  background-color: #f0f9ff !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.dark .fc-timegrid-slot-lane:hover {
+  background-color: #1e293b !important;
+  transition: background-color 0.2s ease !important;
+}
+
 .fc-theme-standard td,
 .fc-theme-standard th {
-  border-color: #dbdbdb !important;
+  border-color: hsl(var(--border) / 0.3) !important;
 }
 
 .fc-col-header-cell {
@@ -121,6 +319,11 @@
   padding: 0.75rem 0 !important;
 }
 
+.fc-scrollgrid-section-header th {
+  background-color: hsl(var(--card)) !important;
+}
+
+/* Target thead với role="presentation" như trong ảnh */
 .fc-daygrid-day {
   height: 3rem !important;
   min-height: 3rem !important;
@@ -134,15 +337,85 @@
 /* Time labels font size */
 .fc-timegrid-axis {
   font-size: 0.6rem !important;
-  color: #6b7280 !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 
 .fc-timegrid-slot-label {
   font-size: 0.6rem !important;
-  color: #6b7280 !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 
-.fc-timegrid-slot-label .fc-timegrid-slot-label-cushion {
-  font-size: 0.6rem !important;
+.dark .fc-button {
+  background: transparent !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-button:hover {
+  background: hsl(var(--muted)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .fc-toolbar-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-col-header-cell-cushion .fc-daygrid-day-number {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:last-child {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.dark .fc-day-today .fc-col-header-cell-cushion .fc-daygrid-day-number:first-child {
+  color: hsl(var(--primary)) !important;
+}
+
+.dark .fc-theme-standard td,
+.dark .fc-theme-standard th {
+  border-color: hsl(var(--border) / 0.3) !important;
+}
+
+.dark .fc-timegrid-axis {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.dark .fc-timegrid-slot-label {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Event styling improvements */
+.fc-event {
+  border-radius: 8px !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  padding: 4px 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.fc-event:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.fc-event-title {
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+/* Dark mode event styling */
+.dark .fc-event {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .fc-event:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }

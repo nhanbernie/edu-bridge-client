@@ -42,6 +42,15 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
+  /* Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 12px 24px -8px rgba(0, 0, 0, 0.22), 0 -4px 8px -4px rgba(0, 0, 0, 0.08);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
   /* Marketing colors */
   --color-emerald-50: oklch(0.98 0.02 155);
   --color-emerald-400: oklch(0.7 0.13 155);
@@ -122,6 +131,15 @@
 }
 
 .dark {
+  /* Shadow System - Dark mode (softer shadows) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  --shadow-elevated: 0 12px 24px -8px rgba(0, 0, 0, 0.5), 0 -4px 8px -4px rgba(0, 0, 0, 0.2);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
   /* Base colors - Dark mode */
   --background: oklch(0.18 0.02 250); /* #0f172a - Xanh đen slate */
   --foreground: oklch(0.98 0 0); /* #f8fafc - Trắng nhạt */
@@ -184,6 +202,54 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+}
+
+/* ===================================
+   SHADOW UTILITIES
+   =================================== */
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+.shadow-custom-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-custom-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-custom-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-custom-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-custom-2xl {
+  box-shadow: var(--shadow-2xl);
+}
+
+.shadow-custom-inner {
+  box-shadow: var(--shadow-inner);
+}
+
+/* Hover variants */
+.hover\:shadow-elevated:hover {
+  box-shadow: var(--shadow-elevated);
+}
+
+.hover\:shadow-custom-lg:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.hover\:shadow-custom-xl:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.hover\:shadow-custom-2xl:hover {
+  box-shadow: var(--shadow-2xl);
 }
 
 /* FullCalendar Custom Styles */

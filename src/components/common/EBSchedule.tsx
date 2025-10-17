@@ -116,11 +116,11 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
 
   const getTimeSlotStyle = (slot: TimeSlot) => {
     if (slot.status === "BOOKED") {
-      return "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800";
+      return "bg-gradient-to-r from-red-100 to-red-50 dark:from-red-900/20 dark:to-red-800/10 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800 shadow-sm";
     } else if (slot.status === "RESERVED") {
-      return "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800";
+      return "bg-gradient-to-r from-yellow-100 to-yellow-50 dark:from-yellow-900/20 dark:to-yellow-800/10 text-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 shadow-sm";
     }
-    return "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800";
+    return "bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900/20 dark:to-green-800/10 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800 shadow-sm";
   };
 
   const handleSlotClick = (slot: TimeSlot, day: DaySchedule) => {
@@ -129,7 +129,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
 
   const renderWeekMode = () => {
     return (
-      <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-2 sm:gap-3 md:gap-4">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
           const dayData = schedule.find((s) => {
@@ -149,31 +149,44 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
           };
 
           return (
-            <div key={dayInfo.date.toISOString()} className="text-center">
+            <div
+              key={dayInfo.date.toISOString()}
+              className={`text-center p-3 sm:p-4 rounded-xl transition-all duration-200 ${
+                dayInfo.isToday
+                  ? "bg-primary/5 border-2 border-primary/20 shadow-sm"
+                  : "bg-card/50 border border-border/50 hover:bg-card/80 hover:border-border shadow-sm"
+              }`}
+            >
               <div
-                className={`font-medium mb-1 text-xs sm:text-sm ${dayInfo.isToday ? "text-primary font-bold" : "text-foreground"}`}
+                className={`font-semibold mb-2 text-base sm:text-lg ${
+                  dayInfo.isToday ? "text-primary" : "text-foreground"
+                }`}
               >
                 {dayInfo.dayName}
               </div>
               {showDate && (
                 <div
-                  className={`text-xs mb-1 sm:mb-2 ${dayInfo.isCurrentMonth ? "text-muted-foreground" : "text-muted-foreground/50"}`}
+                  className={`text-sm mb-3 font-medium ${
+                    dayInfo.isCurrentMonth ? "text-muted-foreground" : "text-muted-foreground/50"
+                  }`}
                 >
                   {dayInfo.dayNumber}
                 </div>
               )}
-              <div className="space-y-1">
+              <div className="space-y-2">
                 {finalDayData.isFullDay ? (
-                  <div className="bg-primary/10 text-primary text-xs p-1 rounded border border-primary/20">
+                  <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-sm font-medium px-3 py-2 rounded-lg border border-primary/20 shadow-sm">
                     Cả ngày
                   </div>
                 ) : finalDayData.timeSlots.length === 0 ? (
-                  <div className="text-muted-foreground text-xs p-1">Không có lịch</div>
+                  <div className="text-muted-foreground/60 text-sm px-3 py-2 bg-muted/30 rounded-lg">
+                    Không có lịch
+                  </div>
                 ) : (
                   finalDayData.timeSlots.map((slot, index) => (
                     <div
                       key={index}
-                      className={`text-xs p-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
+                      className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-sm ${getTimeSlotStyle(slot)}`}
                       title={
                         slot.status === "BOOKED"
                           ? "Đã có lịch dạy"
@@ -200,23 +213,28 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
       {schedule
         .filter((dayData) => dayData.timeSlots.length > 0 || dayData.isFullDay)
         .map((dayData) => (
-          <div key={dayData.day} className="border rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="font-medium text-sm text-foreground">{dayData.day}</div>
+          <div
+            key={dayData.day}
+            className="bg-card/50 border border-border/50 rounded-xl p-4 hover:bg-card/80 hover:border-border transition-all duration-200 shadow-sm"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div className="font-semibold text-base text-foreground">{dayData.day}</div>
               {showDate && dayData.date && (
-                <div className="text-xs text-muted-foreground">({dayData.date})</div>
+                <div className="text-sm text-muted-foreground bg-muted/30 px-2 py-1 rounded-lg">
+                  {dayData.date}
+                </div>
               )}
             </div>
             <div className="flex flex-wrap gap-2">
               {dayData.isFullDay ? (
-                <div className="bg-primary/10 text-primary text-xs px-2 py-1 rounded border border-primary/20">
+                <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-sm font-medium px-3 py-2 rounded-lg border border-primary/20 shadow-sm">
                   Cả ngày
                 </div>
               ) : (
                 dayData.timeSlots.map((slot, index) => (
                   <div
                     key={index}
-                    className={`text-xs px-2 py-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
+                    className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-sm ${getTimeSlotStyle(slot)}`}
                     title={
                       slot.status === "BOOKED"
                         ? "Đã có lịch dạy"
@@ -237,19 +255,19 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   );
 
   const renderMonthMode = () => (
-    <div className="space-y-2">
-      <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
+    <div className="space-y-3">
+      <div className="grid grid-cols-7 gap-2 mb-3">
         {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day) => (
           <div
             key={day}
-            className="text-center font-medium text-xs sm:text-sm text-muted-foreground py-1 sm:py-2"
+            className="text-center font-semibold text-sm text-muted-foreground py-2 bg-muted/30 rounded-lg"
           >
             {day}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1 sm:gap-2">
+      <div className="grid grid-cols-7 gap-2">
         {displayDays.map((dayInfo) => {
           // Find matching schedule data for this specific date
           const dayData = schedule.find((s) => {
@@ -271,16 +289,16 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
           return (
             <div
               key={dayInfo.date.toISOString()}
-              className={`min-h-[60px] sm:min-h-[80px] p-1 sm:p-2 border rounded-lg ${
+              className={`min-h-[80px] sm:min-h-[100px] p-2 sm:p-3 border rounded-xl transition-all duration-200 ${
                 dayInfo.isToday
-                  ? "bg-primary/10 border-primary/20"
+                  ? "bg-primary/5 border-2 border-primary/20 shadow-sm"
                   : dayInfo.isCurrentMonth
-                    ? "bg-card border-border"
-                    : "bg-muted/50 border-border/50"
+                    ? "bg-card/50 border-border/50 hover:bg-card/80 hover:border-border"
+                    : "bg-muted/30 border-border/30"
               }`}
             >
               <div
-                className={`text-xs sm:text-sm font-medium mb-1 ${
+                className={`text-sm sm:text-base font-semibold mb-2 ${
                   dayInfo.isToday
                     ? "text-primary"
                     : dayInfo.isCurrentMonth
@@ -292,14 +310,14 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               </div>
               <div className="space-y-1">
                 {finalDayData.isFullDay ? (
-                  <div className="bg-primary/10 text-primary text-xs p-1 rounded border border-primary/20">
+                  <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-xs font-medium px-2 py-1 rounded-lg border border-primary/20 shadow-sm">
                     Cả ngày
                   </div>
                 ) : finalDayData.timeSlots.length > 0 ? (
                   finalDayData.timeSlots.slice(0, 2).map((slot, index) => (
                     <div
                       key={index}
-                      className={`text-xs p-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
+                      className={`text-xs font-medium px-2 py-1 rounded-lg transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-sm ${getTimeSlotStyle(slot)}`}
                       title={
                         slot.status === "BOOKED"
                           ? "Đã có lịch dạy"
@@ -314,7 +332,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                   ))
                 ) : null}
                 {finalDayData.timeSlots.length > 2 && (
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-muted-foreground bg-muted/30 px-2 py-1 rounded-lg font-medium">
                     +{finalDayData.timeSlots.length - 2} khác
                   </div>
                 )}
@@ -363,31 +381,43 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   }
 
   return (
-    <Card className="border-0 shadow-sm">
-      <CardHeader>
+    <Card className="border-0 shadow-lg bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm">
+      <CardHeader className="pb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-3 text-xl">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Calendar className="h-5 w-5 text-primary" />
+            </div>
             {title}
           </CardTitle>
           {showNavigation && (
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handlePrevious}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePrevious}
+                className="hover:bg-primary/10 hover:border-primary/20 transition-all duration-200"
+              >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="sm" onClick={handleNext}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleNext}
+                className="hover:bg-primary/10 hover:border-primary/20 transition-all duration-200"
+              >
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
           )}
         </div>
         {showNavigation && (
-          <div className="text-lg font-semibold text-foreground text-center sm:text-left mt-2">
+          <div className="text-lg font-semibold text-foreground text-center sm:text-left mt-3 bg-muted/30 px-4 py-2 rounded-lg">
             {format(currentDate, "MMMM yyyy", { locale: vi })}
           </div>
         )}
       </CardHeader>
-      <CardContent>{content}</CardContent>
+      <CardContent className="pt-0">{content}</CardContent>
     </Card>
   );
 };
