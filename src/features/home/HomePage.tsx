@@ -9,12 +9,14 @@ import { useEffect, useState } from "react";
 import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { useTranslations } from "next-intl";
 
 const HomeFeature = () => {
   const { user, logout } = useAuth();
   const { push } = useLocaleRouter();
   const [isCheckingStatus, setIsCheckingStatus] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
+  const t = useTranslations("home");
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
@@ -47,7 +49,7 @@ const HomeFeature = () => {
   if (isCheckingStatus) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <EBLoadingSpinner size="lg" message="Đang kiểm tra trạng thái tài khoản..." />
+        <EBLoadingSpinner size="lg" message={t("checkingStatus")} />
       </div>
     );
   }
@@ -62,7 +64,7 @@ const HomeFeature = () => {
               <EBLogo imageSize={60} textClassName="text-2xl" />
             </div>
             <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
-              How would you like to use EduBridge?
+              {t("title")}
             </h2>
           </div>
         )}
@@ -86,18 +88,20 @@ const HomeFeature = () => {
                     <BookOpen size={32} />
                   </div>
                   <h3 className="text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                    I want to learn
+                    {t("choiceCards.learn.title")}
                   </h3>
                   <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                    Find qualified tutors and book personalized lessons
+                    {t("choiceCards.learn.description")}
                   </p>
                 </div>
                 <div className="flex items-center justify-start gap-4 mt-10">
                   <div className="flex flex-col items-start -space-y-1">
                     <span className="text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
-                      10,000+
+                      {t("choiceCards.learn.stats.count")}
                     </span>
-                    <span className="text-sm text-muted-foreground">Students</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("choiceCards.learn.stats.label")}
+                    </span>
                   </div>
                   <div className="text-muted-foreground text-xl ml-auto">&gt;</div>
                 </div>
@@ -121,18 +125,20 @@ const HomeFeature = () => {
                     <GraduationCap size={32} />
                   </div>
                   <h3 className="text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
-                    I want to teach
+                    {t("choiceCards.teach.title")}
                   </h3>
                   <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                    Share your knowledge and earn money teaching students
+                    {t("choiceCards.teach.description")}
                   </p>
                 </div>
                 <div className="flex items-center justify-start gap-4 mt-10">
                   <div className="flex flex-col items-start -space-y-1">
                     <span className="text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
-                      500+
+                      {t("choiceCards.teach.stats.count")}
                     </span>
-                    <span className="text-sm text-muted-foreground">Expert Tutors</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("choiceCards.teach.stats.label")}
+                    </span>
                   </div>
                   <div className="text-muted-foreground text-xl ml-auto">&gt;</div>
                 </div>

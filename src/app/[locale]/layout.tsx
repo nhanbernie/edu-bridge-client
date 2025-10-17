@@ -31,6 +31,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       auth,
       marketing,
       router,
+      home,
       studentHome,
       studentHomeCard,
       studentHomeFilter,
@@ -40,8 +41,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       studentTransactions,
       studentTransactionsList,
       studentTransactionsStatus,
+      studentOnboard,
       meeting,
       tutorOnboardProfileUnderPreview,
+      tutorOnboardSteps,
       tutorDashboard,
       tutorSchedules,
       validationAuth,
@@ -51,6 +54,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       import(`@/i18n/locales/${locale}/auth.json`),
       import(`@/i18n/locales/${locale}/marketing.json`),
       import(`@/i18n/locales/${locale}/router/router.json`),
+      import(`@/i18n/locales/${locale}/home/home.json`),
       // Student translations
       import(`@/i18n/locales/${locale}/student/home/home.json`),
       import(`@/i18n/locales/${locale}/student/home/card.json`),
@@ -61,10 +65,12 @@ export default async function LocaleLayout({ children, params }: Props) {
       import(`@/i18n/locales/${locale}/student/transactions/transactions.json`),
       import(`@/i18n/locales/${locale}/student/transactions/list.json`),
       import(`@/i18n/locales/${locale}/student/transactions/status.json`),
+      import(`@/i18n/locales/${locale}/student/onboard/onboard.json`),
       // Meeting translations
       import(`@/i18n/locales/${locale}/meeting/meeting.json`),
       // Tutor onboarding translations
       import(`@/i18n/locales/${locale}/tutor/onboard/profile-under-preview.json`),
+      import(`@/i18n/locales/${locale}/tutor/onboard/steps.json`),
       // Tutor dashboard translations
       import(`@/i18n/locales/${locale}/tutor/dashboard/dashboard.json`),
       // Tutor schedules translations
@@ -76,12 +82,14 @@ export default async function LocaleLayout({ children, params }: Props) {
     messages = {
       common: common.default,
       router: router.default,
+      home: home.default,
       tutor: {
         ...tutor.default,
         dashboard: tutorDashboard.default,
         schedules: tutorSchedules.default,
         onboard: {
           "profile-under-preview": tutorOnboardProfileUnderPreview.default,
+          steps: tutorOnboardSteps.default,
         },
       },
       auth: auth.default,
@@ -100,6 +108,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           list: studentTransactionsList.default,
           status: studentTransactionsStatus.default,
         },
+        onboard: studentOnboard.default,
       },
       meeting: meeting.default,
       validation: {

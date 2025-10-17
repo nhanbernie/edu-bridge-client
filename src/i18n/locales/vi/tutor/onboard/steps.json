@@ -1,0 +1,16 @@
+{
+  "title": "Đăng ký làm gia sư",
+  "stepProgress": "Bước {current} / {total}",
+  "status": {
+    "inProgress": "Đang thực hiện",
+    "completed": "Hoàn thành"
+  },
+  "steps": {
+    "personalInfo": "Thông tin cá nhân",
+    "education": "Học vấn & Kinh nghiệm",
+    "subjects": "Môn học & Học phí",
+    "schedule": "Lịch rảnh",
+    "verification": "Xác minh danh tính",
+    "review": "Xem lại & Gửi"
+  }
+}

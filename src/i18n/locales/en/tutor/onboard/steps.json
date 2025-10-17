@@ -1,0 +1,16 @@
+{
+  "title": "Register as a Tutor",
+  "stepProgress": "Step {current} / {total}",
+  "status": {
+    "inProgress": "In Progress",
+    "completed": "Completed"
+  },
+  "steps": {
+    "personalInfo": "Personal Information",
+    "education": "Education & Experience",
+    "subjects": "Subjects & Rates",
+    "schedule": "Availability",
+    "verification": "Identity Verification",
+    "review": "Review & Submit"
+  }
+}

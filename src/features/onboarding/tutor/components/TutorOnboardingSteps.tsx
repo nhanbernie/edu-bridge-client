@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { useTranslations } from "next-intl";
 
 interface StepProps {
   steps: string[];
@@ -8,6 +9,8 @@ interface StepProps {
 }
 
 const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
+  const t = useTranslations("tutor.onboard.steps");
+
   return (
     <div className="w-full mb-12">
       {/* Progress EBHeader */}
@@ -18,7 +21,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Đăng ký làm gia sư
+          {t("title")}
         </motion.h1>
         <motion.p
           className="text-muted-foreground"
@@ -26,7 +29,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Bước {currentStep + 1} / {steps.length}
+          {t("stepProgress", { current: currentStep + 1, total: steps.length })}
         </motion.p>
       </div>
 
@@ -150,7 +153,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.5 }}
                     >
-                      Đang thực hiện
+                      {t("status.inProgress")}
                     </motion.div>
                   )}
                   {isCompleted && (
@@ -167,7 +170,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      Hoàn thành
+                      {t("status.completed")}
                     </motion.div>
                   )}
                 </motion.div>

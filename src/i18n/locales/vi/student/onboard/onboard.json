@@ -1,0 +1,46 @@
+{
+  "title": "Thiết lập hồ sơ học sinh",
+  "subtitle": "Giúp chúng tôi hiểu về mục tiêu học tập của bạn",
+  "form": {
+    "grade": {
+      "label": "Lớp học hiện tại",
+      "placeholder": "Chọn lớp học của bạn"
+    },
+    "location": {
+      "label": "Địa điểm",
+      "placeholder": "Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+    },
+    "learningGoal": {
+      "label": "Mục tiêu học tập",
+      "placeholder": "Ví dụ: Cải thiện điểm toán và lý, chuẩn bị thi đại học..."
+    },
+    "submit": {
+      "loading": "Đang xử lý...",
+      "default": "Hoàn thành thiết lập"
+    }
+  },
+  "validation": {
+    "grade": {
+      "required": "Vui lòng chọn lớp học"
+    },
+    "learningGoal": {
+      "required": "Trường này là bắt buộc",
+      "minLength": "Mục tiêu học tập phải có ít nhất 10 ký tự",
+      "maxLength": "Mục tiêu học tập không được quá 300 ký tự"
+    },
+    "location": {
+      "required": "Vui lòng nhập địa điểm",
+      "minLength": "Địa điểm phải có ít nhất 2 ký tự",
+      "maxLength": "Địa điểm không được quá 100 ký tự"
+    }
+  },
+  "gradeOptions": {
+    "6": "Lớp 6",
+    "7": "Lớp 7",
+    "8": "Lớp 8",
+    "9": "Lớp 9",
+    "10": "Lớp 10",
+    "11": "Lớp 11",
+    "12": "Lớp 12"
+  }
+}
