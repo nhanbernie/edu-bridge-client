@@ -4,18 +4,19 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBLogo } from "@/components/common";
-import EBThemeToggle from "@/components/common/EBThemeToggle";
-import EBSidebarButton from "@/components/common/EBSidebarButton";
+import { EBManageLayoutThemeToggle } from "./components";
+import EBSidebarButton from "@/components/layouts/components/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
 import { Search, Bell, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import { EBUserMenu } from "@/components/common";
 import {
   EBSidebarItem,
   EBActionButton,
-  defaultTutorSidebarItems,
-  defaultTutorActionButtons,
+  getDefaultTutorSidebarItems,
+  getDefaultTutorActionButtons,
 } from "@/common/constants/navigate.constant";
 import { MAX_WIDTH_8XL } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 interface EBManageLayoutProps {
   children: ReactNode;
@@ -27,23 +28,19 @@ interface EBManageLayoutProps {
 
 const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   children,
-  sidebarItems = defaultTutorSidebarItems,
-  actionButtons = defaultTutorActionButtons,
+  sidebarItems,
+  actionButtons,
   showSearch = true,
   showNotifications = true,
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const pathname = usePathname();
   const { getCurrentLocale } = useLocaleRouter();
+  const t = useTranslations();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Use provided items or default with translations
+  const finalSidebarItems = sidebarItems || getDefaultTutorSidebarItems(t);
+  const finalActionButtons = actionButtons || getDefaultTutorActionButtons(t);
 
   // Check if route is active (handle locale in pathname)
   const isRouteActive = (href: string) => {
@@ -108,7 +105,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
           {/* Navigation */}
           <nav className="flex-1">
             <div className="space-y-2">
-              {sidebarItems.map((item) => {
+              {finalSidebarItems.map((item) => {
                 const isActive = isRouteActive(item.href);
                 return (
                   <EBSidebarButton
@@ -127,7 +124,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
           {/* Bottom controls */}
           <div className="py-4 space-y-2">
             {/* Action Buttons */}
-            {actionButtons.map((button) => (
+            {finalActionButtons.map((button) => (
               <EBSidebarButton
                 key={button.label}
                 icon={button.icon}
@@ -140,37 +137,14 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
             ))}
 
             {/* Theme Toggle */}
-            <div
-              className={`
-              flex items-center transition-all duration-200
-              ${
-                sidebarExpanded
-                  ? "gap-3 px-4 py-3 rounded-lg justify-start"
-                  : "justify-center w-12 h-12 rounded-lg bg-muted/60"
-              }
-              ${
-                sidebarExpanded
-                  ? "text-muted-foreground"
-                  : "text-muted-foreground hover:bg-muted/80"
-              }
-            `}
-            >
-              <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                <EBThemeToggle />
-              </div>
-              {sidebarExpanded && (
-                <span className="font-medium text-sm whitespace-nowrap">Theme</span>
-              )}
-            </div>
+            <EBManageLayoutThemeToggle isExpanded={sidebarExpanded} />
           </div>
         </aside>
 
         {/* Main content */}
         <div className="flex-1 flex flex-col h-screen">
           {/* Header - Fixed */}
-          <header
-            className={`h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 ${isScrolled ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50" : "bg-transparent"}`}
-          >
+          <header className="h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 bg-transparent">
             {/* Right side - Search, Notifications, User */}
             <div className="flex items-center gap-3">
               {/* Search */}

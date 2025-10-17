@@ -4,7 +4,7 @@ import { Variants } from "motion/react";
 export const cardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 10,
+    y: 20,
   },
   visible: {
     opacity: 1,

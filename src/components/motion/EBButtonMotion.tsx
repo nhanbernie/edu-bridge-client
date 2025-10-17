@@ -1,7 +1,13 @@
 "use client";
 
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import {
+  sidebarButtonVariants,
+  sidebarIconVariants,
+  sidebarTextVariants,
+} from "@/common/constants/motion/button.constants";
 
 interface EBButtonActionProps {
   children: React.ReactNode;
@@ -9,6 +15,10 @@ interface EBButtonActionProps {
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  title?: string;
+  // Animation customization
+  enableIconAnimation?: boolean;
+  enableTextAnimation?: boolean;
 }
 
 export const EBButtonAction: React.FC<EBButtonActionProps> = ({
@@ -17,12 +27,23 @@ export const EBButtonAction: React.FC<EBButtonActionProps> = ({
   className,
   disabled = false,
   type = "button",
+  title,
+  enableIconAnimation = false,
+  enableTextAnimation = false,
 }) => {
+  const [isTapping, setIsTapping] = useState(false);
+
   return (
     <motion.button
       type={type}
-      whileHover={disabled ? undefined : { scale: 1.05 }}
-      whileTap={disabled ? undefined : { scale: 0.95 }}
+      title={title}
+      variants={sidebarButtonVariants}
+      initial="initial"
+      whileHover="hover"
+      whileTap={{ scale: 0.98 }}
+      onMouseDown={() => setIsTapping(true)}
+      onMouseUp={() => setIsTapping(false)}
+      onMouseLeave={() => setIsTapping(false)}
       className={cn(
         // Base styles with semantic theme
         "p-2 rounded-lg transition-colors",
@@ -37,7 +58,65 @@ export const EBButtonAction: React.FC<EBButtonActionProps> = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {children}
+      {enableIconAnimation && enableTextAnimation ? (
+        // Both icon and text animations - separate containers
+        <>
+          {React.Children.map(children, (child, index) => {
+            if (React.isValidElement(child)) {
+              // First child (icon) gets icon animation
+              if (index === 0) {
+                return (
+                  <motion.div
+                    key={index}
+                    variants={sidebarIconVariants}
+                    initial="initial"
+                    animate={isTapping ? "tap" : "initial"}
+                    className="inline-flex items-center"
+                  >
+                    {child}
+                  </motion.div>
+                );
+              }
+              // Second child (text) gets text animation
+              if (index === 1) {
+                return (
+                  <motion.span
+                    key={index}
+                    variants={sidebarTextVariants}
+                    initial="initial"
+                    animate={isTapping ? "tap" : "initial"}
+                  >
+                    {child}
+                  </motion.span>
+                );
+              }
+            }
+            return child;
+          })}
+        </>
+      ) : enableIconAnimation ? (
+        // Only icon animation
+        <motion.div
+          variants={sidebarIconVariants}
+          initial="initial"
+          animate={isTapping ? "tap" : "initial"}
+          className="inline-flex items-center"
+        >
+          {children}
+        </motion.div>
+      ) : enableTextAnimation ? (
+        // Only text animation
+        <motion.span
+          variants={sidebarTextVariants}
+          initial="initial"
+          animate={isTapping ? "tap" : "initial"}
+        >
+          {children}
+        </motion.span>
+      ) : (
+        // No animation
+        children
+      )}
     </motion.button>
   );
 };

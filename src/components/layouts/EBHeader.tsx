@@ -5,15 +5,16 @@ import { Search, MessageSquare, Menu } from "lucide-react";
 import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
 import {
-  navigationItems,
+  getNavigationItems,
   NavItem,
   defaultHeaderActionButtons,
-} from "@/constants/navigate.constant";
+} from "@/common/constants/navigate.constant";
 import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBUserMenu, EBChangeLanguage } from "@/components/common/";
 import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
+import { useTranslations } from "next-intl";
 
 interface ActionButtonsProps {
   onMobileMenuToggle: () => void;
@@ -104,6 +105,7 @@ const EBHeader = ({
 }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -139,7 +141,7 @@ const EBHeader = ({
             {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
             <nav className="hidden md:flex items-center gap-8">
               <EBNavigation
-                items={headerConfig ? convertToNavItems(headerConfig.items) : navigationItems}
+                items={headerConfig ? convertToNavItems(headerConfig.items) : getNavigationItems(t)}
               />
             </nav>
 
@@ -164,7 +166,7 @@ const EBHeader = ({
       <EBMobileMenu
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
-        navigationItems={navigationItems}
+        navigationItems={getNavigationItems(t)}
       />
     </>
   );

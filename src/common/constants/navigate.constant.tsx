@@ -22,6 +22,7 @@ import {
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
 import { HeaderItem, HeaderActionButton } from "@/components/layouts/types";
+import { useTranslations } from "next-intl";
 
 export interface NavItem {
   label: string;
@@ -29,16 +30,17 @@ export interface NavItem {
   active?: boolean;
 }
 
-export const navigationItems: NavItem[] = [
-  { label: "Home", href: "/", active: true },
-  { label: "Find Tutors", href: "/tutors" },
-  { label: "Dashboard", href: "/dashboard" },
+// Navigation items with translation keys
+export const getNavigationItems = (t: any): NavItem[] => [
+  { label: t("router.navigation.home"), href: "/home", active: true },
+  { label: t("router.navigation.findTutors"), href: "/home" },
+  { label: t("router.navigation.findStudents"), href: "/home" },
 ];
 
-export const navigateMarketItems: NavItem[] = [
-  { label: "Trang chủ", href: "/", active: true },
-  { label: "Giáo viên", href: "/" },
-  { label: "Liên hệ", href: "/" },
+export const getNavigateMarketItems = (t: any): NavItem[] => [
+  { label: t("router.navigation.home"), href: "/", active: true },
+  { label: t("router.navigation.teachers"), href: "/" },
+  { label: t("router.navigation.contact"), href: "/" },
 ];
 
 // Default Header Action Buttons
@@ -122,57 +124,58 @@ export const sidebarItems: SidebarItem[] = [
 // ===== DEFAULT DATA FOR EBManageLayout =====
 
 // Tutor Dashboard Default Data
-export const defaultTutorSidebarItems: EBSidebarItem[] = [
+export const getDefaultTutorSidebarItems = (t: any): EBSidebarItem[] => [
   {
-    label: "Dashboard",
+    label: t("router.sidebar.dashboard"),
     icon: LayoutDashboard,
     href: "/tutor",
   },
   {
-    label: "Lịch dạy của tôi",
+    label: t("router.sidebar.myTeachingSchedule"),
     icon: CalendarCheck,
     href: "/tutor/my-schedule",
   },
   {
-    label: "Khóa học",
+    label: t("router.sidebar.courses"),
     icon: BookOpen,
     href: "/tutor/courses",
   },
   {
-    label: "Lịch rảnh",
+    label: t("router.sidebar.availableSchedule"),
     icon: Calendar,
     href: "/tutor/schedules",
   },
   {
-    label: "Giao dịch",
+    label: t("router.sidebar.transactions"),
     icon: CreditCard,
     href: "/tutor/transactions",
   },
   // {
-  //   label: "Thống kê",
+  //   label: t("router.sidebar.statistics"),
   //   icon: BarChart3,
   //   href: "/tutor/statistics",
   // },
   {
-    label: "Đánh giá",
+    label: t("router.sidebar.reviews"),
     icon: Star,
     href: "/tutor/feedback",
   },
   // {
-  //   label: "Học sinh",
+  //   label: t("router.sidebar.students"),
   //   icon: Users,
   //   href: "/tutor/students",
   // },
 ];
 
-export const defaultTutorActionButtons: EBActionButton[] = [
-  {
-    label: "Cài đặt",
-    icon: Settings,
-    href: "/tutor/settings",
-  },
+// NOTE: customize button for tutor
+export const getDefaultTutorActionButtons = (t: any): EBActionButton[] => [
   // {
-  //   label: "Trợ giúp",
+  //   label: t("router.actions.settings"),
+  //   icon: Settings,
+  //   href: "/tutor/settings",
+  // },
+  // {
+  //   label: t("router.actions.help"),
   //   icon: HelpCircle,
   //   onClick: () => {
   //     // Open help modal or navigate to help page
@@ -182,99 +185,99 @@ export const defaultTutorActionButtons: EBActionButton[] = [
 ];
 
 // Admin Dashboard Default Data
-export const defaultAdminSidebarItems: EBSidebarItem[] = [
+export const getDefaultAdminSidebarItems = (t: any): EBSidebarItem[] => [
   {
-    label: "Dashboard",
+    label: t("router.sidebar.dashboard"),
     icon: LayoutDashboard,
     href: "/admin",
   },
   {
-    label: "Người dùng",
+    label: t("router.sidebar.users"),
     icon: Users,
     href: "/admin/users",
   },
   {
-    label: "Gia sư",
+    label: t("router.sidebar.tutors"),
     icon: GraduationCap,
     href: "/admin/tutors",
   },
   {
-    label: "Khóa học",
+    label: t("router.sidebar.courses"),
     icon: BookOpen,
     href: "/admin/courses",
   },
   {
-    label: "Thống kê",
+    label: t("router.sidebar.analytics"),
     icon: BarChart3,
     href: "/admin/analytics",
   },
   {
-    label: "Báo cáo",
+    label: t("router.sidebar.reports"),
     icon: FileText,
     href: "/admin/reports",
   },
   {
-    label: "Giao dịch",
+    label: t("router.sidebar.transactions"),
     icon: CreditCard,
     href: "/admin/transactions",
   },
 ];
 
-export const defaultAdminActionButtons: EBActionButton[] = [
+export const getDefaultAdminActionButtons = (t: any): EBActionButton[] => [
   {
-    label: "Cài đặt hệ thống",
+    label: t("router.actions.systemSettings"),
     icon: Settings,
     href: "/admin/settings",
   },
   {
-    label: "Bảo mật",
+    label: t("router.actions.security"),
     icon: Shield,
     href: "/admin/security",
   },
 ];
 
 // Student Dashboard Default Data
-export const defaultStudentSidebarItems: EBSidebarItem[] = [
+export const getDefaultStudentSidebarItems = (t: any): EBSidebarItem[] => [
   {
-    label: "Dashboard",
+    label: t("router.sidebar.dashboard"),
     icon: LayoutDashboard,
     href: "/student",
   },
   {
-    label: "Khóa học của tôi",
+    label: t("router.sidebar.myCourses"),
     icon: BookOpen,
     href: "/student/courses",
   },
   {
-    label: "Lịch học",
+    label: t("router.sidebar.mySchedule"),
     icon: Calendar,
     href: "/student/schedule",
   },
   {
-    label: "Gia sư",
+    label: t("router.sidebar.tutors"),
     icon: Users,
     href: "/student/tutors",
   },
   {
-    label: "Đánh giá",
+    label: t("router.sidebar.reviews"),
     icon: Star,
     href: "/student/reviews",
   },
   {
-    label: "Thanh toán",
+    label: t("router.sidebar.payments"),
     icon: CreditCard,
     href: "/student/payments",
   },
 ];
 
-export const defaultStudentActionButtons: EBActionButton[] = [
+export const getDefaultStudentActionButtons = (t: any): EBActionButton[] => [
   {
-    label: "Hồ sơ",
+    label: t("router.actions.profile"),
     icon: UserCheck,
     href: "/student/profile",
   },
   {
-    label: "Trợ giúp",
+    label: t("router.actions.help"),
     icon: HelpCircle,
     onClick: () => {
       window.open("/help", "_blank");
@@ -289,42 +292,42 @@ export type DashboardType = "tutor" | "admin" | "student";
 /**
  * Get default sidebar items based on dashboard type
  */
-export const getDefaultSidebarItems = (type: DashboardType): EBSidebarItem[] => {
+export const getDefaultSidebarItems = (type: DashboardType, t: any): EBSidebarItem[] => {
   switch (type) {
     case "tutor":
-      return defaultTutorSidebarItems;
+      return getDefaultTutorSidebarItems(t);
     case "admin":
-      return defaultAdminSidebarItems;
+      return getDefaultAdminSidebarItems(t);
     case "student":
-      return defaultStudentSidebarItems;
+      return getDefaultStudentSidebarItems(t);
     default:
-      return defaultTutorSidebarItems;
+      return getDefaultTutorSidebarItems(t);
   }
 };
 
 /**
  * Get default action buttons based on dashboard type
  */
-export const getDefaultActionButtons = (type: DashboardType): EBActionButton[] => {
+export const getDefaultActionButtons = (type: DashboardType, t: any): EBActionButton[] => {
   switch (type) {
     case "tutor":
-      return defaultTutorActionButtons;
+      return getDefaultTutorActionButtons(t);
     case "admin":
-      return defaultAdminActionButtons;
+      return getDefaultAdminActionButtons(t);
     case "student":
-      return defaultStudentActionButtons;
+      return getDefaultStudentActionButtons(t);
     default:
-      return defaultTutorActionButtons;
+      return getDefaultTutorActionButtons(t);
   }
 };
 
 /**
  * Get complete default layout config for a dashboard type
  */
-export const getDefaultLayoutConfig = (type: DashboardType) => {
+export const getDefaultLayoutConfig = (type: DashboardType, t: any) => {
   return {
-    sidebarItems: getDefaultSidebarItems(type),
-    actionButtons: getDefaultActionButtons(type),
+    sidebarItems: getDefaultSidebarItems(type, t),
+    actionButtons: getDefaultActionButtons(type, t),
     showSearch: type !== "student", // Students might not need search
     showNotifications: true,
   };
@@ -333,7 +336,7 @@ export const getDefaultLayoutConfig = (type: DashboardType) => {
 /**
  * Get default header config for EBMainLayout
  */
-export const getDefaultHeaderConfig = (type: DashboardType) => {
+export const getDefaultHeaderConfig = (type: DashboardType, t: any) => {
   return ({ go }: { go: (path: string) => void }) => {
     const items: HeaderItem[] = [];
 
@@ -342,25 +345,25 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
         items.push(
           {
             key: "tutors",
-            label: "Tìm gia sư",
+            label: t("router.header.findTutors"),
             href: "/student",
             onClick: () => go("/student"),
           },
           {
             key: "my-schedule",
-            label: "Lịch học của tôi",
+            label: t("router.header.mySchedule"),
             href: "/student/my-schedule",
             onClick: () => go("/student/my-schedule"),
           },
           {
             key: "transactions",
-            label: "Giao dịch",
+            label: t("router.header.transactions"),
             href: "/student/transactions",
             onClick: () => go("/student/transactions"),
           },
           {
             key: "feedback",
-            label: "Đánh giá",
+            label: t("router.header.feedback"),
             href: "/student/feedback",
             onClick: () => go("/student/feedback"),
           }
@@ -368,28 +371,33 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
         break;
       case "tutor":
         items.push(
-          { key: "dashboard", label: "Dashboard", href: "/tutor", onClick: () => go("/tutor") },
+          {
+            key: "dashboard",
+            label: t("router.sidebar.dashboard"),
+            href: "/tutor",
+            onClick: () => go("/tutor"),
+          },
           {
             key: "courses",
-            label: "Khóa học",
+            label: t("router.header.courses"),
             href: "/tutor/courses",
             onClick: () => go("/tutor/courses"),
           },
           {
             key: "schedules",
-            label: "Lịch rảnh",
+            label: t("router.header.schedules"),
             href: "/tutor/schedules",
             onClick: () => go("/tutor/schedules"),
           },
           {
             key: "my-schedule",
-            label: "Lịch dạy",
+            label: t("router.header.teachingSchedule"),
             href: "/tutor/my-schedule",
             onClick: () => go("/tutor/my-schedule"),
           },
           {
             key: "transactions",
-            label: "Giao dịch",
+            label: t("router.header.transactions"),
             href: "/tutor/transactions",
             onClick: () => go("/tutor/transactions"),
           }
@@ -399,14 +407,19 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
         items.push(
           {
             key: "dashboard",
-            label: "Dashboard",
+            label: t("router.sidebar.dashboard"),
             href: "/admin/dashboard",
             onClick: () => go("/admin/dashboard"),
           },
-          { key: "users", label: "Users", href: "/admin", onClick: () => go("/admin") },
+          {
+            key: "users",
+            label: t("router.sidebar.users"),
+            href: "/admin",
+            onClick: () => go("/admin"),
+          },
           {
             key: "transactions",
-            label: "Transactions",
+            label: t("router.header.transactions"),
             href: "/admin/transactions",
             onClick: () => go("/admin/transactions"),
           }
@@ -419,7 +432,7 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
       // Only add CTA for specific roles if needed
       // ...(type === "student" && {
       //   cta: {
-      //     label: "Profile",
+      //     label: t("router.actions.profile"),
       //     onClick: () => go("/profile"),
       //   },
       // }),
@@ -432,6 +445,7 @@ export const getDefaultHeaderConfig = (type: DashboardType) => {
  */
 export const createLayoutConfig = (
   type: DashboardType,
+  t: any,
   overrides?: {
     sidebarItems?: EBSidebarItem[];
     actionButtons?: EBActionButton[];
@@ -439,7 +453,7 @@ export const createLayoutConfig = (
     showNotifications?: boolean;
   }
 ) => {
-  const defaultConfig = getDefaultLayoutConfig(type);
+  const defaultConfig = getDefaultLayoutConfig(type, t);
 
   return {
     ...defaultConfig,

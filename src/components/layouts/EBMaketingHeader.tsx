@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { GraduationCap, Menu, X, Sun, Moon, Globe } from "lucide-react";
-import { navigateMarketItems } from "@/constants/navigate.constant";
+import { getNavigateMarketItems } from "@/common/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
 import EBNavigation from "./components/EBNavigation";
@@ -21,6 +21,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { push } = useLocaleRouter();
   const t = useTranslations("marketing.header");
+  const tRouter = useTranslations();
 
   // Handle scroll effect
   useEffect(() => {
@@ -64,7 +65,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               </nav>
             ) : (
               <nav className="hidden md:flex items-center space-x-8">
-                <EBNavigation items={navigateMarketItems} />
+                <EBNavigation items={getNavigateMarketItems(tRouter)} />
               </nav>
             )}
 
@@ -158,7 +159,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
 
           {/* Mobile EBNavigation */}
           <nav className="space-y-2">
-            {navigateMarketItems.map((item, index) => (
+            {getNavigateMarketItems(tRouter).map((item, index) => (
               <motion.div
                 key={item.href}
                 initial={{ x: 50, opacity: 0 }}

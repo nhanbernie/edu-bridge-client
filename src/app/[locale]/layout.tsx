@@ -30,6 +30,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       tutor,
       auth,
       marketing,
+      router,
       studentHome,
       studentHomeCard,
       studentHomeFilter,
@@ -49,6 +50,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       import(`@/i18n/locales/${locale}/tutor.json`),
       import(`@/i18n/locales/${locale}/auth.json`),
       import(`@/i18n/locales/${locale}/marketing.json`),
+      import(`@/i18n/locales/${locale}/router/router.json`),
       // Student translations
       import(`@/i18n/locales/${locale}/student/home/home.json`),
       import(`@/i18n/locales/${locale}/student/home/card.json`),
@@ -73,6 +75,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
     messages = {
       common: common.default,
+      router: router.default,
       tutor: {
         ...tutor.default,
         dashboard: tutorDashboard.default,
