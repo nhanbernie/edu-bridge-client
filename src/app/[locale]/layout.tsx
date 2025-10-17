@@ -68,6 +68,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       studentFeedbackDetail,
       ratingSummary,
       enrolledCourseCard,
+      sessionList,
+      sessionCard,
+      sessionTabs,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -123,6 +126,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       // Components translations
       import(`@/i18n/locales/${locale}/components/rating-summary.json`),
       import(`@/i18n/locales/${locale}/components/enrolled-course-card.json`),
+      import(`@/i18n/locales/${locale}/components/session-list.json`),
+      import(`@/i18n/locales/${locale}/components/session-card.json`),
+      import(`@/i18n/locales/${locale}/components/session-tabs.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -199,6 +205,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       components: {
         ratingSummary: ratingSummary.default,
         enrolledCourseCard: enrolledCourseCard.default,
+        sessionList: sessionList.default,
+        sessionCard: sessionCard.default,
+        sessionTabs: sessionTabs.default,
       },
       validation: {
         auth: validationAuth.default,

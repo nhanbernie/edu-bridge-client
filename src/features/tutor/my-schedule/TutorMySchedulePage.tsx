@@ -79,6 +79,7 @@ const TutorMySchedulePage: React.FC = () => {
     return () => window.removeEventListener("focus", handleFocus);
   }, [refetchAllSessions]);
 
+  // NOTE: loading will replace by skeleton
   if (isPageLoading) {
     return <EBPageLoading message={t("page.loading")} />;
   }
