@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBFormProvider from "@/components/form/EBFormProvider";
@@ -42,10 +43,11 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
   onCancel,
   onAvatarChange,
 }) => {
+  const t = useTranslations("student.profile.form");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getInitials = (name?: string | null) => {
-    if (!name) return "HS";
+    if (!name) return t("messages.defaultName").slice(0, 2).toUpperCase();
     return name
       .split(" ")
       .map((n) => n[0])
@@ -111,13 +113,15 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingAvatar}
               className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Thay đổi ảnh đại diện"
+              title={t("buttons.changeAvatar")}
             >
               <Camera className="w-4 h-4 text-gray-700 hover:cursor-pointer" />
             </button>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">{userData?.fullName || "Học sinh"}</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {userData?.fullName || t("messages.defaultName")}
+            </h2>
             <p className="text-gray-600">{userData?.email}</p>
           </div>
         </div>
@@ -131,52 +135,54 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
         >
           <div className="space-y-6">
             {/* Personal Info */}
-            <h4 className="text-lg font-medium text-gray-900">Thông tin cá nhân</h4>
+            <h4 className="text-lg font-medium text-gray-900">{t("sections.personalInfo")}</h4>
             <EBTextField
               name="fullName"
-              label="Họ và tên"
-              placeholder="Nhập họ và tên của bạn"
+              label={t("fields.fullName.label")}
+              placeholder={t("fields.fullName.placeholder")}
               disabled={!isEditing}
             />
             <div>
               <EBTextField
                 name="email"
-                label="Email"
+                label={t("fields.email.label")}
                 type="email"
-                placeholder="example@email.com"
+                placeholder={t("fields.email.placeholder")}
                 disabled={true}
               />
-              <p className="text-xs text-muted-foreground mt-1">Email không thể thay đổi</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("fields.email.note")}</p>
             </div>
             <EBTextField
               name="phone"
-              label="Số điện thoại"
-              placeholder="Nhập số điện thoại"
+              label={t("fields.phone.label")}
+              placeholder={t("fields.phone.placeholder")}
               disabled={!isEditing}
             />
             <EBTextField
               name="location"
-              label="Địa điểm"
-              placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+              label={t("fields.location.label")}
+              placeholder={t("fields.location.placeholder")}
               disabled={!isEditing}
             />
 
             {/* Student Info */}
             <div className="space-y-6">
-              <h4 className="text-lg font-medium text-gray-900 pt-4 border-t">Thông tin học tập</h4>
+              <h4 className="text-lg font-medium text-gray-900 pt-4 border-t">
+                {t("sections.learningInfo")}
+              </h4>
 
               <EBSelectField
                 allowCustom
                 name="grade"
-                label="Lớp học"
+                label={t("fields.grade.label")}
                 options={GRADE_OPTIONS}
                 disabled={!isEditing}
               />
 
               <EBTextAreaField
                 name="learningGoal"
-                label="Mục tiêu học tập"
-                placeholder="Hãy chia sẻ về mục tiêu học tập và định hướng của bạn..."
+                label={t("fields.learningGoal.label")}
+                placeholder={t("fields.learningGoal.placeholder")}
                 rows={4}
                 disabled={!isEditing}
               />
@@ -191,7 +197,7 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                 onClick={onEdit}
                 className="w-full bg-emerald-600 hover:bg-emerald-700"
               >
-                Chỉnh sửa hồ sơ
+                {t("buttons.edit")}
               </EBButton>
             ) : (
               <div className="flex gap-3 pt-4">
@@ -202,7 +208,7 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                   loading={isSaving}
                   className="flex-1 bg-emerald-600 hover:bg-emerald-700"
                 >
-                  Lưu thay đổi
+                  {t("buttons.save")}
                 </EBButton>
                 <EBButton
                   type="button"
@@ -212,7 +218,7 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                   disabled={isSaving}
                   className="flex-1"
                 >
-                  Hủy
+                  {t("buttons.cancel")}
                 </EBButton>
               </div>
             )}

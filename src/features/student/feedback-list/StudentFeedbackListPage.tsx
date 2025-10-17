@@ -19,7 +19,7 @@ import { useTranslations } from "next-intl";
 
 const StudentFeedbackListPage: React.FC = () => {
   const { push } = useLocaleRouter();
-  const t = useTranslations("student.feedback");
+  const t = useTranslations("student.feedback.list");
   const { userId: studentId } = useUserId();
 
   const {
@@ -62,10 +62,8 @@ const StudentFeedbackListPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Có lỗi xảy ra</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Không thể tải danh sách khóa học. Vui lòng thử lại sau.
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t("error")}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{t("errorMessage")}</p>
         </div>
       </div>
     );
@@ -86,7 +84,7 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t("list.stats.totalCourses")}
+                  {t("stats.totalCourses")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {enrollments.length}
@@ -100,7 +98,7 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t("list.stats.completedCourses")}
+                  {t("stats.completedCourses")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {inProgressCourses.length}
@@ -114,7 +112,7 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {t("list.stats.canCreateFeedback")}
+                  {t("stats.canCreateFeedback")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {completedCourses.length}
@@ -131,16 +129,14 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="text-center">
               <BookOpen className="h-16 w-16 mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                {t("list.noCourses")}
+                {t("noCourses")}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Bạn chưa tham gia khóa học nào. Hãy tìm gia sư phù hợp và bắt đầu học ngay!
-              </p>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">{t("noCoursesDescription")}</p>
               <button
                 onClick={() => push(ROUTES.STUDENT)}
                 className="px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors"
               >
-                Tìm gia sư
+                {t("findTutor")}
               </button>
             </div>
           </div>
@@ -150,7 +146,7 @@ const StudentFeedbackListPage: React.FC = () => {
             {inProgressCourses.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  Đang học ({inProgressCourses.length})
+                  {t("sections.inProgress", { count: inProgressCourses.length })}
                 </h2>
                 <div className="grid gap-6">
                   {inProgressCourses.map((enrollment, index) => (
@@ -169,7 +165,7 @@ const StudentFeedbackListPage: React.FC = () => {
             {completedCourses.length > 0 && (
               <div>
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  Đã hoàn thành ({completedCourses.length})
+                  {t("sections.completed", { count: completedCourses.length })}
                 </h2>
                 <div className="grid gap-6">
                   {completedCourses.map((enrollment, index) => (

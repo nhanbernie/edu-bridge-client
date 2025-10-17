@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useTranslations } from "next-intl";
 import { BookOpen, CheckCircle, Clock, Users } from "lucide-react";
 import { EnrollmentDto } from "@/services/course";
 import Image from "next/image";
@@ -12,6 +13,7 @@ interface EnrolledCourseCardProps {
 
 const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
   ({ enrollment, index, onViewDetails, role = "student" }) => {
+    const t = useTranslations("components.enrolledCourseCard");
     const isCompleted = enrollment.progressStatus === "Completed";
     const progress =
       enrollment.totalSessionsBooked > 0
@@ -55,7 +57,7 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-gray-500" />
                   <span className="text-gray-600 dark:text-gray-400 text-sm">
-                    Gia sư: {enrollment.tutorName}
+                    {t("tutor")} {enrollment.tutorName}
                   </span>
                 </div>
 
@@ -64,7 +66,10 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   <div className="flex items-center gap-1">
                     <BookOpen className="h-3 w-3" />
                     <span>
-                      {enrollment.completedSessions}/{enrollment.totalSessionsBooked} buổi
+                      {t("sessions", {
+                        completed: enrollment.completedSessions,
+                        total: enrollment.totalSessionsBooked,
+                      })}
                     </span>
                   </div>
                   <span className="font-medium">{Math.round(progress)}%</span>
@@ -86,7 +91,7 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   enrollment.totalStudents > 0 && (
                     <div className="flex items-center gap-2">
                       <span className="text-gray-600 dark:text-gray-400 text-xs">
-                        {enrollment.totalStudents} học sinh
+                        {t("students", { count: enrollment.totalStudents })}
                       </span>
                     </div>
                   )}
@@ -105,7 +110,11 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
               }`}
             >
               <span className="text-xs font-medium">
-                {isCompleted ? "Hoàn thành" : role === "tutor" ? "Đang dạy" : "Đang học"}
+                {isCompleted
+                  ? t("status.completed")
+                  : role === "tutor"
+                    ? t("status.teaching")
+                    : t("status.inProgress")}
               </span>
             </div>
           </div>

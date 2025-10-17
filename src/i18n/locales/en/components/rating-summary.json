@@ -1,0 +1,19 @@
+{
+  "create": {
+    "title": "Rate Tutor",
+    "tutorRating": "Tutor Rating:",
+    "tutorRatingSelected": "You rated the tutor {rating} stars",
+    "courseRating": "Course Rating:",
+    "courseRatingSelected": "You rated the course {rating} stars",
+    "comment": "Comment (optional):",
+    "commentPlaceholder": "Share your learning experience...",
+    "submitButton": "Submit Feedback",
+    "submitting": "Submitting..."
+  },
+  "view": {
+    "summary": "Rating Summary",
+    "totalReviews": "{count} reviews",
+    "tutor": "Tutor:",
+    "course": "Course:"
+  }
+}

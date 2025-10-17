@@ -1,0 +1,16 @@
+{
+  "title": "Đánh giá khóa học",
+  "subtitle": "Để lại đánh giá cho khóa học này",
+  "backButton": "Quay lại danh sách khóa học",
+  "allFeedbacks": "Tất cả đánh giá",
+  "noFeedbacks": "Chưa có đánh giá nào",
+  "notFound": "Không tìm thấy khóa học",
+  "notFoundMessage": "Bạn chưa đăng ký khóa học này.",
+  "create": {
+    "title": "Để lại đánh giá của bạn"
+  },
+  "cannotCreateMessage": "Bạn cần hoàn thành ít nhất 2 buổi học để có thể đánh giá khóa học này.",
+  "loading": "Đang tải đánh giá...",
+  "error": "Có lỗi xảy ra",
+  "errorMessage": "Không thể tải đánh giá. Vui lòng thử lại sau."
+}

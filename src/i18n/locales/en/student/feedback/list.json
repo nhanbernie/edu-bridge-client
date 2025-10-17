@@ -1,0 +1,19 @@
+{
+  "title": "Course Feedback",
+  "subtitle": "Leave feedback for your courses",
+  "stats": {
+    "totalCourses": "Total Courses",
+    "completedCourses": "In Progress",
+    "canCreateFeedback": "Can Leave Feedback"
+  },
+  "sections": {
+    "inProgress": "Learning ({count})",
+    "completed": "Completed ({count})"
+  },
+  "noCourses": "No courses yet",
+  "noCoursesDescription": "You haven't enrolled in any courses yet. Find a suitable tutor and start learning now!",
+  "findTutor": "Find a tutor",
+  "loading": "Loading courses...",
+  "error": "An error occurred",
+  "errorMessage": "Unable to load course list. Please try again later."
+}

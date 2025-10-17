@@ -1,0 +1,10 @@
+{
+  "tutor": "Gia sư:",
+  "sessions": "{completed}/{total} buổi",
+  "students": "{count} học sinh",
+  "status": {
+    "completed": "Hoàn thành",
+    "inProgress": "Đang học",
+    "teaching": "Đang dạy"
+  }
+}

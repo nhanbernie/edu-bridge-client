@@ -1,0 +1,16 @@
+{
+  "title": "Course Feedback",
+  "subtitle": "Leave feedback for this course",
+  "backButton": "Back to course list",
+  "allFeedbacks": "All Feedback",
+  "noFeedbacks": "No feedback yet",
+  "notFound": "Course not found",
+  "notFoundMessage": "You haven't enrolled in this course.",
+  "create": {
+    "title": "Leave Your Feedback"
+  },
+  "cannotCreateMessage": "You need to complete at least 2 sessions to be able to rate this course.",
+  "loading": "Loading feedback...",
+  "error": "An error occurred",
+  "errorMessage": "Unable to load feedback. Please try again later."
+}

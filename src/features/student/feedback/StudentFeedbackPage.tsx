@@ -30,7 +30,7 @@ interface StudentFeedbackPageProps {
 
 const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) => {
   const { push } = useLocaleRouter();
-  const t = useTranslations("student.feedback");
+  const t = useTranslations("student.feedback.detail");
   const { userId: studentId } = useUserId();
   const { createFeedback, isLoading } = useCreateFeedback();
   const { refetchAllSessions } = useRefetchSessions();
@@ -96,11 +96,9 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Không tìm thấy khóa học
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Bạn chưa đăng ký khóa học này.</p>
-          <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>Quay lại danh sách khóa học</Button>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t("notFound")}</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{t("notFoundMessage")}</p>
+          <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>{t("backButton")}</Button>
         </div>
       </div>
     );
@@ -118,7 +116,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
         <div className={PAGE_HEADER}>
           <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại danh sách khóa học
+            {t("backButton")}
           </Button>
           <h1 className={PAGE_TITLE}>{enrollment.courseTitle}</h1>
           <p className={PAGE_SUBTITLE}>
@@ -141,7 +139,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
           {/* Right Column - All Feedbacks */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              {t("detail.allFeedbacks")} ({totalFeedbacks})
+              {t("allFeedbacks")} ({totalFeedbacks})
             </h2>
             {feedbacks.length > 0 ? (
               <div className="space-y-4">
@@ -161,7 +159,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
               <Card className="border-0 shadow-sm">
                 <CardContent className="p-6">
                   <div className="text-center py-4">
-                    <p className="text-gray-500 dark:text-gray-400">{t("detail.noFeedbacks")}</p>
+                    <p className="text-gray-500 dark:text-gray-400">{t("noFeedbacks")}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -184,9 +182,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
             <Card className="border-0 shadow-sm bg-yellow-50 dark:bg-yellow-900/20">
               <CardContent className="p-6">
                 <div className="text-center">
-                  <p className="text-yellow-800 dark:text-yellow-200">
-                    Bạn cần hoàn thành ít nhất 2 buổi học để có thể đánh giá khóa học này.
-                  </p>
+                  <p className="text-yellow-800 dark:text-yellow-200">{t("cannotCreateMessage")}</p>
                 </div>
               </CardContent>
             </Card>

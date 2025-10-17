@@ -1,0 +1,19 @@
+{
+  "create": {
+    "title": "Đánh giá gia sư",
+    "tutorRating": "Đánh giá gia sư:",
+    "tutorRatingSelected": "Bạn đã chọn {rating} sao cho gia sư",
+    "courseRating": "Đánh giá khóa học:",
+    "courseRatingSelected": "Bạn đã chọn {rating} sao cho khóa học",
+    "comment": "Nhận xét (tùy chọn):",
+    "commentPlaceholder": "Chia sẻ trải nghiệm học tập của bạn...",
+    "submitButton": "Gửi đánh giá",
+    "submitting": "Đang gửi..."
+  },
+  "view": {
+    "summary": "Tổng quan đánh giá",
+    "totalReviews": "{count} đánh giá",
+    "tutor": "Tutor:",
+    "course": "Course:"
+  }
+}

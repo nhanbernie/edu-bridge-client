@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { useStudentProfile } from "@/features/student/profile/hook/useStudentProfile";
 import EBStudentProfileForm from "./components/EBStudentProfileForm";
 import { EBPageLoading } from "@/components/common";
@@ -12,6 +13,7 @@ import {
 } from "@/common/constants/className.constant";
 
 const StudentProfilePage: React.FC = () => {
+  const t = useTranslations("student.profile");
   const {
     userData,
     isLoading,
@@ -25,7 +27,7 @@ const StudentProfilePage: React.FC = () => {
   } = useStudentProfile();
 
   if (isLoading) {
-    return <EBPageLoading message="Đang tải thông tin hồ sơ..." />;
+    return <EBPageLoading message={t("messages.loading")} />;
   }
 
   return (
@@ -33,8 +35,8 @@ const StudentProfilePage: React.FC = () => {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
         <div className={PAGE_HEADER}>
-          <h1 className={PAGE_TITLE}>Hồ sơ cá nhân</h1>
-          <p className={PAGE_SUBTITLE}>Quản lý thông tin cá nhân và học tập của bạn</p>
+          <h1 className={PAGE_TITLE}>{t("title")}</h1>
+          <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
         </div>
 
         <EBStudentProfileForm

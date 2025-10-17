@@ -1,0 +1,19 @@
+{
+  "title": "Đánh giá khóa học",
+  "subtitle": "Để lại đánh giá cho khóa học của bạn",
+  "stats": {
+    "totalCourses": "Tổng khóa học",
+    "completedCourses": "Đang học",
+    "canCreateFeedback": "Có thể để lại đánh giá"
+  },
+  "sections": {
+    "inProgress": "Đang học ({count})",
+    "completed": "Đã hoàn thành ({count})"
+  },
+  "noCourses": "Chưa có khóa học nào",
+  "noCoursesDescription": "Bạn chưa tham gia khóa học nào. Hãy tìm gia sư phù hợp và bắt đầu học ngay!",
+  "findTutor": "Tìm gia sư",
+  "loading": "Đang tải khóa học...",
+  "error": "Có lỗi xảy ra",
+  "errorMessage": "Không thể tải danh sách khóa học. Vui lòng thử lại sau."
+}
