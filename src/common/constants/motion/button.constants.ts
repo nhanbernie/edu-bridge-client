@@ -7,18 +7,18 @@ export const sidebarButtonVariants: Variants = {
     opacity: 1,
   },
   tap: {
-    scale: 0.98,
-    opacity: 0.9,
+    scale: 0.99,
+    opacity: 0.95,
     backgroundColor: "hsl(var(--primary) / 0.1)",
     transition: {
-      duration: 0.1,
+      duration: 0.08,
       ease: "easeInOut",
     },
   },
   hover: {
-    scale: 1.01,
+    scale: 1.005,
     transition: {
-      duration: 0.2,
+      duration: 0.15,
       ease: "easeOut",
     },
   },
@@ -31,17 +31,18 @@ export const sidebarIconVariants: Variants = {
     scale: 1,
   },
   tap: {
-    rotate: 5,
-    scale: 0.9,
+    rotate: 3,
+    scale: 0.95,
     transition: {
-      duration: 0.1,
+      duration: 0.08,
       ease: "easeInOut",
     },
   },
   hover: {
-    scale: 1.1,
+    scale: 1.05,
+    rotate: 0,
     transition: {
-      duration: 0.2,
+      duration: 0.15,
       ease: "easeOut",
     },
   },
@@ -54,17 +55,17 @@ export const sidebarTextVariants: Variants = {
     x: 0,
   },
   tap: {
-    opacity: 0.7,
-    x: 2,
+    opacity: 0.8,
+    x: 1,
     transition: {
-      duration: 0.1,
+      duration: 0.08,
       ease: "easeInOut",
     },
   },
   hover: {
-    x: 2,
+    x: 1,
     transition: {
-      duration: 0.2,
+      duration: 0.15,
       ease: "easeOut",
     },
   },

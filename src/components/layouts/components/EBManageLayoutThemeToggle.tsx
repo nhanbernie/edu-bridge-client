@@ -31,7 +31,7 @@ const EBManageLayoutThemeToggle: React.FC<EBManageLayoutThemeToggleProps> = ({
       onClick={handleToggle}
       className={cn(
         "w-full transition-all duration-200",
-        "flex items-center text-muted-foreground hover:text-foreground hover:bg-muted/80",
+        "flex items-center text-muted-foreground hover:bg-muted",
         "flex items-center focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1",
         isExpanded
           ? "justify-start px-4 py-3 h-12 rounded-3xl"

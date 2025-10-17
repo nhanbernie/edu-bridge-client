@@ -17,6 +17,9 @@ import {
 } from "@/common/constants/navigate.constant";
 import { MAX_WIDTH_8XL } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
+import { useLanguageToggle } from "@/hooks/useLanguageToggle";
+import { LOCALE_FLAGS, SUPPORTED_LOCALES } from "@/i18n/config";
+import { Globe } from "lucide-react";
 
 interface EBManageLayoutProps {
   children: ReactNode;
@@ -36,6 +39,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const pathname = usePathname();
   const { getCurrentLocale } = useLocaleRouter();
+  const { currentLocale } = useLanguageToggle();
   const t = useTranslations();
 
   // Use provided items or default with translations
@@ -47,6 +51,15 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
     const locale = getCurrentLocale();
     const fullHref = `/${locale}${href}`;
     return pathname === fullHref || (href !== "/tutor" && pathname.startsWith(fullHref));
+  };
+
+  // Handle language toggle
+  const handleLanguageToggle = () => {
+    const nextLocale = currentLocale === "en" ? "vi" : "en";
+    const segments = window.location.pathname.split("/");
+    segments[1] = nextLocale;
+    const newPathname = segments.join("/");
+    window.location.href = newPathname;
   };
 
   return (
@@ -135,6 +148,16 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
                 onClick={button.onClick}
               />
             ))}
+
+            {/* Language Toggle */}
+            <EBSidebarButton
+              icon={Globe}
+              label={`${LOCALE_FLAGS[currentLocale]} ${currentLocale.toUpperCase()}`}
+              href="#"
+              isActive={false}
+              isExpanded={sidebarExpanded}
+              onClick={handleLanguageToggle}
+            />
 
             {/* Theme Toggle */}
             <EBManageLayoutThemeToggle isExpanded={sidebarExpanded} />

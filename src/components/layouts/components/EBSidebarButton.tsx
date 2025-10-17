@@ -42,17 +42,14 @@ const EBSidebarButton: React.FC<EBSidebarButtonProps> = ({
       enableTextAnimation={true}
       onClick={handleClick}
       className={cn(
-        // Override EBButtonAction default styles
-        "!p-0 !rounded-none !bg-transparent !text-inherit !hover:bg-inherit",
         "w-full transition-all duration-200",
+        "flex items-center text-muted-foreground hover:bg-muted",
         "flex items-center focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-1",
         isExpanded
           ? "justify-start px-4 py-3 h-12 rounded-3xl"
           : "justify-center w-12 h-12 rounded-full",
-        isActive && isExpanded && "bg-primary/10 text-primary hover:bg-primary/20",
-        isActive && !isExpanded && "bg-primary/20 text-primary hover:bg-primary/30",
-        !isActive && isExpanded && "text-muted-foreground hover:text-foreground hover:bg-muted/80",
-        !isActive && !isExpanded && "text-muted-foreground hover:bg-muted/80",
+        isActive && isExpanded && "bg-primary/20 text-primary hover:bg-primary/30",
+        isActive && !isExpanded && "bg-primary/30 text-primary hover:bg-primary/40",
         className
       )}
       title={!isExpanded ? label : undefined}
