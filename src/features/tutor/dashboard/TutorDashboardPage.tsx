@@ -11,7 +11,7 @@ const TutorDashboardPage = () => {
   const t = useTranslations("tutor.dashboard");
 
   return (
-    <MotionContainer className="max-w-8xl mx-auto space-y-8 p-6">
+    <MotionContainer className="max-w-8xl mx-auto space-y-6 lg:space-y-8 p-4 sm:p-6">
       {/* Header Section */}
       {/* <MotionItem className="mb-8">
         <div className="text-center space-y-4">
@@ -22,12 +22,12 @@ const TutorDashboardPage = () => {
 
       {/* First Row - Chart and Schedules */}
       <MotionItem>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 lg:gap-8">
+          <div className="xl:col-span-3">
             <TransactionChart />
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="xl:col-span-2">
             <Schedules />
           </div>
         </div>
@@ -35,12 +35,12 @@ const TutorDashboardPage = () => {
 
       {/* Second Row - Courses and Reviews */}
       <MotionItem>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+          <div className="xl:col-span-2">
             <MyCourses />
           </div>
 
-          <div className="lg:col-span-1">
+          <div className="xl:col-span-1">
             <Review />
           </div>
         </div>

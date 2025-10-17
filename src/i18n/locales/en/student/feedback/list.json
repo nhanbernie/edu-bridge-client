@@ -1,6 +1,10 @@
 {
   "title": "Course Feedback",
   "subtitle": "Leave feedback for your courses",
+  "list": {
+    "title": "Course Feedback",
+    "subtitle": "Leave feedback for your courses"
+  },
   "stats": {
     "totalCourses": "Total Courses",
     "completedCourses": "In Progress",

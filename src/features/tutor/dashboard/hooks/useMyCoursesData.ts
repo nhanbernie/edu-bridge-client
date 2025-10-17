@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useTutorId } from "@/hooks/useTutorId";
+import { useTranslations } from "next-intl";
 
 export const useMyCoursesData = () => {
   const { tutorId, isLoading: tutorLoading } = useTutorId();
   const { courses, isLoading: coursesLoading, courseError } = useManageCourses(tutorId || "");
+  const t = useTranslations("tutor.dashboard.myCourses");
 
   const isLoading = tutorLoading || coursesLoading;
 
@@ -24,10 +26,10 @@ export const useMyCoursesData = () => {
         title: course.title,
         studentCount,
         rating: parseFloat(rating),
-        status: "Đang hoạt động",
+        status: t("status.active"),
       };
     });
-  }, [courses]);
+  }, [courses, t]);
 
   return {
     courseItems,

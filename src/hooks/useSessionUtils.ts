@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 // Cache for expensive calculations
 const durationCache = new Map<string, number>();
@@ -9,6 +10,7 @@ const dateFormatCache = new Map<string, string>();
  * Provides functions for calculating session duration and formatting dates
  */
 export const useSessionUtils = () => {
+  const t = useTranslations("common.sessionUtils");
   /**
    * Calculate session duration in hours from start and end time
    * @param startTime - ISO string of session start time
@@ -33,32 +35,50 @@ export const useSessionUtils = () => {
   }, []);
 
   /**
-   * Format date and time in Vietnamese format
-   * Format: "Thứ Sáu, 10/10/2025 - lúc 12:30"
+   * Format date and time in localized format
+   * Format: "Friday, 10/10/2025 - at 12:30"
    * @param dateString - ISO string of the date
    * @returns Formatted date string
    */
-  const formatSessionDateTime = useCallback((dateString: string): string => {
-    if (dateFormatCache.has(dateString)) {
-      return dateFormatCache.get(dateString)!;
-    }
+  const formatSessionDateTime = useCallback(
+    (dateString: string): string => {
+      if (dateFormatCache.has(dateString)) {
+        return dateFormatCache.get(dateString)!;
+      }
 
-    const date = new Date(dateString);
+      const date = new Date(dateString);
 
-    // Vietnamese day names
-    const dayNames = ["Chủ nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+      // Localized day names
+      const dayNames = [
+        t("days.sunday"),
+        t("days.monday"),
+        t("days.tuesday"),
+        t("days.wednesday"),
+        t("days.thursday"),
+        t("days.friday"),
+        t("days.saturday"),
+      ];
 
-    const dayName = dayNames[date.getDay()];
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
+      const dayName = dayNames[date.getDay()];
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
 
-    const result = `${dayName}, ${day}/${month}/${year} - lúc ${hours}:${minutes}`;
-    dateFormatCache.set(dateString, result);
-    return result;
-  }, []);
+      const result = t("dateTimeFormat", {
+        dayName,
+        day,
+        month,
+        year,
+        hours,
+        minutes,
+      });
+      dateFormatCache.set(dateString, result);
+      return result;
+    },
+    [t]
+  );
 
   /**
    * Format date only in Vietnamese format
@@ -96,12 +116,12 @@ export const useSessionUtils = () => {
    */
   const getSessionDurationText = (duration: number): string => {
     if (duration === 1) {
-      return "1 giờ";
+      return t("duration.oneHour");
     } else if (duration < 1) {
       const minutes = Math.round(duration * 60);
-      return `${minutes} phút`;
+      return t("duration.minutes", { count: minutes });
     } else {
-      return `${duration} giờ`;
+      return t("duration.hours", { count: duration });
     }
   };
 

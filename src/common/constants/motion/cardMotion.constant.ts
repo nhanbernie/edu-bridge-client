@@ -87,3 +87,27 @@ export const smoothCardVariants: Variants = {
     transition: { duration: 0.1 },
   },
 };
+
+export const elegantCardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 6,
+    scale: 0.995,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      opacity: { type: "spring", stiffness: 420, damping: 32, mass: 0.5 },
+      y: { type: "spring", stiffness: 520, damping: 40, mass: 0.5 },
+      scale: { type: "tween", duration: 0.06, ease: "linear" },
+    },
+  },
+
+  hover: {
+    y: -2,
+    scale: 1.02,
+    transition: { duration: 0 },
+  },
+};

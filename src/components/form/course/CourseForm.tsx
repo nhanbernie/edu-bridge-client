@@ -58,7 +58,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
   return (
     <div className={`grid grid-cols-1 ${showPreview ? "lg:grid-cols-2" : ""} gap-8`}>
       {/* Form Section */}
-      <Card className="h-fit">
+      <Card className="h-fit rounded-3xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />

@@ -1,0 +1,6 @@
+{
+  "title": "Today's Schedule",
+  "loading": "Loading schedule...",
+  "error": "Unable to load schedule",
+  "empty": "No schedule for today"
+}

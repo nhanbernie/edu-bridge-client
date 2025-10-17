@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Info, Eye } from "lucide-react";
 import { CourseFormData } from "./CourseForm";
+import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
+import { EBMotionCard } from "@/components/motion";
 
 interface CoursePreviewProps {
   formData: CourseFormData | null;
@@ -37,7 +39,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   };
 
   return (
-    <Card className="shadow-sm border-border">
+    <Card className="shadow-sm border-border rounded-3xl">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Eye className="h-5 w-5 text-muted-foreground" />
@@ -46,7 +48,10 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
       </CardHeader>
       <CardContent>
         {/* Course Preview Card */}
-        <Card className="hover:shadow-md transition-shadow border border-border rounded-lg">
+        <EBMotionCard
+          variants={smoothCardVariants}
+          className="hover:shadow-md transition-shadow border border-border rounded-lg"
+        >
           <CardHeader className="pb-3">
             <div className="flex justify-between items-start">
               <CardTitle className="text-lg text-foreground line-clamp-2">
@@ -95,7 +100,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </EBMotionCard>
 
         {/* Pricing Packages Preview */}
         <div className="mt-6">
@@ -110,9 +115,10 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               const discountedPrice = originalPrice * (1 - pkg.discount / 100);
 
               return (
-                <div
+                <EBMotionCard
+                  variants={smoothCardVariants}
                   key={pkg.sessions}
-                  className="flex justify-between items-center p-4 bg-muted/50 rounded-lg text-sm min-h-[60px]"
+                  className="hover:shadow-md transition-shadow border border-border rounded-lg  flex justify-between items-center p-4 bg-muted/50 text-sm min-h-[60px]"
                 >
                   <div className="flex flex-col justify-center">
                     <span className="font-medium text-foreground">{pkg.label}</span>
@@ -138,7 +144,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                       </div>
                     )}
                   </div>
-                </div>
+                </EBMotionCard>
               );
             })}
           </div>

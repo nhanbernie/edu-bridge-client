@@ -1,6 +1,10 @@
 {
   "title": "Đánh giá khóa học",
   "subtitle": "Để lại đánh giá cho khóa học của bạn",
+  "list": {
+    "title": "Đánh giá khóa học",
+    "subtitle": "Để lại đánh giá cho khóa học của bạn"
+  },
   "stats": {
     "totalCourses": "Tổng khóa học",
     "completedCourses": "Đang học",

@@ -1,0 +1,10 @@
+{
+  "title": "My Courses",
+  "loading": "Loading courses...",
+  "error": "Unable to load courses",
+  "empty": "No courses yet",
+  "students": "students",
+  "status": {
+    "active": "Active"
+  }
+}

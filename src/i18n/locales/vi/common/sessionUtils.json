@@ -1,0 +1,17 @@
+{
+  "days": {
+    "sunday": "Chủ nhật",
+    "monday": "Thứ Hai",
+    "tuesday": "Thứ Ba",
+    "wednesday": "Thứ Tư",
+    "thursday": "Thứ Năm",
+    "friday": "Thứ Sáu",
+    "saturday": "Thứ Bảy"
+  },
+  "dateTimeFormat": "{dayName}, {day}/{month}/{year} - lúc {hours}:{minutes}",
+  "duration": {
+    "oneHour": "1 giờ",
+    "hours": "{count} giờ",
+    "minutes": "{count} phút"
+  }
+}

@@ -27,6 +27,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     // Parallel import all translation files
     const [
       common,
+      sessionUtils,
       tutor,
       auth,
       marketing,
@@ -68,12 +69,18 @@ export default async function LocaleLayout({ children, params }: Props) {
       studentFeedbackDetail,
       ratingSummary,
       enrolledCourseCard,
+      tutorCourseCard,
+      tutorDashboardMyCourses,
+      tutorDashboardReviews,
+      tutorDashboardSchedules,
+      tutorDashboardTransactionChart,
       sessionList,
       sessionCard,
       sessionTabs,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
+      import(`@/i18n/locales/${locale}/common/sessionUtils.json`),
       import(`@/i18n/locales/${locale}/tutor.json`),
       import(`@/i18n/locales/${locale}/auth.json`),
       import(`@/i18n/locales/${locale}/marketing.json`),
@@ -126,6 +133,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       // Components translations
       import(`@/i18n/locales/${locale}/components/rating-summary.json`),
       import(`@/i18n/locales/${locale}/components/enrolled-course-card.json`),
+      import(`@/i18n/locales/${locale}/components/tutor-course-card.json`),
+      import(`@/i18n/locales/${locale}/tutor/dashboard/my-courses.json`),
+      import(`@/i18n/locales/${locale}/tutor/dashboard/reviews.json`),
+      import(`@/i18n/locales/${locale}/tutor/dashboard/schedules.json`),
+      import(`@/i18n/locales/${locale}/tutor/dashboard/transaction-chart.json`),
       import(`@/i18n/locales/${locale}/components/session-list.json`),
       import(`@/i18n/locales/${locale}/components/session-card.json`),
       import(`@/i18n/locales/${locale}/components/session-tabs.json`),
@@ -134,12 +146,21 @@ export default async function LocaleLayout({ children, params }: Props) {
     ]);
 
     messages = {
-      common: common.default,
+      common: {
+        ...common.default,
+        sessionUtils: sessionUtils.default,
+      },
       router: router.default,
       home: home.default,
       tutor: {
         ...tutor.default,
-        dashboard: tutorDashboard.default,
+        dashboard: {
+          ...tutorDashboard.default,
+          myCourses: tutorDashboardMyCourses.default,
+          reviews: tutorDashboardReviews.default,
+          schedules: tutorDashboardSchedules.default,
+          transactionChart: tutorDashboardTransactionChart.default,
+        },
         schedules: tutorSchedules.default,
         onboard: {
           "profile-under-preview": tutorOnboardProfileUnderPreview.default,
@@ -205,6 +226,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       components: {
         ratingSummary: ratingSummary.default,
         enrolledCourseCard: enrolledCourseCard.default,
+        tutorCourseCard: tutorCourseCard.default,
         sessionList: sessionList.default,
         sessionCard: sessionCard.default,
         sessionTabs: sessionTabs.default,

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +37,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
   actions = [],
   onClick,
 }) => {
+  const t = useTranslations("components.tutorCourseCard");
   const { push } = useLocaleRouter();
 
   // Hard coded data - dễ dàng thêm trường mới
@@ -124,7 +126,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
           <div className="flex items-center gap-2">
             {courseData.popular && (
               <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                Phổ biến
+                {t("popular")}
               </Badge>
             )}
             {mode === "tutor" && actions.length > 0 && (
@@ -139,7 +141,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4 text-primary" />
-            <span>{courseData.students} học sinh đã đăng ký</span>
+            <span>{t("studentsEnrolled", { count: courseData.students })}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="h-4 w-4 text-primary" />
@@ -149,11 +151,11 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
             <div className="flex flex-col">
               <span className="text-lg font-semibold text-primary">
                 {courseData.price.min.toLocaleString()} - {courseData.price.max.toLocaleString()}{" "}
-                VNĐ
+                {t("currency")}
               </span>
               <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                 <Info className="h-3 w-3" />
-                <span>Học phí dựa trên số buổi</span>
+                <span>{t("priceInfo")}</span>
               </div>
             </div>
             {mode === "user" && (
@@ -165,7 +167,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
                   handleBooking();
                 }}
               >
-                Đăng ký
+                {t("enrollButton")}
               </Button>
             )}
           </div>

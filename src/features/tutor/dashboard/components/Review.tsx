@@ -2,26 +2,15 @@
 import { useReviewData } from "@/features/tutor/dashboard/hooks/useReviewData";
 import { EBMotionCard } from "@/components/motion";
 import { useTranslations } from "next-intl";
+import { ReviewSkeleton } from "@/features/tutor/dashboard/components/skeletons";
 
 const Review = () => {
   const { reviewItems, averageRating, isLoading, feedbacksError, hasReviews } = useReviewData();
   const t = useTranslations("tutor.dashboard.reviews");
+  const tCommon = useTranslations("tutor.dashboard");
 
   if (isLoading) {
-    return (
-      <div className="bg-card rounded-3xl shadow-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-foreground">{t("title")}</h2>
-          <div className="flex items-center">
-            <div className="flex text-gray-300 text-sm mr-1">★★★★★</div>
-            <span className="text-sm font-medium text-muted-foreground">-</span>
-          </div>
-        </div>
-        <div className="flex items-center justify-center h-32">
-          <div className="text-muted-foreground">{t("loading")}</div>
-        </div>
-      </div>
-    );
+    return;
   }
 
   if (feedbacksError) {

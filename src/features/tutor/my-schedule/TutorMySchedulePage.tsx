@@ -16,6 +16,7 @@ import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import { EBMotionCard } from "@/components/motion";
+import { SchedulePageSkeleton } from "./components/skeletons";
 
 const TutorMySchedulePage: React.FC = () => {
   const { push } = useLocaleRouter();
@@ -81,7 +82,7 @@ const TutorMySchedulePage: React.FC = () => {
 
   // NOTE: loading will replace by skeleton
   if (isPageLoading) {
-    return <EBPageLoading message={t("page.loading")} />;
+    return <SchedulePageSkeleton />;
   }
 
   return (

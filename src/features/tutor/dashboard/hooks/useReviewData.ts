@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useTutorFeedbacks } from "@/hooks/useTutorFeedbacks";
 import { useTutorId } from "@/hooks/useTutorId";
+import { useTranslations } from "next-intl";
 
 export const useReviewData = () => {
   const { tutorId, isLoading: tutorLoading } = useTutorId();
@@ -12,6 +13,7 @@ export const useReviewData = () => {
     tutorId: tutorId || "",
     enabled: !!tutorId,
   });
+  const t = useTranslations("tutor.dashboard.reviews");
 
   const isLoading = tutorLoading || feedbacksLoading;
 
@@ -28,15 +30,15 @@ export const useReviewData = () => {
 
       let timeAgo = "";
       if (diffDays === 1) {
-        timeAgo = "1 ngày trước";
+        timeAgo = t("timeAgo.oneDay");
       } else if (diffDays < 7) {
-        timeAgo = `${diffDays} ngày trước`;
+        timeAgo = t("timeAgo.days", { count: diffDays });
       } else if (diffDays < 14) {
-        timeAgo = "1 tuần trước";
+        timeAgo = t("timeAgo.oneWeek");
       } else if (diffDays < 30) {
-        timeAgo = `${Math.ceil(diffDays / 7)} tuần trước`;
+        timeAgo = t("timeAgo.weeks", { count: Math.ceil(diffDays / 7) });
       } else {
-        timeAgo = `${Math.ceil(diffDays / 30)} tháng trước`;
+        timeAgo = t("timeAgo.months", { count: Math.ceil(diffDays / 30) });
       }
 
       // Generate star rating display
@@ -68,7 +70,7 @@ export const useReviewData = () => {
         avatar: feedback.studentName.charAt(0).toUpperCase(),
       };
     });
-  }, [feedbacksData]);
+  }, [feedbacksData, t]);
 
   return {
     reviewItems,

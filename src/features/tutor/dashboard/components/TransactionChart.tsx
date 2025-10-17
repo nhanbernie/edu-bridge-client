@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/chart";
 // Removed constants import - using theme system instead
 import { useTransactionChart } from "@/features/tutor/dashboard/hooks/useTransactionChart";
+import { ChartSkeleton } from "@/features/tutor/dashboard/components/skeletons";
 
 export const description = "Biểu đồ giao dịch";
 
@@ -41,19 +42,10 @@ const chartConfig = {
 export function TransactionChart() {
   const { chartData, growthPercentage, isLoading, transactionsError } = useTransactionChart();
   const t = useTranslations("tutor.dashboard.transactionChart");
+  const tCommon = useTranslations("tutor.dashboard");
 
   if (isLoading) {
-    return (
-      <div className="bg-card rounded-3xl shadow-lg p-6">
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold text-foreground leading-tight">{t("title")}</h2>
-          <p className="text-muted-foreground mt-3 text-lg leading-relaxed">{t("loading")}</p>
-        </div>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-muted-foreground">Đang tải...</div>
-        </div>
-      </div>
-    );
+    return <ChartSkeleton title={t("title")} subtitle={t("subtitle")} />;
   }
 
   if (transactionsError) {
@@ -61,7 +53,7 @@ export function TransactionChart() {
       <div className="bg-card rounded-3xl shadow-lg p-6">
         <div className="mb-6">
           <h2 className="text-3xl font-bold text-foreground leading-tight">{t("title")}</h2>
-          <p className="text-muted-foreground mt-3 text-lg leading-relaxed">Lỗi tải dữ liệu</p>
+          <p className="text-muted-foreground mt-3 text-lg leading-relaxed">{t("error")}</p>
         </div>
         <div className="flex items-center justify-center h-64">
           <div className="text-destructive">{t("error")}</div>
