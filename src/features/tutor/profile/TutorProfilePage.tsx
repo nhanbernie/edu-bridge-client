@@ -95,13 +95,15 @@ const TutorProfilePage = () => {
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Video giới thiệu</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t("media.videoIntro.title")}
+                </h3>
                 {videoIntro && (
                   <button
                     onClick={() => openMediaModal("VideoIntro", videoIntro.mediaId)}
                     className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
                   >
-                    Chỉnh sửa
+                    {t("media.videoIntro.edit")}
                   </button>
                 )}
               </div>
@@ -115,7 +117,7 @@ const TutorProfilePage = () => {
                     className="w-full h-full object-cover"
                     style={{ objectFit: "cover" }}
                   >
-                    Trình duyệt của bạn không hỗ trợ video.
+                    {t("media.videoIntro.noSupport")}
                   </video>
                 </div>
               ) : (
@@ -128,7 +130,9 @@ const TutorProfilePage = () => {
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Chứng chỉ & Giải thưởng</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t("media.certificates.title")}
+                </h3>
                 <button
                   onClick={() => openMediaModal("Award")}
                   className="flex items-center gap-1 text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
@@ -141,7 +145,7 @@ const TutorProfilePage = () => {
                       d="M12 4v16m8-8H4"
                     />
                   </svg>
-                  Thêm mới
+                  {t("media.certificates.add")}
                 </button>
               </div>
 
@@ -175,9 +179,9 @@ const TutorProfilePage = () => {
                         />
                       </svg>
                     }
-                    title="Chưa có chứng chỉ nào"
-                    description="Thêm chứng chỉ để nâng cao uy tín của bạn"
-                    actionLabel="Thêm chứng chỉ đầu tiên"
+                    title={t("media.certificates.empty.title")}
+                    description={t("media.certificates.empty.description")}
+                    actionLabel={t("media.certificates.empty.action")}
                     onAction={() => openMediaModal("Award")}
                   />
                 )}

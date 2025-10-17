@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { buildTutorFeedbackDetailRoute } from "@/common/constants/route.constant";
 import { BookOpen, GraduationCap } from "lucide-react";
@@ -12,6 +13,7 @@ import { EnrolledCourseCardSkeleton } from "@/components/common/skeletons";
 import { MotionContainer, MotionItem } from "@/components/motion";
 
 const TutorFeedbackListPage: React.FC = () => {
+  const t = useTranslations("tutor.feedback.list");
   const { push } = useLocaleRouter();
   const { userId: tutorId } = useUserId();
 
@@ -41,9 +43,9 @@ const TutorFeedbackListPage: React.FC = () => {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <BookOpen className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold text-foreground">Khóa học đang dạy</h1>
+              <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
             </div>
-            <p className="text-lg text-muted-foreground">Xem đánh giá từ học viên của bạn</p>
+            <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
           </div>
         </MotionItem>
         <MotionItem>
@@ -58,10 +60,8 @@ const TutorFeedbackListPage: React.FC = () => {
       <MotionContainer className="min-h-screen flex items-center justify-center">
         <MotionItem>
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Có lỗi xảy ra</h2>
-            <p className="text-muted-foreground">
-              Không thể tải danh sách khóa học. Vui lòng thử lại sau.
-            </p>
+            <h2 className="text-2xl font-bold text-foreground mb-4">{t("error")}</h2>
+            <p className="text-muted-foreground">{t("errorMessage")}</p>
           </div>
         </MotionItem>
       </MotionContainer>
@@ -75,11 +75,9 @@ const TutorFeedbackListPage: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">Đánh giá khóa học</h1>
+            <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
           </div>
-          <p className="text-lg text-muted-foreground">
-            Xem đánh giá từ học sinh cho các khóa học của bạn
-          </p>
+          <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
         </div>
       </MotionItem>
 
@@ -92,7 +90,7 @@ const TutorFeedbackListPage: React.FC = () => {
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Tổng khóa học</p>
+                <p className="text-sm text-muted-foreground">{t("stats.totalCourses")}</p>
                 <p className="text-2xl font-bold text-foreground">{teachings.length}</p>
               </div>
             </div>
@@ -104,7 +102,7 @@ const TutorFeedbackListPage: React.FC = () => {
                 <GraduationCap className="h-6 w-6 text-orange-600 dark:text-orange-400" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Đang dạy</p>
+                <p className="text-sm text-muted-foreground">{t("stats.inProgress")}</p>
                 <p className="text-2xl font-bold text-foreground">{inProgressCourses.length}</p>
               </div>
             </div>
@@ -116,7 +114,7 @@ const TutorFeedbackListPage: React.FC = () => {
                 <BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Đã hoàn thành</p>
+                <p className="text-sm text-muted-foreground">{t("stats.completed")}</p>
                 <p className="text-2xl font-bold text-foreground">{completedCourses.length}</p>
               </div>
             </div>
@@ -130,8 +128,8 @@ const TutorFeedbackListPage: React.FC = () => {
           <div className="bg-card rounded-3xl shadow-lg border border-border p-12">
             <div className="text-center">
               <BookOpen className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">Chưa có khóa học nào</h3>
-              <p className="text-muted-foreground mb-6">Bạn chưa có khóa học nào đang được dạy.</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">{t("empty.title")}</h3>
+              <p className="text-muted-foreground mb-6">{t("empty.description")}</p>
             </div>
           </div>
         </MotionItem>
@@ -142,7 +140,7 @@ const TutorFeedbackListPage: React.FC = () => {
             <MotionItem>
               <div className="mb-8">
                 <h2 className="text-xl font-bold text-foreground mb-4">
-                  Đang dạy ({inProgressCourses.length})
+                  {t("sections.inProgress", { count: inProgressCourses.length })}
                 </h2>
                 <div className="grid gap-6">
                   {inProgressCourses.map((enrollment, index) => (
@@ -164,7 +162,7 @@ const TutorFeedbackListPage: React.FC = () => {
             <MotionItem>
               <div>
                 <h2 className="text-xl font-bold text-foreground mb-4">
-                  Đã hoàn thành ({completedCourses.length})
+                  {t("sections.completed", { count: completedCourses.length })}
                 </h2>
                 <div className="grid gap-6">
                   {completedCourses.map((enrollment, index) => (

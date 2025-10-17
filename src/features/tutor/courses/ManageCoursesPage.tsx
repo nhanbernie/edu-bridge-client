@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   EmptyState,
   ActionItem,
@@ -16,6 +17,7 @@ import { useTutorId } from "@/hooks/useTutorId";
 import { MotionContainer, MotionItem, EBMotionCard } from "@/components/motion";
 
 const ManageCoursesPage: React.FC = () => {
+  const t = useTranslations("tutor.courses.manage");
   const { tutorId, isLoading: tutorLoading } = useTutorId();
 
   // Sử dụng hook để quản lý courses - chỉ call khi có tutorId
@@ -33,7 +35,7 @@ const ManageCoursesPage: React.FC = () => {
 
   // Show loading if tutor ID is still loading
   if (tutorLoading || !tutorId) {
-    return <EBPageLoading message="Đang xác thực thông tin..." />;
+    return <EBPageLoading message={t("loading.message")} />;
   }
 
   const handleDeleteClick = (course: CourseData) => {
@@ -51,12 +53,12 @@ const ManageCoursesPage: React.FC = () => {
 
   const getActionsForCourse = (course: CourseData): ActionItem[] => [
     {
-      label: "Chỉnh sửa",
+      label: t("actions.edit"),
       icon: Edit,
       onClick: () => handleEditCourse(course.id),
     },
     {
-      label: "Xóa khóa học",
+      label: t("actions.delete"),
       icon: Trash2,
       onClick: () => handleDeleteClick(course),
       danger: true,
@@ -70,10 +72,8 @@ const ManageCoursesPage: React.FC = () => {
         <MotionItem>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-foreground">Quản lý khóa học</h1>
-              <p className="mt-2 text-lg text-muted-foreground">
-                Quản lý tất cả các khóa học của bạn
-              </p>
+              <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
+              <p className="mt-2 text-lg text-muted-foreground">{t("subtitle")}</p>
             </div>
             <div className="flex items-center gap-4">
               <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isLoading}>
@@ -81,7 +81,7 @@ const ManageCoursesPage: React.FC = () => {
               </Button>
               <Button onClick={handleCreateCourse} className="flex items-center gap-2">
                 <PlusCircle className="h-5 w-5" />
-                Tạo khóa học mới
+                {t("buttons.create")}
               </Button>
             </div>
           </div>
@@ -99,7 +99,7 @@ const ManageCoursesPage: React.FC = () => {
               whileTap={undefined}
             >
               <Loader2 className="w-8 h-8 animate-spin mr-2 text-primary" />
-              <span className="text-muted-foreground">Đang tải khóa học...</span>
+              <span className="text-muted-foreground">{t("loading.message")}</span>
             </EBMotionCard>
           ) : courses.length === 0 ? (
             <EBMotionCard
@@ -112,9 +112,9 @@ const ManageCoursesPage: React.FC = () => {
             >
               <EmptyState
                 icon={<PlusCircle className="w-12 h-12" />}
-                title="Chưa có khóa học nào"
-                description="Tạo khóa học đầu tiên của bạn để bắt đầu giảng dạy"
-                actionLabel="Tạo khóa học mới"
+                title={t("empty.title")}
+                description={t("empty.description")}
+                actionLabel={t("empty.action")}
                 onAction={handleCreateCourse}
               />
             </EBMotionCard>
@@ -138,13 +138,9 @@ const ManageCoursesPage: React.FC = () => {
       <EBConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        title="Xác nhận xóa khóa học"
-        description={
-          courseToDelete
-            ? `Bạn có chắc chắn muốn xóa khóa học "${courseToDelete.title}"? Hành động này không thể hoàn tác.`
-            : ""
-        }
-        confirmLabel="Xóa khóa học"
+        title={t("delete.title")}
+        description={courseToDelete ? t("delete.description", { title: courseToDelete.title }) : ""}
+        confirmLabel={t("delete.confirm")}
         onConfirm={handleDeleteConfirm}
         variant="destructive"
       />

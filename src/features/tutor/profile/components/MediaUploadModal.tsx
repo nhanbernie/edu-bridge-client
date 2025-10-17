@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import EBButton from "@/components/common/EBButton";
 import { Upload, X } from "lucide-react";
@@ -25,6 +26,7 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onUpload,
   isUploading = false,
 }) => {
+  const t = useTranslations("tutor.profile.media");
   const [title, setTitle] = useState(existingTitle || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -96,11 +98,11 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           <DialogTitle>
             {isEditMode
               ? isVideo
-                ? "Chỉnh sửa Video giới thiệu"
-                : "Chỉnh sửa Chứng chỉ"
+                ? t("modal.editVideo")
+                : t("modal.editCertificate")
               : isVideo
-                ? "Tải lên Video giới thiệu"
-                : "Thêm Chứng chỉ"}
+                ? t("modal.uploadVideo")
+                : t("modal.addCertificate")}
           </DialogTitle>
         </DialogHeader>
 
@@ -108,13 +110,15 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           {/* Title Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tiêu đề <span className="text-red-500">*</span>
+              {t("modal.titleLabel")} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder={isVideo ? "VD: Video giới thiệu" : "VD: Chứng chỉ TESOL"}
+              placeholder={
+                isVideo ? t("modal.titlePlaceholder") : t("modal.certificatePlaceholder")
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               disabled={isUploading}
             />
@@ -123,9 +127,9 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           {/* File Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              File {!isEditMode && <span className="text-red-500">*</span>}
+              {t("modal.fileLabel")} {!isEditMode && <span className="text-red-500">*</span>}
               {isEditMode && (
-                <span className="text-gray-500 text-xs">(Tùy chọn - Để trống nếu không đổi)</span>
+                <span className="text-gray-500 text-xs">({t("modal.fileOptional")})</span>
               )}
             </label>
             <input
@@ -144,10 +148,13 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
               >
                 <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                 <p className="text-sm text-gray-600">
-                  Click để chọn {isVideo ? "video" : "hình ảnh"}
+                  {t("modal.selectFile", { type: isVideo ? "video" : "hình ảnh" })}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {isVideo ? "MP4, MOV, AVI" : "JPG, PNG, GIF"} (tối đa {maxSize}MB)
+                  {t("modal.supportedFormats", {
+                    formats: isVideo ? t("modal.videoFormats") : t("modal.imageFormats"),
+                    size: maxSize,
+                  })}
                 </p>
               </button>
             ) : (
@@ -189,7 +196,7 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
             disabled={isUploading}
             className="flex-1"
           >
-            Hủy
+            {t("modal.buttons.cancel")}
           </EBButton>
           <EBButton
             onClick={handleSubmit}
@@ -197,7 +204,7 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
             loading={isUploading}
             className="flex-1 bg-emerald-600 hover:bg-emerald-700"
           >
-            {isEditMode ? "Cập nhật" : "Tải lên"}
+            {isEditMode ? t("modal.buttons.update") : t("modal.buttons.upload")}
           </EBButton>
         </div>
       </DialogContent>

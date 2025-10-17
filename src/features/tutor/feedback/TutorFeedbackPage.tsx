@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ROUTES } from "@/common/constants/route.constant";
 import { ArrowLeft, Star } from "lucide-react";
@@ -18,6 +19,7 @@ interface TutorFeedbackPageProps {
 }
 
 const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
+  const t = useTranslations("tutor.feedback.detail");
   const { push } = useLocaleRouter();
 
   // Get course feedbacks
@@ -36,9 +38,9 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
               <Star className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold text-foreground">Đánh giá khóa học</h1>
+              <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
             </div>
-            <p className="text-lg text-muted-foreground">Xem đánh giá từ học viên</p>
+            <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
           </div>
         </MotionItem>
         <MotionItem>
@@ -72,13 +74,13 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
             className="mb-4 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại danh sách
+            {t("backButton")}
           </Button>
           <div className="flex items-center gap-3 mb-4">
             <Star className="h-8 w-8 text-primary" />
             <h1 className="text-4xl font-bold text-foreground">{courseTitle}</h1>
           </div>
-          <p className="text-lg text-muted-foreground">Xem đánh giá từ học sinh cho khóa học này</p>
+          <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
         </div>
       </MotionItem>
 
@@ -97,7 +99,7 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
           {/* Right Column - All Feedbacks */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-foreground">
-              Đánh giá từ học sinh ({totalFeedbacks})
+              {t("allFeedbacks")} ({totalFeedbacks})
             </h2>
             {feedbacks.length > 0 ? (
               <div className="space-y-4">
@@ -117,7 +119,7 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
               <Card className="border-0 shadow-sm">
                 <CardContent className="p-6">
                   <div className="text-center py-4">
-                    <p className="text-muted-foreground">Chưa có đánh giá nào</p>
+                    <p className="text-muted-foreground">{t("noFeedbacks")}</p>
                   </div>
                 </CardContent>
               </Card>

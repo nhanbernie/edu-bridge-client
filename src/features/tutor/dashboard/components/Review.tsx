@@ -13,7 +13,7 @@ const Review = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-foreground">{t("title")}</h2>
           <div className="flex items-center">
-            <div className="flex text-yellow-400 text-sm mr-1">★★★★★</div>
+            <div className="flex text-gray-300 text-sm mr-1">★★★★★</div>
             <span className="text-sm font-medium text-muted-foreground">-</span>
           </div>
         </div>
@@ -30,7 +30,7 @@ const Review = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-foreground">{t("title")}</h2>
           <div className="flex items-center">
-            <div className="flex text-yellow-400 text-sm mr-1">★★★★★</div>
+            <div className="flex text-gray-300 text-sm mr-1">★★★★★</div>
             <span className="text-sm font-medium text-muted-foreground">-</span>
           </div>
         </div>
@@ -47,7 +47,7 @@ const Review = () => {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-foreground">{t("title")}</h2>
           <div className="flex items-center">
-            <div className="flex text-yellow-400 text-sm mr-1">★★★★★</div>
+            <div className="flex text-gray-300 text-sm mr-1">★★★★★</div>
             <span className="text-sm font-medium text-muted-foreground">-</span>
           </div>
         </div>
@@ -61,9 +61,18 @@ const Review = () => {
   return (
     <div className="bg-card rounded-3xl shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-foreground">Đánh giá gần đây</h2>
+        <h2 className="text-xl font-bold text-foreground">{t("title")}</h2>
         <div className="flex items-center">
-          <div className="flex text-yellow-400 text-sm mr-1">★★★★★</div>
+          <div className="flex text-yellow-400 text-sm mr-1">
+            {Array.from({ length: 5 }, (_, i) => (
+              <span
+                key={i}
+                className={i < Math.floor(averageRating) ? "text-yellow-400" : "text-gray-300"}
+              >
+                ★
+              </span>
+            ))}
+          </div>
           <span className="text-sm font-medium text-muted-foreground">
             {averageRating.toFixed(1)}
           </span>
