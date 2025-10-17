@@ -1,10 +1,73 @@
 {
   "title": "Create New Course",
-  "subtitle": "Course is published, details can be changed later",
+  "subtitle": "Create and publish your course to start teaching students",
   "buttons": {
-    "back": "Back"
+    "back": "Back to Courses",
+    "submit": "Create Course"
   },
-  "messages": {
-    "loading": "Loading..."
+  "form": {
+    "title": "Course Information",
+    "fields": {
+      "title": {
+        "label": "Course Title *",
+        "placeholder": "Example: Basic Mathematics Grade 10"
+      },
+      "subjects": {
+        "label": "Subjects (can select multiple) *"
+      },
+      "description": {
+        "label": "Course Description *",
+        "placeholder": "Detailed description of content, teaching methods..."
+      },
+      "hoursPerSession": {
+        "label": "Duration per session (hours) *",
+        "placeholder": "2"
+      },
+      "hourlyRate": {
+        "label": "Price per session (VND) *",
+        "placeholder": "100000"
+      },
+      "isPublished": {
+        "label": "Publish Course",
+        "description": "Course will be published, details can be changed later"
+      }
+    },
+    "submit": {
+      "loading": "Processing...",
+      "button": "Create Course"
+    }
+  },
+  "preview": {
+    "title": "Preview",
+    "defaultTitle": "Course Title",
+    "defaultDescription": "Course description will appear here...",
+    "stats": {
+      "students": "students",
+      "hoursPerSession": "h/session"
+    },
+    "price": {
+      "label": "Price per session",
+      "currency": "VND"
+    },
+    "packages": {
+      "title": "Auto Learning Packages",
+      "sessions": {
+        "4": "4-session Package",
+        "8": "8-session Package",
+        "12": "12-session Package"
+      },
+      "discount": "-{discount}%"
+    },
+    "note": "This is a preview of your course."
+  },
+  "subjects": {
+    "math": "Mathematics",
+    "physics": "Physics",
+    "chemistry": "Chemistry",
+    "biology": "Biology",
+    "english": "English",
+    "literature": "Literature",
+    "history": "History",
+    "geography": "Geography"
   }
 }

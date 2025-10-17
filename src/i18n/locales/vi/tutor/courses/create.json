@@ -1,10 +1,73 @@
 {
   "title": "Tạo khóa học mới",
-  "subtitle": "Khóa học được xuất bản, chi tiết có thể thay đổi sau",
+  "subtitle": "Tạo và xuất bản khóa học của bạn để bắt đầu giảng dạy học sinh",
   "buttons": {
-    "back": "Quay lại"
+    "back": "Quay lại danh sách khóa học",
+    "submit": "Tạo khóa học"
   },
-  "messages": {
-    "loading": "Đang tải..."
+  "form": {
+    "title": "Thông tin khóa học",
+    "fields": {
+      "title": {
+        "label": "Tên khóa học *",
+        "placeholder": "Ví dụ: Toán học cơ bản lớp 10"
+      },
+      "subjects": {
+        "label": "Môn học (có thể chọn nhiều) *"
+      },
+      "description": {
+        "label": "Mô tả khóa học *",
+        "placeholder": "Mô tả chi tiết về nội dung, phương pháp giảng dạy..."
+      },
+      "hoursPerSession": {
+        "label": "Thời gian / buổi (giờ) *",
+        "placeholder": "2"
+      },
+      "hourlyRate": {
+        "label": "Giá / buổi (VNĐ) *",
+        "placeholder": "100000"
+      },
+      "isPublished": {
+        "label": "Xuất bản khóa học",
+        "description": "Khóa học được xuất bản, chi tiết có thể thay đổi sau"
+      }
+    },
+    "submit": {
+      "loading": "Đang xử lý...",
+      "button": "Tạo khóa học"
+    }
+  },
+  "preview": {
+    "title": "Xem trước",
+    "defaultTitle": "Tên khóa học",
+    "defaultDescription": "Mô tả khóa học sẽ hiển thị ở đây...",
+    "stats": {
+      "students": "học sinh",
+      "hoursPerSession": "h/buổi"
+    },
+    "price": {
+      "label": "Giá mỗi buổi học",
+      "currency": "VNĐ"
+    },
+    "packages": {
+      "title": "Gói học tự động",
+      "sessions": {
+        "4": "Gói 4 buổi",
+        "8": "Gói 8 buổi",
+        "12": "Gói 12 buổi"
+      },
+      "discount": "-{discount}%"
+    },
+    "note": "Đây là bản xem trước khóa học của bạn."
+  },
+  "subjects": {
+    "math": "Toán",
+    "physics": "Vật lý",
+    "chemistry": "Hóa học",
+    "biology": "Sinh học",
+    "english": "Tiếng Anh",
+    "literature": "Ngữ văn",
+    "history": "Lịch sử",
+    "geography": "Địa lý"
   }
 }

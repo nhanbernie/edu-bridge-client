@@ -9,6 +9,7 @@ import courseValidatorSchema from "@/lib/validator/courseValidator";
 import { useCreateCourse } from "./hooks/useCreateCourse";
 import { useSubjects } from "@/hooks/useSubjects";
 import { MotionContainer, MotionItem } from "@/components/motion";
+import { CreateCourseSkeleton } from "./components/skeleton";
 
 const CreateCoursePage: React.FC = () => {
   const t = useTranslations("tutor.courses.create");
@@ -25,6 +26,11 @@ const CreateCoursePage: React.FC = () => {
   const handleBack = () => {
     handleCancel();
   };
+
+  // Show skeleton while loading
+  if (tutorLoading || isSubjectsLoading) {
+    return <CreateCourseSkeleton />;
+  }
 
   return (
     <MotionContainer className="min-h-screen">

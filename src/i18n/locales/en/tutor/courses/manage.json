@@ -14,7 +14,8 @@
   "empty": {
     "title": "No courses yet",
     "description": "Create your first course to start teaching",
-    "actionLabel": "Create New Course"
+    "actionLabel": "Create New Course",
+    "action": "Create New Course"
   },
   "loading": {
     "message": "Loading courses..."
@@ -27,7 +28,16 @@
   "delete": {
     "title": "Confirm Delete Course",
     "description": "Are you sure you want to delete the course \"{title}\"? This action cannot be undone.",
-    "confirm": "Delete Course"
+    "confirm": "Delete Course",
+    "success": "Course deleted successfully",
+    "error": "Unable to delete course. Please try again."
+  },
+  "duration": {
+    "perSession": "hours/session"
+  },
+  "tutorName": "Tutor",
+  "error": {
+    "loadFailed": "Unable to load course list. Please try again."
   },
   "messages": {
     "authenticating": "Authenticating information..."

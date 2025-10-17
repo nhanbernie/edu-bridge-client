@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Info, Eye } from "lucide-react";
@@ -13,11 +14,14 @@ interface CoursePreviewProps {
 }
 
 const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
+  const t = useTranslations("tutor.courses.create.preview");
+  const tSubjects = useTranslations("tutor.courses.create.subjects");
+
   // Default preview data
   const previewData = {
-    title: formData?.title || "Tên khóa học",
+    title: formData?.title || t("defaultTitle"),
     subjects: formData?.subjects || [],
-    description: formData?.description || "Mô tả khóa học sẽ hiển thị ở đây...",
+    description: formData?.description || t("defaultDescription"),
     hoursPerSession: formData?.hoursPerSession || "2",
     hourlyRate: formData?.hourlyRate || 100000,
     students: 0, // New course, no students yet
@@ -25,17 +29,20 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   };
 
   const getSubjectLabel = (value: string) => {
-    const subjectMap: { [key: string]: string } = {
-      math: "Toán",
-      physics: "Vật lý",
-      chemistry: "Hóa học",
-      biology: "Sinh học",
-      english: "Tiếng Anh",
-      literature: "Ngữ văn",
-      history: "Lịch sử",
-      geography: "Địa lý",
+    // Map Vietnamese subject names back to English keys
+    const subjectKeyMap: { [key: string]: string } = {
+      Toán: "math",
+      "Vật lý": "physics",
+      "Hóa học": "chemistry",
+      "Sinh học": "biology",
+      "Tiếng Anh": "english",
+      "Ngữ văn": "literature",
+      "Lịch sử": "history",
+      "Địa lý": "geography",
     };
-    return subjectMap[value] || value;
+
+    const key = subjectKeyMap[value] || value;
+    return tSubjects(key as any) || value;
   };
 
   return (
@@ -43,7 +50,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Eye className="h-5 w-5 text-muted-foreground" />
-          Xem trước
+          {t("title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -78,11 +85,16 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  <span>{previewData.students} học sinh</span>
+                  <span>
+                    {previewData.students} {t("stats.students")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  <span>{previewData.hoursPerSession}h/buổi</span>
+                  <span>
+                    {previewData.hoursPerSession}
+                    {t("stats.hoursPerSession")}
+                  </span>
                 </div>
               </div>
 
@@ -90,11 +102,11 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
               <div className="flex justify-between items-center pt-2 border-t border-border">
                 <div className="flex flex-col">
                   <span className="text-lg font-semibold text-primary">
-                    {previewData.hourlyRate.toLocaleString()} VNĐ
+                    {previewData.hourlyRate.toLocaleString()} {t("price.currency")}
                   </span>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                     <Info className="h-3 w-3" />
-                    <span>Giá mỗi buổi học</span>
+                    <span>{t("price.label")}</span>
                   </div>
                 </div>
               </div>
@@ -104,12 +116,12 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
 
         {/* Pricing Packages Preview */}
         <div className="mt-6">
-          <h4 className="font-medium text-foreground mb-3">Gói học tự động</h4>
+          <h4 className="font-medium text-foreground mb-3">{t("packages.title")}</h4>
           <div className="space-y-3">
             {[
-              { sessions: 4, discount: 0, label: "Gói 4 buổi" },
-              { sessions: 8, discount: 10, label: "Gói 8 buổi" },
-              { sessions: 12, discount: 15, label: "Gói 12 buổi" },
+              { sessions: 4, discount: 0, label: t("packages.sessions.4") },
+              { sessions: 8, discount: 10, label: t("packages.sessions.8") },
+              { sessions: 12, discount: 15, label: t("packages.sessions.12") },
             ].map((pkg) => {
               const originalPrice = previewData.hourlyRate * pkg.sessions;
               const discountedPrice = originalPrice * (1 - pkg.discount / 100);
@@ -124,7 +136,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                     <span className="font-medium text-foreground">{pkg.label}</span>
                     {pkg.discount > 0 && (
                       <Badge variant="secondary" className="mt-1 text-xs w-fit">
-                        -{pkg.discount}%
+                        {t("packages.discount", { discount: pkg.discount })}
                       </Badge>
                     )}
                   </div>
@@ -132,15 +144,15 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                     {pkg.discount > 0 ? (
                       <>
                         <div className="text-primary font-semibold">
-                          {discountedPrice.toLocaleString()} VNĐ
+                          {discountedPrice.toLocaleString()} {t("price.currency")}
                         </div>
                         <div className="text-xs text-muted-foreground line-through">
-                          {originalPrice.toLocaleString()} VNĐ
+                          {originalPrice.toLocaleString()} {t("price.currency")}
                         </div>
                       </>
                     ) : (
                       <div className="text-foreground font-semibold">
-                        {originalPrice.toLocaleString()} VNĐ
+                        {originalPrice.toLocaleString()} {t("price.currency")}
                       </div>
                     )}
                   </div>
@@ -154,7 +166,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
         <div className="mt-4 p-3 bg-primary/10 rounded-lg">
           <p className="text-sm text-primary">
             <Info className="h-4 w-4 inline mr-1" />
-            Đây là bản xem trước khóa học của bạn.
+            {t("note")}
           </p>
         </div>
       </CardContent>
