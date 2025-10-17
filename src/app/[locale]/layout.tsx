@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { SUPPORTED_LOCALES, type Locale } from "@/i18n/config";
 import type { ReactNode } from "react";
+import { cache } from "react";
 
 export function generateStaticParams() {
   return SUPPORTED_LOCALES.map((locale) => ({ locale }));
@@ -20,49 +21,55 @@ export default async function LocaleLayout({ children, params }: Props) {
     notFound();
   }
 
-  // Load messages dynamically
+  // Load messages dynamically with parallel imports
   let messages;
   try {
-    const common = await import(`@/i18n/locales/${locale}/common.json`);
-    const tutor = await import(`@/i18n/locales/${locale}/tutor.json`);
-    const auth = await import(`@/i18n/locales/${locale}/auth.json`);
-    const marketing = await import(`@/i18n/locales/${locale}/marketing.json`);
-
-    // Load student translations
-    const studentHome = await import(`@/i18n/locales/${locale}/student/home/home.json`);
-    const studentHomeCard = await import(`@/i18n/locales/${locale}/student/home/card.json`);
-    const studentHomeFilter = await import(`@/i18n/locales/${locale}/student/home/filter.json`);
-    const studentMySchedule = await import(
-      `@/i18n/locales/${locale}/student/my-schedule/mySchedule.json`
-    );
-    const studentFeedback = await import(`@/i18n/locales/${locale}/student/feedback/feedback.json`);
-    const studentProfile = await import(`@/i18n/locales/${locale}/student/profile/profile.json`);
-    const studentTransactions = await import(
-      `@/i18n/locales/${locale}/student/transactions/transactions.json`
-    );
-    const studentTransactionsList = await import(
-      `@/i18n/locales/${locale}/student/transactions/list.json`
-    );
-    const studentTransactionsStatus = await import(
-      `@/i18n/locales/${locale}/student/transactions/status.json`
-    );
-
-    // Load meeting translations
-    const meeting = await import(`@/i18n/locales/${locale}/meeting/meeting.json`);
-
-    // Load tutor onboarding translations
-    const tutorOnboardProfileUnderPreview = await import(
-      `@/i18n/locales/${locale}/tutor/onboard/profile-under-preview.json`
-    );
-
-    // Load tutor dashboard translations
-    const tutorDashboard = await import(`@/i18n/locales/${locale}/tutor/dashboard/dashboard.json`);
-
-    // Load tutor schedules translations
-    const tutorSchedules = await import(`@/i18n/locales/${locale}/tutor/schedules/schedules.json`);
-
-    // Load validation translations
-    const validationAuth = await import(`@/i18n/locales/${locale}/validation/auth.json`);
+    // Parallel import all translation files
+    const [
+      common,
+      tutor,
+      auth,
+      marketing,
+      studentHome,
+      studentHomeCard,
+      studentHomeFilter,
+      studentMySchedule,
+      studentFeedback,
+      studentProfile,
+      studentTransactions,
+      studentTransactionsList,
+      studentTransactionsStatus,
+      meeting,
+      tutorOnboardProfileUnderPreview,
+      tutorDashboard,
+      tutorSchedules,
+      validationAuth,
+    ] = await Promise.all([
+      import(`@/i18n/locales/${locale}/common.json`),
+      import(`@/i18n/locales/${locale}/tutor.json`),
+      import(`@/i18n/locales/${locale}/auth.json`),
+      import(`@/i18n/locales/${locale}/marketing.json`),
+      // Student translations
+      import(`@/i18n/locales/${locale}/student/home/home.json`),
+      import(`@/i18n/locales/${locale}/student/home/card.json`),
+      import(`@/i18n/locales/${locale}/student/home/filter.json`),
+      import(`@/i18n/locales/${locale}/student/my-schedule/mySchedule.json`),
+      import(`@/i18n/locales/${locale}/student/feedback/feedback.json`),
+      import(`@/i18n/locales/${locale}/student/profile/profile.json`),
+      import(`@/i18n/locales/${locale}/student/transactions/transactions.json`),
+      import(`@/i18n/locales/${locale}/student/transactions/list.json`),
+      import(`@/i18n/locales/${locale}/student/transactions/status.json`),
+      // Meeting translations
+      import(`@/i18n/locales/${locale}/meeting/meeting.json`),
+      // Tutor onboarding translations
+      import(`@/i18n/locales/${locale}/tutor/onboard/profile-under-preview.json`),
+      // Tutor dashboard translations
+      import(`@/i18n/locales/${locale}/tutor/dashboard/dashboard.json`),
+      // Tutor schedules translations
+      import(`@/i18n/locales/${locale}/tutor/schedules/schedules.json`),
+      // Validation translations
+      import(`@/i18n/locales/${locale}/validation/auth.json`),
+    ]);
 
     messages = {
       common: common.default,

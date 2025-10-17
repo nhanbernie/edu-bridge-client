@@ -13,7 +13,7 @@ const EBNavigation = ({ items }: { items: any[] }) => {
           key={item.href}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
+          transition={{ delay: index * 0.05, duration: 0.2 }}
         >
           <button
             onClick={() => push(item.href)}

@@ -69,15 +69,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!hasInitialized || isLoading) return;
 
     if (isAuthenticated && user) {
-      if (isPublicRoute && pathname !== "/") {
-        // Redirect to appropriate route based on user role and status
-        const defaultRoute = getDefaultRouteForRole(
-          user.role as UserRole,
-          user.status as UserStatus
-        );
-        push(defaultRoute);
-      } else if (pathname === "/") {
-        // Redirect to appropriate route based on user role and status
+      // Only redirect if on public route (including "/")
+      if (isPublicRoute) {
         const defaultRoute = getDefaultRouteForRole(
           user.role as UserRole,
           user.status as UserStatus
