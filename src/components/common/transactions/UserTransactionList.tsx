@@ -69,7 +69,7 @@ const UserTransactionList: React.FC<UserTransactionListProps> = ({
   };
 
   return (
-    <Card className="bg-card rounded-4xl border-border">
+    <Card className="bg-card rounded-4xl shadow-2xl border-border">
       <CardHeader className="border-b border-border">
         <CardTitle className="flex items-center gap-3 text-lg text-foreground">
           <Calendar className="w-5 h-5 text-muted-foreground" />

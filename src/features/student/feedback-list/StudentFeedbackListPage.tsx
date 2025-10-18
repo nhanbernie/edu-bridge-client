@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { buildStudentFeedbackDetailRoute, ROUTES } from "@/common/constants/route.constant";
 import { BookOpen, GraduationCap } from "lucide-react";
@@ -15,6 +15,7 @@ const StudentFeedbackListPage: React.FC = () => {
   const { push } = useLocaleRouter();
   const t = useTranslations("student.feedback.list");
   const { userId: studentId } = useUserId();
+  const hasLoadedRef = useRef(false);
 
   const {
     data: enrollmentsData,
@@ -23,6 +24,11 @@ const StudentFeedbackListPage: React.FC = () => {
   } = useGetStudentEnrollmentsQuery({ studentId: studentId || "" }, { skip: !studentId });
 
   const enrollments = useMemo(() => enrollmentsData?.data || [], [enrollmentsData?.data]);
+
+  // Mark as loaded when we have data
+  if (enrollments.length > 0 && !hasLoadedRef.current) {
+    hasLoadedRef.current = true;
+  }
 
   // Separate completed and in-progress courses
   const { completedCourses, inProgressCourses } = useMemo(() => {
@@ -36,8 +42,8 @@ const StudentFeedbackListPage: React.FC = () => {
     push(buildStudentFeedbackDetailRoute(courseId));
   };
 
-  // Show skeleton only on initial load (no data yet)
-  if (isLoading && enrollments.length === 0) {
+  // Show skeleton only on initial load (no data yet and never loaded before)
+  if (isLoading && !hasLoadedRef.current) {
     return (
       <div className={PAGE_CONTAINER}>
         <div className={CONTENT_WRAPPER}>
