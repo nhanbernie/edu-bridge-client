@@ -33,7 +33,7 @@ export const MAX_WIDTH_8XL = "max-w-8xl mx-auto p-6";
  */
 
 // Page container
-export const PAGE_CONTAINER = "min-h-screen bg-background pt-16";
+export const PAGE_CONTAINER = "min-h-screen pt-16";
 
 // Content wrapper
 export const CONTENT_WRAPPER = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12";

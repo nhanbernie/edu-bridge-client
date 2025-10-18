@@ -352,7 +352,7 @@ const StudentHomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-32">
+    <div className="min-h-screen pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* EBHeader Section */}
         <div className={PAGE_HEADER}>
