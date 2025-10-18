@@ -15,13 +15,7 @@ import { useUserId } from "@/hooks/useUserId";
 import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
 import { FeedbackCardSkeleton } from "@/components/common/skeletons";
-import {
-  PAGE_CONTAINER,
-  CONTENT_WRAPPER,
-  PAGE_HEADER,
-  PAGE_TITLE,
-  PAGE_SUBTITLE,
-} from "@/common/constants/className.constant";
+import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
 
 interface StudentFeedbackPageProps {
@@ -74,16 +68,16 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
     return (
       <div className={PAGE_CONTAINER}>
         <div className={CONTENT_WRAPPER}>
-          <div className={PAGE_HEADER}>
-            <h1 className={PAGE_TITLE}>{t("detail.title")}</h1>
-            <p className={PAGE_SUBTITLE}>{t("detail.subtitle")}</p>
+          <div className="space-y-4 mb-8 animate-pulse">
+            <div className="h-8 sm:h-10 bg-muted rounded w-48 sm:w-64"></div>
+            <div className="h-5 sm:h-6 bg-muted rounded w-64 sm:w-96"></div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 h-64 animate-pulse" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div>
+              <div className="bg-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border h-48 sm:h-64 animate-pulse" />
             </div>
-            <div className="lg:col-span-2 space-y-4">
+            <div className="space-y-4">
               <FeedbackCardSkeleton count={3} />
             </div>
           </div>
@@ -94,10 +88,10 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
 
   if (!enrollment) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{t("notFound")}</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{t("notFoundMessage")}</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">{t("notFound")}</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6">{t("notFoundMessage")}</p>
           <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>{t("backButton")}</Button>
         </div>
       </div>
@@ -113,20 +107,22 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
     <div className={PAGE_CONTAINER}>
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
-        <div className={PAGE_HEADER}>
+        <div className="space-y-4 mb-8">
           {/* NOTE: return button */}
           <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             {t("backButton")}
           </Button>
-          <h1 className={PAGE_TITLE}>{enrollment.courseTitle}</h1>
-          <p className={PAGE_SUBTITLE}>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+            {enrollment.courseTitle}
+          </h1>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
             Gia sư: {enrollment.tutorName} • {enrollment.completedSessions}/
             {enrollment.totalSessionsBooked} buổi đã hoàn thành
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Left Column - Rating Summary */}
           <div>
             <RatingSummary
@@ -139,7 +135,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
 
           {/* Right Column - All Feedbacks */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">
               {t("allFeedbacks")} ({totalFeedbacks})
             </h2>
             {feedbacks.length > 0 ? (
@@ -157,10 +153,10 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
                 ))}
               </div>
             ) : (
-              <Card className="border-0 shadow-sm">
-                <CardContent className="p-6">
+              <Card className="border-0 shadow-sm bg-card">
+                <CardContent className="p-4 sm:p-6">
                   <div className="text-center py-4">
-                    <p className="text-gray-500 dark:text-gray-400">{t("noFeedbacks")}</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t("noFeedbacks")}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -170,20 +166,22 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
 
         {/* Create Feedback Section */}
         {canCreateFeedback ? (
-          <div className="mt-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mt-6 sm:mt-8">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4">
               {t("create.title")}
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
             </div>
           </div>
         ) : (
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <Card className="border-0 shadow-sm bg-yellow-50 dark:bg-yellow-900/20">
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <div className="text-center">
-                  <p className="text-yellow-800 dark:text-yellow-200">{t("cannotCreateMessage")}</p>
+                  <p className="text-sm sm:text-base text-yellow-800 dark:text-yellow-200">
+                    {t("cannotCreateMessage")}
+                  </p>
                 </div>
               </CardContent>
             </Card>

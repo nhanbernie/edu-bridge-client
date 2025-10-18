@@ -59,31 +59,33 @@ export const tutorCardVariants: Variants = {
 export const smoothCardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 8,
-    scale: 0.985,
+    y: 10,
+    scale: 0.97,
+    filter: "blur(2px)",
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
+    filter: "blur(0px)",
     transition: {
       type: "spring",
-      stiffness: 420,
-      damping: 28,
-      mass: 0.5,
+      stiffness: 180,
+      damping: 22,
+      duration: 0.5,
     },
   },
   hover: {
-    y: -2,
-    scale: 1.01,
+    y: -3,
+    scale: 1.015,
+    boxShadow: "0 8px 24px -6px rgba(0,0,0,0.12)",
     transition: {
-      type: "tween",
-      duration: 0,
-      ease: "linear",
+      duration: 0.25,
+      ease: [0.16, 1, 0.3, 1],
     },
   },
   tap: {
-    scale: 0.99,
+    scale: 0.985,
     transition: { duration: 0.1 },
   },
 };

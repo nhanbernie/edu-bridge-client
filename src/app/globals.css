@@ -75,7 +75,7 @@
   --radius: 0.625rem;
 
   /* Base colors - Light mode */
-  --background: oklch(0.99 0 0); /* #FAFBFC */
+  --background: #f9fafb; /* #FAFBFC */
   --foreground: oklch(0.19 0.01 270); /* #1A1A2E - text chính */
 
   /* Card colors */
@@ -406,23 +406,39 @@
 
 /* Base Card - Clean & Simple */
 .eb-card-base {
-  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl border border-border transition-all duration-300;
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* Glass Card - With backdrop blur */
 .eb-card-glass {
-  @apply bg-card/70 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl hover:bg-card/80 border border-border transition-all duration-300;
+  @apply bg-card/70 rounded-3xl backdrop-blur-sm shadow-lg hover:shadow-xl hover:bg-card/80 border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* Elevated Card - More prominent shadow */
 .eb-card-elevated {
-  @apply bg-card rounded-3xl shadow-xl hover:shadow-2xl  border border-border transition-all duration-300;
+  @apply bg-card rounded-3xl shadow-xl hover:shadow-2xl border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* Interactive Card - Clickable with hover effects */
 .eb-card-interactive {
-  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl hover:scale-[1.02]
-         cursor-pointer transition-all duration-300 active:scale-[0.98];
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl hover:scale-[1.02] cursor-pointer active:scale-[0.98];
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* Card Padding Utilities */

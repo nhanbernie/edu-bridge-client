@@ -143,7 +143,11 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
                       type="button"
                       onClick={() => handleSubjectToggle(subject)}
                       variant={selectedSubjects.includes(subject) ? "default" : "secondary"}
-                      className="text-sm font-medium"
+                      className={`text-sm font-semibold transition-all duration-200 ${
+                        selectedSubjects.includes(subject)
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 shadow-md shadow-cyan-500/30"
+                          : ""
+                      }`}
                     >
                       {subject}
                     </Button>
@@ -173,7 +177,11 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
                         setSelectedRating(selectedRating === rating ? undefined : rating)
                       }
                       variant={selectedRating === rating ? "default" : "secondary"}
-                      className="text-sm font-medium"
+                      className={`text-sm font-semibold transition-all duration-200 ${
+                        selectedRating === rating
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 shadow-md shadow-cyan-500/30"
+                          : ""
+                      }`}
                     >
                       {rating}+ ⭐
                     </Button>
@@ -198,15 +206,20 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
               type="button"
               onClick={handleReset}
               variant="ghost"
-              className="text-muted-foreground"
+              className="text-muted-foreground hover:text-foreground font-semibold"
             >
               Đặt lại
             </Button>
             <div className="flex space-x-3">
-              <Button type="button" onClick={onClose} variant="outline">
+              <Button type="button" onClick={onClose} variant="outline" className="font-semibold">
                 Hủy
               </Button>
-              <Button type="button" onClick={handleApply}>
+              <Button
+                type="button"
+                onClick={handleApply}
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600
+                           shadow-lg shadow-cyan-500/30 font-semibold"
+              >
                 Áp dụng
               </Button>
             </div>

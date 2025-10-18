@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
-import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
+import { TutorFilterSection } from "./components/TutorFilterSection";
+import { useTutorInfiniteScroll } from "./hooks";
 import type { TutorCardData, TutorSearchRequest, TutorSearchDto } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
@@ -15,7 +16,6 @@ import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery } from "@/services/t
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
-import { ENV } from "@/utils/env";
 
 const transformTutorData = (dto: TutorSearchDto): TutorCardData => ({
   id: dto.tutorId,
@@ -77,13 +77,13 @@ const StudentHomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [quickFilters, setQuickFilters] = useState({
     highRating: false,
     subjects: [] as string[],
   });
 
   // Refs
-  const observerTarget = useRef<HTMLDivElement>(null);
   const isLoadingRef = useRef(false);
 
   // Hooks
@@ -96,6 +96,7 @@ const StudentHomePage = () => {
   // API Calls
   const loadInitialTutors = useCallback(async () => {
     try {
+      setIsInitialLoading(true);
       const result = await triggerFilter({
         PageNumber: 1,
         PageSize: PAGE_SIZE,
@@ -111,6 +112,8 @@ const StudentHomePage = () => {
       }
     } catch (err) {
       console.error("Error loading tutors:", err);
+    } finally {
+      setIsInitialLoading(false);
     }
   }, [triggerFilter, advancedFilters]);
 
@@ -197,46 +200,26 @@ const StudentHomePage = () => {
     triggerFilter,
   ]);
 
-  const filterOptions = [
-    { label: t("filter.options.all"), value: "all" },
-    { label: t("filter.options.rating_desc"), value: "rating_desc" },
-    { label: t("filter.options.price_asc"), value: "price_asc" },
-    { label: t("filter.options.price_desc"), value: "price_desc" },
-    { label: t("filter.options.experience_desc"), value: "experience_desc" },
-    { label: t("filter.options.online"), value: "online" },
-  ];
-
   const handleViewDetails = (tutorId: string) => {
     push(`/student/tutor/${tutorId}`);
   };
 
-  const handleContact = (tutorId: string) => {};
+  const handleContact = (_tutorId: string) => {
+    // TODO: Implement contact functionality
+  };
 
   const handleFavorite = (tutorId: string) => {
     dispatch(toggleFavoriteTutor(tutorId));
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMoreTutors();
-        }
-      },
-      { threshold: 0.5, rootMargin: "100px" }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget && hasMore) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [loadMoreTutors, hasMore]);
+  // Infinite scroll hook with optimized settings (after loadMoreTutors is defined)
+  const { observerTarget } = useTutorInfiniteScroll({
+    hasMore,
+    isLoading: isLoadingMore,
+    onLoadMore: loadMoreTutors,
+    rootMargin: "300px", // Trigger 300px before reaching element (fixes footer issue)
+    threshold: 0.1, // Trigger when 10% visible (more sensitive)
+  });
 
   const filteredTutors: TutorCardData[] = allTutors
     .filter((tutor: TutorCardData) => {
@@ -380,120 +363,34 @@ const StudentHomePage = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8 bg-card/80 backdrop-blur-sm border border-border rounded-3xl p-8 shadow-sm">
-          {/* Search Row */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <input
-                type="text"
-                placeholder={t("search.placeholder")}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-background border border-border rounded-xl
-                           focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                           transition-all duration-200"
-              />
-            </div>
-
-            <div className="relative min-w-[200px]">
-              <select
-                value={selectedSubject}
-                onChange={(e) => {
-                  setSelectedSubject(e.target.value);
-                  if (e.target.value) {
-                    handleSubjectFilterToggle(e.target.value);
-                  }
-                }}
-                className="appearance-none bg-background border border-border rounded-xl px-4 py-3.5 pr-10 w-full
-                           focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                           transition-all duration-200 cursor-pointer"
-              >
-                <option value="">Tất cả môn học</option>
-                {SUBJECT_OPTIONS.map((subject) => (
-                  <option key={subject} value={subject}>
-                    {subject}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5 pointer-events-none" />
-            </div>
-
-            <button
-              onClick={() => setIsAdvancedFilterOpen(true)}
-              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground
-                         rounded-xl hover:bg-primary/90 transition-colors duration-200 font-medium whitespace-nowrap"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              <span>Bộ lọc</span>
-            </button>
-          </div>
-
-          {/* Quick Filters */}
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <SlidersHorizontal className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Lọc nhanh:</span>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => handleQuickFilterToggle("highRating")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium
-                            border transition-all duration-200 ${
-                              quickFilters.highRating
-                                ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                                : "bg-background text-foreground border-border hover:bg-secondary"
-                            }`}
-              >
-                <span className="text-base">⭐</span>
-                <span>Đánh giá cao nhất</span>
-              </button>
-
-              {QUICK_FILTER_SUBJECTS.map((subject) => (
-                <button
-                  key={subject}
-                  onClick={() => handleSubjectFilterToggle(subject)}
-                  className={`px-4 py-2.5 rounded-xl text-sm font-medium border transition-all duration-200 ${
-                    quickFilters.subjects.includes(subject)
-                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                      : "bg-background text-foreground border-border hover:bg-secondary"
-                  }`}
-                >
-                  {subject}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Advanced Filter Tags */}
-          {(advancedFilters.MinHourlyRate ||
-            advancedFilters.MaxHourlyRate ||
-            advancedFilters.MinRating ||
-            advancedFilters.HoursPerSession) && (
-            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border">
-              {advancedFilters.MinHourlyRate && advancedFilters.MaxHourlyRate && (
-                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
-                  Giá: {advancedFilters.MinHourlyRate.toLocaleString()} -{" "}
-                  {advancedFilters.MaxHourlyRate.toLocaleString()} đ
-                </div>
-              )}
-              {advancedFilters.MinRating && (
-                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
-                  Đánh giá: ≥ {advancedFilters.MinRating} ⭐
-                </div>
-              )}
-              {advancedFilters.HoursPerSession && (
-                <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm border border-primary/20">
-                  Thời lượng: {advancedFilters.HoursPerSession} giờ
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+        <TutorFilterSection
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedSubject={selectedSubject}
+          onSubjectChange={(value) => {
+            setSelectedSubject(value);
+            if (value) {
+              handleSubjectFilterToggle(value);
+            }
+          }}
+          quickFilters={quickFilters}
+          onQuickFilterToggle={handleQuickFilterToggle}
+          onSubjectFilterToggle={handleSubjectFilterToggle}
+          onAdvancedFilterOpen={() => setIsAdvancedFilterOpen(true)}
+          advancedFilters={advancedFilters}
+          subjectOptions={SUBJECT_OPTIONS}
+          quickFilterSubjects={QUICK_FILTER_SUBJECTS}
+          searchPlaceholder={t("search.placeholder")}
+        />
 
         {/* Tutors Grid */}
-        {allTutors.length === 0 && !isLoadingMore ? (
+        {isInitialLoading ? (
+          // Initial loading skeleton
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+            <TutorCardSkeleton count={6} />
+          </div>
+        ) : allTutors.length === 0 ? (
+          // Empty state (only show after initial load)
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">{t("empty.title")}</p>
             <button
@@ -508,6 +405,7 @@ const StudentHomePage = () => {
             </button>
           </div>
         ) : (
+          // Tutors list
           <>
             <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
               {filteredTutors.map((tutor) => (
