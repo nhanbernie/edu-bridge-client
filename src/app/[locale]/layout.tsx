@@ -74,6 +74,7 @@ const getMessages = cache(async (locale: string) => {
       ebSchedule,
       availabilityCalendar,
       ebMediaCard,
+      ebVideoUploadPlaceholder,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -143,6 +144,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/components/eb-schedule.json`),
       import(`@/i18n/locales/${locale}/components/availability-calendar.json`),
       import(`@/i18n/locales/${locale}/components/eb-media-card.json`),
+      import(`@/i18n/locales/${locale}/components/eb-video-upload-placeholder.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -239,6 +241,7 @@ const getMessages = cache(async (locale: string) => {
         ebSchedule: ebSchedule.default,
         availabilityCalendar: availabilityCalendar.default,
         ebMediaCard: ebMediaCard.default,
+        ebVideoUploadPlaceholder: ebVideoUploadPlaceholder.default,
       },
       validation: {
         auth: validationAuth.default,
