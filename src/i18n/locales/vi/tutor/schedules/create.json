@@ -1,0 +1,8 @@
+{
+  "title": "Tạo lịch rảnh mới",
+  "subtitle": "Sử dụng lịch bên dưới để tạo khung thời gian rảnh cho học sinh đặt lịch",
+  "backButton": "Quay lại quản lý lịch",
+  "currentSchedules": "Lịch rảnh hiện tại",
+  "scheduleSummary": "{availableSlots} rảnh, {bookedSlots} đã đặt",
+  "loading": "Đang tải lịch..."
+}

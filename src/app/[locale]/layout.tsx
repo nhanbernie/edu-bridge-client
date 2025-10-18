@@ -45,6 +45,7 @@ const getMessages = cache(async (locale: string) => {
       tutorDashboard,
       tutorSchedules,
       tutorSchedulesManage,
+      tutorSchedulesCreate,
       tutorCoursesManage,
       tutorCoursesForm,
       tutorCoursesPreview,
@@ -70,6 +71,8 @@ const getMessages = cache(async (locale: string) => {
       sessionList,
       sessionCard,
       sessionTabs,
+      ebSchedule,
+      availabilityCalendar,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -104,6 +107,7 @@ const getMessages = cache(async (locale: string) => {
       // Tutor schedules translations
       import(`@/i18n/locales/${locale}/tutor/schedules/schedules.json`),
       import(`@/i18n/locales/${locale}/tutor/schedules/manage.json`),
+      import(`@/i18n/locales/${locale}/tutor/schedules/create.json`),
       // Tutor courses translations
       import(`@/i18n/locales/${locale}/tutor/courses/manage.json`),
       import(`@/i18n/locales/${locale}/tutor/courses/form.json`),
@@ -135,6 +139,8 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/components/session-list.json`),
       import(`@/i18n/locales/${locale}/components/session-card.json`),
       import(`@/i18n/locales/${locale}/components/session-tabs.json`),
+      import(`@/i18n/locales/${locale}/components/eb-schedule.json`),
+      import(`@/i18n/locales/${locale}/components/availability-calendar.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -158,6 +164,7 @@ const getMessages = cache(async (locale: string) => {
         schedules: {
           ...tutorSchedules.default,
           manage: tutorSchedulesManage.default,
+          create: tutorSchedulesCreate.default,
         },
         onboard: {
           "profile-under-preview": tutorOnboardProfileUnderPreview.default,
@@ -227,6 +234,8 @@ const getMessages = cache(async (locale: string) => {
         sessionList: sessionList.default,
         sessionCard: sessionCard.default,
         sessionTabs: sessionTabs.default,
+        ebSchedule: ebSchedule.default,
+        availabilityCalendar: availabilityCalendar.default,
       },
       validation: {
         auth: validationAuth.default,
@@ -241,15 +250,12 @@ const getMessages = cache(async (locale: string) => {
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
-  // Validate locale
   if (!SUPPORTED_LOCALES.includes(locale as Locale)) {
     notFound();
   }
 
-  // Load messages with caching
   const messages = await getMessages(locale);
 
-  // Child layout - NO html/body tags (parent layout already has them)
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       {children}

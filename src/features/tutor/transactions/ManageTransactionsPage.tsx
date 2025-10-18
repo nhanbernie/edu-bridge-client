@@ -43,7 +43,7 @@ const ManageTransactionsPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <DollarSign className="h-8 w-8 text-primary" />
+              {/* <DollarSign className="h-8 w-8 text-primary" /> */}
               <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
             </div>
             <p className="text-lg text-muted-foreground">{t("subtitle")}</p>

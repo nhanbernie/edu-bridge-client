@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
@@ -48,7 +49,7 @@ interface EBScheduleProps {
 
 const EBSchedule: React.FC<EBScheduleProps> = ({
   scheduleData,
-  title = "Lịch rảnh trong tuần",
+  title,
   showHeader = true,
   showDate = false,
   mode = "week",
@@ -56,7 +57,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   onDateChange,
   onSlotClick,
 }) => {
-  // State for current date navigation
+  const t = useTranslations("components.ebSchedule");
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // Navigation handlers
@@ -97,8 +98,16 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   const displayDays = useMemo(() => {
     const days = eachDayOfInterval(dateRange);
     return days.map((date) => {
-      // Map to Vietnamese day names to match scheduleTransform format
-      const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+      // Map to day names using i18n
+      const dayNames = [
+        t("dayNames.sunday"),
+        t("dayNames.monday"),
+        t("dayNames.tuesday"),
+        t("dayNames.wednesday"),
+        t("dayNames.thursday"),
+        t("dayNames.friday"),
+        t("dayNames.saturday"),
+      ];
       const dayIndex = date.getDay();
       const dayName = dayNames[dayIndex];
 
@@ -110,7 +119,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
         isCurrentMonth: isSameMonth(date, currentDate),
       };
     });
-  }, [dateRange, currentDate]);
+  }, [dateRange, currentDate, t]);
 
   const schedule = scheduleData || [];
 
@@ -176,11 +185,11 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               <div className="space-y-2">
                 {finalDayData.isFullDay ? (
                   <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-sm font-medium px-3 py-2 rounded-lg border border-primary/20 shadow-sm">
-                    Cả ngày
+                    {t("fullDay")}
                   </div>
                 ) : finalDayData.timeSlots.length === 0 ? (
                   <div className="text-muted-foreground/60 text-sm px-3 py-2 bg-muted/30 rounded-lg">
-                    Không có lịch
+                    {t("noSchedule")}
                   </div>
                 ) : (
                   finalDayData.timeSlots.map((slot, index) => (
@@ -189,10 +198,10 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                       className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-sm ${getTimeSlotStyle(slot)}`}
                       title={
                         slot.status === "BOOKED"
-                          ? "Đã có lịch dạy"
+                          ? t("slotStatus.booked")
                           : slot.status === "RESERVED"
-                            ? "Đang được giữ"
-                            : "Lịch rảnh"
+                            ? t("slotStatus.reserved")
+                            : t("slotStatus.available")
                       }
                       onClick={() => handleSlotClick(slot, finalDayData)}
                     >
@@ -228,7 +237,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
             <div className="flex flex-wrap gap-2">
               {dayData.isFullDay ? (
                 <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-sm font-medium px-3 py-2 rounded-lg border border-primary/20 shadow-sm">
-                  Cả ngày
+                  {t("fullDay")}
                 </div>
               ) : (
                 dayData.timeSlots.map((slot, index) => (
@@ -257,7 +266,15 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   const renderMonthMode = () => (
     <div className="space-y-3">
       <div className="grid grid-cols-7 gap-2 mb-3">
-        {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day) => (
+        {[
+          t("dayNames.monday"),
+          t("dayNames.tuesday"),
+          t("dayNames.wednesday"),
+          t("dayNames.thursday"),
+          t("dayNames.friday"),
+          t("dayNames.saturday"),
+          t("dayNames.sunday"),
+        ].map((day) => (
           <div
             key={day}
             className="text-center font-semibold text-sm text-muted-foreground py-2 bg-muted/30 rounded-lg"
@@ -311,7 +328,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
               <div className="space-y-1">
                 {finalDayData.isFullDay ? (
                   <div className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary text-xs font-medium px-2 py-1 rounded-lg border border-primary/20 shadow-sm">
-                    Cả ngày
+                    {t("fullDay")}
                   </div>
                 ) : finalDayData.timeSlots.length > 0 ? (
                   finalDayData.timeSlots.slice(0, 2).map((slot, index) => (
@@ -320,10 +337,10 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                       className={`text-xs font-medium px-2 py-1 rounded-lg transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-sm ${getTimeSlotStyle(slot)}`}
                       title={
                         slot.status === "BOOKED"
-                          ? "Đã có lịch dạy"
+                          ? t("slotStatus.booked")
                           : slot.status === "RESERVED"
-                            ? "Đang được giữ"
-                            : "Lịch rảnh"
+                            ? t("slotStatus.reserved")
+                            : t("slotStatus.available")
                       }
                       onClick={() => handleSlotClick(slot, finalDayData)}
                     >
@@ -333,7 +350,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                 ) : null}
                 {finalDayData.timeSlots.length > 2 && (
                   <div className="text-xs text-muted-foreground bg-muted/30 px-2 py-1 rounded-lg font-medium">
-                    +{finalDayData.timeSlots.length - 2} khác
+                    {t("moreSlots", { count: finalDayData.timeSlots.length - 2 })}
                   </div>
                 )}
               </div>
@@ -388,7 +405,7 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
             <div className="p-2 bg-primary/10 rounded-lg">
               <Calendar className="h-5 w-5 text-primary" />
             </div>
-            {title}
+            {title || t("title")}
           </CardTitle>
           {showNavigation && (
             <div className="flex items-center gap-2">

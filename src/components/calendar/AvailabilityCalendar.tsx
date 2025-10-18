@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -18,6 +19,7 @@ interface AvailabilityCalendarProps {
 }
 
 export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSave }) => {
+  const t = useTranslations("components.availabilityCalendar");
   const { theme } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
   const [calendarRef, setCalendarRef] = useState<any>(null);
@@ -77,7 +79,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
       <div className="flex items-center justify-center h-64 bg-card rounded-xl border border-border shadow-sm">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p className="text-muted-foreground">Đang tải lịch...</p>
+          <p className="text-muted-foreground">{t("loading")}</p>
         </div>
       </div>
     );
@@ -89,11 +91,9 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6">
         <div>
           <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-1 sm:mb-2">
-            Lịch rảnh
+            {t("title")}
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Kéo chọn để tạo lịch mới, nhấn chuột trái để xóa và nhấn chuột phải để sửa
-          </p>
+          <p className="text-xs sm:text-sm text-muted-foreground">{t("subtitle")}</p>
         </div>
 
         {tempSlots.length > 0 && (
@@ -104,7 +104,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
               size="sm"
               className="hover:bg-destructive/10 hover:border-destructive/20 hover:text-destructive text-xs sm:text-sm"
             >
-              Xóa tất cả
+              {t("clearAll")}
             </Button>
             <Button
               onClick={handleSaveSlots}
@@ -115,13 +115,13 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
               {isCreating ? (
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
-                  <span className="hidden sm:inline">Đang lưu...</span>
-                  <span className="sm:hidden">Lưu...</span>
+                  <span className="hidden sm:inline">{t("saving")}</span>
+                  <span className="sm:hidden">{t("saveShort")}</span>
                 </div>
               ) : (
                 <>
-                  <span className="hidden sm:inline">Lưu ({tempSlots.length})</span>
-                  <span className="sm:hidden">Lưu ({tempSlots.length})</span>
+                  <span className="hidden sm:inline">{t("save", { count: tempSlots.length })}</span>
+                  <span className="sm:hidden">{t("save", { count: tempSlots.length })}</span>
                 </>
               )}
             </Button>
@@ -133,15 +133,21 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
       <div className="flex flex-wrap gap-3 sm:gap-6 mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-muted/20 to-muted/10 rounded-xl sm:rounded-2xl border border-border/30 backdrop-blur-sm">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg shadow-sm ring-2 ring-emerald-200/50 dark:ring-emerald-700/50"></div>
-          <span className="text-xs sm:text-sm font-semibold text-foreground">Rảnh</span>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">
+            {t("legend.available")}
+          </span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg shadow-sm ring-2 ring-rose-200/50 dark:ring-rose-700/50"></div>
-          <span className="text-xs sm:text-sm font-semibold text-foreground">Đã đặt</span>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">
+            {t("legend.booked")}
+          </span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-sm ring-2 ring-blue-200/50 dark:ring-blue-700/50"></div>
-          <span className="text-xs sm:text-sm font-semibold text-foreground">Lịch mới</span>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">
+            {t("legend.new")}
+          </span>
         </div>
       </div>
 
@@ -194,10 +200,10 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
           }}
           locale="vi"
           buttonText={{
-            today: "Hôm nay",
-            month: "Tháng",
-            week: "Tuần",
-            day: "Ngày",
+            today: t("buttonText.today"),
+            month: t("buttonText.month"),
+            week: t("buttonText.week"),
+            day: t("buttonText.day"),
           }}
           dayHeaderContent={(arg) => {
             const date = new Date(arg.date);
@@ -229,7 +235,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
         />
       </div>
 
-      {/* Schedule Dialog */}
       <ScheduleDialog
         isOpen={showScheduleDialog}
         onClose={() => {
@@ -241,7 +246,6 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
         mode={dialogMode}
       />
 
-      {/* Delete Confirmation Dialog */}
       <DeleteConfirmDialog
         isOpen={showDeleteDialog}
         onClose={() => {
@@ -249,8 +253,8 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
           setContextMenuEvent(null);
         }}
         onConfirm={handleDeleteConfirm}
-        title="Xóa lịch rảnh"
-        description={`Bạn có chắc chắn muốn xóa lịch "${contextMenuEvent?.title}" không? Hành động này không thể hoàn tác.`}
+        title={t("deleteDialog.title")}
+        description={t("deleteDialog.description", { title: contextMenuEvent?.title || "" })}
       />
     </div>
   );

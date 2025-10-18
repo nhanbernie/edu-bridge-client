@@ -1,6 +1,5 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { MotionContainer, MotionItem } from "@/components/motion";
 
 const ManageSchedulesSkeleton = () => {
@@ -10,14 +9,14 @@ const ManageSchedulesSkeleton = () => {
       <MotionItem>
         <div className="flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <Skeleton className="h-10 w-80" />
+            <div className="flex items-center gap-3 mb-4 animate-pulse">
+              <div className="h-10 bg-muted rounded w-80"></div>
             </div>
-            <Skeleton className="h-6 w-96" />
+            <div className="h-6 bg-muted rounded w-96 animate-pulse"></div>
           </div>
           <div className="flex gap-3">
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-36" />
+            <div className="h-10 bg-muted rounded w-24 animate-pulse"></div>
+            <div className="h-10 bg-muted rounded w-36 animate-pulse"></div>
           </div>
         </div>
       </MotionItem>
@@ -26,12 +25,15 @@ const ManageSchedulesSkeleton = () => {
       <MotionItem>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((item) => (
-            <div key={item} className="bg-card rounded-3xl shadow-lg border border-border p-6">
+            <div
+              key={item}
+              className="bg-card rounded-3xl shadow-lg border border-border p-6 animate-pulse"
+            >
               <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 rounded-xl" />
+                <div className="h-12 w-12 bg-muted rounded-xl"></div>
                 <div className="space-y-2">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-8 w-16" />
+                  <div className="h-4 bg-muted rounded w-20"></div>
+                  <div className="h-8 bg-muted rounded w-16"></div>
                 </div>
               </div>
             </div>
@@ -42,9 +44,9 @@ const ManageSchedulesSkeleton = () => {
       {/* Current Schedules Skeleton */}
       <MotionItem>
         <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Skeleton className="h-6 w-6" />
-            <Skeleton className="h-8 w-48" />
+          <div className="flex items-center gap-3 mb-6 animate-pulse">
+            <div className="h-6 w-6 bg-muted rounded"></div>
+            <div className="h-8 bg-muted rounded w-48"></div>
           </div>
 
           {/* Schedule Grid Skeleton */}
@@ -53,9 +55,9 @@ const ManageSchedulesSkeleton = () => {
             <div className="grid grid-cols-8 gap-2">
               <div></div>
               {[1, 2, 3, 4, 5, 6, 7].map((day) => (
-                <div key={day} className="text-center">
-                  <Skeleton className="h-4 w-8 mx-auto mb-2" />
-                  <Skeleton className="h-8 w-8 mx-auto rounded-full" />
+                <div key={day} className="text-center animate-pulse">
+                  <div className="h-4 bg-muted rounded w-8 mx-auto mb-2"></div>
+                  <div className="h-8 w-8 bg-muted rounded-full mx-auto"></div>
                 </div>
               ))}
             </div>
@@ -63,10 +65,10 @@ const ManageSchedulesSkeleton = () => {
             {/* Time Slots */}
             <div className="space-y-2">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((slot) => (
-                <div key={slot} className="grid grid-cols-8 gap-2">
-                  <Skeleton className="h-6 w-12" />
+                <div key={slot} className="grid grid-cols-8 gap-2 animate-pulse">
+                  <div className="h-6 bg-muted rounded w-12"></div>
                   {[1, 2, 3, 4, 5, 6, 7].map((day) => (
-                    <Skeleton key={day} className="h-6 w-full rounded" />
+                    <div key={day} className="h-6 bg-muted rounded w-full"></div>
                   ))}
                 </div>
               ))}

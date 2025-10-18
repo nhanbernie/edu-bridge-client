@@ -1,0 +1,24 @@
+{
+  "title": "Availability Calendar",
+  "subtitle": "Drag to select for new schedule, left click to delete and right click to edit",
+  "clearAll": "Clear All",
+  "save": "Save ({count})",
+  "saving": "Saving...",
+  "saveShort": "Save...",
+  "loading": "Loading calendar...",
+  "legend": {
+    "available": "Available",
+    "booked": "Booked",
+    "new": "New Schedule"
+  },
+  "deleteDialog": {
+    "title": "Delete Availability",
+    "description": "Are you sure you want to delete the schedule \"{title}\"? This action cannot be undone."
+  },
+  "buttonText": {
+    "today": "Today",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day"
+  }
+}

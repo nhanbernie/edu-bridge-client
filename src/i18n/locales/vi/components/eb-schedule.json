@@ -1,0 +1,20 @@
+{
+  "title": "Lịch rảnh trong tuần",
+  "fullDay": "Cả ngày",
+  "noSchedule": "Không có lịch",
+  "moreSlots": "+{count} khác",
+  "slotStatus": {
+    "available": "Lịch rảnh",
+    "booked": "Đã có lịch dạy",
+    "reserved": "Đang được giữ"
+  },
+  "dayNames": {
+    "monday": "T2",
+    "tuesday": "T3",
+    "wednesday": "T4",
+    "thursday": "T5",
+    "friday": "T6",
+    "saturday": "T7",
+    "sunday": "CN"
+  }
+}

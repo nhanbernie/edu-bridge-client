@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ROUTES } from "@/common/constants/route.constant";
@@ -10,8 +11,10 @@ import EBSchedule from "@/components/common/EBSchedule";
 import { AvailabilityCalendar } from "@/components/calendar/AvailabilityCalendar";
 import { useAvailabilityBlock, useTutorId } from "@/hooks";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
+import { CreateSchedulesSkeleton } from "./skeleton";
 
 const CreateSchedulesPage = () => {
+  const t = useTranslations("tutor.schedules.create");
   const { push } = useLocaleRouter();
   const { tutorId } = useTutorId();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -29,24 +32,26 @@ const CreateSchedulesPage = () => {
 
   const handleSaveSuccess = () => {};
 
+  if (isLoadingBlocks) {
+    return <CreateSchedulesSkeleton />;
+  }
+
   return (
     <div className="min-h-screen">
       <div className="container mx-auto py-6 px-4">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <h1 className="text-3xl font-bold text-foreground">Tạo lịch rảnh mới</h1>
+            <h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
           </div>
-          <p className="text-muted-foreground text-lg mb-6">
-            Sử dụng lịch bên dưới để tạo khung thời gian rảnh cho học sinh đặt lịch
-          </p>
+          <p className="text-muted-foreground text-lg mb-6">{t("subtitle")}</p>
           <Button
             onClick={handleBack}
             variant="ghost"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
-            Quay lại quản lý lịch
+            {t("backButton")}
           </Button>
         </div>
 
@@ -57,9 +62,12 @@ const CreateSchedulesPage = () => {
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Calendar className="w-5 h-5 text-primary" />
               </div>
-              Lịch rảnh hiện tại
+              {t("currentSchedules")}
               <span className="text-sm font-normal text-muted-foreground bg-muted/30 px-3 py-1 rounded-lg">
-                {scheduleSummary.availableSlots} rảnh, {scheduleSummary.bookedSlots} đã đặt
+                {t("scheduleSummary", {
+                  availableSlots: scheduleSummary.availableSlots,
+                  bookedSlots: scheduleSummary.bookedSlots,
+                })}
               </span>
             </CardTitle>
           </CardHeader>
@@ -68,7 +76,7 @@ const CreateSchedulesPage = () => {
               <div className="flex items-center justify-center h-32">
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  <span>Đang tải lịch...</span>
+                  <span>{t("loading")}</span>
                 </div>
               </div>
             ) : (
