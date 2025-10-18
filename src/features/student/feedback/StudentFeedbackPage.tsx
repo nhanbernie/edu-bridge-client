@@ -114,6 +114,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
         <div className={PAGE_HEADER}>
+          {/* NOTE: return button */}
           <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             {t("backButton")}

@@ -32,5 +32,10 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete"
+  },
+  "verification": {
+    "verified": "Verified",
+    "trustedBeginner": "Trusted Beginner",
+    "pending": "Pending Verification"
   }
 }

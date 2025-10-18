@@ -12,6 +12,7 @@ import { AvailabilityCalendar } from "@/components/calendar/AvailabilityCalendar
 import { useAvailabilityBlock, useTutorId } from "@/hooks";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
 import { CreateSchedulesSkeleton } from "./skeleton";
+import { EBButtonAction } from "@/components/motion";
 
 const CreateSchedulesPage = () => {
   const t = useTranslations("tutor.schedules.create");
@@ -41,18 +42,19 @@ const CreateSchedulesPage = () => {
       <div className="container mx-auto py-6 px-4">
         {/* Header */}
         <div className="mb-8">
+          <EBButtonAction
+            enableIconAnimation={true}
+            enableTextAnimation={true}
+            onClick={handleBack}
+            className="mb-4 text-muted-foreground hover:bg-muted flex items-center gap-2"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            {t("backButton")}
+          </EBButtonAction>
           <div className="flex items-center gap-3 mb-4">
             <h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
           </div>
           <p className="text-muted-foreground text-lg mb-6">{t("subtitle")}</p>
-          <Button
-            onClick={handleBack}
-            variant="ghost"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            {t("backButton")}
-          </Button>
         </div>
 
         {/* Current Schedules */}

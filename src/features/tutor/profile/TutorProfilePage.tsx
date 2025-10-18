@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
+import { CheckCircle, Plus, Edit3 } from "lucide-react";
 import EBMediaCard from "@/components/common/EBMediaCard";
 import EBEmptyState from "@/components/common/EBEmptyState";
 import EBVideoUploadPlaceholder from "@/components/common/EBVideoUploadPlaceholder";
@@ -11,7 +11,8 @@ import EBTutorProfileForm from "./components/EBTutorProfileForm";
 import MediaUploadModal from "./components/MediaUploadModal";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
 import { useTutorProfile } from "@/features/tutor/profile/hooks/useTutorProfile";
-import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
+import { MotionContainer, MotionItem, EBMotionCard, EBButtonAction } from "@/components/motion";
+import { TutorProfileSkeleton } from "./skeleton";
 
 interface TutorProfileFormData {
   fullName: string;
@@ -64,53 +65,73 @@ const TutorProfilePage = () => {
   };
 
   if (isLoading) {
-    return <EBPageLoading message={t("loading")} />;
+    return <TutorProfileSkeleton />;
   }
 
   return (
-    <div className="min-h-screen">
+    <MotionContainer className="min-h-screen space-y-6 lg:space-y-8">
       {/* Header */}
-      <div className={PAGE_HEADER}>
-        <h1 className={PAGE_TITLE}>{t("title")}</h1>
-        <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
-      </div>
+      <MotionItem>
+        <div className="mb-6 lg:mb-8">
+          <div className="flex items-center gap-3 mb-3 lg:mb-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              {t("title")}
+            </h1>
+            <div className="flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/20 rounded-full">
+              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+              <span className="text-xs font-medium text-green-600 dark:text-green-400">
+                {t("form.verification.verified")}
+              </span>
+            </div>
+          </div>
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
+            {t("subtitle")}
+          </p>
+        </div>
+      </MotionItem>
 
       {/* 2 Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* LEFT COLUMN - Profile Form */}
-        <EBTutorProfileForm
-          userData={userData}
-          isEditing={isEditing}
-          isSaving={isSaving}
-          isUploadingAvatar={isUploadingAvatar}
-          onSubmit={handleSubmit}
-          onEdit={() => setIsEditing(true)}
-          onCancel={() => setIsEditing(false)}
-          onAvatarChange={handleAvatarChange}
-        />
+      <MotionItem>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          {/* LEFT COLUMN - Profile Form */}
+          <div className="order-2 lg:order-1">
+            <EBTutorProfileForm
+              userData={userData}
+              isEditing={isEditing}
+              isSaving={isSaving}
+              isUploadingAvatar={isUploadingAvatar}
+              onSubmit={handleSubmit}
+              onEdit={() => setIsEditing(true)}
+              onCancel={() => setIsEditing(false)}
+              onAvatarChange={handleAvatarChange}
+            />
+          </div>
 
-        {/* RIGHT COLUMN - Video & Certificates */}
-        <div className="space-y-6">
-          {/* Video Intro Section */}
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
+          {/* RIGHT COLUMN - Video & Certificates */}
+          <div className="space-y-6 order-1 lg:order-2">
+            {/* Video Intro Section */}
+            <EBMotionCard
+              variant="elevated"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200/50 dark:border-blue-800/50"
+            >
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground">
                   {t("media.videoIntro.title")}
                 </h3>
                 {videoIntro && (
-                  <button
+                  <EBButtonAction
                     onClick={() => openMediaModal("VideoIntro", videoIntro.mediaId)}
-                    className="text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                    className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                   >
-                    {t("media.videoIntro.edit")}
-                  </button>
+                    <Edit3 className="h-4 w-4" />
+                    <span>{t("media.videoIntro.edit")}</span>
+                  </EBButtonAction>
                 )}
               </div>
 
               {/* Video Display or Upload Placeholder */}
               {videoIntro ? (
-                <div className="w-full aspect-video bg-black rounded-xl overflow-hidden">
+                <div className="w-full aspect-video bg-black rounded-xl sm:rounded-2xl overflow-hidden shadow-lg">
                   <video
                     src={videoIntro.filePath}
                     controls
@@ -123,34 +144,28 @@ const TutorProfilePage = () => {
               ) : (
                 <EBVideoUploadPlaceholder onClick={() => openMediaModal("VideoIntro")} />
               )}
-            </CardContent>
-          </Card>
+            </EBMotionCard>
 
-          {/* Certificates Section */}
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
+            {/* Certificates Section */}
+            <EBMotionCard
+              variant="elevated"
+              className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 border-emerald-200/50 dark:border-emerald-800/50"
+            >
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground">
                   {t("media.certificates.title")}
                 </h3>
-                <button
+                <EBButtonAction
                   onClick={() => openMediaModal("Award")}
-                  className="flex items-center gap-1 text-sm text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                  className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                  {t("media.certificates.add")}
-                </button>
+                  <Plus className="h-4 w-4" />
+                  <span>{t("media.certificates.add")}</span>
+                </EBButtonAction>
               </div>
 
               {/* Certificates List - Single Column */}
-              <div className="space-y-3">
+              <div className="space-y-3 sm:space-y-4">
                 {certificates.length > 0 ? (
                   certificates.map((cert) => (
                     <EBMediaCard
@@ -166,7 +181,7 @@ const TutorProfilePage = () => {
                   <EBEmptyState
                     icon={
                       <svg
-                        className="w-12 h-12 text-gray-400"
+                        className="w-12 h-12 text-muted-foreground"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -186,12 +201,12 @@ const TutorProfilePage = () => {
                   />
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </EBMotionCard>
+          </div>
+          {/* End RIGHT COLUMN */}
         </div>
-        {/* End RIGHT COLUMN */}
-      </div>
-      {/* End 2 Column Grid */}
+        {/* End 2 Column Grid */}
+      </MotionItem>
 
       {/* Media Upload Modal */}
       <MediaUploadModal
@@ -215,7 +230,7 @@ const TutorProfilePage = () => {
           title={selectedImage.title}
         />
       )}
-    </div>
+    </MotionContainer>
   );
 };
 

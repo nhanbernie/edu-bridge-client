@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import { EBMotionCard } from "@/components/motion";
 
 interface EBFeedbackCardProps {
   studentName: string;
@@ -20,8 +21,8 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
   createdAt,
 }) => {
   return (
-    <Card className="border-0 shadow-sm">
-      <CardContent className="p-4">
+    <EBMotionCard className="border-0 shadow-lg">
+      <CardContent className="">
         {/* Header: Student Name */}
         <h3 className="font-semibold text-foreground mb-1">{studentName}</h3>
 
@@ -66,7 +67,7 @@ const EBFeedbackCard: React.FC<EBFeedbackCardProps> = ({
         {/* Comment */}
         {comment && <p className="text-sm text-muted-foreground leading-relaxed">{comment}</p>}
       </CardContent>
-    </Card>
+    </EBMotionCard>
   );
 };
 

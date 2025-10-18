@@ -22,7 +22,7 @@ const EBManageLayoutThemeToggle: React.FC<EBManageLayoutThemeToggleProps> = ({
   };
 
   const icon = theme === "light" ? Sun : Moon;
-  const label = theme === "light" ? "Dark Mode" : "Light Mode";
+  const label = theme === "light" ? "Dark mode" : "Light mode";
 
   return (
     <EBButtonAction
