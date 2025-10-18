@@ -77,7 +77,7 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
             {t("backButton")}
           </Button>
           <div className="flex items-center gap-3 mb-4">
-            <Star className="h-8 w-8 text-primary" />
+            {/* <Star className="h-8 w-8 text-primary" /> */}
             <h1 className="text-4xl font-bold text-foreground">{courseTitle}</h1>
           </div>
           <p className="text-lg text-muted-foreground">{t("subtitle")}</p>

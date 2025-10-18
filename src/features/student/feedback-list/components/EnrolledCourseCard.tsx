@@ -3,7 +3,8 @@ import { useTranslations } from "next-intl";
 import { BookOpen, CheckCircle, Clock, Users } from "lucide-react";
 import { EnrollmentDto } from "@/services/course";
 import Image from "next/image";
-
+import { EBMotionCard } from "@/components/motion";
+import { pressedCardVariants } from "@/common/constants/motion/cardMotion.constant";
 interface EnrolledCourseCardProps {
   enrollment: EnrollmentDto;
   index: number;
@@ -21,16 +22,20 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
         : 0;
 
     const cardClasses = isCompleted
-      ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300 cursor-pointer"
-      : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700/50 transition-all duration-300 cursor-pointer";
+      ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-xl sm:rounded-2xl px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300 cursor-pointer"
+      : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-xl sm:rounded-2xl px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700/50 transition-all duration-300 cursor-pointer";
 
     return (
-      <div className={cardClasses} onClick={() => onViewDetails?.(enrollment.courseId)}>
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <div className="flex items-start gap-4">
+      <EBMotionCard
+        variants={pressedCardVariants}
+        className={cardClasses}
+        onClick={() => onViewDetails?.(enrollment.courseId)}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start gap-3 sm:gap-4">
               {/* Tutor Avatar */}
-              <div className="relative w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-xl sm:rounded-2xl overflow-hidden">
                 {enrollment.tutorAvatarUrl ? (
                   <Image
                     src={enrollment.tutorAvatarUrl}
@@ -40,43 +45,43 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                    <span className="text-gray-600 dark:text-gray-400 font-bold text-2xl">
+                    <span className="text-gray-600 dark:text-gray-400 font-bold text-lg sm:text-2xl">
                       {enrollment.tutorName.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
               </div>
 
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 min-w-0 space-y-2 sm:space-y-3">
                 {/* Course Title */}
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
                   {enrollment.courseTitle}
                 </h3>
 
                 {/* Tutor Info */}
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-gray-500" />
-                  <span className="text-gray-600 dark:text-gray-400 text-sm">
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 flex-shrink-0" />
+                  <span className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm truncate">
                     {t("tutor")} {enrollment.tutorName}
                   </span>
                 </div>
 
                 {/* Progress Info */}
                 <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="h-3 w-3" />
-                    <span>
+                  <div className="flex items-center gap-1 min-w-0">
+                    <BookOpen className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">
                       {t("sessions", {
                         completed: enrollment.completedSessions,
                         total: enrollment.totalSessionsBooked,
                       })}
                     </span>
                   </div>
-                  <span className="font-medium">{Math.round(progress)}%</span>
+                  <span className="font-medium flex-shrink-0 ml-2">{Math.round(progress)}%</span>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 sm:h-2 overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-300 ${
                       isCompleted ? "bg-emerald-500" : "bg-blue-500"
@@ -100,16 +105,16 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
           </div>
 
           {/* Right side - Status */}
-          <div className="ml-6 flex-shrink-0">
+          <div className="flex justify-end sm:ml-6 sm:flex-shrink-0">
             {/* Status Badge */}
             <div
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${
+              className={`flex items-center gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg ${
                 isCompleted
                   ? "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300"
                   : "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
               }`}
             >
-              <span className="text-xs font-medium">
+              <span className="text-xs font-medium whitespace-nowrap">
                 {isCompleted
                   ? t("status.completed")
                   : role === "tutor"
@@ -122,9 +127,9 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
 
         {/* Decorative elements */}
         <div
-          className={`absolute top-4 right-4 w-2 h-2 ${isCompleted ? "bg-emerald-400" : "bg-blue-400"} rounded-full opacity-60`}
+          className={`absolute top-3 right-3 sm:top-4 sm:right-4 w-1.5 h-1.5 sm:w-2 sm:h-2 ${isCompleted ? "bg-emerald-400" : "bg-blue-400"} rounded-full opacity-60`}
         ></div>
-      </div>
+      </EBMotionCard>
     );
   }
 );

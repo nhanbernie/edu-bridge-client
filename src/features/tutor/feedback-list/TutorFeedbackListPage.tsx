@@ -8,9 +8,8 @@ import { BookOpen, GraduationCap } from "lucide-react";
 import { useGetTutorTeachingsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
 import { EnrolledCourseCard } from "@/features/student/feedback-list/components";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import { EnrolledCourseCardSkeleton } from "@/components/common/skeletons";
 import { MotionContainer, MotionItem } from "@/components/motion";
+import { TutorFeedbackListSkeleton } from "./skeleton";
 
 const TutorFeedbackListPage: React.FC = () => {
   const t = useTranslations("tutor.feedback.list");
@@ -37,22 +36,7 @@ const TutorFeedbackListPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <MotionContainer className="min-h-screen space-y-8">
-        <MotionItem>
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
-            </div>
-            <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
-          </div>
-        </MotionItem>
-        <MotionItem>
-          <EnrolledCourseCardSkeleton count={4} />
-        </MotionItem>
-      </MotionContainer>
-    );
+    return <TutorFeedbackListSkeleton />;
   }
 
   if (error) {
@@ -69,53 +53,68 @@ const TutorFeedbackListPage: React.FC = () => {
   }
 
   return (
-    <MotionContainer className="min-h-screen space-y-8">
+    <MotionContainer className="min-h-screen space-y-6 lg:space-y-8">
       {/* Header */}
       <MotionItem>
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
+        <div className="mb-6 lg:mb-8">
+          <div className="flex items-center gap-3 mb-3 lg:mb-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              {t("title")}
+            </h1>
           </div>
-          <p className="text-lg text-muted-foreground">{t("subtitle")}</p>
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
+            {t("subtitle")}
+          </p>
         </div>
       </MotionItem>
 
       {/* Stats Cards */}
       <MotionItem>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-primary/10 rounded-xl">
-                <BookOpen className="h-6 w-6 text-primary" />
+              <div className="p-2 sm:p-3 bg-primary/10 rounded-lg sm:rounded-xl">
+                <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">{t("stats.totalCourses")}</p>
-                <p className="text-2xl font-bold text-foreground">{teachings.length}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                  {t("stats.totalCourses")}
+                </p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
+                  {teachings.length}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-xl">
-                <GraduationCap className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              <div className="p-2 sm:p-3 bg-orange-100 dark:bg-orange-900/20 rounded-lg sm:rounded-xl">
+                <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600 dark:text-orange-400" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">{t("stats.inProgress")}</p>
-                <p className="text-2xl font-bold text-foreground">{inProgressCourses.length}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                  {t("stats.inProgress")}
+                </p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
+                  {inProgressCourses.length}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
+          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-xl">
-                <BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className="p-2 sm:p-3 bg-green-100 dark:bg-green-900/20 rounded-lg sm:rounded-xl">
+                <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 dark:text-green-400" />
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">{t("stats.completed")}</p>
-                <p className="text-2xl font-bold text-foreground">{completedCourses.length}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                  {t("stats.completed")}
+                </p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
+                  {completedCourses.length}
+                </p>
               </div>
             </div>
           </div>
@@ -125,11 +124,15 @@ const TutorFeedbackListPage: React.FC = () => {
       {/* Empty State */}
       {teachings.length === 0 ? (
         <MotionItem>
-          <div className="bg-card rounded-3xl shadow-lg border border-border p-12">
+          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-8 sm:p-12">
             <div className="text-center">
-              <BookOpen className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">{t("empty.title")}</h3>
-              <p className="text-muted-foreground mb-6">{t("empty.description")}</p>
+              <BookOpen className="h-12 w-12 sm:h-16 sm:w-16 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
+                {t("empty.title")}
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-6">
+                {t("empty.description")}
+              </p>
             </div>
           </div>
         </MotionItem>
@@ -138,11 +141,11 @@ const TutorFeedbackListPage: React.FC = () => {
           {/* In Progress Courses */}
           {inProgressCourses.length > 0 && (
             <MotionItem>
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-foreground mb-4">
+              <div className="mb-6 lg:mb-8">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">
                   {t("sections.inProgress", { count: inProgressCourses.length })}
                 </h2>
-                <div className="grid gap-6">
+                <div className="grid gap-4 sm:gap-6">
                   {inProgressCourses.map((enrollment, index) => (
                     <EnrolledCourseCard
                       key={enrollment.courseId}
@@ -161,10 +164,10 @@ const TutorFeedbackListPage: React.FC = () => {
           {completedCourses.length > 0 && (
             <MotionItem>
               <div>
-                <h2 className="text-xl font-bold text-foreground mb-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6">
                   {t("sections.completed", { count: completedCourses.length })}
                 </h2>
-                <div className="grid gap-6">
+                <div className="grid gap-4 sm:gap-6">
                   {completedCourses.map((enrollment, index) => (
                     <EnrolledCourseCard
                       key={enrollment.courseId}

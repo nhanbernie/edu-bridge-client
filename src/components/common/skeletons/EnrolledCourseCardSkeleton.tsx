@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface EnrolledCourseCardSkeletonProps {
   count?: number;
 }
-
+// NOTE: xóa đi
 const EnrolledCourseCardSkeleton: React.FC<EnrolledCourseCardSkeletonProps> = ({ count = 3 }) => {
   return (
     <>

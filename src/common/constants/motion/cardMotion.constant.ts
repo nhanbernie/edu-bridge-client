@@ -111,3 +111,40 @@ export const elegantCardVariants: Variants = {
     transition: { duration: 0 },
   },
 };
+
+export const pressedCardVariants: Variants = {
+  initial: {
+    opacity: 0,
+    y: 4,
+    scale: 0.98,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+      ease: [0.22, 0.61, 0.36, 1],
+    },
+  },
+
+  hover: {
+    scale: 1.02,
+    y: -1,
+    boxShadow: "0 6px 14px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08)",
+    transition: {
+      duration: 0.1, // phản hồi nhanh
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+
+  click: {
+    scale: 0.96, // nhấn rõ nhưng không méo
+    y: 1,
+    boxShadow: "0 2px 6px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.15)",
+    transition: {
+      duration: 0.05, // phản hồi siêu nhanh, cảm giác thật tay
+      ease: "easeOut",
+    },
+  },
+};
