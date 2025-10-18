@@ -31,16 +31,16 @@ export interface NavItem {
 }
 
 // Navigation items with translation keys
-export const getNavigationItems = (t: any): NavItem[] => [
-  { label: t("router.navigation.home"), href: "/home", active: true },
-  { label: t("router.navigation.findTutors"), href: "/home" },
-  { label: t("router.navigation.findStudents"), href: "/home" },
+export const getNavigationItems = (t: any, currentPath?: string): NavItem[] => [
+  { label: t("router.navigation.home"), href: "/home", active: currentPath === "/home" },
+  { label: t("router.navigation.findTutors"), href: "/home", active: currentPath === "/home" },
+  { label: t("router.navigation.findStudents"), href: "/home", active: currentPath === "/home" },
 ];
 
-export const getNavigateMarketItems = (t: any): NavItem[] => [
-  { label: t("router.navigation.home"), href: "/", active: true },
-  { label: t("router.navigation.teachers"), href: "/" },
-  { label: t("router.navigation.contact"), href: "/" },
+export const getNavigateMarketItems = (t: any, currentPath?: string): NavItem[] => [
+  { label: t("router.navigation.home"), href: "/", active: currentPath === "/" },
+  { label: t("router.navigation.teachers"), href: "/", active: currentPath === "/" },
+  { label: t("router.navigation.contact"), href: "/", active: currentPath === "/" },
 ];
 
 // Default Header Action Buttons

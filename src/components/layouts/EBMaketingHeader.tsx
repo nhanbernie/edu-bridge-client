@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "motion/react";
 import { GraduationCap, Menu, X, Sun, Moon, Globe } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { getNavigateMarketItems } from "@/common/constants/navigate.constant";
 import EBButton from "@/components/common/EBButton";
 import { EBThemeToggle, EBLogo } from "@/components/common/";
@@ -10,6 +11,7 @@ import EBNavigation from "./components/EBNavigation";
 import { HeaderConfig } from "./types";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useTranslations } from "next-intl";
+import { SUPPORTED_LOCALES } from "@/i18n/config";
 
 interface MaketingHeaderProps {
   headerConfig?: HeaderConfig;
@@ -20,8 +22,23 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { push } = useLocaleRouter();
+  const pathname = usePathname();
   const t = useTranslations("marketing.header");
   const tRouter = useTranslations();
+
+  // Get current path without locale prefix (e.g., /en/student -> /student)
+  const currentPath = useMemo(() => {
+    const segments = pathname.split("/");
+    const locale = segments[1];
+
+    // Check if first segment is a locale
+    if (locale && SUPPORTED_LOCALES.includes(locale as any)) {
+      // Remove locale from pathname
+      return "/" + segments.slice(2).join("/");
+    }
+
+    return pathname;
+  }, [pathname]);
 
   // Handle scroll effect
   useEffect(() => {
@@ -65,7 +82,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               </nav>
             ) : (
               <nav className="hidden md:flex items-center space-x-8">
-                <EBNavigation items={getNavigateMarketItems(tRouter)} />
+                <EBNavigation items={getNavigateMarketItems(tRouter, currentPath)} />
               </nav>
             )}
 
@@ -159,7 +176,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
 
           {/* Mobile EBNavigation */}
           <nav className="space-y-2">
-            {getNavigateMarketItems(tRouter).map((item, index) => (
+            {getNavigateMarketItems(tRouter, currentPath).map((item, index) => (
               <motion.div
                 key={item.href}
                 initial={{ x: 50, opacity: 0 }}

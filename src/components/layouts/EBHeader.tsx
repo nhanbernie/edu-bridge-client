@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Search, MessageSquare, Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
 import {
@@ -15,6 +16,7 @@ import { EBThemeToggle, EBUserMenu, EBChangeLanguage } from "@/components/common
 import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
 import { useTranslations } from "next-intl";
+import { SUPPORTED_LOCALES } from "@/i18n/config";
 
 interface ActionButtonsProps {
   onMobileMenuToggle: () => void;
@@ -76,12 +78,12 @@ const ActionButtons = ({
   </div>
 );
 
-// Convert HeaderItem[] to NavItem[] for EBNavigation
-const convertToNavItems = (items: HeaderItem[]): NavItem[] => {
+// Convert HeaderItem[] to NavItem[] for EBNavigation with active state
+const convertToNavItems = (items: HeaderItem[], currentPath: string): NavItem[] => {
   return items.map((item) => ({
     label: item.label,
     href: item.href || "#",
-    active: false,
+    active: currentPath === (item.href || "#"),
   }));
 };
 
@@ -106,6 +108,21 @@ const EBHeader = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const t = useTranslations();
+  const pathname = usePathname();
+
+  // Get current path without locale prefix (e.g., /en/student -> /student)
+  const currentPath = useMemo(() => {
+    const segments = pathname.split("/");
+    const locale = segments[1];
+
+    // Check if first segment is a locale
+    if (locale && SUPPORTED_LOCALES.includes(locale as any)) {
+      // Remove locale from pathname
+      return "/" + segments.slice(2).join("/");
+    }
+
+    return pathname;
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,6 +131,7 @@ const EBHeader = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -141,7 +159,11 @@ const EBHeader = ({
             {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
             <nav className="hidden md:flex items-center gap-8">
               <EBNavigation
-                items={headerConfig ? convertToNavItems(headerConfig.items) : getNavigationItems(t)}
+                items={
+                  headerConfig
+                    ? convertToNavItems(headerConfig.items, currentPath)
+                    : getNavigationItems(t, currentPath)
+                }
               />
             </nav>
 
@@ -166,7 +188,7 @@ const EBHeader = ({
       <EBMobileMenu
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
-        navigationItems={getNavigationItems(t)}
+        navigationItems={getNavigationItems(t, currentPath)}
       />
     </>
   );
