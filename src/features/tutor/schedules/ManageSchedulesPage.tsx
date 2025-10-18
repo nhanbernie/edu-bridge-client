@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ROUTES } from "@/common/constants/route.constant";
 import { Calendar, Plus, PlusCircle, Clock, CheckCircle, RefreshCw } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EBPageLoading } from "@/components/common";
 import EBSchedule from "@/components/common/EBSchedule";
+import { ManageSchedulesSkeleton } from "./skeletons";
 import { useAvailabilityBlock, useTutorId } from "@/hooks/index";
 import { transformToCurrentWeekSchedule, getScheduleSummary } from "@/utils/scheduleTransform";
 import { MotionContainer, MotionItem } from "@/components/motion";
 
 const ManageSchedulesPage = () => {
+  const t = useTranslations("tutor.schedules.manage");
   const { push } = useLocaleRouter();
   const { tutorId } = useTutorId();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -31,7 +32,7 @@ const ManageSchedulesPage = () => {
   };
 
   if (isLoadingBlocks) {
-    return <EBPageLoading message="Đang tải lịch rảnh..." />;
+    return <ManageSchedulesSkeleton />;
   }
 
   return (
@@ -41,12 +42,14 @@ const ManageSchedulesPage = () => {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <h1 className="text-4xl font-bold text-foreground">Quản lý lịch rảnh</h1>
+              <h1 className="text-4xl font-bold text-foreground">{t("title")}</h1>
             </div>
             <p className="text-lg text-muted-foreground">
-              Tạo và quản lý lịch rảnh để học sinh có thể đặt lịch • {scheduleSummary.totalSlots}{" "}
-              khung giờ ({scheduleSummary.availableSlots} rảnh, {scheduleSummary.bookedSlots} đã
-              đặt)
+              {t("subtitle", {
+                totalSlots: scheduleSummary.totalSlots,
+                availableSlots: scheduleSummary.availableSlots,
+                bookedSlots: scheduleSummary.bookedSlots,
+              })}
             </p>
           </div>
           <div className="flex gap-3">
@@ -57,14 +60,14 @@ const ManageSchedulesPage = () => {
               className="border-border text-muted-foreground hover:text-foreground hover:bg-muted"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
-              Làm mới
+              {t("refreshButton")}
             </Button>
             <Button
               onClick={handleCreateSchedule}
               className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Thêm lịch rảnh mới
+              {t("addButton")}
             </Button>
           </div>
         </div>
@@ -79,7 +82,7 @@ const ManageSchedulesPage = () => {
                 <Clock className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Tổng khung giờ</p>
+                <p className="text-sm text-muted-foreground">{t("stats.totalSlots")}</p>
                 <p className="text-2xl font-bold text-foreground">{scheduleSummary.totalSlots}</p>
               </div>
             </div>
@@ -91,7 +94,7 @@ const ManageSchedulesPage = () => {
                 <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Đang rảnh</p>
+                <p className="text-sm text-muted-foreground">{t("stats.available")}</p>
                 <p className="text-2xl font-bold text-foreground">
                   {scheduleSummary.availableSlots}
                 </p>
@@ -105,7 +108,7 @@ const ManageSchedulesPage = () => {
                 <PlusCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Đã đặt lịch</p>
+                <p className="text-sm text-muted-foreground">{t("stats.booked")}</p>
                 <p className="text-2xl font-bold text-foreground">{scheduleSummary.bookedSlots}</p>
               </div>
             </div>
@@ -118,7 +121,7 @@ const ManageSchedulesPage = () => {
         <div className="bg-card rounded-3xl shadow-lg border border-border p-6">
           <div className="flex items-center gap-3 mb-6">
             <Calendar className="h-6 w-6 text-primary" />
-            <h2 className="text-2xl font-bold text-foreground">Lịch rảnh hiện tại</h2>
+            <h2 className="text-2xl font-bold text-foreground">{t("currentSchedules")}</h2>
           </div>
           <EBSchedule
             scheduleData={currentSchedules}

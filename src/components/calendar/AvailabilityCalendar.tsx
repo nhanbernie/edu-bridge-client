@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -19,6 +19,29 @@ interface AvailabilityCalendarProps {
 
 export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSave }) => {
   const { theme } = useTheme();
+  const [isMobile, setIsMobile] = useState(false);
+  const [calendarRef, setCalendarRef] = useState<any>(null);
+
+  // Handle responsive view switching
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+
+      if (calendarRef && calendarRef.getApi) {
+        const calendarApi = calendarRef.getApi();
+        if (mobile) {
+          calendarApi.changeView("timeGridDay");
+        } else {
+          calendarApi.changeView("timeGridWeek");
+        }
+      }
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [calendarRef]);
   const {
     // State
     isLoadingBlocks,
@@ -63,37 +86,43 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-foreground mb-2">Lịch rảnh</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-lg sm:text-xl font-semibold text-foreground mb-1 sm:mb-2">
+            Lịch rảnh
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Kéo chọn để tạo lịch mới, nhấn chuột trái để xóa và nhấn chuột phải để sửa
           </p>
         </div>
 
         {tempSlots.length > 0 && (
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
             <Button
               onClick={handleClearSlots}
               variant="outline"
               size="sm"
-              className="hover:bg-destructive/10 hover:border-destructive/20 hover:text-destructive"
+              className="hover:bg-destructive/10 hover:border-destructive/20 hover:text-destructive text-xs sm:text-sm"
             >
               Xóa tất cả
             </Button>
             <Button
               onClick={handleSaveSlots}
               disabled={isCreating}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-xs sm:text-sm"
               size="sm"
             >
               {isCreating ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
-                  Đang lưu...
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                  <span className="hidden sm:inline">Đang lưu...</span>
+                  <span className="sm:hidden">Lưu...</span>
                 </div>
               ) : (
-                `Lưu (${tempSlots.length})`
+                <>
+                  <span className="hidden sm:inline">Lưu ({tempSlots.length})</span>
+                  <span className="sm:hidden">Lưu ({tempSlots.length})</span>
+                </>
               )}
             </Button>
           </div>
@@ -101,30 +130,35 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-6 mb-6 p-4 bg-gradient-to-r from-muted/20 to-muted/10 rounded-2xl border border-border/30 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-4 h-4 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg shadow-sm ring-2 ring-emerald-200/50 dark:ring-emerald-700/50"></div>
-          <span className="text-sm font-semibold text-foreground">Rảnh</span>
+      <div className="flex flex-wrap gap-3 sm:gap-6 mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-muted/20 to-muted/10 rounded-xl sm:rounded-2xl border border-border/30 backdrop-blur-sm">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg shadow-sm ring-2 ring-emerald-200/50 dark:ring-emerald-700/50"></div>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Rảnh</span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="w-4 h-4 bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg shadow-sm ring-2 ring-rose-200/50 dark:ring-rose-700/50"></div>
-          <span className="text-sm font-semibold text-foreground">Đã đặt</span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg shadow-sm ring-2 ring-rose-200/50 dark:ring-rose-700/50"></div>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Đã đặt</span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="w-4 h-4 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-sm ring-2 ring-blue-200/50 dark:ring-blue-700/50"></div>
-          <span className="text-sm font-semibold text-foreground">Lịch mới</span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-sm ring-2 ring-blue-200/50 dark:ring-blue-700/50"></div>
+          <span className="text-xs sm:text-sm font-semibold text-foreground">Lịch mới</span>
         </div>
       </div>
 
       {/* Calendar */}
-      <div className="bg-card rounded-4xl border border-border shadow-sm p-4">
+      <div className="bg-card rounded-4xl border border-border shadow-sm p-2 sm:p-4">
         <FullCalendar
+          ref={(ref) => {
+            if (ref) {
+              setCalendarRef(ref);
+            }
+          }}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
+          initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
           headerToolbar={{
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
+            right: isMobile ? "timeGridDay" : "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           height="auto"
           selectable={true}
@@ -179,7 +213,7 @@ export const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ onSa
                   {dayOfWeek}
                 </div>
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold transition-all duration-200 ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-bold transition-all duration-200 ${
                     isToday
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-foreground hover:bg-muted/50"

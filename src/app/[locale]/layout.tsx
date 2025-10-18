@@ -44,6 +44,7 @@ const getMessages = cache(async (locale: string) => {
       tutorOnboardStep2,
       tutorDashboard,
       tutorSchedules,
+      tutorSchedulesManage,
       tutorCoursesManage,
       tutorCoursesForm,
       tutorCoursesPreview,
@@ -102,6 +103,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/tutor/dashboard/dashboard.json`),
       // Tutor schedules translations
       import(`@/i18n/locales/${locale}/tutor/schedules/schedules.json`),
+      import(`@/i18n/locales/${locale}/tutor/schedules/manage.json`),
       // Tutor courses translations
       import(`@/i18n/locales/${locale}/tutor/courses/manage.json`),
       import(`@/i18n/locales/${locale}/tutor/courses/form.json`),
@@ -153,7 +155,10 @@ const getMessages = cache(async (locale: string) => {
           schedules: tutorDashboardSchedules.default,
           transactionChart: tutorDashboardTransactionChart.default,
         },
-        schedules: tutorSchedules.default,
+        schedules: {
+          ...tutorSchedules.default,
+          manage: tutorSchedulesManage.default,
+        },
         onboard: {
           "profile-under-preview": tutorOnboardProfileUnderPreview.default,
           steps: tutorOnboardSteps.default,

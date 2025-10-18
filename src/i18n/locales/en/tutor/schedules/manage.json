@@ -1,0 +1,20 @@
+{
+  "title": "Manage Availability",
+  "subtitle": "Create and manage your availability so students can book sessions • {totalSlots} time slots ({availableSlots} available, {bookedSlots} booked)",
+  "loading": "Loading availability...",
+  "refreshButton": "Refresh",
+  "addButton": "Add New Availability",
+  "stats": {
+    "totalSlots": "Total Slots",
+    "available": "Available",
+    "booked": "Booked"
+  },
+  "currentSchedules": "Current Availability",
+  "noSchedules": "No schedules",
+  "fullDay": "All day",
+  "slotStatus": {
+    "available": "Available",
+    "booked": "Booked",
+    "reserved": "Reserved"
+  }
+}
