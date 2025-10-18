@@ -4,13 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { useStudentProfile } from "@/features/student/profile/hook/useStudentProfile";
 import EBStudentProfileForm from "./components/EBStudentProfileForm";
-import { EBPageLoading } from "@/components/common";
-import {
-  PAGE_HEADER,
-  PAGE_TITLE,
-  PAGE_SUBTITLE,
-  PAGE_CONTAINER,
-} from "@/common/constants/className.constant";
+import { StudentProfileSkeleton } from "./skeleton";
 
 const StudentProfilePage: React.FC = () => {
   const t = useTranslations("student.profile");
@@ -27,16 +21,20 @@ const StudentProfilePage: React.FC = () => {
   } = useStudentProfile();
 
   if (isLoading) {
-    return <EBPageLoading message={t("messages.loading")} />;
+    return <StudentProfileSkeleton />;
   }
 
   return (
-    <div className={PAGE_CONTAINER}>
+    <div className="min-h-screen bg-background pt-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
-        <div className={PAGE_HEADER}>
-          <h1 className={PAGE_TITLE}>{t("title")}</h1>
-          <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
+        <div className="mb-6 lg:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 lg:mb-4">
+            {t("title")}
+          </h1>
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
+            {t("subtitle")}
+          </p>
         </div>
 
         <EBStudentProfileForm
