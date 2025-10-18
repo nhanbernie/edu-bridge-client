@@ -33,7 +33,9 @@
     "buttons": {
       "cancel": "Cancel",
       "upload": "Upload",
-      "update": "Update"
+      "update": "Update",
+      "uploading": "Uploading...",
+      "updating": "Updating..."
     },
     "validation": {
       "fileSizeError": "File size must not exceed {size}MB",

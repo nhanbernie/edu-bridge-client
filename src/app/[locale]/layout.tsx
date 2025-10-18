@@ -73,6 +73,7 @@ const getMessages = cache(async (locale: string) => {
       sessionTabs,
       ebSchedule,
       availabilityCalendar,
+      ebMediaCard,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -141,6 +142,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/components/session-tabs.json`),
       import(`@/i18n/locales/${locale}/components/eb-schedule.json`),
       import(`@/i18n/locales/${locale}/components/availability-calendar.json`),
+      import(`@/i18n/locales/${locale}/components/eb-media-card.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -236,6 +238,7 @@ const getMessages = cache(async (locale: string) => {
         sessionTabs: sessionTabs.default,
         ebSchedule: ebSchedule.default,
         availabilityCalendar: availabilityCalendar.default,
+        ebMediaCard: ebMediaCard.default,
       },
       validation: {
         auth: validationAuth.default,

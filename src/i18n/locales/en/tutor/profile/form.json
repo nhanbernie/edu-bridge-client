@@ -50,6 +50,7 @@
   "buttons": {
     "edit": "Edit Profile",
     "save": "Save Changes",
+    "saving": "Saving...",
     "cancel": "Cancel",
     "changeAvatar": "Change Avatar"
   },

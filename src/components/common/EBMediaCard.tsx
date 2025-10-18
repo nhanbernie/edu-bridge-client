@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { ArrowRight, Edit } from "lucide-react";
 
 interface MediaCardProps {
@@ -19,6 +20,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
   onEdit,
   showEdit = false,
 }) => {
+  const t = useTranslations("components.ebMediaCard");
   return (
     <div className="relative aspect-[3/2] rounded-lg overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-shadow">
       {/* Background Image */}
@@ -42,7 +44,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
             onEdit();
           }}
           className="absolute top-3 right-3 z-10 p-2 bg-white/90 hover:bg-white rounded-full shadow-md transition-all duration-200 hover:scale-110"
-          title="Chỉnh sửa"
+          title={t("edit")}
         >
           <Edit className="w-4 h-4 text-gray-700" />
         </button>
@@ -58,7 +60,7 @@ const MediaCard: React.FC<MediaCardProps> = ({
           }}
           className="flex items-center text-white text-sm font-medium hover:text-gray-200 transition-colors w-fit"
         >
-          Xem chi tiết
+          {t("viewDetails")}
           <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
         </button>
       </div>

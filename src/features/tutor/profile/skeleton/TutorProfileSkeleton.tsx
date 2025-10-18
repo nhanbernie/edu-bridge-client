@@ -1,27 +1,25 @@
 "use client";
 
-import { MotionContainer, MotionItem, EBMotionCard } from "@/components/motion";
+import { Card, CardContent } from "@/components/ui/card";
 
 const TutorProfileSkeleton = () => {
   return (
-    <MotionContainer className="min-h-screen space-y-6 lg:space-y-8">
+    <div className="min-h-screen space-y-6 lg:space-y-8">
       {/* Header Skeleton */}
-      <MotionItem>
-        <div className="mb-6 lg:mb-8 animate-pulse">
-          <div className="flex items-center gap-3 mb-3 lg:mb-4">
-            <div className="h-8 sm:h-10 lg:h-12 w-64 sm:w-80 lg:w-96 bg-muted rounded"></div>
-            <div className="h-6 w-20 bg-muted rounded-full"></div>
-          </div>
-          <div className="h-5 sm:h-6 lg:h-7 w-80 sm:w-96 lg:w-full bg-muted rounded"></div>
+      <div className="mb-6 lg:mb-8 animate-pulse">
+        <div className="flex items-center gap-3 mb-3 lg:mb-4">
+          <div className="h-8 sm:h-10 lg:h-12 w-64 sm:w-80 lg:w-96 bg-muted rounded"></div>
+          <div className="h-6 w-20 bg-muted rounded-full"></div>
         </div>
-      </MotionItem>
+        <div className="h-5 sm:h-6 lg:h-7 w-80 sm:w-96 lg:w-full bg-muted rounded"></div>
+      </div>
 
       {/* Content Skeleton */}
-      <MotionItem>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {/* LEFT COLUMN - Profile Form Skeleton */}
-          <div className="order-2 lg:order-1">
-            <EBMotionCard variant="elevated" className="animate-pulse">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {/* LEFT COLUMN - Profile Form Skeleton */}
+        <div className="order-1">
+          <Card className="rounded-3xl border-0 shadow-lg bg-card animate-pulse">
+            <CardContent className="p-6">
               <div className="space-y-6">
                 {/* Avatar Section Skeleton */}
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
@@ -49,22 +47,26 @@ const TutorProfileSkeleton = () => {
                   <div className="h-10 w-20 bg-muted rounded"></div>
                 </div>
               </div>
-            </EBMotionCard>
-          </div>
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* RIGHT COLUMN - Video & Certificates Skeleton */}
-          <div className="space-y-6 order-1 lg:order-2">
-            {/* Video Intro Section Skeleton */}
-            <EBMotionCard variant="elevated" className="animate-pulse">
+        {/* RIGHT COLUMN - Video & Certificates Skeleton */}
+        <div className="space-y-6 order-2">
+          {/* Video Intro Section Skeleton */}
+          <Card className="rounded-3xl border-0 shadow-lg bg-card animate-pulse">
+            <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <div className="h-6 w-32 bg-muted rounded"></div>
                 <div className="h-8 w-16 bg-muted rounded"></div>
               </div>
               <div className="w-full aspect-video bg-muted rounded-xl sm:rounded-2xl"></div>
-            </EBMotionCard>
+            </CardContent>
+          </Card>
 
-            {/* Certificates Section Skeleton */}
-            <EBMotionCard variant="elevated" className="animate-pulse">
+          {/* Certificates Section Skeleton */}
+          <Card className="rounded-3xl border-0 shadow-lg bg-card animate-pulse">
+            <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <div className="h-6 w-32 bg-muted rounded"></div>
                 <div className="h-8 w-20 bg-muted rounded"></div>
@@ -81,11 +83,11 @@ const TutorProfileSkeleton = () => {
                   </div>
                 ))}
               </div>
-            </EBMotionCard>
-          </div>
+            </CardContent>
+          </Card>
         </div>
-      </MotionItem>
-    </MotionContainer>
+      </div>
+    </div>
   );
 };
 

@@ -33,7 +33,9 @@
     "buttons": {
       "cancel": "Hủy",
       "upload": "Tải lên",
-      "update": "Cập nhật"
+      "update": "Cập nhật",
+      "uploading": "Đang tải lên...",
+      "updating": "Đang cập nhật..."
     },
     "validation": {
       "fileSizeError": "Kích thước file không được vượt quá {size}MB",

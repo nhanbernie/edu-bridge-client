@@ -50,6 +50,7 @@
   "buttons": {
     "edit": "Chỉnh sửa hồ sơ",
     "save": "Lưu thay đổi",
+    "saving": "Đang lưu...",
     "cancel": "Hủy",
     "changeAvatar": "Thay đổi ảnh đại diện"
   },
