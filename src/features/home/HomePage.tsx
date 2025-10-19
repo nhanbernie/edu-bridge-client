@@ -21,7 +21,7 @@ const HomeFeature = () => {
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
-  const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR";
+  const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR" && user?.tutor?.verifiedStatus === "PENDING";
 
   useGetAndStoreUser({ userId: user?.userId });
 
@@ -40,6 +40,11 @@ const HomeFeature = () => {
     } else {
       setIsCheckingStatus(false);
     }
+
+    if (user?.role === "TUTOR" && user?.tutor?.verifiedStatus === "NONE" && user?.status === "PENDING") {
+      push("/onboarding/tutor?step=2");
+    }
+
   }, [user?.status, user?.role, push, user, isNavigating]);
 
   const handleNavigateToOnboarding = (path: string) => {

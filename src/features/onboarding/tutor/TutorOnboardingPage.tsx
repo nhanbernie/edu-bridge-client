@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 
@@ -10,6 +11,7 @@ import { ROUTES } from "@/common/constants/route.constant";
 
 const TutorOnboardingPage = () => {
   const t = useTranslations("tutor.onboard");
+  const searchParams = useSearchParams();
   const { push } = useLocaleRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [step1Data, setStep1Data] = useState<TutorFormData | null>(null);
@@ -17,6 +19,15 @@ const TutorOnboardingPage = () => {
   const { submitOnboarding, isLoading } = useTutorOnboarding();
 
   const steps = [t("steps.step1"), t("steps.step2")];
+
+  useEffect(() => {
+    const stepParam = searchParams.get("step");
+    if (stepParam === "2") {
+      setCurrentStep(1);
+      setStep1Completed(true);
+    }
+  }, [searchParams]);
+
 
   // Step 1: Call API selectRole first
   const handleStep1Next = async (data: TutorFormData) => {
@@ -29,7 +40,7 @@ const TutorOnboardingPage = () => {
         setStep1Completed(true);
         setCurrentStep(1);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleStep2Back = () => {
