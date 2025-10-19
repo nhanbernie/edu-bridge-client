@@ -40,16 +40,15 @@ const EBMobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, navigationIt
         {/* EBNavigation */}
         <nav className="p-4">
           <ul className="space-y-2">
-            {navigationItems.map((item) => (
-              <li key={item.href}>
+            {navigationItems.map((item, index) => (
+              <li key={`${item.href}-${index}`}>
                 <a
                   href={item.href}
                   onClick={onClose}
-                  className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    item.active
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                  }`}
+                  className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${item.active
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
                 >
                   {item.label}
                 </a>

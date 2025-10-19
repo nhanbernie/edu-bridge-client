@@ -12,7 +12,7 @@ const EBNavigation = ({ items }: { items: any[] }) => {
     <>
       {items.map((item, index) => (
         <motion.div
-          key={item.href}
+          key={`${item.href}-${index}`}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: index * 0.05, duration: 0.2 }}
@@ -21,9 +21,8 @@ const EBNavigation = ({ items }: { items: any[] }) => {
             onClick={() => push(item.href)}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
-            className={`relative text-sm font-medium transition-colors hover:text-primary hover:cursor-pointer ${
-              item.active ? "text-primary" : "text-muted-foreground"
-            }`}
+            className={`relative text-sm font-medium transition-colors hover:text-primary hover:cursor-pointer ${item.active ? "text-primary" : "text-muted-foreground"
+              }`}
           >
             {item.label}
             {item.active && (

@@ -10,6 +10,7 @@ import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
 import { useTranslations } from "next-intl";
 import EBLogoLayout from "@/components/layouts/components/EBLogoLayout";
+import { SEOPage, generateOrganizationSchema, generateFAQSchema } from "@/components/seo";
 
 const HomeFeature = () => {
   const { user, logout } = useAuth();

@@ -19,31 +19,31 @@ interface TutorStep2Props {
 // Validation schema will be created with translations in the component
 const createTutorVerificationSchema = (t: any) => {
   return Yup.object().shape({
-    verificationType: Yup.string().required(t("validation.verificationType")),
+    verificationType: Yup.string().required(t("validation.verificationTypeRequired")),
     cccd: Yup.mixed().when("verificationType", {
       is: (val: string) => val === "verified" || val === "trusted",
-      then: (schema) => schema.required(t("validation.cccd")),
+      then: (schema) => schema.required(t("validation.cccdRequired")),
       otherwise: (schema) => schema.nullable(),
     }),
     selfie: Yup.mixed().when("verificationType", {
       is: (val: string) => val === "verified" || val === "trusted",
-      then: (schema) => schema.required(t("validation.selfie")),
+      then: (schema) => schema.required(t("validation.selfieRequired")),
       otherwise: (schema) => schema.nullable(),
     }),
     degree: Yup.mixed().when("verificationType", {
       is: "verified",
-      then: (schema) => schema.required(t("validation.degree")),
+      then: (schema) => schema.required(t("validation.degreeRequired")),
       otherwise: (schema) => schema.nullable(),
     }),
     certificate: Yup.mixed().nullable(),
     studentCard: Yup.mixed().when("verificationType", {
       is: "trusted",
-      then: (schema) => schema.required(t("validation.studentCard")),
+      then: (schema) => schema.required(t("validation.studentCardRequired")),
       otherwise: (schema) => schema.nullable(),
     }),
     transcript: Yup.mixed().when("verificationType", {
       is: "trusted",
-      then: (schema) => schema.required(t("validation.transcript")),
+      then: (schema) => schema.required(t("validation.transcriptRequired")),
       otherwise: (schema) => schema.nullable(),
     }),
     certificate_trusted: Yup.mixed().nullable(),
@@ -71,7 +71,7 @@ const FileUploadInput = ({
     if (selectedFile) {
       // Validate file size (max 5MB)
       if (selectedFile.size > 5 * 1024 * 1024) {
-        toast.error(t("messages.fileSizeError"));
+        toast.error(t("fileUpload.maxSize"));
         e.target.value = "";
         return;
       }
@@ -92,11 +92,10 @@ const FileUploadInput = ({
 
       {/* Upload Area */}
       <div
-        className={`relative border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${
-          file
+        className={`relative border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${file
             ? "border-primary/50 bg-primary/10"
             : "border-border bg-muted/50 hover:border-primary/60 hover:bg-primary/5"
-        }`}
+          }`}
       >
         <input
           type="file"
@@ -121,10 +120,10 @@ const FileUploadInput = ({
               />
             </svg>
             <p className="mt-2 text-sm text-muted-foreground">
-              <span className="font-semibold text-primary">{t("upload.clickToSelect")}</span>{" "}
-              {t("upload.orDragDrop")}
+              <span className="font-semibold text-primary">{t("fileUpload.selectFile")}</span>{" "}
+              {t("fileUpload.dragDrop")}
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">{t("upload.supportedFormats")}</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">{t("fileUpload.supportedFormats")}</p>
           </div>
         ) : (
           <div className="flex items-center justify-between py-2">
@@ -206,15 +205,15 @@ const VerificationForm = ({
             />
           </svg>
           <h3 className="text-base font-semibold text-foreground">
-            {t("sections.verificationType")}
+            {t("verificationType.label")}
           </h3>
         </div>
 
         <EBSelectField
           name="verificationType"
-          label={t("fields.verificationType.label")}
+          label={t("verificationType.label")}
           options={verificationOptions}
-          placeholder={t("fields.verificationType.placeholder")}
+          placeholder={t("verificationType.placeholder")}
         />
 
         <div className="mt-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
@@ -235,11 +234,11 @@ const VerificationForm = ({
               <ul className="space-y-2 text-sm text-primary/80">
                 <li className="flex items-start">
                   <span className="font-semibold mr-2">•</span>
-                  <span>{t("info.verified")}</span>
+                  <span>{t("info.verified.title")}: {t("info.verified.description")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="font-semibold mr-2">•</span>
-                  <span>{t("info.trusted")}</span>
+                  <span>{t("info.trusted.title")}: {t("info.trusted.description")}</span>
                 </li>
               </ul>
             </div>
@@ -265,32 +264,32 @@ const VerificationForm = ({
               />
             </svg>
             <h3 className="text-lg font-semibold text-foreground">
-              {t("sections.verifiedDocuments")}
+              {t("documents.verified.title")}
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FileUploadInput
               name="cccd"
-              label={t("documents.cccd.label")}
-              description={t("documents.cccd.description")}
+              label={t("documents.verified.cccd.label")}
+              description={t("documents.verified.cccd.description")}
               required
             />
             <FileUploadInput
               name="selfie"
-              label={t("documents.selfie.label")}
-              description={t("documents.selfie.description")}
+              label={t("documents.verified.selfie.label")}
+              description={t("documents.verified.selfie.description")}
               required
             />
             <FileUploadInput
               name="degree"
-              label={t("documents.degree.label")}
-              description={t("documents.degree.description")}
+              label={t("documents.verified.degree.label")}
+              description={t("documents.verified.degree.description")}
               required
             />
             <FileUploadInput
               name="certificate"
-              label={t("documents.certificate.label")}
-              description={t("documents.certificate.description")}
+              label={t("documents.verified.certificate.label")}
+              description={t("documents.verified.certificate.description")}
             />
           </div>
         </div>
@@ -314,38 +313,38 @@ const VerificationForm = ({
               />
             </svg>
             <h3 className="text-lg font-semibold text-foreground">
-              {t("sections.trustedDocuments")}
+              {t("documents.trusted.title")}
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FileUploadInput
               name="cccd"
-              label={t("documents.cccd.label")}
-              description={t("documents.cccd.description")}
+              label={t("documents.trusted.cccd.label")}
+              description={t("documents.trusted.cccd.description")}
               required
             />
             <FileUploadInput
               name="selfie"
-              label={t("documents.selfie.label")}
-              description={t("documents.selfie.description")}
+              label={t("documents.trusted.selfie.label")}
+              description={t("documents.trusted.selfie.description")}
               required
             />
             <FileUploadInput
               name="studentCard"
-              label={t("documents.studentCard.label")}
-              description={t("documents.studentCard.description")}
+              label={t("documents.trusted.studentCard.label")}
+              description={t("documents.trusted.studentCard.description")}
               required
             />
             <FileUploadInput
               name="transcript"
-              label={t("documents.transcript.label")}
-              description={t("documents.transcript.description")}
+              label={t("documents.trusted.transcript.label")}
+              description={t("documents.trusted.transcript.description")}
               required
             />
             <FileUploadInput
               name="certificate_trusted"
-              label={t("documents.certificate.label")}
-              description={t("documents.certificate.description")}
+              label={t("documents.trusted.certificate.label")}
+              description={t("documents.trusted.certificate.description")}
             />
           </div>
         </div>
@@ -365,23 +364,23 @@ const VerificationForm = ({
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-accent mb-2">{t("notes.title")}</h3>
+              <h3 className="text-sm font-semibold text-accent mb-2">{t("importantNotes.title")}</h3>
               <ul className="space-y-2 text-sm text-accent/80">
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>{t("notes.verification")}</span>
+                  <span>{t("importantNotes.notes.0")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>{t("notes.formats")}</span>
+                  <span>{t("importantNotes.notes.1")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>{t("notes.fileSize")}</span>
+                  <span>{t("importantNotes.notes.2")}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2 font-bold">✓</span>
-                  <span>{t("notes.privacy")}</span>
+                  <span>{t("importantNotes.notes.3")}</span>
                 </li>
               </ul>
             </div>
@@ -419,8 +418,8 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
   const { uploadDocuments, isLoading: isUploading } = useDocumentUpload();
 
   const verificationOptions = [
-    { value: "verified", label: t("options.verified") },
-    { value: "trusted", label: t("options.trusted") },
+    { value: "verified", label: t("verificationType.verified") },
+    { value: "trusted", label: t("verificationType.trusted") },
   ];
 
   const defaultValues = {
@@ -457,7 +456,7 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
 
     // Validate that at least one document is uploaded
     if (documents.length === 0) {
-      toast.error(t("messages.noDocuments"));
+      toast.error(t("validation.documentsRequired"));
       return;
     }
 

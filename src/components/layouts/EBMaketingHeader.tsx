@@ -185,7 +185,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           <nav className="space-y-2">
             {getNavigateMarketItems(tRouter, currentPath).map((item, index) => (
               <motion.div
-                key={item.href}
+                key={`${item.href}-${index}`}
                 initial={{ x: 50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.3 }}
