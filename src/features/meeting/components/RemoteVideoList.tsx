@@ -1,6 +1,6 @@
 import React from "react";
 import { VideoTile } from "./VideoTile";
-import { Participant } from "../hooks/useWebRTC";
+import { Participant } from "./VideoGrid";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 

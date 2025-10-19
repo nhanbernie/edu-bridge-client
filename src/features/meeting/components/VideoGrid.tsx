@@ -2,8 +2,16 @@ import React, { ReactNode } from "react";
 import { LocalVideoPreview } from "./LocalVideoPreview";
 import { RemoteVideoList } from "./RemoteVideoList";
 import { DraggableRemoteVideo } from "./DraggableRemoteVideo";
-import { Participant } from "../hooks/useWebRTC";
 import { cn } from "@/lib/utils";
+
+// Simplified Participant type (no hook dependency)
+export interface Participant {
+  peerId: string;
+  userId: string;
+  stream: MediaStream;
+  isMuted: boolean;
+  isVideoOff: boolean;
+}
 
 interface VideoGridProps {
   // Streams

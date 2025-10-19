@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { X, Minimize2, Maximize2 } from "lucide-react";
 import { RemoteVideoList } from "./RemoteVideoList";
-import { Participant } from "../hooks/useWebRTC";
+import { Participant } from "./VideoGrid";
 import { cn } from "@/lib/utils";
 
 interface DraggableRemoteVideoProps {
