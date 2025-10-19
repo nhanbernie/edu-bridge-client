@@ -39,6 +39,7 @@ const getMessages = cache(async (locale: string) => {
       studentTransactionsStatus,
       studentOnboard,
       studentTutorDetail,
+      studentTutorTabs,
       studentBooking,
       meeting,
       tutorOnboardProfileUnderPreview,
@@ -106,6 +107,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/student/transactions/status.json`),
       import(`@/i18n/locales/${locale}/student/onboard/onboard.json`),
       import(`@/i18n/locales/${locale}/student/tutor/detail.json`),
+      import(`@/i18n/locales/${locale}/student/tutor/tabs.json`),
       import(`@/i18n/locales/${locale}/student/booking/booking.json`),
       // Meeting translations
       import(`@/i18n/locales/${locale}/meeting/meeting.json`),
@@ -250,6 +252,7 @@ const getMessages = cache(async (locale: string) => {
         onboard: studentOnboard.default,
         tutor: {
           detail: studentTutorDetail.default,
+          tabs: studentTutorTabs.default,
         },
         booking: studentBooking.default,
       },
