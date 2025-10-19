@@ -17,6 +17,7 @@ import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
 import { useTranslations } from "next-intl";
 import { SUPPORTED_LOCALES } from "@/i18n/config";
+import EBLogoLayout from "./components/EBLogoLayout";
 
 interface ActionButtonsProps {
   onMobileMenuToggle: () => void;
@@ -146,15 +147,23 @@ const EBHeader = ({
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isScrolled
             ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Logo />
+            <EBLogoLayout
+              imageFolder="/logo"
+              imageName="edubridge-logo-text"
+              extension="png"
+              height={56}
+              alt="EduBridge Logo"
+              navigateTo="/tutor"
+              clickable={true}
+              objectFit="contain"
+            />
 
             {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
             <nav className="hidden md:flex items-center gap-8">

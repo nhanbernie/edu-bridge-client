@@ -12,6 +12,7 @@ import { HeaderConfig } from "./types";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useTranslations } from "next-intl";
 import { SUPPORTED_LOCALES } from "@/i18n/config";
+import EBLogoLayout from "./components/EBLogoLayout";
 
 interface MaketingHeaderProps {
   headerConfig?: HeaderConfig;
@@ -55,15 +56,23 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isScrolled
             ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <EBLogo />
+            <EBLogoLayout
+              imageFolder="/logo"
+              imageName="edubridge-logo-text"
+              extension="png"
+              height={56}
+              alt="EduBridge Logo"
+              navigateTo="/tutor"
+              clickable={true}
+              objectFit="contain"
+            />
 
             {/* Desktop EBNavigation */}
             {headerConfig ? (
@@ -153,9 +162,8 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           x: isMobileMenuOpen ? "0%" : "100%",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-40 md:hidden ${
-          isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
-        }`}
+        className={`fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-40 md:hidden ${isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+          }`}
       >
         <div className="p-6 space-y-6">
           {/* Mobile EBHeader */}
@@ -188,11 +196,10 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                     setIsMobileMenuOpen(false);
                     push(item.href);
                   }}
-                  className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                    item.active
+                  className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${item.active
                       ? "bg-primary/10 text-primary border border-primary/20"
                       : "text-muted-foreground hover:text-primary hover:bg-muted"
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </button>

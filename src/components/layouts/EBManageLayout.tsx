@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBLogo } from "@/components/common";
-import { EBManageLayoutThemeToggle } from "./components";
+import { EBLogoLayout, EBManageLayoutThemeToggle } from "./components";
 import EBSidebarButton from "@/components/layouts/components/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
 import { Search, Bell, Settings, ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
@@ -52,7 +52,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   const isTutor = user?.role === "TUTOR";
   const isBankVerified = user?.tutor?.isBankAccountVerified;
   const shouldCheckQR = isTutor && !isBankVerified;
-  
+
   // Check if user role is USER (hide actions for basic users)
   const isBasicUser = user?.role === "USER";
 
@@ -126,15 +126,19 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
         `}
         >
           {/* Logo - Always visible */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between">
             <div
               className={`flex items-center ${sidebarExpanded ? "justify-start" : "justify-center w-full"}`}
             >
-              <EBLogo
-                imageSize={sidebarExpanded ? 36 : 28}
-                showText={sidebarExpanded}
-                textClassName="text-lg font-bold text-foreground"
-                animated={false}
+              <EBLogoLayout 
+                imageFolder="/logo"
+                imageName={sidebarExpanded ? "edubridge-logo-text" : "edubridge-logo-only"}
+                extension="png"
+                height={sidebarExpanded ? 56 : 56}
+                alt="EduBridge Logo"
+                navigateTo="/tutor"
+                clickable={true}
+                objectFit="contain"
               />
             </div>
           </div>
@@ -189,17 +193,18 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
             )}
 
             {/* Action Buttons - Hidden for basic users */}
-            {!isBasicUser && finalActionButtons.map((button) => (
-              <EBSidebarButton
-                key={button.label}
-                icon={button.icon}
-                label={button.label}
-                href={button.href || "#"}
-                isActive={false}
-                isExpanded={sidebarExpanded}
-                onClick={button.onClick}
-              />
-            ))}
+            {!isBasicUser &&
+              finalActionButtons.map((button) => (
+                <EBSidebarButton
+                  key={button.label}
+                  icon={button.icon}
+                  label={button.label}
+                  href={button.href || "#"}
+                  isActive={false}
+                  isExpanded={sidebarExpanded}
+                  onClick={button.onClick}
+                />
+              ))}
 
             {/* Language Toggle */}
             <EBSidebarButton

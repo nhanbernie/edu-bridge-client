@@ -5,7 +5,7 @@ import AppProvider from "@/providers/AppProvider";
 export const metadata: Metadata = {
   title: "Edu Bridge",
   description: "Wellcome to education bride",
-  icons: { icon: "/edubridge.png" },
+  icons: { icon: "/logo/edubridge-logo-only.png" },
 };
 
 export default function RootLayout({

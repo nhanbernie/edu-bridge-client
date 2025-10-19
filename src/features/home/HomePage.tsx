@@ -4,12 +4,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBMotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
-import { EBLogo } from "@/components/common";
 import { useEffect, useState } from "react";
 import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
 import { useTranslations } from "next-intl";
+import EBLogoLayout from "@/components/layouts/components/EBLogoLayout";
 
 const HomeFeature = () => {
   const { user, logout } = useAuth();
@@ -57,11 +57,20 @@ const HomeFeature = () => {
   return (
     <MotionContainer className="min-h-screen bg-background relative overflow-hidden pt-32">
       {/* Logo and Title Section */}
-      <MotionItem className="max-w-6xl mx-auto p-8 text-center">
+      <MotionItem className="max-w-6xl mx-auto text-center">
         {!shouldShowUserInfo && (
           <div className="mb-16">
             <div className="flex justify-center mb-6">
-              <EBLogo imageSize={60} textClassName="text-2xl" />
+              <EBLogoLayout
+                imageFolder="/logo"
+                imageName="edubridge-logo-text-buttom"
+                extension="png"
+                height={100}
+                alt="EduBridge Logo"
+                navigateTo="/tutor"
+                clickable={true}
+                objectFit="contain"
+              />
             </div>
             <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
               {t("title")}
