@@ -21,6 +21,7 @@ interface TutorFilterSectionProps {
   advancedFilters: TutorSearchRequest;
   subjectOptions: string[];
   quickFilterSubjects: string[];
+  isLoadingSubjects?: boolean;
   searchPlaceholder: string;
   allSubjectsText: string;
   filterButtonText: string;
@@ -43,6 +44,7 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
   advancedFilters,
   subjectOptions,
   quickFilterSubjects,
+  isLoadingSubjects = false,
   searchPlaceholder,
   allSubjectsText,
   filterButtonText,
@@ -75,11 +77,13 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
           <select
             value={selectedSubject}
             onChange={(e) => onSubjectChange(e.target.value)}
+            disabled={isLoadingSubjects}
             className="appearance-none bg-background border border-border rounded-xl px-4 py-3 pr-10 w-full
                        focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                       transition-all duration-200 cursor-pointer text-foreground font-medium"
+                       transition-all duration-200 cursor-pointer text-foreground font-medium
+                       disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <option value="">{allSubjectsText}</option>
+            <option value="">{isLoadingSubjects ? "Đang tải..." : allSubjectsText}</option>
             {subjectOptions.map((subject) => (
               <option key={subject} value={subject}>
                 {subject}

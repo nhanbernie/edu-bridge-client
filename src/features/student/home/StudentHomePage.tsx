@@ -12,7 +12,7 @@ import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
-import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery } from "@/services/tutor";
+import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery, useGetTutorSubjectsQuery } from "@/services/tutor";
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
@@ -45,21 +45,6 @@ const transformTutorData = (dto: TutorSearchDto): TutorCardData => ({
 });
 
 // Constants
-const SUBJECT_OPTIONS = [
-  "Toán học",
-  "Môn nhạc",
-  "Tiếng Anh",
-  "Vật lý",
-  "Hóa học",
-  "Sinh học",
-  "Văn học",
-  "Lịch sử",
-  "Địa lý",
-  "Tin học",
-];
-
-const QUICK_FILTER_SUBJECTS = ["Môn toán", "Môn nhạc", "Tiếng Anh", "Vật lý"];
-
 const PAGE_SIZE = 6;
 
 const StudentHomePage = () => {
@@ -90,8 +75,18 @@ const StudentHomePage = () => {
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const [triggerFilter, { isLoading: isLoadingFilter }] = useLazyFilterTutorsQuery();
   const [triggerSearch, { isLoading: isLoadingSearch }] = useLazySearchTutorsQuery();
+  const { data: subjectsData, isLoading: isLoadingSubjects } = useGetTutorSubjectsQuery();
 
   const isLoadingMore = isSearchMode ? isLoadingSearch : isLoadingFilter;
+
+  // Process subjects data from API
+  const allSubjects = subjectsData?.data || [];
+  
+  // Subject options for dropdown (all subjects)
+  const subjectOptions = allSubjects;
+  
+  // Quick filter subjects - only show first 4 items
+  const quickFilterSubjects = allSubjects.slice(0, 4);
 
   // API Calls
   const loadInitialTutors = useCallback(async () => {
@@ -378,8 +373,9 @@ const StudentHomePage = () => {
           onSubjectFilterToggle={handleSubjectFilterToggle}
           onAdvancedFilterOpen={() => setIsAdvancedFilterOpen(true)}
           advancedFilters={advancedFilters}
-          subjectOptions={SUBJECT_OPTIONS}
-          quickFilterSubjects={QUICK_FILTER_SUBJECTS}
+          subjectOptions={subjectOptions}
+          quickFilterSubjects={quickFilterSubjects}
+          isLoadingSubjects={isLoadingSubjects}
           searchPlaceholder={t("search.placeholder")}
           allSubjectsText={t("filter.subjects.all")}
           filterButtonText={t("filter.button")}
