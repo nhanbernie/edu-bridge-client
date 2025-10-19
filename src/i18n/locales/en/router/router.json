@@ -1,0 +1,43 @@
+{
+  "navigation": {
+    "home": "Home",
+    "findTutors": "Find Tutors",
+    "findStudents": "Find Students",
+    "teachers": "Teachers",
+    "contact": "Contact"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myTeachingSchedule": "My Teaching Schedule",
+    "courses": "Courses",
+    "availableSchedule": "Available Schedule",
+    "transactions": "Transactions",
+    "statistics": "Statistics",
+    "reviews": "Reviews",
+    "students": "Students",
+    "myCourses": "My Courses",
+    "mySchedule": "My Schedule",
+    "tutors": "Tutors",
+    "payments": "Payments",
+    "users": "Users",
+    "tutors": "Tutors",
+    "analytics": "Analytics",
+    "reports": "Reports"
+  },
+  "header": {
+    "findTutors": "Find Tutors",
+    "mySchedule": "My Schedule",
+    "transactions": "Transactions",
+    "feedback": "Feedback",
+    "courses": "Courses",
+    "schedules": "Available Schedule",
+    "teachingSchedule": "Teaching Schedule"
+  },
+  "actions": {
+    "settings": "Settings",
+    "help": "Help",
+    "systemSettings": "System Settings",
+    "security": "Security",
+    "profile": "Profile"
+  }
+}

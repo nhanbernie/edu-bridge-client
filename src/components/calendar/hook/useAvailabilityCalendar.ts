@@ -89,16 +89,16 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
                   : "Rảnh",
             backgroundColor:
               slot.status === "BOOKED"
-                ? "#ef4444"
+                ? "#f43f5e" // rose-500
                 : slot.status === "RESERVED"
-                  ? "#eab308"
-                  : "#10b981",
+                  ? "#eab308" // amber-500
+                  : "#10b981", // emerald-500
             borderColor:
               slot.status === "BOOKED"
-                ? "#dc2626"
+                ? "#e11d48" // rose-600
                 : slot.status === "RESERVED"
-                  ? "#ca8a04"
-                  : "#059669",
+                  ? "#d97706" // amber-600
+                  : "#059669", // emerald-600
             isTemp: false,
             extendedProps: {
               blockId: block.blockId,
@@ -201,8 +201,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
           start: event.start.toISOString(),
           end: event.end.toISOString(),
           title: event.title,
-          backgroundColor: "#3b82f6",
-          borderColor: "#2563eb",
+          backgroundColor: "#3b82f6", // blue-500
+          borderColor: "#2563eb", // blue-600
           isTemp: true,
         };
 
@@ -245,8 +245,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
           start: event.start.toISOString(),
           end: event.end.toISOString(),
           title: event.title,
-          backgroundColor: "#3b82f6",
-          borderColor: "#2563eb",
+          backgroundColor: "#3b82f6", // blue-500
+          borderColor: "#2563eb", // blue-600
           isTemp: true,
         };
 
@@ -283,8 +283,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
       start: `${data.date}T${data.startTime}:00`,
       end: `${data.date}T${data.endTime}:00`,
       title: data.title,
-      backgroundColor: "#3b82f6",
-      borderColor: "#2563eb",
+      backgroundColor: "#3b82f6", // blue-500
+      borderColor: "#2563eb", // blue-600
       isTemp: true,
     };
 

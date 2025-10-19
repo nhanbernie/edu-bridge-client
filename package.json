@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prod": "npm run start"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -54,10 +55,12 @@
     "peerjs": "^1.5.5",
     "postcss": "^8.5.6",
     "react": "19.0.0",
+    "react-day-picker": "^9.11.1",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.62.0",
     "react-i18next": "^15.5.2",
     "react-redux": "^9.2.0",
+    "recharts": "^2.15.4",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "sonner": "^2.0.7",

@@ -261,7 +261,8 @@ export function usePeerConnection(options: UsePeerConnectionOptions): UsePeerCon
       }
       closePeer();
     };
-  }, []); // Only run on mount
+  }, []);
+  // [config?.host, initializePeer, closePeer]);
 
   return {
     peerId,

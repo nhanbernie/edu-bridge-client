@@ -1,0 +1,12 @@
+{
+  "empty": {
+    "history": {
+      "title": "Chưa có lịch sử",
+      "description": "Bạn chưa có buổi học nào đã hoàn thành."
+    },
+    "upcoming": {
+      "title": "Chưa có lịch sắp tới",
+      "description": "Bạn chưa có buổi học nào sắp tới."
+    }
+  }
+}

@@ -11,7 +11,7 @@ export const ROUTES = {
   // Student routes
   STUDENT: "/student",
   STUDENT_PROFILE: "/student/profile",
-  STUDENT_DASHBOARD: "/student/dashboard",
+  STUDENT_DASHBOARD: "/student",
   STUDENT_MY_SCHEDULE: "/student/my-schedule",
   STUDENT_FEEDBACK: "/student/feedback",
   STUDENT_FEEDBACK_DETAIL: "/student/feedback",
@@ -73,6 +73,6 @@ export const buildTutorCoursesEditRoute = (courseId: string) => `/tutor/courses/
 
 export const buildTutorFeedbackDetailRoute = (courseId: string) => `/tutor/feedback/${courseId}`;
 
-export const buildAdminTutorDetailRoute = (tutorId: string) => `/admin/tutor/${tutorId}`;
+export const buildAdminTutorDetailRoute = (tutorId: string) => `/admin/user/${tutorId}`;
 
 export const buildMeetingRoute = (sessionId: string) => `/meeting/${sessionId}`;

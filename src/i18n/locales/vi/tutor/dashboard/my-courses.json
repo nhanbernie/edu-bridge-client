@@ -1,0 +1,10 @@
+{
+  "title": "Khóa học của tôi",
+  "loading": "Đang tải khóa học...",
+  "error": "Không thể tải khóa học",
+  "empty": "Chưa có khóa học nào",
+  "students": "học sinh",
+  "status": {
+    "active": "Đang hoạt động"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Đánh giá khóa học",
+  "subtitle": "Xem đánh giá từ học sinh",
+  "backButton": "Quay lại danh sách",
+  "allFeedbacks": "Đánh giá từ học sinh",
+  "noFeedbacks": "Chưa có đánh giá nào",
+  "loading": "Đang tải đánh giá...",
+  "error": "Có lỗi xảy ra",
+  "errorMessage": "Không thể tải đánh giá. Vui lòng thử lại sau."
+}

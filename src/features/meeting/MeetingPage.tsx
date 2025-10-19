@@ -7,7 +7,6 @@ import ChatPanel from "./components/ChatPanel";
 import WhiteboardPanel from "./components/WhiteboardPanel";
 import UserLoading from "./components/UserLoading";
 import { useSignalR } from "./hooks/useSignalR";
-
 import { VideoGrid, MediaControls } from "./components";
 import { useWebRTC } from "./hooks";
 
@@ -90,11 +89,11 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId }) => {
     }
   }, [isConnected, joined, isJoining, sessionId, joinSession]);
 
-  // Loading state - AFTER all hooks
-  if (!isConnected) {
+  // NOTE: !isConnected
+  if (!userId || !userRole) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <UserLoading userType="tutor" />
+        <UserLoading userType={userRole === "STUDENT" ? "student" : "tutor"} />
       </div>
     );
   }
@@ -130,7 +129,7 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId }) => {
             onEndCall={() => {
               // TODO: Implement end call logic
             }}
-            disabled={!joined || !isWebRTCReady}
+            disabled={false}
           />
         </div>
 

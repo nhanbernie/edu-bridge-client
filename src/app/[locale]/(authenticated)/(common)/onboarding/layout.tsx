@@ -5,7 +5,7 @@ interface OnboardingLayoutProps {
 }
 
 const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
-  return <>{children}</>;
+  return <EBMainLayout footer={true}>{children}</EBMainLayout>;
 };
 
 export default OnboardingLayout;

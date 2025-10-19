@@ -32,6 +32,11 @@ interface TutorState {
   selectedTutorId: string | null;
   favoriteTutorIds: string[];
 
+  // Subjects state
+  subjects: string[];
+  subjectsLoading: boolean;
+  subjectsError: string | null;
+
   // Cache
   lastSearchTimestamp: number | null;
 }
@@ -61,6 +66,11 @@ const initialState: TutorState = {
   // Selected/favorited tutors
   selectedTutorId: null,
   favoriteTutorIds: [],
+
+  // Subjects state
+  subjects: [],
+  subjectsLoading: false,
+  subjectsError: null,
 
   // Cache
   lastSearchTimestamp: null,
@@ -154,6 +164,26 @@ const tutorSlice = createSlice({
       };
       state.currentPage = 1;
     },
+
+    // Subjects actions
+    setSubjects: (state, action: PayloadAction<string[]>) => {
+      state.subjects = action.payload;
+      state.subjectsError = null;
+    },
+    setSubjectsLoading: (state, action: PayloadAction<boolean>) => {
+      state.subjectsLoading = action.payload;
+      if (action.payload) {
+        state.subjectsError = null;
+      }
+    },
+    setSubjectsError: (state, action: PayloadAction<string | null>) => {
+      state.subjectsError = action.payload;
+      state.subjectsLoading = false;
+    },
+    clearSubjects: (state) => {
+      state.subjects = [];
+      state.subjectsError = null;
+    },
   },
 });
 
@@ -167,6 +197,10 @@ export const {
   toggleFavoriteTutor,
   clearSearchResults,
   resetFilters,
+  setSubjects,
+  setSubjectsLoading,
+  setSubjectsError,
+  clearSubjects,
 } = tutorSlice.actions;
 
 // Selectors
@@ -197,5 +231,10 @@ export const selectSelectedTutor = (state: RootState) => {
 export const selectFavoriteTutorIds = (state: RootState) => state.tutor.favoriteTutorIds;
 export const selectIsTutorFavorited = (state: RootState, tutorId: string) =>
   state.tutor.favoriteTutorIds.includes(tutorId);
+
+// Subjects selectors
+export const selectTutorSubjects = (state: RootState) => state.tutor.subjects;
+export const selectTutorSubjectsLoading = (state: RootState) => state.tutor.subjectsLoading;
+export const selectTutorSubjectsError = (state: RootState) => state.tutor.subjectsError;
 
 export const tutorReducer = tutorSlice.reducer;

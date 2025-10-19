@@ -1,5 +1,4 @@
 import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface TransactionCardSkeletonProps {
   count?: number;
@@ -7,37 +6,36 @@ interface TransactionCardSkeletonProps {
 
 const TransactionCardSkeleton: React.FC<TransactionCardSkeletonProps> = ({ count = 5 }) => {
   return (
-    <>
+    <div className="divide-y divide-border">
       {Array.from({ length: count }).map((_, index) => (
-        <div
-          key={index}
-          className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 flex-1">
-              {/* Icon skeleton */}
-              <Skeleton className="w-10 h-10 rounded-lg" />
-
-              <div className="flex-1 space-y-2">
-                {/* Title skeleton */}
-                <Skeleton className="h-5 w-48" />
-
-                {/* Description skeleton */}
-                <Skeleton className="h-4 w-32" />
+        <div key={index} className="p-6 animate-pulse">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              {/* Amount + Status Badge */}
+              <div className="flex items-center gap-4 mb-3">
+                {/* Amount skeleton */}
+                <div className="h-6 bg-muted rounded w-28"></div>
+                {/* Status badge skeleton */}
+                <div className="h-6 bg-muted rounded w-20"></div>
               </div>
-            </div>
 
-            <div className="flex items-center gap-4">
-              {/* Amount skeleton */}
-              <Skeleton className="h-6 w-28" />
+              {/* Description skeleton */}
+              <div className="mb-4">
+                <div className="h-4 bg-muted rounded w-full max-w-md"></div>
+              </div>
 
-              {/* Status badge skeleton */}
-              <Skeleton className="h-6 w-24 rounded-full" />
+              {/* Date + FlowType badges */}
+              <div className="flex items-center gap-4">
+                {/* Date badge skeleton */}
+                <div className="h-6 bg-muted rounded w-32"></div>
+                {/* FlowType badge skeleton */}
+                <div className="h-6 bg-muted rounded w-24"></div>
+              </div>
             </div>
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

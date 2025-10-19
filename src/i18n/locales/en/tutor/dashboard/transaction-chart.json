@@ -1,0 +1,15 @@
+{
+  "title": "Transaction Chart",
+  "subtitle": "Monthly transaction overview",
+  "loading": "Loading transaction data...",
+  "error": "Unable to load transaction data",
+  "empty": {
+    "title": "No earnings yet",
+    "description": "Transaction data will appear here"
+  },
+  "growth": {
+    "positive": "Earnings increased {percentage}% this month",
+    "negative": "Earnings decreased {percentage}% this month"
+  },
+  "footer": "Showing total earnings for the last 6 months"
+}

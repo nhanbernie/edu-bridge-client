@@ -5,16 +5,17 @@ import { StatsCard } from "@/features/marketing/components";
 import React from "react";
 import { EBLogo, EBThemeToggle } from "@/components/common";
 import { useTranslations } from "next-intl";
+import EBLogoLayout from "./components/EBLogoLayout";
 
 const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("marketing.auth");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-100 via-teal-50 to-cyan-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-cyan-400/20 to-emerald-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-secondary/30 to-accent/30 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 min-h-screen flex items-center pt-16">
@@ -23,16 +24,29 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
             {/* Left Side - Marketing Content */}
 
             <div className="space-y-8">
-              <EBLogo />
+              <div className="flex justify-start">
+                <EBLogoLayout
+                  imageFolder="/logo"
+                  imageName="edubridge-logo-text"
+                  extension="png"
+                  height={100}
+                  alt="EduBridge Logo"
+                  clickable={true}
+                  objectFit="contain"
+                  className="mr-auto"
+                />
+              </div>
               {/* Main Headline */}
               <div className="space-y-4">
-                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                   {t("welcome")}{" "}
-                  <span className="bg-gradient-to-r from-primary to-teal-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     EduBridge
                   </span>
                 </h2>
-                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">{t("subtitle")}</p>
+                {/* <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                  {t("subtitle")}
+                </p> */}
               </div>
 
               {/* Stats Cards */}
@@ -47,13 +61,13 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
                   icon={BookOpen}
                   number="500+"
                   label={t("stats.tutors")}
-                  iconColor="text-teal-600"
+                  iconColor="text-primary"
                 />
                 <StatsCard
                   icon={Star}
                   number="4.9"
                   label={t("stats.rating")}
-                  iconColor="text-yellow-400"
+                  iconColor="text-accent"
                 />
               </div>
             </div>

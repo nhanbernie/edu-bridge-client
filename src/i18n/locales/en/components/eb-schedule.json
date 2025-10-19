@@ -1,0 +1,20 @@
+{
+  "title": "Weekly Schedule",
+  "fullDay": "All day",
+  "noSchedule": "No schedule",
+  "moreSlots": "+{count} more",
+  "slotStatus": {
+    "available": "Available",
+    "booked": "Booked",
+    "reserved": "Reserved"
+  },
+  "dayNames": {
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat",
+    "sunday": "Sun"
+  }
+}

@@ -60,10 +60,10 @@ const ForgotPasswordFeature = () => {
   return (
     <EBAuthLayout>
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+        <div className="bg-card/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-border">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">{stepContent.title}</h3>
-            <p className="text-gray-600 text-sm">{stepContent.description}</p>
+            <h3 className="text-2xl font-bold text-foreground mb-2">{stepContent.title}</h3>
+            <p className="text-muted-foreground text-sm">{stepContent.description}</p>
           </div>
 
           <AuthForm

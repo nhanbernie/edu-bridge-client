@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Clock, MessageCircle, Loader2 } from "lucide-react";
 import { slideUpVariants } from "@/components/motion";
 import { useGetUser } from "@/hooks/useGetUser";
+import { useTranslations } from "next-intl";
 
 interface TutorInfoProps {
   tutorId: string;
@@ -13,6 +14,7 @@ interface TutorInfoProps {
 }
 
 const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
+  const t = useTranslations("student.booking.tutorInfo");
   const { userData, isLoading, error } = useGetUser({
     userId: tutorId,
     enabled: !!tutorId,
@@ -24,7 +26,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
       <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
         <div className="flex flex-col items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin text-primary mb-2" />
-          <p className="text-sm text-muted-foreground">Đang tải thông tin gia sư...</p>
+          <p className="text-sm text-muted-foreground">{t("loading")}</p>
         </div>
       </EBMotionCard>
     );
@@ -35,12 +37,12 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
     return (
       <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
         <div className="flex flex-col items-center justify-center py-12">
-          <p className="text-sm text-red-500 mb-2">Không thể tải thông tin gia sư</p>
+          <p className="text-sm text-red-500 mb-2">{t("error")}</p>
           <button
             onClick={() => window.location.reload()}
             className="text-sm text-primary hover:underline"
           >
-            Thử lại
+            {t("retry")}
           </button>
         </div>
       </EBMotionCard>
@@ -75,11 +77,11 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
 
         {/* Name and Status */}
         <div>
-          <h2 className="text-xl font-bold text-foreground">{user.fullName || "Gia sư"}</h2>
+          <h2 className="text-xl font-bold text-foreground">{user.fullName || t("tutor")}</h2>
           {tutor?.verifiedStatus === "VERIFIED" && (
             <div className="flex items-center justify-center gap-2 mt-1">
               <Badge variant="secondary" className="bg-primary text-primary-foreground text-xs">
-                Đã xác minh
+                {t("verified")}
               </Badge>
             </div>
           )}
@@ -94,7 +96,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
             </span>
           </div>
           <span className="text-muted-foreground text-sm">
-            ({tutor?.totalFeedbacks || 0} đánh giá)
+            ({tutor?.totalFeedbacks || 0} {t("reviews")})
           </span>
         </div>
 
@@ -109,7 +111,9 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
         <div className="space-y-2 w-full">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
-            <span>{tutor?.yearsOfExperience || 0} năm kinh nghiệm</span>
+            <span>
+              {tutor?.yearsOfExperience || 0} {t("yearsExperience")}
+            </span>
           </div>
           {user.location && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -119,7 +123,7 @@ const TutorInfo: React.FC<TutorInfoProps> = ({ tutorId, courseId }) => {
           )}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MessageCircle className="w-4 h-4" />
-            <span>Phản hồi nhanh</span>
+            <span>{t("quickResponse")}</span>
           </div>
         </div>
       </div>

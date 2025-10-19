@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import BookingGuideModal from "@/features/student/booking/components/BookingGuideModal";
+import { useTranslations } from "next-intl";
 
 interface BookingPageProps {
   tutorId: string;
@@ -30,6 +31,7 @@ interface SelectedSession {
 const BOOKING_GUIDE_KEY = "edubridge_booking_guide_seen";
 
 const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
+  const t = useTranslations("student.booking");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
@@ -111,7 +113,7 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
       {/* Booking Guide Modal */}
       <BookingGuideModal isOpen={showGuideModal} onClose={handleCloseGuide} />
 
-      <div className="min-h-screen bg-background pt-16">
+      <div className="min-h-screen pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Tutor Info + Packages */}
@@ -179,10 +181,10 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
                   size="lg"
                 >
                   {bookingFlow.isLoading
-                    ? "Đang xử lý..."
+                    ? t("page.processing")
                     : currentSessionCount < totalSessions || !selectedPackage || totalSessions === 0
-                      ? "Vui lòng chọn đầy đủ thông tin"
-                      : "Đặt lịch ngay"}
+                      ? t("page.selectAll")
+                      : t("page.bookNow")}
                 </Button>
               </div>
             </div>

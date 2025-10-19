@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { X, Minimize2, Maximize2 } from "lucide-react";
 import { RemoteVideoList } from "./RemoteVideoList";
 import { Participant } from "../hooks/useWebRTC";
@@ -44,24 +44,27 @@ export const DraggableRemoteVideo: React.FC<DraggableRemoteVideoProps> = ({
     };
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging) return;
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
 
-    const deltaX = e.clientX - dragRef.current.startX;
-    const deltaY = e.clientY - dragRef.current.startY;
+      const deltaX = e.clientX - dragRef.current.startX;
+      const deltaY = e.clientY - dragRef.current.startY;
 
-    const newX = dragRef.current.offsetX + deltaX;
-    const newY = dragRef.current.offsetY + deltaY;
+      const newX = dragRef.current.offsetX + deltaX;
+      const newY = dragRef.current.offsetY + deltaY;
 
-    // Constrain to viewport
-    const maxX = window.innerWidth - (containerRef.current?.offsetWidth || 300);
-    const maxY = window.innerHeight - (containerRef.current?.offsetHeight || 200);
+      // Constrain to viewport
+      const maxX = window.innerWidth - (containerRef.current?.offsetWidth || 300);
+      const maxY = window.innerHeight - (containerRef.current?.offsetHeight || 200);
 
-    setPosition({
-      x: Math.max(0, Math.min(newX, maxX)),
-      y: Math.max(0, Math.min(newY, maxY)),
-    });
-  };
+      setPosition({
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY)),
+      });
+    },
+    [isDragging]
+  );
 
   const handleMouseUp = () => {
     setIsDragging(false);

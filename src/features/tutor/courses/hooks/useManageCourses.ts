@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { ROUTES, buildTutorCoursesEditRoute } from "@/common/constants/route.constant";
 import { toast } from "sonner";
@@ -12,7 +13,11 @@ import {
 import type { CourseData } from "@/components/common/EBTutorCourseCard";
 
 // Helper function to map CourseDto to CourseData
-const mapCourseToCardData = (course: CourseDto, packages: PackageDto[] = []): CourseData => {
+const mapCourseToCardData = (
+  course: CourseDto,
+  packages: PackageDto[] = [],
+  t: any
+): CourseData => {
   // Calculate price range from packages
   const prices = packages.map((pkg) => pkg.price);
   const minPrice = prices.length > 0 ? Math.min(...prices) : course.hourlyRate;
@@ -22,15 +27,17 @@ const mapCourseToCardData = (course: CourseDto, packages: PackageDto[] = []): Co
     id: course.courseId,
     title: course.title,
     tutorId: course.tutorId,
-    tutorName: "Gia sư", // This would come from tutor data in real app
+    tutorName: t("tutorName"), // This would come from tutor data in real app
     price: { min: minPrice, max: maxPrice },
-    duration: `${course.hoursPerSession} giờ/buổi`,
+    duration: `${course.hoursPerSession} ${t("duration.perSession")}`,
     students: 0, // This would come from enrollment data
     popular: false, // This would be calculated based on some criteria
   };
 };
 
 export const useManageCourses = (tutorId: string, courseId?: string) => {
+  const t = useTranslations("tutor.courses.manage");
+
   const { push } = useLocaleRouter();
 
   // API queries - skip if no tutorId
@@ -55,7 +62,7 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
   const courses: CourseData[] =
     courseResponse?.success && courseResponse.data
       ? (Array.isArray(courseResponse.data) ? courseResponse.data : [courseResponse.data]).map(
-          (course: CourseDto) => mapCourseToCardData(course)
+          (course: CourseDto) => mapCourseToCardData(course, [], t)
         )
       : [];
 
@@ -81,13 +88,13 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
       try {
         await deleteCourse({ courseId }).unwrap();
 
-        toast.success("Xóa khóa học thành công");
+        toast.success(t("delete.success"));
         refetchCourse();
       } catch (error) {
-        toast.error("Không thể xóa khóa học. Vui lòng thử lại.");
+        toast.error(t("delete.error"));
       }
     },
-    [deleteCourse, refetchCourse]
+    [deleteCourse, refetchCourse, t]
   );
 
   // Handle refresh
@@ -97,7 +104,7 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
 
   // Handle errors
   if (courseError) {
-    toast.error("Không thể tải danh sách khóa học. Vui lòng thử lại.");
+    toast.error(t("error.loadFailed"));
   }
 
   return {

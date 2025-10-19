@@ -1,0 +1,66 @@
+{
+  "title": "Tutor Profile",
+  "subtitle": "Manage your profile and teaching information",
+  "sections": {
+    "personalInfo": "Personal Information",
+    "teachingInfo": "Teaching Information"
+  },
+  "fields": {
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email cannot be changed"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "e.g., Hanoi, Ho Chi Minh City, Da Nang..."
+    },
+    "educationLevel": {
+      "label": "Education Level"
+    },
+    "yearsOfExperience": {
+      "label": "Years of Teaching Experience",
+      "placeholder": "Enter number of years"
+    },
+    "bio": {
+      "label": "About Yourself",
+      "placeholder": "Share your teaching style, achievements and experience..."
+    },
+    "subjects": {
+      "label": "Subjects You Teach (Multiple Selection)",
+      "currentSubjects": "Current subjects:"
+    },
+    "languages": {
+      "label": "Languages (Multiple Selection)"
+    }
+  },
+  "stats": {
+    "students": "Students",
+    "courses": "Courses",
+    "rating": "Rating"
+  },
+  "buttons": {
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "changeAvatar": "Change Avatar"
+  },
+  "messages": {
+    "loading": "Loading profile...",
+    "defaultName": "Tutor"
+  },
+  "verification": {
+    "verified": "Verified",
+    "trustedBeginner": "Trusted Beginner",
+    "pending": "Pending Verification"
+  }
+}

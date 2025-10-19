@@ -1,0 +1,43 @@
+{
+  "navigation": {
+    "home": "Trang chủ",
+    "findTutors": "Tìm gia sư",
+    "findStudents": "Tìm học sinh",
+    "teachers": "Giáo viên",
+    "contact": "Liên hệ"
+  },
+  "sidebar": {
+    "dashboard": "Bảng điều khiển",
+    "myTeachingSchedule": "Lịch dạy của tôi",
+    "courses": "Khóa học",
+    "availableSchedule": "Lịch rảnh",
+    "transactions": "Giao dịch",
+    "statistics": "Thống kê",
+    "reviews": "Đánh giá",
+    "students": "Học sinh",
+    "myCourses": "Khóa học của tôi",
+    "mySchedule": "Lịch học",
+    "tutors": "Gia sư",
+    "payments": "Thanh toán",
+    "users": "Người dùng",
+    "tutors": "Gia sư",
+    "analytics": "Phân tích",
+    "reports": "Báo cáo"
+  },
+  "header": {
+    "findTutors": "Tìm gia sư",
+    "mySchedule": "Lịch học của tôi",
+    "transactions": "Giao dịch",
+    "feedback": "Đánh giá",
+    "courses": "Khóa học",
+    "schedules": "Lịch rảnh",
+    "teachingSchedule": "Lịch dạy"
+  },
+  "actions": {
+    "settings": "Cài đặt",
+    "help": "Trợ giúp",
+    "systemSettings": "Cài đặt hệ thống",
+    "security": "Bảo mật",
+    "profile": "Hồ sơ"
+  }
+}

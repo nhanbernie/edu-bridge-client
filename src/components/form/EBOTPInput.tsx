@@ -20,7 +20,7 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
     const [values, setValues] = useState<string[]>(new Array(length).fill(""));
     const [activeIndex, setActiveIndex] = useState<number>(-1);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-    
+
     const { control } = useFormContext();
     const {
       field: { onChange, value, onBlur },
@@ -32,10 +32,10 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
 
     // Initialize values from form value
     useEffect(() => {
-      if (value && typeof value === 'string') {
-        const newValues = value.split('').slice(0, length);
+      if (value && typeof value === "string") {
+        const newValues = value.split("").slice(0, length);
         while (newValues.length < length) {
-          newValues.push('');
+          newValues.push("");
         }
         setValues(newValues);
       }
@@ -64,7 +64,7 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
       setValues(newValues);
 
       // Update form value
-      const otpValue = newValues.join('');
+      const otpValue = newValues.join("");
       onChange(otpValue);
 
       // Auto focus next input
@@ -74,21 +74,21 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
     };
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Backspace') {
+      if (e.key === "Backspace") {
         if (!values[index] && index > 0) {
           // If current input is empty, focus previous and clear it
           inputRefs.current[index - 1]?.focus();
-          handleChange(index - 1, '');
+          handleChange(index - 1, "");
         } else {
           // Clear current input
-          handleChange(index, '');
+          handleChange(index, "");
         }
-      } else if (e.key === 'ArrowLeft' && index > 0) {
+      } else if (e.key === "ArrowLeft" && index > 0) {
         inputRefs.current[index - 1]?.focus();
-      } else if (e.key === 'ArrowRight' && index < length - 1) {
+      } else if (e.key === "ArrowRight" && index < length - 1) {
         inputRefs.current[index + 1]?.focus();
-      } else if (e.key === 'Delete') {
-        handleChange(index, '');
+      } else if (e.key === "Delete") {
+        handleChange(index, "");
       }
     };
 
@@ -103,16 +103,16 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
 
     const handlePaste = (e: React.ClipboardEvent) => {
       e.preventDefault();
-      const pastedData = e.clipboardData.getData('text/plain').replace(/\D/g, '').slice(0, length);
-      
+      const pastedData = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, length);
+
       if (pastedData) {
-        const newValues = pastedData.split('');
+        const newValues = pastedData.split("");
         while (newValues.length < length) {
-          newValues.push('');
+          newValues.push("");
         }
         setValues(newValues);
         onChange(pastedData);
-        
+
         // Focus the next empty input or last input
         const nextIndex = Math.min(pastedData.length, length - 1);
         inputRefs.current[nextIndex]?.focus();
@@ -140,7 +140,7 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
               onPaste={handlePaste}
               className={cn(
                 "w-12 h-12 text-center text-lg font-semibold",
-                error && "border-red-500 focus-visible:ring-red-500"
+                error && "border-destructive focus-visible:ring-destructive"
               )}
             />
           ))}
@@ -153,7 +153,7 @@ export const EBOTPInput = forwardRef<HTMLDivElement, EBOTPInputProps>(
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="text-sm text-red-500 text-center"
+              className="text-sm text-destructive text-center"
             >
               {error.message}
             </motion.div>

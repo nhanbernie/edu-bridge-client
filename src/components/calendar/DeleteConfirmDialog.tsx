@@ -31,31 +31,21 @@ export const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-red-600">
+          <DialogTitle className="flex items-center gap-2 text-destructive">
             <AlertTriangle className="w-5 h-5" />
             {title}
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
-            {description}
-          </DialogDescription>
+          <DialogDescription className="text-muted-foreground">{description}</DialogDescription>
         </DialogHeader>
 
         <DialogFooter className="gap-2">
-          <Button 
-            variant="outline" 
-            onClick={onClose}
-            disabled={isLoading}
-          >
+          <Button variant="outline" onClick={onClose} disabled={isLoading}>
             <X className="w-4 h-4 mr-2" />
             Hủy
           </Button>
-          <Button 
-            variant="destructive"
-            onClick={onConfirm}
-            disabled={isLoading}
-          >
+          <Button variant="destructive" onClick={onConfirm} disabled={isLoading}>
             <Trash2 className="w-4 h-4 mr-2" />
             {isLoading ? "Đang xóa..." : "Xóa"}
           </Button>

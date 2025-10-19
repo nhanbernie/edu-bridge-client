@@ -77,7 +77,7 @@ const AuthForm = ({ type, onSubmit: customOnSubmit, email, token }: IAuthFormPro
     const buttonTitles = getButtonTitles(t);
 
     return (
-      <div className="w-full">
+      <div className="w-full ">
         <div className="space-y-5">
           {inputFields[type].map((field) => {
             if (field.type === "otp") {

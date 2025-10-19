@@ -37,6 +37,15 @@ export const useGetAndStoreUser = ({
   );
 
   useEffect(() => {
+    console.log("useGetAndStoreUser - Response updated:", {
+      success: response?.success,
+      hasData: !!response?.data,
+      userId: response?.data?.userId,
+      role: response?.data?.role,
+      status: response?.data?.status,
+      verifiedStatus: response?.data?.tutor?.verifiedStatus
+    });
+
     if (response?.success && response.data) {
       saveUserDataOnly(response.data);
     }

@@ -1,33 +1,65 @@
 "use client";
 
-import React, { useState } from "react";
-import { MapPin, BookOpen, Search, GraduationCap } from "lucide-react";
+import React from "react";
+import { MapPin, BookOpen, Search, GraduationCap, DollarSign } from "lucide-react";
 import Image from "next/image";
 import EBButton from "@/components/common/EBButton";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
-import { useTranslations } from "next-intl";
+import { EBSelectField } from "@/components/form/EBSelectField";
+import EBFormProvider from "@/components/form/EBFormProvider";
+import * as yup from "yup";
 
 const HeroSection = () => {
   const { push } = useLocaleRouter();
-  const t = useTranslations("marketing.hero");
-  const [searchForm, setSearchForm] = useState({
-    subject: "",
-    level: "",
-    location: "",
-    budget: "",
-  });
 
-  const handleSearchTutors = () => {
+  const handleSearchTutors = (data: any) => {
     // Navigate to student page to search tutors
     push("/student");
   };
 
+  // Validation schema for the search form
+  const searchSchema = yup.object().shape({
+    subject: yup.string().optional(),
+    level: yup.string().optional(),
+    location: yup.string().optional(),
+    budget: yup.string().optional(),
+  });
+
+  // Define options for each select field
+  const subjectOptions = [
+    { value: "math", label: "Toán học" },
+    { value: "english", label: "Tiếng Anh" },
+    { value: "physics", label: "Vật lý" },
+    { value: "chemistry", label: "Hóa học" },
+    { value: "biology", label: "Sinh học" },
+  ];
+
+  const levelOptions = [
+    { value: "elementary", label: "Tiểu học" },
+    { value: "middle", label: "THCS" },
+    { value: "high", label: "THPT" },
+    { value: "university", label: "Đại học" },
+  ];
+
+  const locationOptions = [
+    { value: "hanoi", label: "Hà Nội" },
+    { value: "hcm", label: "TP. HCM" },
+    { value: "danang", label: "Đà Nẵng" },
+    { value: "online", label: "Trực tuyến" },
+  ];
+
+  const budgetOptions = [
+    { value: "100-200", label: "< 200k/giờ" },
+    { value: "200-500", label: "200k - 500k/giờ" },
+    { value: "500+", label: "> 500k/giờ" },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-green-100 relative overflow-hidden pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-secondary/8 to-accent/10 relative overflow-hidden pt-16">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-green-400/10 to-emerald-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-secondary/20 to-accent/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 min-h-screen flex items-center">
@@ -36,96 +68,70 @@ const HeroSection = () => {
             {/* Left Content */}
             <div className="space-y-8">
               <div className="space-y-6">
-                <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  {t("title")}
+                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                  Kết Nối Với Gia Sư Chất Lượng Cao
                 </h1>
-                <p className="text-lg text-gray-600 leading-relaxed max-w-lg">{t("subtitle")}</p>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
+                  Tìm kiếm và kết nối với hàng nghìn gia sư được xác thực. Nâng cao kiến thức và đạt
+                  mục tiêu học tập của bạn.
+                </p>
               </div>
 
               {/* Search Form */}
-              <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <BookOpen className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.subject")}
-                    </label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.subject}
-                      onChange={(e) => setSearchForm({ ...searchForm, subject: e.target.value })}
-                    >
-                      <option value="">{t("searchForm.subjectPlaceholder")}</option>
-                      <option value="math">{t("subjects.math")}</option>
-                      <option value="english">{t("subjects.english")}</option>
-                      <option value="physics">{t("subjects.physics")}</option>
-                      <option value="chemistry">{t("subjects.chemistry")}</option>
-                      <option value="biology">{t("subjects.biology")}</option>
-                    </select>
+              <div className="bg-card/80 backdrop-blur-sm rounded-3xl shadow-xl border border-border p-6 space-y-4">
+                <EBFormProvider onSubmit={handleSearchTutors} validationSchema={searchSchema}>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <BookOpen className="w-4 h-4 text-primary" />
+                        Môn học
+                      </label>
+                      <EBSelectField
+                        name="subject"
+                        options={subjectOptions}
+                        placeholder="Chọn môn"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <GraduationCap className="w-4 h-4 text-primary" />
+                        Cấp độ
+                      </label>
+                      <EBSelectField name="level" options={levelOptions} placeholder="Chọn cấp" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-primary" />
+                        Địa điểm
+                      </label>
+                      <EBSelectField
+                        name="location"
+                        options={locationOptions}
+                        placeholder="Chọn nơi"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <DollarSign className="w-4 h-4 text-primary" />
+                        Ngân sách
+                      </label>
+                      <EBSelectField name="budget" options={budgetOptions} placeholder="Chọn mức" />
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <GraduationCap className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.level")}
-                    </label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.level}
-                      onChange={(e) => setSearchForm({ ...searchForm, level: e.target.value })}
-                    >
-                      <option value="">{t("searchForm.levelPlaceholder")}</option>
-                      <option value="elementary">{t("levels.elementary")}</option>
-                      <option value="middle">{t("levels.middle")}</option>
-                      <option value="high">{t("levels.high")}</option>
-                      <option value="university">{t("levels.university")}</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-emerald-600" />
-                      {t("searchForm.location")}
-                    </label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.location}
-                      onChange={(e) => setSearchForm({ ...searchForm, location: e.target.value })}
-                    >
-                      <option value="">{t("searchForm.locationPlaceholder")}</option>
-                      <option value="hanoi">{t("locations.hanoi")}</option>
-                      <option value="hcm">{t("locations.hcm")}</option>
-                      <option value="danang">{t("locations.danang")}</option>
-                      <option value="online">{t("locations.online")}</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">
-                      {t("searchForm.budget")}
-                    </label>
-                    <select
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                      value={searchForm.budget}
-                      onChange={(e) => setSearchForm({ ...searchForm, budget: e.target.value })}
-                    >
-                      <option value="">{t("searchForm.budgetPlaceholder")}</option>
-                      <option value="100-200">{t("budgets.100-200")}</option>
-                      <option value="200-500">{t("budgets.200-500")}</option>
-                      <option value="500+">{t("budgets.500+")}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <EBButton
-                  onClick={handleSearchTutors}
-                  size="lg"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                  icon={Search}
-                  iconPosition="left"
-                >
-                  {t("searchForm.searchButton")}
-                </EBButton>
+                  <EBButton
+                    type="submit"
+                    size="lg"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                    icon={Search}
+                    iconPosition="left"
+                  >
+                    Tìm Gia Sư
+                  </EBButton>
+                </EBFormProvider>
               </div>
             </div>
 
@@ -133,7 +139,7 @@ const HeroSection = () => {
             <div className="relative">
               {/* Background Circle */}
               <div className="absolute inset-0 flex justify-center items-center">
-                <div className="w-96 h-96 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full"></div>
+                <div className="w-96 h-96 bg-gradient-to-br from-primary to-secondary rounded-full"></div>
               </div>
 
               {/* Hero Image */}

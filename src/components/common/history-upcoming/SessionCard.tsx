@@ -2,8 +2,10 @@ import React, { memo, useMemo } from "react";
 import { Clock, Users, Video, Star } from "lucide-react";
 import { ClassSessionDto } from "@/services/classSession/type";
 import { useSessionUtils } from "@/hooks/useSessionUtils";
+import { useTranslations } from "next-intl";
+import { EBMotionCard } from "@/components/motion";
 import Image from "next/image";
-
+import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
 interface SessionCardProps {
   session: ClassSessionDto;
   index: number;
@@ -14,6 +16,7 @@ interface SessionCardProps {
 
 const SessionCard: React.FC<SessionCardProps> = memo(
   ({ session, index, userType, onJoinSession, onViewFeedback }) => {
+    const t = useTranslations("components.sessionCard");
     const { formatSessionDateTime, calculateSessionDuration, getSessionDurationText } =
       useSessionUtils();
 
@@ -23,7 +26,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       const durationText = getSessionDurationText(sessionDuration);
       const isHistory = session.isCompleted;
       const displayName = userType === "student" ? session.tutorName : session.studentName;
-      const displayLabel = userType === "student" ? "Gia sư" : "Học sinh";
+      const displayLabel = userType === "student" ? t("labels.tutor") : t("labels.student");
 
       return {
         sessionDuration,
@@ -41,22 +44,23 @@ const SessionCard: React.FC<SessionCardProps> = memo(
       userType,
       calculateSessionDuration,
       getSessionDurationText,
+      t,
     ]);
 
     const { sessionDuration, durationText, isHistory, displayName, displayLabel } = sessionData;
 
-    // Memoize styling classes
+    // NOTE: Best color for card
     const stylingClasses = useMemo(() => {
       const cardClasses = isHistory
-        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300"
-        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl px-6 py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300";
+        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300"
+        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300";
 
       const iconClasses = isHistory
-        ? "w-10 h-10 bg-emerald-100 dark:bg-emerald-900 rounded-xl flex items-center justify-center"
-        : "w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center";
+        ? "w-10 h-10 bg-primary/10 dark:bg-primary/20 flex items-center justify-center"
+        : "w-10 h-10 bg-gray-100 dark:bg-gray-700 flex items-center justify-center";
 
       const textClasses = isHistory
-        ? "text-emerald-600 dark:text-emerald-400 font-bold text-sm"
+        ? "text-primary dark:text-primary font-bold text-sm"
         : "text-gray-600 dark:text-gray-400 font-bold text-sm";
 
       return { cardClasses, iconClasses, textClasses };
@@ -65,12 +69,19 @@ const SessionCard: React.FC<SessionCardProps> = memo(
     const { cardClasses, iconClasses, textClasses } = stylingClasses;
 
     return (
-      <div className={cardClasses}>
-        <div className="flex items-start justify-between">
+      <EBMotionCard
+        variants={smoothCardVariants}
+        className={`${cardClasses} hover:cursor-pointer`}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+      >
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3 sm:gap-4">
               {/* Avatar - Square with rounded corners */}
-              <div className="relative w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl overflow-hidden">
                 {session.avatarUrl ? (
                   <Image
                     src={session.avatarUrl}
@@ -80,14 +91,14 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                    <span className="text-gray-600 dark:text-gray-400 font-bold text-2xl">
+                    <span className="text-gray-600 dark:text-gray-400 font-bold text-lg sm:text-2xl">
                       {(displayName || "?").charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
               </div>
               <div className="flex-1 space-y-2">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
                   {session.courseTitle}
                 </h3>
 
@@ -100,23 +111,23 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                 </div>
 
                 {/* Rating - show for all sessions if available */}
-                {session.averageCourseRating != null && session.averageCourseRating > 0 && (
+                {/* {session.averageCourseRating != null && session.averageCourseRating > 0 && (
                   <div className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                       Đánh giá trung bình: {session.averageCourseRating.toFixed(1)}/5
                     </span>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>
 
-          <div className="ml-6 flex-shrink-0">
+          <div className="lg:ml-6 flex-shrink-0 w-full lg:w-auto">
             {isHistory ? (
-              <div className="flex flex-col gap-3 items-end">
+              <div className="flex flex-col gap-3 lg:items-end">
                 {/* Time info - Above status badge */}
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
                     <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
                     <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
@@ -130,14 +141,14 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-                  <span className="text-xs font-medium">Hoàn thành</span>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary rounded-lg self-start lg:self-end">
+                  <span className="text-xs font-medium">{t("labels.completed")}</span>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-3 items-end">
+              <div className="flex flex-col gap-3 lg:items-end">
                 {/* Time info for upcoming sessions */}
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
                     <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
                     <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
@@ -154,10 +165,10 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                 {onJoinSession && (
                   <button
                     onClick={() => onJoinSession(session.sessionId)}
-                    className="group/btn flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
+                    className="group/btn flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto self-start lg:self-end"
                   >
-                    <Video className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
-                    <span>Tham gia</span>
+                    <Video className="h-4 w-4 sm:h-5 sm:w-5 group-hover/btn:scale-110 transition-transform" />
+                    <span className="text-sm sm:text-base">{t("labels.join")}</span>
                   </button>
                 )}
               </div>
@@ -167,9 +178,9 @@ const SessionCard: React.FC<SessionCardProps> = memo(
 
         {/* Decorative elements */}
         <div
-          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-emerald-400" : "bg-gray-400"} rounded-full opacity-60`}
+          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-primary" : "bg-gray-400"} rounded-full opacity-60`}
         ></div>
-      </div>
+      </EBMotionCard>
     );
   }
 );

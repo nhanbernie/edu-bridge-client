@@ -1,0 +1,8 @@
+{
+  "create": {
+    "buttons": {
+      "submit": "Tạo khóa học",
+      "back": "Quay lại"
+    }
+  }
+}

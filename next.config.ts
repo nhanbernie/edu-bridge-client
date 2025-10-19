@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // compiler: {
+  //   removeConsole: true,
+  // },
 };
 
 export default withNextIntl(nextConfig);

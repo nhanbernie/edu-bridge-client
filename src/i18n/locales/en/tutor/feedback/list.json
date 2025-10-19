@@ -1,0 +1,20 @@
+{
+  "title": "Course Ratings",
+  "subtitle": "View ratings from your students",
+  "stats": {
+    "totalCourses": "Total Courses",
+    "inProgress": "Teaching",
+    "completed": "Completed"
+  },
+  "sections": {
+    "inProgress": "Teaching ({count})",
+    "completed": "Completed ({count})"
+  },
+  "empty": {
+    "title": "No courses yet",
+    "description": "You don't have any courses being taught yet."
+  },
+  "loading": "Loading courses...",
+  "error": "An error occurred",
+  "errorMessage": "Unable to load course list. Please try again later."
+}

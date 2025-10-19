@@ -14,6 +14,7 @@ import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
 import { useTutorFeedbacksData } from "../hooks/useTutorFeedbacks";
 import { useTutorProfile } from "@/features/tutor/profile/hooks/useTutorProfile";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface TimeSlot {
   start: string;
@@ -46,6 +47,8 @@ const TabContent: React.FC<TabContentProps> = ({
   onCourseSelect,
   scheduleData,
 }) => {
+  const t = useTranslations("student.tutor.tabs");
+
   // Get tutor feedbacks data
   const { feedbacksData, isLoading: isLoadingFeedbacks } = useTutorFeedbacksData({
     tutorId: tutorId || "",
@@ -61,6 +64,9 @@ const TabContent: React.FC<TabContentProps> = ({
   const [isImageViewOpen, setIsImageViewOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{ url: string; title: string } | null>(null);
 
+  // Current date state for schedule
+  const [currentDate, setCurrentDate] = useState(new Date());
+
   const handleViewCertificate = (url: string, title: string) => {
     setSelectedImage({ url, title });
     setIsImageViewOpen(true);
@@ -75,7 +81,7 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải khóa học...</span>
+          <span className="ml-2">{t("courses.loading")}</span>
         </div>
       );
     }
@@ -85,15 +91,15 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="text-center py-12">
           <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có khóa học nào</h3>
-          <p className="text-gray-500">Gia sư này chưa tạo khóa học nào.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("courses.empty.title")}</h3>
+          <p className="text-gray-500">{t("courses.empty.description")}</p>
         </div>
       );
     }
 
     // Hiển thị danh sách khóa học
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rouded-4xl">
         {coursesData.courses.map((course, index) => (
           <EBTutorCard
             key={course.id}
@@ -113,14 +119,14 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải lịch rảnh...</span>
+          <span className="ml-2">{t("schedule.loading")}</span>
         </div>
       );
     }
 
     // Transform availability blocks to schedule format
     const transformedSchedule = availabilityData?.availabilityBlocks
-      ? transformToCurrentWeekSchedule(availabilityData.availabilityBlocks, new Date())
+      ? transformToCurrentWeekSchedule(availabilityData.availabilityBlocks, currentDate)
       : scheduleData;
 
     // Hiển thị empty state nếu không có lịch
@@ -128,11 +134,11 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="text-center py-12">
           <Clock className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có lịch rảnh</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("schedule.empty.title")}</h3>
           <p className="text-gray-500">
             {selectedCourseId
-              ? "Gia sư này chưa có lịch rảnh cho khóa học đã chọn."
-              : "Gia sư này chưa tạo lịch rảnh nào."}
+              ? t("schedule.empty.description.selectedCourse")
+              : t("schedule.empty.description.noSchedule")}
           </p>
         </div>
       );
@@ -144,16 +150,17 @@ const TabContent: React.FC<TabContentProps> = ({
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-800">
               <Clock className="h-4 w-4 inline mr-1" />
-              Hiển thị lịch rảnh cho khóa học đã chọn
+              {t("schedule.selectedCourse.notice")}
             </p>
           </div>
         )}
         <EBSchedule
           scheduleData={transformedSchedule}
-          title={selectedCourseId ? "Lịch rảnh cho khóa học" : "Lịch rảnh trong tuần"}
+          title={selectedCourseId ? t("schedule.title.selectedCourse") : t("schedule.title.weekly")}
           showHeader={true}
           showDate={true}
           mode="week"
+          onDateChange={setCurrentDate}
         />
       </div>
     );
@@ -164,7 +171,7 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải đánh giá...</span>
+          <span className="ml-2">{t("reviews.loading")}</span>
         </div>
       );
     }
@@ -189,7 +196,7 @@ const TabContent: React.FC<TabContentProps> = ({
         {/* Right side - Reviews List */}
         <div className="flex-1 space-y-4">
           {feedbacksData?.feedbacks?.map((feedback, index) => (
-            <Card key={index} className="border-0 shadow-sm">
+            <Card key={index} className="border-0 shadow-sm p-0">
               <CardContent className="p-4">
                 <div className="mb-3">
                   <div className="font-medium text-lg mb-1">{feedback.studentName}</div>
@@ -200,16 +207,15 @@ const TabContent: React.FC<TabContentProps> = ({
 
                   {/* Tutor Rating */}
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm text-muted-foreground font-semibold">Tutor:</span>
+                    <span className="text-sm text-muted-foreground font-semibold">{t("reviews.tutor")}:</span>
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${
-                            i < feedback.tutorRating
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-gray-300"
-                          }`}
+                          className={`h-3 w-3 ${i < feedback.tutorRating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
+                            }`}
                         />
                       ))}
                     </div>
@@ -217,16 +223,15 @@ const TabContent: React.FC<TabContentProps> = ({
 
                   {/* Course Rating */}
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground font-semibold">Course:</span>
+                    <span className="text-sm text-muted-foreground font-semibold">{t("reviews.course")}:</span>
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${
-                            i < feedback.courseRating
-                              ? "fill-yellow-400 text-yellow-400"
-                              : "text-gray-300"
-                          }`}
+                          className={`h-3 w-3 ${i < feedback.courseRating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
+                            }`}
                         />
                       ))}
                     </div>
@@ -246,7 +251,7 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải chứng chỉ...</span>
+          <span className="ml-2">{t("awards.loading")}</span>
         </div>
       );
     }
@@ -255,8 +260,8 @@ const TabContent: React.FC<TabContentProps> = ({
       return (
         <div className="text-center py-12">
           <Award className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có chứng chỉ nào</h3>
-          <p className="text-gray-500">Gia sư này chưa thêm chứng chỉ hoặc giải thưởng.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("awards.empty.title")}</h3>
+          <p className="text-gray-500">{t("awards.empty.description")}</p>
         </div>
       );
     }

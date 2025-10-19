@@ -27,9 +27,7 @@ export type CreatePaymentResponse = ApiResponse<CreatePaymentData>;
 
 export interface VerifyQRCodeResponse {
   success: boolean;
-  data: {
-    qrCode: string;
-  };
+  data: string;
   message: string;
   errors: null;
 }

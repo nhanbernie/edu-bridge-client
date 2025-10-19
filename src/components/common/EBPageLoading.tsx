@@ -11,10 +11,10 @@ interface EBPageLoadingProps {
  */
 const EBPageLoading: React.FC<EBPageLoadingProps> = ({ message = "Đang tải..." }) => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-primary" />
-        <p className="text-gray-600 dark:text-gray-400">{message}</p>
+        <p className="text-muted-foreground">{message}</p>
       </div>
     </div>
   );

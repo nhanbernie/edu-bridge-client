@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
 import type { AvailabilityBlockDto } from "@/services/availability-block/type";
 import { SlotStatus } from "@/common/enums";
+import { useTranslations } from "next-intl";
 
 interface SelectedSession {
   date: Date;
@@ -50,6 +51,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
   isLoadingAvailability,
   selectedSessions = [],
 }) => {
+  const t = useTranslations("student.booking.scheduleSelector");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [isClient, setIsClient] = useState(false);
 
@@ -216,22 +218,8 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
     return disabledSlotIds;
   }, [isClient, selectedDate, selectedSessions, timeSlots]);
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const dayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  const monthNames = t.raw("months") as string[];
+  const dayNames = t.raw("dayNames") as string[];
 
   const navigateMonth = (direction: number) => {
     setCurrentMonth((prev) => {
@@ -270,11 +258,11 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
       <div className="pb-4">
         <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
           <Calendar className="w-5 h-5" />
-          Chọn lịch học ({currentSessionCount}/{totalSessions} buổi)
+          {t("title")} ({currentSessionCount}/{totalSessions} {t("sessionCount")})
         </h3>
         <div className="flex justify-between items-center text-sm mt-2">
-          <span className="text-muted-foreground">Chọn ngày học</span>
-          <span className="text-muted-foreground">Chọn giờ học</span>
+          <span className="text-muted-foreground">{t("selectDate")}</span>
+          <span className="text-muted-foreground">{t("selectTime")}</span>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -339,7 +327,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                     isDisabled ? "cursor-not-allowed opacity-50" : "hover:bg-muted",
                     isSelected ? "bg-primary text-primary-foreground" : "",
                     hasAvailableSlots && !isSelected
-                      ? "bg-green-50 border border-green-200 text-green-700"
+                      ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
                       : "",
                     date.getDate() === today.getDate() &&
                       date.getMonth() === today.getMonth() &&
@@ -360,7 +348,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
           {/* Available Days */}
           <div className="mt-4">
             <p className="text-sm text-muted-foreground mb-2">
-              Ngày có lịch rảnh ({availableDates.size} ngày):
+              {t("availableDays")} ({availableDates.size} {t("sessionCount")}):
             </p>
             <div className="flex flex-wrap gap-2">
               {isClient &&
@@ -370,14 +358,14 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                     // Parse date string manually to avoid timezone issues
                     const [year, month, day] = dateStr.split("-").map(Number);
                     const date = new Date(year, month - 1, day); // month is 0-indexed
-                    const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-                    const dayName = dayNames[date.getDay()];
+                    const dayNamesShort = t.raw("dayNames") as string[];
+                    const dayName = dayNamesShort[date.getDay()];
                     const displayDate = `${day}/${month}`;
 
                     return (
                       <span
                         key={dateStr}
-                        className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded border border-green-200"
+                        className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded border border-green-200 dark:border-green-800"
                       >
                         {dayName} {displayDate}
                       </span>
@@ -385,7 +373,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                   })}
               {availableDates.size > 10 && (
                 <span className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded">
-                  +{availableDates.size - 10} ngày khác
+                  +{availableDates.size - 10} {t("otherDays")}
                 </span>
               )}
             </div>
@@ -397,7 +385,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-medium text-foreground">
-                Chọn giờ học {selectedDate && `(${timeSlots.length} khung giờ)`}
+                {t("selectTimeSlot")} {selectedDate && `(${timeSlots.length} ${t("timeSlots")})`}
               </h4>
               <Button
                 onClick={onAddSession}
@@ -405,13 +393,13 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                 className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground"
                 size="sm"
               >
-                Thêm buổi học
+                {t("addSession")}
               </Button>
             </div>
             {selectedDate && (
               <div className="text-sm text-muted-foreground mb-3">
-                Thứ {selectedDate.getDay() === 0 ? "CN" : selectedDate.getDay() + 1},{" "}
-                {selectedDate.getDate()} tháng {selectedDate.getMonth() + 1},{" "}
+                {(t.raw("dayNamesFull") as string[])[selectedDate.getDay()]},{" "}
+                {selectedDate.getDate()} {monthNames[selectedDate.getMonth()]},{" "}
                 {selectedDate.getFullYear()}
               </div>
             )}
@@ -421,15 +409,13 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
             {isLoadingAvailability ? (
               <div className="col-span-2 flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin" />
-                <span className="ml-2">Đang tải lịch rảnh...</span>
+                <span className="ml-2">{t("loading")}</span>
               </div>
             ) : timeSlots.length === 0 ? (
               <div className="col-span-2 text-center py-8">
                 <Clock className="h-8 w-8 mx-auto text-gray-400 mb-2" />
                 <p className="text-sm text-muted-foreground">
-                  {selectedDate
-                    ? "Không có lịch rảnh cho ngày này"
-                    : "Vui lòng chọn ngày để xem lịch rảnh"}
+                  {selectedDate ? t("noSlotsForDate") : t("selectDateFirst")}
                 </p>
               </div>
             ) : (
@@ -455,13 +441,13 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                       !selectedDate
                         ? "cursor-not-allowed opacity-50 border-border text-muted-foreground"
                         : isBooked
-                          ? "cursor-not-allowed opacity-50 border-red-200 bg-red-50 text-red-400"
+                          ? "cursor-not-allowed opacity-50 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-400 dark:text-red-300"
                           : isReserved
-                            ? "cursor-not-allowed opacity-50 border-yellow-200 bg-yellow-50 text-yellow-400"
+                            ? "cursor-not-allowed opacity-50 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-400 dark:text-yellow-300"
                             : isConflicted
-                              ? "cursor-not-allowed opacity-50 border-orange-200 bg-orange-50 text-orange-400"
+                              ? "cursor-not-allowed opacity-50 border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20 text-orange-400 dark:text-orange-300"
                               : isAlreadySelected
-                                ? "bg-green-100 border-green-300 text-green-700"
+                                ? "bg-green-100 dark:bg-green-900/20 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400"
                                 : selectedTime === slot.id
                                   ? "bg-primary border-primary text-primary-foreground"
                                   : "border-border text-foreground hover:border-primary hover:bg-muted"
@@ -469,18 +455,24 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                   >
                     {slot.label}
                     {isBooked && (
-                      <span className="absolute top-1 right-1 text-xs text-red-500">Đã đặt</span>
+                      <span className="absolute top-1 right-1 text-xs text-red-500 dark:text-red-400">
+                        {t("slotStatus.booked")}
+                      </span>
                     )}
                     {isReserved && (
-                      <span className="absolute top-1 right-1 text-xs text-yellow-500">
-                        Đang giữ
+                      <span className="absolute top-1 right-1 text-xs text-yellow-500 dark:text-yellow-400">
+                        {t("slotStatus.reserved")}
                       </span>
                     )}
                     {isConflicted && isAvailable && (
-                      <span className="absolute top-1 right-1 text-xs text-orange-500">Trùng</span>
+                      <span className="absolute top-1 right-1 text-xs text-orange-500 dark:text-orange-400">
+                        {t("slotStatus.conflicted")}
+                      </span>
                     )}
                     {isAlreadySelected && (
-                      <span className="absolute top-1 right-1 text-xs text-green-600">✓</span>
+                      <span className="absolute top-1 right-1 text-xs text-green-600 dark:text-green-400">
+                        ✓
+                      </span>
                     )}
                   </button>
                 );

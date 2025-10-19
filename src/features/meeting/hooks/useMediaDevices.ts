@@ -155,16 +155,12 @@ export function useMediaDevices(options: UseMediaDevicesOptions = {}): UseMediaD
         track.enabled = newState;
       });
       setCamOn(newState);
-      console.log("📹 Camera:", newState ? "ON" : "OFF");
     } else {
       // No video track, need to restart stream
       startMedia({ audio: micOn, video: true });
     }
   }, [micOn, camOn, startMedia]);
 
-  /**
-   * Auto-start media on mount if enabled
-   */
   useEffect(() => {
     if (autoStart) {
       startMedia({
@@ -177,10 +173,9 @@ export function useMediaDevices(options: UseMediaDevicesOptions = {}): UseMediaD
     return () => {
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => track.stop());
-        console.log("🧹 Cleaned up media devices");
       }
     };
-  }, [autoStart]); // Only run on mount
+  }, [autoStart]);
 
   return {
     localStream,

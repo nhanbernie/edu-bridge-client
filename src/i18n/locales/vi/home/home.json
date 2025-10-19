@@ -1,0 +1,22 @@
+{
+  "title": "Bạn muốn sử dụng EduBridge như thế nào?",
+  "checkingStatus": "Đang kiểm tra trạng thái tài khoản...",
+  "choiceCards": {
+    "learn": {
+      "title": "Tôi muốn học",
+      "description": "Tìm gia sư chất lượng và đặt lịch học cá nhân hóa",
+      "stats": {
+        "count": "10,000+",
+        "label": "Học sinh"
+      }
+    },
+    "teach": {
+      "title": "Tôi muốn dạy",
+      "description": "Chia sẻ kiến thức và kiếm tiền bằng cách dạy học sinh",
+      "stats": {
+        "count": "500+",
+        "label": "Gia sư chuyên nghiệp"
+      }
+    }
+  }
+}

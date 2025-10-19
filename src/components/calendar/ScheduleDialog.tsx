@@ -12,9 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Save, X } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Calendar as CalendarIcon, Clock, Save, X } from "lucide-react";
 import { format, parse } from "date-fns";
 import { vi } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 interface ScheduleDialogProps {
   isOpen: boolean;
@@ -80,12 +83,13 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
   initialData,
   mode,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [title, setTitle] = useState<string>("Lịch rảnh");
   const [showStartTimeOptions, setShowStartTimeOptions] = useState(false);
   const [showEndTimeOptions, setShowEndTimeOptions] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   // Initialize form data when dialog opens
   useEffect(() => {
@@ -93,7 +97,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
       const startDate = new Date(initialData.start);
       const endDate = new Date(initialData.end);
 
-      setSelectedDate(format(startDate, "yyyy-MM-dd"));
+      setSelectedDate(startDate);
       setStartTime(format(startDate, "HH:mm"));
       setEndTime(format(endDate, "HH:mm"));
       setTitle(initialData.title || "Lịch rảnh");
@@ -103,12 +107,13 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
   // Reset form when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      setSelectedDate("");
+      setSelectedDate(undefined);
       setStartTime("");
       setEndTime("");
       setTitle("Lịch rảnh");
       setShowStartTimeOptions(false);
       setShowEndTimeOptions(false);
+      setIsCalendarOpen(false);
     }
   }, [isOpen]);
 
@@ -155,7 +160,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
     }
 
     const scheduleData: ScheduleData = {
-      date: selectedDate,
+      date: format(selectedDate, "yyyy-MM-dd"),
       startTime,
       endTime,
       title: "Rảnh", // Default title
@@ -175,13 +180,12 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
     }
   };
 
-  const formatDisplayDate = (dateStr: string) => {
-    if (!dateStr) return "";
+  const formatDisplayDate = (date: Date | undefined) => {
+    if (!date) return "";
     try {
-      const date = new Date(dateStr);
       return format(date, "EEEE, dd MMMM yyyy", { locale: vi });
     } catch {
-      return dateStr;
+      return "";
     }
   };
 
@@ -189,16 +193,16 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-blue-600" />
+          <DialogTitle className="flex items-center gap-2 text-foreground">
+            <CalendarIcon className="w-5 h-5 text-primary" />
             {mode === "create" ? "Tạo lịch rảnh mới" : "Chỉnh sửa lịch rảnh"}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Date and Time Display */}
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Clock className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock className="w-4 h-4 text-primary" />
             <span>
               {formatDisplayDate(selectedDate)}{" "}
               {startTime && endTime && `${startTime} - ${endTime}`}
@@ -207,14 +211,33 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
 
           {/* Date Input */}
           <div className="space-y-2">
-            <Label htmlFor="date">Ngày</Label>
-            <Input
-              id="date"
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              min={format(new Date(), "yyyy-MM-dd")}
-            />
+            <Label>Ngày</Label>
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !selectedDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {selectedDate ? format(selectedDate, "dd/MM/yyyy") : "Chọn ngày"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(date) => {
+                    setSelectedDate(date);
+                    setIsCalendarOpen(false);
+                  }}
+                  disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Start Time */}
@@ -235,12 +258,12 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
                 placeholder="Chọn hoặc nhập thời gian (HH:MM)"
               />
               {showStartTimeOptions && (
-                <div className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border rounded-md shadow-lg max-h-40 overflow-y-auto">
                   {timeOptions.map((time) => (
                     <button
                       key={time}
                       type="button"
-                      className="w-full px-3 py-2 text-left hover:bg-gray-50 text-sm"
+                      className="w-full px-3 py-2 text-left hover:bg-muted text-sm text-foreground"
                       onClick={() => handleTimeSelect(time, "start")}
                     >
                       {time}
@@ -269,12 +292,12 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
                 placeholder="Chọn hoặc nhập thời gian (HH:MM)"
               />
               {showEndTimeOptions && (
-                <div className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg max-h-40 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border rounded-md shadow-lg max-h-40 overflow-y-auto">
                   {timeOptions.map((time) => (
                     <button
                       key={time}
                       type="button"
-                      className="w-full px-3 py-2 text-left hover:bg-gray-50 text-sm"
+                      className="w-full px-3 py-2 text-left hover:bg-muted text-sm text-foreground"
                       onClick={() => handleTimeSelect(time, "end")}
                     >
                       {time}
@@ -294,7 +317,7 @@ export const ScheduleDialog: React.FC<ScheduleDialogProps> = ({
           <Button
             onClick={handleSave}
             disabled={!selectedDate || !startTime || !endTime}
-            className="bg-emerald-600 hover:bg-emerald-700"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Save className="w-4 h-4 mr-2" />
             {mode === "create" ? "Tạo lịch" : "Cập nhật"}

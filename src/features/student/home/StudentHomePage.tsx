@@ -3,16 +3,16 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
-import { Search, SlidersHorizontal, ChevronDown, Loader2 } from "lucide-react";
 import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
+import { TutorFilterSection } from "./components/TutorFilterSection";
+import { useTutorInfiniteScroll } from "./hooks";
 import type { TutorCardData, TutorSearchRequest, TutorSearchDto } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
-import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery } from "@/services/tutor";
-import { useSelector } from "react-redux";
+import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery, useGetTutorSubjectsQuery } from "@/services/tutor";
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
@@ -44,34 +44,57 @@ const transformTutorData = (dto: TutorSearchDto): TutorCardData => ({
   phone: dto.phone,
 });
 
+// Constants
+const PAGE_SIZE = 6;
+
 const StudentHomePage = () => {
   const { push } = useLocaleRouter();
   const dispatch = useAppDispatch();
   const t = useTranslations("student.home");
 
+  // State
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [isAdvancedFilterOpen, setIsAdvancedFilterOpen] = useState(false);
   const [advancedFilters, setAdvancedFilters] = useState<TutorSearchRequest>({});
   const [allTutors, setAllTutors] = useState<TutorCardData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const observerTarget = useRef<HTMLDivElement>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [quickFilters, setQuickFilters] = useState({
+    highRating: false,
+    subjects: [] as string[],
+  });
+
+  // Refs
   const isLoadingRef = useRef(false);
 
+  // Hooks
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
   const [triggerFilter, { isLoading: isLoadingFilter }] = useLazyFilterTutorsQuery();
   const [triggerSearch, { isLoading: isLoadingSearch }] = useLazySearchTutorsQuery();
+  const { data: subjectsData, isLoading: isLoadingSubjects } = useGetTutorSubjectsQuery();
 
   const isLoadingMore = isSearchMode ? isLoadingSearch : isLoadingFilter;
 
+  // Process subjects data from API
+  const allSubjects = subjectsData?.data || [];
+  
+  // Subject options for dropdown (all subjects)
+  const subjectOptions = allSubjects;
+  
+  // Quick filter subjects - only show first 4 items
+  const quickFilterSubjects = allSubjects.slice(0, 4);
+
+  // API Calls
   const loadInitialTutors = useCallback(async () => {
     try {
+      setIsInitialLoading(true);
       const result = await triggerFilter({
         PageNumber: 1,
-        PageSize: 6,
+        PageSize: PAGE_SIZE,
         ...advancedFilters,
       }).unwrap();
 
@@ -79,16 +102,19 @@ const StudentHomePage = () => {
         const tutors = result.data.map(transformTutorData);
         setAllTutors(tutors);
         setCurrentPage(1);
-        setHasMore(tutors.length >= 6);
+        setHasMore(tutors.length >= PAGE_SIZE);
         setIsSearchMode(false);
       }
     } catch (err) {
       console.error("Error loading tutors:", err);
+    } finally {
+      setIsInitialLoading(false);
     }
   }, [triggerFilter, advancedFilters]);
 
   useEffect(() => {
     loadInitialTutors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -108,13 +134,13 @@ const StudentHomePage = () => {
         const result = await triggerSearch({
           SearchTerm: debouncedSearchQuery,
           PageNumber: 1,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
         }).unwrap();
 
         if (result.success && result.data) {
           const tutors = result.data.map(transformTutorData);
           setAllTutors(tutors);
-          setHasMore(tutors.length >= 6);
+          setHasMore(tutors.length >= PAGE_SIZE);
         }
       } catch (err) {
         console.error("Error searching tutors:", err);
@@ -137,12 +163,12 @@ const StudentHomePage = () => {
         result = await triggerSearch({
           SearchTerm: debouncedSearchQuery,
           PageNumber: nextPage,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
         }).unwrap();
       } else {
         result = await triggerFilter({
           PageNumber: nextPage,
-          PageSize: 6,
+          PageSize: PAGE_SIZE,
           ...advancedFilters,
         }).unwrap();
       }
@@ -151,7 +177,7 @@ const StudentHomePage = () => {
         const newTutors = result.data.map(transformTutorData);
         setAllTutors((prev) => [...prev, ...newTutors]);
         setCurrentPage(nextPage);
-        setHasMore(newTutors.length >= 6);
+        setHasMore(newTutors.length >= PAGE_SIZE);
       }
     } catch (err) {
       console.error("Error loading more tutors:", err);
@@ -169,46 +195,26 @@ const StudentHomePage = () => {
     triggerFilter,
   ]);
 
-  const filterOptions = [
-    { label: t("filter.options.all"), value: "all" },
-    { label: t("filter.options.rating_desc"), value: "rating_desc" },
-    { label: t("filter.options.price_asc"), value: "price_asc" },
-    { label: t("filter.options.price_desc"), value: "price_desc" },
-    { label: t("filter.options.experience_desc"), value: "experience_desc" },
-    { label: t("filter.options.online"), value: "online" },
-  ];
-
   const handleViewDetails = (tutorId: string) => {
     push(`/student/tutor/${tutorId}`);
   };
 
-  const handleContact = (tutorId: string) => {};
+  const handleContact = (_tutorId: string) => {
+    // TODO: Implement contact functionality
+  };
 
   const handleFavorite = (tutorId: string) => {
     dispatch(toggleFavoriteTutor(tutorId));
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          loadMoreTutors();
-        }
-      },
-      { threshold: 0.5, rootMargin: "100px" }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget && hasMore) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [loadMoreTutors, hasMore]);
+  // Infinite scroll hook with optimized settings (after loadMoreTutors is defined)
+  const { observerTarget } = useTutorInfiniteScroll({
+    hasMore,
+    isLoading: isLoadingMore,
+    onLoadMore: loadMoreTutors,
+    rootMargin: "300px", // Trigger 300px before reaching element (fixes footer issue)
+    threshold: 0.1, // Trigger when 10% visible (more sensitive)
+  });
 
   const filteredTutors: TutorCardData[] = allTutors
     .filter((tutor: TutorCardData) => {
@@ -234,12 +240,85 @@ const StudentHomePage = () => {
       }
     });
 
-  const handleSearchChange = (value: string) => {
-    setSearchQuery(value);
+  // Handlers
+  const handleQuickFilterToggle = async (filterType: "highRating") => {
+    const newQuickFilters = { ...quickFilters };
+    const filterParams: TutorSearchRequest = {};
+
+    if (filterType === "highRating") {
+      // Toggle high rating filter
+      newQuickFilters.highRating = !newQuickFilters.highRating;
+      if (newQuickFilters.highRating) {
+        filterParams.Grades = "Đánh giá cao nhất";
+      }
+    }
+
+    setQuickFilters(newQuickFilters);
+    setAdvancedFilters(filterParams);
+    setCurrentPage(1);
+    setAllTutors([]);
+    setHasMore(true);
+    setIsSearchMode(false);
+    setSearchQuery("");
+
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: PAGE_SIZE,
+        ...filterParams,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setHasMore(tutors.length >= PAGE_SIZE);
+      }
+    } catch (err) {
+      console.error("Error applying quick filter:", err);
+    }
   };
 
-  const handleFilterChange = (filterValue: string) => {
-    setSelectedFilter(filterValue);
+  const handleSubjectFilterToggle = async (subject: string) => {
+    let newSubjects = [...quickFilters.subjects];
+
+    if (newSubjects.includes(subject)) {
+      // Remove subject
+      newSubjects = newSubjects.filter((s) => s !== subject);
+    } else {
+      // Add subject
+      newSubjects.push(subject);
+    }
+
+    const newQuickFilters = { ...quickFilters, subjects: newSubjects };
+    setQuickFilters(newQuickFilters);
+
+    const filterParams: TutorSearchRequest = {
+      Subjects: newSubjects.length > 0 ? newSubjects : undefined,
+      Grades: newQuickFilters.highRating ? "Đánh giá cao nhất" : undefined,
+    };
+
+    setAdvancedFilters(filterParams);
+    setCurrentPage(1);
+    setAllTutors([]);
+    setHasMore(true);
+    setIsSearchMode(false);
+    setSearchQuery("");
+
+    try {
+      const result = await triggerFilter({
+        PageNumber: 1,
+        PageSize: PAGE_SIZE,
+        ...filterParams,
+      }).unwrap();
+
+      if (result.success && result.data) {
+        const tutors = result.data.map(transformTutorData);
+        setAllTutors(tutors);
+        setHasMore(tutors.length >= PAGE_SIZE);
+      }
+    } catch (err) {
+      console.error("Error applying subject filter:", err);
+    }
   };
 
   const handleAdvancedFilterApply = async (filters: TutorSearchRequest) => {
@@ -253,26 +332,22 @@ const StudentHomePage = () => {
     try {
       const result = await triggerFilter({
         PageNumber: 1,
-        PageSize: 6,
+        PageSize: PAGE_SIZE,
         ...filters,
       }).unwrap();
 
       if (result.success && result.data) {
         const tutors = result.data.map(transformTutorData);
         setAllTutors(tutors);
-        setHasMore(tutors.length >= 6);
+        setHasMore(tutors.length >= PAGE_SIZE);
       }
     } catch (err) {
       console.error("Error applying filters:", err);
     }
   };
 
-  const handleAdvancedFilterOpen = () => {
-    setIsAdvancedFilterOpen(true);
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-32">
+    <div className="min-h-screen pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* EBHeader Section */}
         <div className={PAGE_HEADER}>
@@ -283,77 +358,42 @@ const StudentHomePage = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8 space-y-4">
-          {/* Search and Filter Row */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search Bar */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <input
-                type="text"
-                placeholder={t("search.placeholder")}
-                value={searchQuery}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-lg
-                           focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                           transition-all duration-200"
-              />
-            </div>
-
-            {/* Filter Dropdown */}
-            <div className="relative">
-              <select
-                value={selectedFilter}
-                onChange={(e) => handleFilterChange(e.target.value)}
-                className="appearance-none bg-card border border-border rounded-lg px-4 py-3 pr-10
-                           focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
-                           transition-all duration-200 cursor-pointer"
-              >
-                {filterOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5 pointer-events-none" />
-            </div>
-
-            {/* Advanced Filter Button */}
-            <button
-              onClick={handleAdvancedFilterOpen}
-              className="flex items-center space-x-2 px-4 py-3 bg-card border border-border
-                               rounded-lg hover:bg-secondary transition-colors duration-200"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              <span>{t("filter.button")}</span>
-            </button>
-          </div>
-
-          {/* Filter Tags */}
-          <div className="flex flex-wrap gap-2">
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.highestRating")}</span>
-            </div>
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.newest")}</span>
-            </div>
-            <div
-              className="flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary
-                            rounded-full text-sm border border-primary/20"
-            >
-              <span>{t("filter.tags.newest")}</span>
-            </div>
-          </div>
-        </div>
+        <TutorFilterSection
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedSubject={selectedSubject}
+          onSubjectChange={(value) => {
+            setSelectedSubject(value);
+            if (value) {
+              handleSubjectFilterToggle(value);
+            }
+          }}
+          quickFilters={quickFilters}
+          onQuickFilterToggle={handleQuickFilterToggle}
+          onSubjectFilterToggle={handleSubjectFilterToggle}
+          onAdvancedFilterOpen={() => setIsAdvancedFilterOpen(true)}
+          advancedFilters={advancedFilters}
+          subjectOptions={subjectOptions}
+          quickFilterSubjects={quickFilterSubjects}
+          isLoadingSubjects={isLoadingSubjects}
+          searchPlaceholder={t("search.placeholder")}
+          allSubjectsText={t("filter.subjects.all")}
+          filterButtonText={t("filter.button")}
+          highRatingText={t("filter.quickFilters.highRating")}
+          priceText={t("filter.tags.price")}
+          ratingText={t("filter.tags.rating")}
+          durationText={t("filter.tags.duration")}
+          hoursText={t("filter.tags.hours")}
+        />
 
         {/* Tutors Grid */}
-        {allTutors.length === 0 && !isLoadingMore ? (
+        {isInitialLoading ? (
+          // Initial loading skeleton
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+            <TutorCardSkeleton count={6} />
+          </div>
+        ) : allTutors.length === 0 ? (
+          // Empty state (only show after initial load)
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">{t("empty.title")}</p>
             <button
@@ -368,8 +408,9 @@ const StudentHomePage = () => {
             </button>
           </div>
         ) : (
+          // Tutors list
           <>
-            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
               {filteredTutors.map((tutor) => (
                 <MotionItem key={tutor.id}>
                   <TutorCard
@@ -402,6 +443,8 @@ const StudentHomePage = () => {
         onClose={() => setIsAdvancedFilterOpen(false)}
         onApplyFilters={handleAdvancedFilterApply}
         currentFilters={advancedFilters}
+        subjectOptions={subjectOptions}
+        isLoadingSubjects={isLoadingSubjects}
       />
 
       {/* Charity Counter - Fixed bottom right */}

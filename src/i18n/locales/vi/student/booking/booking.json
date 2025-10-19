@@ -1,0 +1,135 @@
+{
+  "page": {
+    "processing": "Đang xử lý...",
+    "selectAll": "Vui lòng chọn đầy đủ thông tin",
+    "bookNow": "Đặt lịch ngay"
+  },
+  "tutorInfo": {
+    "loading": "Đang tải thông tin gia sư...",
+    "error": "Không thể tải thông tin gia sư",
+    "retry": "Thử lại",
+    "tutor": "Gia sư",
+    "verified": "Đã xác minh",
+    "reviews": "đánh giá",
+    "yearsExperience": "năm kinh nghiệm",
+    "quickResponse": "Phản hồi nhanh"
+  },
+  "packageSelector": {
+    "title": "Chọn gói học",
+    "loading": "Đang tải gói học...",
+    "empty": {
+      "title": "Chưa có gói học nào",
+      "description": "Khóa học này chưa có gói học nào được tạo."
+    },
+    "packageTypes": {
+      "TRIAL": "Buổi học thử",
+      "SINGLE": "Gói cơ bản",
+      "FOUR": "Gói 4 buổi",
+      "EIGHT": "Gói 8 buổi",
+      "TWELVE": "Gói 12 buổi"
+    },
+    "sessions": "buổi",
+    "sessionsPerMonth": "buổi học trong tháng",
+    "trialBadge": "🎁 Học thử miễn phí",
+    "popularBadge": "Phổ biến nhất",
+    "charitySupport": "💝 Ủng hộ trực tiếp người khó khăn"
+  },
+  "scheduleSelector": {
+    "title": "Chọn lịch học",
+    "sessionCount": "buổi",
+    "selectDate": "Chọn ngày học",
+    "selectTime": "Chọn giờ học",
+    "addSession": "Thêm buổi học",
+    "loading": "Đang tải lịch rảnh...",
+    "noSlotsForDate": "Không có lịch rảnh cho ngày này",
+    "selectDateFirst": "Vui lòng chọn ngày để xem lịch rảnh",
+    "availableDays": "Ngày có lịch rảnh",
+    "otherDays": "ngày khác",
+    "selectTimeSlot": "Chọn giờ học",
+    "timeSlots": "khung giờ",
+    "months": [
+      "Tháng 1",
+      "Tháng 2",
+      "Tháng 3",
+      "Tháng 4",
+      "Tháng 5",
+      "Tháng 6",
+      "Tháng 7",
+      "Tháng 8",
+      "Tháng 9",
+      "Tháng 10",
+      "Tháng 11",
+      "Tháng 12"
+    ],
+    "dayNames": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
+    "dayNamesFull": ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+    "slotStatus": {
+      "booked": "Đã đặt",
+      "reserved": "Đang giữ",
+      "conflicted": "Trùng",
+      "selected": "✓"
+    }
+  },
+  "selectedSchedule": {
+    "title": "Lịch học đã chọn",
+    "session": "Buổi",
+    "edit": "Sửa",
+    "remove": "Xóa",
+    "remaining": "buổi học chưa chọn",
+    "dayNames": ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"]
+  },
+  "paymentConfirm": {
+    "title": "Xác nhận thanh toán",
+    "bookingId": "Mã đặt lịch",
+    "importantInfo": "Thông tin quan trọng",
+    "info": {
+      "created": "• Đặt lịch của bạn đã được tạo thành công",
+      "timeLimit": "• Bạn có 30 phút để hoàn tất thanh toán",
+      "confirmation": "• Sau khi thanh toán, gia sư sẽ xác nhận lịch học",
+      "notification": "• Bạn sẽ nhận được thông báo qua email và SMS"
+    },
+    "cancel": "Hủy bỏ",
+    "confirm": "Xác nhận thanh toán",
+    "processing": "Đang xử lý..."
+  },
+  "paymentQR": {
+    "title": "Thanh toán qua chuyển khoản",
+    "amount": "Số tiền:",
+    "scanQR": "Quét mã QR để chuyển khoản",
+    "downloadQR": "Tải QR",
+    "downloaded": "Đã tải xuống QR code",
+    "instructions": {
+      "title": "Hướng dẫn thanh toán:",
+      "step1": "1. Mở ứng dụng ngân hàng trên điện thoại",
+      "step2": "2. Quét mã QR ở trên",
+      "step3": "3. Kiểm tra số tiền và thông tin chuyển khoản",
+      "step4": "4. Hoàn tất chuyển khoản",
+      "step5": "5. Chờ xác nhận thanh toán (thường 1-2 phút)"
+    },
+    "note": {
+      "title": "Lưu ý:",
+      "content": "Sau khi thanh toán thành công, hệ thống sẽ tự động cập nhật trạng thái đặt lịch của bạn. Nếu có vấn đề, vui lòng liên hệ hỗ trợ.",
+      "close": "Đóng"
+    }
+  },
+  "bookingGuide": {
+    "title": "Hướng dẫn đặt lịch học",
+    "subtitle": "Làm theo 3 bước đơn giản để đặt lịch học với gia sư",
+    "steps": {
+      "step1": {
+        "title": "Chọn gói học",
+        "description": "Chọn gói học phù hợp với nhu cầu của bạn. Mỗi gói sẽ có số buổi học khác nhau."
+      },
+      "step2": {
+        "title": "Chọn ngày học",
+        "description": "Chọn ngày bạn muốn học. Các ngày có sẵn lịch sẽ được đánh dấu màu xanh."
+      },
+      "step3": {
+        "title": "Chọn khung giờ",
+        "description": "Chọn khung giờ phù hợp. Bạn có thể thêm nhiều buổi học cho đến khi đủ số buổi trong gói."
+      }
+    },
+    "stepLabel": "BƯỚC",
+    "gotIt": "Đã hiểu!"
+  }
+}

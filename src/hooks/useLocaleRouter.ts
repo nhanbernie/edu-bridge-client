@@ -1,25 +1,30 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/i18n/config";
 
 export const useLocaleRouter = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const localeCache = useRef<{ pathname: string; locale: string } | null>(null);
 
-  // Extract current locale from pathname with validation
+  // Extract current locale from pathname with validation (cached)
   const getCurrentLocale = useCallback(() => {
+    // Return cached result if pathname hasn't changed
+    if (localeCache.current && localeCache.current.pathname === pathname) {
+      return localeCache.current.locale;
+    }
+
     const segments = pathname.split("/");
     const locale = segments[1];
 
     // Validate locale is supported
-    if (locale && SUPPORTED_LOCALES.includes(locale as any)) {
-      return locale;
-    }
+    const result = locale && SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE;
 
-    // Fallback to default locale
-    return DEFAULT_LOCALE;
+    // Cache the result
+    localeCache.current = { pathname, locale: result };
+    return result;
   }, [pathname]);
 
   // Navigate with current locale (validated)

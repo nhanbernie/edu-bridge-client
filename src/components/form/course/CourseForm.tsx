@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useWatch, useFormContext } from "react-hook-form";
 import EBTextField from "@/components/form/EBTextField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
@@ -40,6 +41,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
   showPreview = true,
   initialData,
 }) => {
+  const t = useTranslations("tutor.courses.create.form");
   const { setValue } = useFormContext<CourseFormData>();
   const watchedValues = useWatch<CourseFormData>();
 
@@ -58,11 +60,11 @@ const CourseForm: React.FC<CourseFormProps> = ({
   return (
     <div className={`grid grid-cols-1 ${showPreview ? "lg:grid-cols-2" : ""} gap-8`}>
       {/* Form Section */}
-      <Card className="h-fit">
+      <Card className="h-fit rounded-3xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
-            Thông tin khóa học
+            {t("title")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -70,14 +72,14 @@ const CourseForm: React.FC<CourseFormProps> = ({
             {/* Course Title */}
             <EBTextField
               name="title"
-              label="Tên khóa học *"
-              placeholder="Ví dụ: Toán học cơ bản lớp 10"
+              label={t("fields.title.label")}
+              placeholder={t("fields.title.placeholder")}
             />
 
             {/* Subjects */}
             <EBMultipleSelect
               name="subjects"
-              label="Môn học (có thể chọn nhiều) *"
+              label={t("fields.subjects.label")}
               options={subjectOptions}
               disabled={isSubjectsLoading || tutorLoading}
             />
@@ -85,17 +87,17 @@ const CourseForm: React.FC<CourseFormProps> = ({
             {/* Description */}
             <EBTextAreaField
               name="description"
-              label="Mô tả khóa học *"
-              placeholder="Mô tả chi tiết về nội dung, phương pháp giảng dạy..."
+              label={t("fields.description.label")}
+              placeholder={t("fields.description.placeholder")}
               rows={4}
             />
 
             {/* Hours per session */}
             <EBTextField
               name="hoursPerSession"
-              label="Thời gian / buổi (giờ) *"
+              label={t("fields.hoursPerSession.label")}
               type="number"
-              placeholder="2"
+              placeholder={t("fields.hoursPerSession.placeholder")}
               min="0.5"
               max="8"
               step="0.5"
@@ -104,9 +106,9 @@ const CourseForm: React.FC<CourseFormProps> = ({
             {/* Hourly rate */}
             <EBTextField
               name="hourlyRate"
-              label="Giá / buổi (VNĐ) *"
+              label={t("fields.hourlyRate.label")}
               type="number"
-              placeholder="100000"
+              placeholder={t("fields.hourlyRate.placeholder")}
               min="50000"
               max="2000000"
               step="10000"
@@ -115,8 +117,8 @@ const CourseForm: React.FC<CourseFormProps> = ({
             {/* Publish Switch */}
             <EBSwitchField
               name="isPublished"
-              label="Xuất bản khóa học"
-              description="Khóa học được xuất bản, chi tiết có thể thay đổi sau"
+              label={t("fields.isPublished.label")}
+              description={t("fields.isPublished.description")}
             />
 
             {/* Submit Button */}
@@ -126,9 +128,9 @@ const CourseForm: React.FC<CourseFormProps> = ({
                 variant="default"
                 size="lg"
                 loading={isLoading}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                {isLoading ? "Đang xử lý..." : submitButtonText}
+                {isLoading ? t("submit.loading") : submitButtonText}
               </EBButton>
             </div>
           </div>

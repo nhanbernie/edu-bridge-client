@@ -1,0 +1,11 @@
+{
+  "title": "Chỉnh sửa khóa học",
+  "subtitle": "Cập nhật thông tin khóa học của bạn",
+  "buttons": {
+    "back": "Quay lại"
+  },
+  "messages": {
+    "authenticating": "Đang xác thực thông tin...",
+    "loading": "Đang tải thông tin khóa học..."
+  }
+}

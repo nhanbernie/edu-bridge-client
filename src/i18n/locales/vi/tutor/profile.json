@@ -32,5 +32,10 @@
     "cancel": "Hủy",
     "edit": "Chỉnh sửa",
     "delete": "Xóa"
+  },
+  "verification": {
+    "verified": "Đã xác minh",
+    "trustedBeginner": "Người mới uy tín",
+    "pending": "Đang chờ xác minh"
   }
 }
