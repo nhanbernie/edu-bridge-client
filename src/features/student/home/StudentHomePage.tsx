@@ -381,6 +381,13 @@ const StudentHomePage = () => {
           subjectOptions={SUBJECT_OPTIONS}
           quickFilterSubjects={QUICK_FILTER_SUBJECTS}
           searchPlaceholder={t("search.placeholder")}
+          allSubjectsText={t("filter.subjects.all")}
+          filterButtonText={t("filter.button")}
+          highRatingText={t("filter.quickFilters.highRating")}
+          priceText={t("filter.tags.price")}
+          ratingText={t("filter.tags.rating")}
+          durationText={t("filter.tags.duration")}
+          hoursText={t("filter.tags.hours")}
         />
 
         {/* Tutors Grid */}

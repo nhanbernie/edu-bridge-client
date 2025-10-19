@@ -1,0 +1,14 @@
+{
+  "verified": "Verified",
+  "rating": {
+    "default": "5.0"
+  },
+  "stats": {
+    "students": "Students",
+    "courses": "Courses",
+    "years": "Years"
+  },
+  "actions": {
+    "learnNow": "Learn Now"
+  }
+}

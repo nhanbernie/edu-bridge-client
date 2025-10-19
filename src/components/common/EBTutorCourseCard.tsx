@@ -53,7 +53,7 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
 
   return (
     <EBMotionCard
-      variant="base"
+      variant="elevated"
       className="hover:shadow-lg transition-shadow cursor-pointer"
       initial={undefined}
       animate={undefined}
@@ -101,15 +101,12 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
               </div>
             </div>
             {mode === "user" && (
-              <EBButtonAction
-                variants={flashButtonVariants}
+              <Button
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={() => {
-                  handleBooking();
-                }}
+                onClick={handleBooking}
               >
                 {t("enrollButton")}
-              </EBButtonAction>
+              </Button>
             )}
           </div>
         </div>

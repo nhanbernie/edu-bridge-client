@@ -49,9 +49,9 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-hidden rounded-3xl border-0 shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-center text-xl font-bold text-gray-900">
+          <DialogTitle className="text-center text-xl font-bold text-foreground">
             Thanh toán qua chuyển khoản
           </DialogTitle>
         </DialogHeader>
@@ -59,11 +59,11 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
         <ScrollArea className="max-h-[70vh] pr-4">
           <div className="space-y-6">
             {/* Payment Info */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+            <div className="bg-muted rounded-xl p-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Số tiền:</span>
-                  <span className="font-semibold text-lg text-emerald-600">
+                  <span className="text-muted-foreground">Số tiền:</span>
+                  <span className="font-semibold text-lg text-primary">
                     {formatCurrency(paymentData.payment.amount)}
                   </span>
                 </div>
@@ -72,16 +72,14 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
 
             {/* QR Code */}
             <div className="text-center">
-              <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-300 inline-block">
+              <div className="bg-background p-4 rounded-xl border-2 border-dashed border-border inline-block">
                 <img
                   src={paymentData.qrCodeBase64}
                   alt="QR Code for payment"
                   className="w-40 h-40 sm:w-48 sm:h-48 mx-auto"
                 />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                Quét mã QR để chuyển khoản
-              </p>
+              <p className="text-sm text-muted-foreground mt-2">Quét mã QR để chuyển khoản</p>
             </div>
 
             {/* Action Buttons */}
@@ -93,7 +91,7 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
             </div>
 
             {/* Instructions */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
               <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
                 Hướng dẫn thanh toán:
               </h4>

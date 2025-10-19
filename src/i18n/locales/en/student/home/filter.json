@@ -8,7 +8,8 @@
     "toPlaceholder": "500,000"
   },
   "subjects": {
-    "title": "Subjects"
+    "title": "Subjects",
+    "all": "All Subjects"
   },
   "gradeLevel": {
     "title": "Grade Level",
@@ -35,8 +36,15 @@
     "online": "Online"
   },
   "button": "Filter",
+  "quickFilters": {
+    "highRating": "⭐ High Rating"
+  },
   "tags": {
     "highestRating": "Highest Rating",
-    "newest": "Newest"
+    "newest": "Newest",
+    "price": "Price",
+    "rating": "Rating",
+    "duration": "Duration",
+    "hours": "hours"
   }
 }

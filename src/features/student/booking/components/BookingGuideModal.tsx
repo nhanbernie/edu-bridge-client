@@ -36,11 +36,11 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-xl p-0 gap-0 overflow-hidden border-none shadow-xl">
+      <DialogContent className="sm:max-w-xl p-0 gap-0 overflow-hidden border-0 shadow-xl rounded-3xl">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
+          className="absolute top-4 right-4 z-10 p-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
           aria-label="Close"
         >
           <X className="w-4 h-4" />
@@ -74,7 +74,7 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + index * 0.1, duration: 0.3 }}
-                className="relative flex gap-4 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800"
+                className="relative flex gap-4 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800"
               >
                 {/* Step icon với màu primary */}
                 <div className="flex-shrink-0">
@@ -88,10 +88,8 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-semibold text-primary">BƯỚC {step.number}</span>
                   </div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{step.description}</p>
+                  <h3 className="text-base font-semibold text-foreground mb-1">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground">{step.description}</p>
                 </div>
 
                 {/* Connecting line */}

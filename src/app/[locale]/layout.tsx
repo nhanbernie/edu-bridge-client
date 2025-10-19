@@ -25,6 +25,7 @@ const getMessages = cache(async (locale: string) => {
       marketing,
       router,
       home,
+      charity,
       studentHome,
       studentHomeCard,
       studentHomeFilter,
@@ -37,6 +38,8 @@ const getMessages = cache(async (locale: string) => {
       studentTransactionsList,
       studentTransactionsStatus,
       studentOnboard,
+      studentTutorDetail,
+      studentBooking,
       meeting,
       tutorOnboardProfileUnderPreview,
       tutorOnboardSteps,
@@ -75,6 +78,7 @@ const getMessages = cache(async (locale: string) => {
       availabilityCalendar,
       ebMediaCard,
       ebVideoUploadPlaceholder,
+      tutorCard,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -84,6 +88,8 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/marketing.json`),
       import(`@/i18n/locales/${locale}/router/router.json`),
       import(`@/i18n/locales/${locale}/home/home.json`),
+      // Charity translations
+      import(`@/i18n/locales/${locale}/charity.json`),
       // Student translations
       import(`@/i18n/locales/${locale}/student/home/home.json`),
       import(`@/i18n/locales/${locale}/student/home/card.json`),
@@ -97,6 +103,8 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/student/transactions/list.json`),
       import(`@/i18n/locales/${locale}/student/transactions/status.json`),
       import(`@/i18n/locales/${locale}/student/onboard/onboard.json`),
+      import(`@/i18n/locales/${locale}/student/tutor/detail.json`),
+      import(`@/i18n/locales/${locale}/student/booking/booking.json`),
       // Meeting translations
       import(`@/i18n/locales/${locale}/meeting/meeting.json`),
       // Tutor onboarding translations
@@ -145,6 +153,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/components/availability-calendar.json`),
       import(`@/i18n/locales/${locale}/components/eb-media-card.json`),
       import(`@/i18n/locales/${locale}/components/eb-video-upload-placeholder.json`),
+      import(`@/i18n/locales/${locale}/components/tutor-card.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -206,6 +215,7 @@ const getMessages = cache(async (locale: string) => {
       },
       auth: auth.default,
       marketing: marketing.default,
+      charity: charity.default,
       student: {
         home: {
           ...studentHome.default,
@@ -229,6 +239,10 @@ const getMessages = cache(async (locale: string) => {
           status: studentTransactionsStatus.default,
         },
         onboard: studentOnboard.default,
+        tutor: {
+          detail: studentTutorDetail.default,
+        },
+        booking: studentBooking.default,
       },
       meeting: meeting.default,
       components: {
@@ -242,6 +256,7 @@ const getMessages = cache(async (locale: string) => {
         availabilityCalendar: availabilityCalendar.default,
         ebMediaCard: ebMediaCard.default,
         ebVideoUploadPlaceholder: ebVideoUploadPlaceholder.default,
+        tutorCard: tutorCard.default,
       },
       validation: {
         auth: validationAuth.default,

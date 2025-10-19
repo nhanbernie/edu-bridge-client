@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { User, Settings, LogOut, ChevronDown, Heart } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
@@ -36,7 +36,7 @@ const EBUserMenu = () => {
   const getProfileRoute = () => {
     const userRole = displayUser?.role || user?.role;
     if (!userRole) return "/";
-
+    // NOTE
     const role = userRole.toLowerCase();
     switch (role) {
       case "tutor":
@@ -55,6 +55,10 @@ const EBUserMenu = () => {
     push(profileRoute);
   };
 
+  const handleCharityClick = () => {
+    push("/charity");
+  };
+
   const userActions: ActionItem[] = [
     {
       label: "Profile",
@@ -68,6 +72,11 @@ const EBUserMenu = () => {
         // TODO: Navigate to settings page
         console.log("Settings clicked");
       },
+    },
+    {
+      label: "Charity",
+      icon: Heart,
+      onClick: handleCharityClick,
     },
     {
       label: "Sign Out",

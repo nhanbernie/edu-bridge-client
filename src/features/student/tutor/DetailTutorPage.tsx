@@ -10,6 +10,7 @@ import TabContent from "./components/TabContent";
 import { useManageCourses } from "@/features/tutor/courses/hooks/useManageCourses";
 import { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { useGetUser } from "@/hooks/useGetUser";
+import { useTranslations } from "next-intl";
 
 interface DetailTutorPageProps {
   tutorId?: string;
@@ -41,6 +42,7 @@ const mockTutor = {
 
 const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
   const params = useParams();
+  const t = useTranslations("student.tutor.detail");
   const [activeTab, setActiveTab] = useState("courses");
   const [isFavorited, setIsFavorited] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string | undefined>();
@@ -76,7 +78,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
   // Loading state
   if (isLoadingUser) {
-    return <EBPageLoading message="Đang tải thông tin gia sư..." />;
+    return <EBPageLoading message={t("loading")} />;
   }
 
   // Error state
@@ -85,12 +87,12 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
       <div className="min-h-screen bg-background pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="text-center py-12">
-            <p className="text-destructive mb-4">Không thể tải thông tin gia sư</p>
+            <p className="text-destructive mb-4">{t("error.message")}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
             >
-              Thử lại
+              {t("error.retry")}
             </button>
           </div>
         </div>
@@ -145,7 +147,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
               <div className="space-y-2 sm:space-y-3 flex-1 text-center sm:text-left">
                 <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-3">
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground">
-                    {user.fullName || "Gia sư"}
+                    {user.fullName || t("header.tutor")}
                   </h1>
                   {tutor?.verifiedStatus === "VERIFIED" && (
                     <div className="px-2.5 sm:px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm font-semibold rounded-full border border-emerald-500/20">
@@ -161,27 +163,33 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                       {tutor?.averageTutorRating || 0}
                     </span>
                     <span className="text-muted-foreground text-xs sm:text-sm">
-                      ({tutor?.totalFeedbacks || 0} đánh giá)
+                      ({tutor?.totalFeedbacks || 0} {t("header.reviews")})
                     </span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
                     <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>{user.location || "Chưa cập nhật"}</span>
+                    <span>{user.location || t("header.notUpdated")}</span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Users className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>{tutor?.totalStudents || 0} học sinh</span>
+                    <span>
+                      {tutor?.totalStudents || 0} {t("header.students")}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>{tutor?.yearsOfExperience || 0} năm</span>
+                    <span>
+                      {tutor?.yearsOfExperience || 0} {t("header.years")}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Award className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span>{tutor?.totalCourses || 0} khóa học</span>
+                    <span>
+                      {tutor?.totalCourses || 0} {t("header.courses")}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -205,7 +213,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                       isFavorited ? "text-red-500 fill-red-500" : "text-muted-foreground"
                     )}
                   />
-                  <span>{isFavorited ? "Đã yêu thích" : "Yêu thích"}</span>
+                  <span>{isFavorited ? t("header.favorited") : t("header.favorite")}</span>
                 </button>
               </div>
             </div>
@@ -214,29 +222,31 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
         {/* About Section */}
         <div className="bg-card border border-border rounded-4xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 shadow-xl">
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Giới thiệu</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">
+            {t("about.title")}
+          </h2>
           <div className="space-y-4 sm:space-y-6">
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">
-                Về tôi
+                {t("about.aboutMe")}
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                {tutor?.bio || "Chưa có thông tin giới thiệu"}
+                {tutor?.bio || t("about.noInfo")}
               </p>
             </div>
 
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">
-                Học vấn
+                {t("about.education")}
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                {tutor?.educationLevel || "Chưa cập nhật thông tin học vấn"}
+                {tutor?.educationLevel || t("about.noEducation")}
               </p>
             </div>
 
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">
-                Chuyên môn
+                {t("about.specialties")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {tutor?.subjects?.map((subject, index) => (
@@ -248,7 +258,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   </span>
                 )) || (
                   <span className="text-sm sm:text-base text-muted-foreground">
-                    Chưa cập nhật chuyên môn
+                    {t("about.noSpecialties")}
                   </span>
                 )}
               </div>
@@ -256,7 +266,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3">
-                Ngôn ngữ
+                {t("about.languages")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {tutor?.languages?.map((language, index) => (
@@ -268,7 +278,7 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
                   </span>
                 )) || (
                   <span className="text-sm sm:text-base text-muted-foreground">
-                    Chưa cập nhật ngôn ngữ
+                    {t("about.noLanguages")}
                   </span>
                 )}
               </div>
@@ -278,7 +288,16 @@ const DetailTutorPage: React.FC<DetailTutorPageProps> = ({ tutorId }) => {
 
         {/* Tabs Navigation */}
         <div className="bg-card border border-border rounded-3xl shadow-xl mb-6 sm:mb-8 lg:mb-10 overflow-hidden">
-          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          <TabNavigation
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            tabs={[
+              { id: "courses", label: t("tabs.courses") },
+              { id: "schedule", label: t("tabs.schedule") },
+              { id: "reviews", label: t("tabs.reviews") },
+              { id: "awards", label: t("tabs.awards") },
+            ]}
+          />
         </div>
 
         {/* Tab Content */}

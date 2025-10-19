@@ -339,7 +339,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                     isDisabled ? "cursor-not-allowed opacity-50" : "hover:bg-muted",
                     isSelected ? "bg-primary text-primary-foreground" : "",
                     hasAvailableSlots && !isSelected
-                      ? "bg-green-50 border border-green-200 text-green-700"
+                      ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
                       : "",
                     date.getDate() === today.getDate() &&
                       date.getMonth() === today.getMonth() &&
@@ -377,7 +377,7 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                     return (
                       <span
                         key={dateStr}
-                        className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded border border-green-200"
+                        className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded border border-green-200 dark:border-green-800"
                       >
                         {dayName} {displayDate}
                       </span>
@@ -455,13 +455,13 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                       !selectedDate
                         ? "cursor-not-allowed opacity-50 border-border text-muted-foreground"
                         : isBooked
-                          ? "cursor-not-allowed opacity-50 border-red-200 bg-red-50 text-red-400"
+                          ? "cursor-not-allowed opacity-50 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-400 dark:text-red-300"
                           : isReserved
-                            ? "cursor-not-allowed opacity-50 border-yellow-200 bg-yellow-50 text-yellow-400"
+                            ? "cursor-not-allowed opacity-50 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-400 dark:text-yellow-300"
                             : isConflicted
-                              ? "cursor-not-allowed opacity-50 border-orange-200 bg-orange-50 text-orange-400"
+                              ? "cursor-not-allowed opacity-50 border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/20 text-orange-400 dark:text-orange-300"
                               : isAlreadySelected
-                                ? "bg-green-100 border-green-300 text-green-700"
+                                ? "bg-green-100 dark:bg-green-900/20 border-green-300 dark:border-green-700 text-green-700 dark:text-green-400"
                                 : selectedTime === slot.id
                                   ? "bg-primary border-primary text-primary-foreground"
                                   : "border-border text-foreground hover:border-primary hover:bg-muted"
@@ -469,18 +469,24 @@ const ScheduleSelector: React.FC<ScheduleSelectorProps> = ({
                   >
                     {slot.label}
                     {isBooked && (
-                      <span className="absolute top-1 right-1 text-xs text-red-500">Đã đặt</span>
+                      <span className="absolute top-1 right-1 text-xs text-red-500 dark:text-red-400">
+                        Đã đặt
+                      </span>
                     )}
                     {isReserved && (
-                      <span className="absolute top-1 right-1 text-xs text-yellow-500">
+                      <span className="absolute top-1 right-1 text-xs text-yellow-500 dark:text-yellow-400">
                         Đang giữ
                       </span>
                     )}
                     {isConflicted && isAvailable && (
-                      <span className="absolute top-1 right-1 text-xs text-orange-500">Trùng</span>
+                      <span className="absolute top-1 right-1 text-xs text-orange-500 dark:text-orange-400">
+                        Trùng
+                      </span>
                     )}
                     {isAlreadySelected && (
-                      <span className="absolute top-1 right-1 text-xs text-green-600">✓</span>
+                      <span className="absolute top-1 right-1 text-xs text-green-600 dark:text-green-400">
+                        ✓
+                      </span>
                     )}
                   </button>
                 );

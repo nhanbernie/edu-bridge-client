@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { EBMotionCard, EBButtonAction } from "@/components/motion";
 import { tutorCardVariants } from "@/common/constants/motion/cardMotion.constant";
 import { Star, Heart, Users, BookOpen, Award, CheckCircle2 } from "lucide-react";
@@ -22,6 +23,8 @@ const TutorCard: React.FC<TutorCardProps> = ({
   onFavorite,
   isFavorited = false,
 }) => {
+  const t = useTranslations("components.tutorCard");
+
   const handleViewDetails = () => {
     onViewDetails?.(tutor.id);
   };
@@ -101,7 +104,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
                          border border-emerald-400/30 dark:border-emerald-500/30 shadow-lg"
             >
               <CheckCircle2 size={12} strokeWidth={2.5} />
-              <span className="hidden sm:inline">Verified</span>
+              <span className="hidden sm:inline">{t("verified")}</span>
             </span>
           </div>
         )}
@@ -113,7 +116,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
         <div className="flex items-center justify-center gap-1.5">
           <Star className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-yellow-500 fill-yellow-500" />
           <span className="text-sm sm:text-base font-semibold text-foreground">
-            {tutor.rating > 0 ? tutor.rating.toFixed(1) : "5"}
+            {tutor.rating > 0 ? tutor.rating.toFixed(1) : t("rating.default")}
           </span>
           <span className="text-xs sm:text-sm text-muted-foreground">({tutor.reviewCount})</span>
         </div>
@@ -148,7 +151,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
               <div className="text-sm sm:text-base font-bold text-foreground">
                 {tutor.studentCount}
               </div>
-              <div className="text-xs text-muted-foreground">Học sinh</div>
+              <div className="text-xs text-muted-foreground">{t("stats.students")}</div>
             </div>
           </div>
 
@@ -161,7 +164,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
               <div className="text-sm sm:text-base font-bold text-foreground">
                 {tutor.courseCount}
               </div>
-              <div className="text-xs text-muted-foreground">Khóa học</div>
+              <div className="text-xs text-muted-foreground">{t("stats.courses")}</div>
             </div>
           </div>
 
@@ -174,7 +177,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
               <div className="text-sm sm:text-base font-bold text-foreground">
                 {tutor.yearsOfExperience || 0}
               </div>
-              <div className="text-xs text-muted-foreground">Năm</div>
+              <div className="text-xs text-muted-foreground">{t("stats.years")}</div>
             </div>
           </div>
         </div>
@@ -186,7 +189,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
                      py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base
                      shadow-lg hover:shadow-xl transition-all duration-300 hover:cursor-pointer"
         >
-          Học ngay
+          {t("actions.learnNow")}
         </EBButtonAction>
       </div>
     </EBMotionCard>

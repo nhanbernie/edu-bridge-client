@@ -22,6 +22,13 @@ interface TutorFilterSectionProps {
   subjectOptions: string[];
   quickFilterSubjects: string[];
   searchPlaceholder: string;
+  allSubjectsText: string;
+  filterButtonText: string;
+  highRatingText: string;
+  priceText: string;
+  ratingText: string;
+  durationText: string;
+  hoursText: string;
 }
 
 export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
@@ -37,6 +44,13 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
   subjectOptions,
   quickFilterSubjects,
   searchPlaceholder,
+  allSubjectsText,
+  filterButtonText,
+  highRatingText,
+  priceText,
+  ratingText,
+  durationText,
+  hoursText,
 }) => {
   return (
     <div className="mb-8 bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-xl">
@@ -65,7 +79,7 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
                        focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary
                        transition-all duration-200 cursor-pointer text-foreground font-medium"
           >
-            <option value="">Tất cả môn học</option>
+            <option value="">{allSubjectsText}</option>
             {subjectOptions.map((subject) => (
               <option key={subject} value={subject}>
                 {subject}
@@ -82,7 +96,7 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
                      rounded-xl hover:bg-primary/90 transition-all duration-200 font-medium whitespace-nowrap"
         >
           <SlidersHorizontal className="w-4 h-4" />
-          <span>Bộ lọc</span>
+          <span>{filterButtonText}</span>
         </button>
       </div>
 
@@ -98,7 +112,7 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
                 : "bg-background text-foreground border-border hover:bg-muted"
             }`}
           >
-            ⭐ Đánh giá cao
+            {highRatingText}
           </button>
 
           {/* Subject Quick Filters */}
@@ -125,18 +139,18 @@ export const TutorFilterSection: React.FC<TutorFilterSectionProps> = ({
           <div className="flex flex-wrap gap-2 pt-3 border-t border-border">
             {advancedFilters.MinHourlyRate && advancedFilters.MaxHourlyRate && (
               <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-medium border border-primary/20">
-                Giá: {advancedFilters.MinHourlyRate.toLocaleString()} -{" "}
+                {priceText}: {advancedFilters.MinHourlyRate.toLocaleString()} -{" "}
                 {advancedFilters.MaxHourlyRate.toLocaleString()} đ
               </div>
             )}
             {advancedFilters.MinRating && (
               <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-medium border border-primary/20">
-                Đánh giá: ≥ {advancedFilters.MinRating} ⭐
+                {ratingText}: ≥ {advancedFilters.MinRating} ⭐
               </div>
             )}
             {advancedFilters.HoursPerSession && (
               <div className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-sm font-medium border border-primary/20">
-                Thời lượng: {advancedFilters.HoursPerSession} giờ
+                {durationText}: {advancedFilters.HoursPerSession} {hoursText}
               </div>
             )}
           </div>
