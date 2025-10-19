@@ -53,6 +53,8 @@ const TutorOnboardingPage = () => {
       return;
     }
 
+    // Only redirect to home after completing step 2
+    console.log("Step 2 completed, redirecting to home");
     push(ROUTES.HOME);
   };
 
