@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
@@ -9,7 +9,8 @@ import { TutorOnboardingSteps, TutorStep1, TutorStep2 } from "./components";
 import { useTutorOnboarding, TutorFormData } from "./hooks/useTutorOnboarding";
 import { ROUTES } from "@/common/constants/route.constant";
 
-const TutorOnboardingPage = () => {
+// Component con để sử dụng useSearchParams
+const TutorOnboardingContent = () => {
   const t = useTranslations("tutor.onboard");
   const searchParams = useSearchParams();
   const { push } = useLocaleRouter();
@@ -97,6 +98,15 @@ const TutorOnboardingPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+// Component chính với Suspense boundary
+const TutorOnboardingPage = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <TutorOnboardingContent />
+    </Suspense>
   );
 };
 
