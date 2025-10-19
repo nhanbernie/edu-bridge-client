@@ -1,0 +1,95 @@
+{
+  "title": "Tải lên hồ sơ",
+  "subtitle": "Vui lòng chọn loại xác minh và tải lên các tài liệu tương ứng",
+  "verificationType": {
+    "label": "Loại xác minh",
+    "placeholder": "Chọn loại gia sư bạn muốn đăng ký",
+    "verified": "Verified Tutor (Gia sư đã xác minh)",
+    "trusted": "Trusted Beginner Tutor (Gia sư mới đáng tin cậy)"
+  },
+  "info": {
+    "title": "Lưu ý:",
+    "verified": {
+      "title": "Verified Tutor:",
+      "description": "Upload CCCD, SELFIE, DEGREE, (CERTIFICATE - tùy chọn)"
+    },
+    "trusted": {
+      "title": "Trusted Beginner Tutor:",
+      "description": "Upload CCCD, SELFIE, STUDENT_CARD (thẻ sinh viên), TRANSCRIPT (bảng điểm), (CERTIFICATE - tùy chọn)"
+    }
+  },
+  "documents": {
+    "verified": {
+      "title": "Tài liệu cho Verified Tutor",
+      "cccd": {
+        "label": "CCCD (Căn cước công dân)",
+        "description": "Ảnh mặt trước và mặt sau CCCD rõ nét"
+      },
+      "selfie": {
+        "label": "Ảnh Selfie cầm CCCD",
+        "description": "Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+      },
+      "degree": {
+        "label": "Bằng cấp (DEGREE)",
+        "description": "Bằng tốt nghiệp đại học/cao đẳng"
+      },
+      "certificate": {
+        "label": "Chứng chỉ (tùy chọn)",
+        "description": "Chứng chỉ chuyên môn nếu có"
+      }
+    },
+    "trusted": {
+      "title": "Tài liệu cho Trusted Beginner Tutor",
+      "cccd": {
+        "label": "CCCD (Căn cước công dân)",
+        "description": "Ảnh mặt trước và mặt sau CCCD rõ nét"
+      },
+      "selfie": {
+        "label": "Ảnh Selfie cầm CCCD",
+        "description": "Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+      },
+      "studentCard": {
+        "label": "Thẻ sinh viên",
+        "description": "Thẻ sinh viên còn hiệu lực"
+      },
+      "transcript": {
+        "label": "Bảng điểm",
+        "description": "Bảng điểm chứng minh kết quả học tập"
+      },
+      "certificate": {
+        "label": "Chứng chỉ (tùy chọn)",
+        "description": "Chứng chỉ chuyên môn nếu có"
+      }
+    }
+  },
+  "fileUpload": {
+    "selectFile": "Nhấn để chọn file",
+    "dragDrop": "hoặc kéo thả",
+    "supportedFormats": "PDF, JPG, PNG, DOC, DOCX (tối đa 5MB)",
+    "maxSize": "Kích thước file không được vượt quá 5MB",
+    "selectedFiles": "File đã chọn ({count})"
+  },
+  "importantNotes": {
+    "title": "Lưu ý quan trọng",
+    "notes": [
+      "Tất cả tài liệu sẽ được xem xét để xác minh tính xác thực",
+      "Chỉ tải lên các file có định dạng được hỗ trợ (PDF, JPG, PNG, DOC, DOCX)",
+      "Kích thước file tối đa là 5MB",
+      "Thông tin cá nhân trong tài liệu sẽ được bảo mật tuyệt đối"
+    ]
+  },
+  "buttons": {
+    "back": "Quay lại",
+    "submit": "Hoàn tất đăng ký",
+    "uploading": "Đang tải lên..."
+  },
+  "validation": {
+    "verificationTypeRequired": "Vui lòng chọn loại xác minh",
+    "cccdRequired": "Vui lòng tải lên CCCD",
+    "selfieRequired": "Vui lòng tải lên ảnh Selfie",
+    "degreeRequired": "Vui lòng tải lên bằng cấp",
+    "studentCardRequired": "Vui lòng tải lên thẻ sinh viên",
+    "transcriptRequired": "Vui lòng tải lên bảng điểm",
+    "documentsRequired": "Vui lòng tải lên đầy đủ tài liệu"
+  }
+}

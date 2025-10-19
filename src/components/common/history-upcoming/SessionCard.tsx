@@ -1,9 +1,11 @@
-import React from "react";
-import { Clock, Users, Video, Star, MessageSquare, Eye } from "lucide-react";
+import React, { memo, useMemo } from "react";
+import { Clock, Users, Video, Star } from "lucide-react";
 import { ClassSessionDto } from "@/services/classSession/type";
 import { useSessionUtils } from "@/hooks/useSessionUtils";
-import FeedbackButton from "./FeedbackButton";
-
+import { useTranslations } from "next-intl";
+import { EBMotionCard } from "@/components/motion";
+import Image from "next/image";
+import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
 interface SessionCardProps {
   session: ClassSessionDto;
   index: number;
@@ -12,176 +14,177 @@ interface SessionCardProps {
   onViewFeedback?: (sessionId: string) => void;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({
-  session,
-  index,
-  userType,
-  onJoinSession,
-  onViewFeedback,
-}) => {
-  const { formatSessionDateTime, calculateSessionDuration, getSessionDurationText } =
-    useSessionUtils();
+const SessionCard: React.FC<SessionCardProps> = memo(
+  ({ session, index, userType, onJoinSession, onViewFeedback }) => {
+    const t = useTranslations("components.sessionCard");
+    const { formatSessionDateTime, calculateSessionDuration, getSessionDurationText } =
+      useSessionUtils();
 
-  const sessionDuration = calculateSessionDuration(session.startTime, session.endTime);
-  const durationText = getSessionDurationText(sessionDuration);
+    // Memoize expensive calculations
+    const sessionData = useMemo(() => {
+      const sessionDuration = calculateSessionDuration(session.startTime, session.endTime);
+      const durationText = getSessionDurationText(sessionDuration);
+      const isHistory = session.isCompleted;
+      const displayName = userType === "student" ? session.tutorName : session.studentName;
+      const displayLabel = userType === "student" ? t("labels.tutor") : t("labels.student");
 
-  const isHistory = session.isCompleted;
-  const hasFeedbacks = Boolean(session.feedbacks && session.feedbacks.length > 0);
+      return {
+        sessionDuration,
+        durationText,
+        isHistory,
+        displayName,
+        displayLabel,
+      };
+    }, [
+      session.startTime,
+      session.endTime,
+      session.isCompleted,
+      session.tutorName,
+      session.studentName,
+      userType,
+      calculateSessionDuration,
+      getSessionDurationText,
+      t,
+    ]);
 
-  // Determine display name based on user type
-  const displayName = userType === "student" ? session.tutorName : session.studentName;
-  const displayLabel = userType === "student" ? "Gia sư" : "Học sinh";
+    const { sessionDuration, durationText, isHistory, displayName, displayLabel } = sessionData;
 
-  // Card styling based on type
-  const cardClasses = isHistory
-    ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700/50 transition-all duration-300"
-    : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700/50 transition-all duration-300";
+    // NOTE: Best color for card
+    const stylingClasses = useMemo(() => {
+      const cardClasses = isHistory
+        ? "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300"
+        : "group relative bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 px-4 py-4 sm:px-6 sm:py-5 border border-gray-200/50 dark:border-gray-600/50 hover:shadow-xl hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300";
 
-  const iconClasses = isHistory
-    ? "w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center"
-    : "w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center";
+      const iconClasses = isHistory
+        ? "w-10 h-10 bg-primary/10 dark:bg-primary/20 flex items-center justify-center"
+        : "w-10 h-10 bg-gray-100 dark:bg-gray-700 flex items-center justify-center";
 
-  const textClasses = isHistory
-    ? "text-blue-600 dark:text-blue-400 font-bold text-sm"
-    : "text-gray-600 dark:text-gray-400 font-bold text-sm";
+      const textClasses = isHistory
+        ? "text-primary dark:text-primary font-bold text-sm"
+        : "text-gray-600 dark:text-gray-400 font-bold text-sm";
 
-  return (
-    <div className={cardClasses}>
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-4">
-            <div className={iconClasses}>
-              <span className={textClasses}>{index + 1}</span>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                {session.courseTitle}
-              </h3>
-              <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-gray-500" />
-                <span className="text-gray-600 dark:text-gray-400 text-sm">
-                  {displayLabel}: {displayName}
-                </span>
-              </div>
-            </div>
-          </div>
+      return { cardClasses, iconClasses, textClasses };
+    }, [isHistory]);
 
-          <div className="flex items-center gap-6 text-sm mb-4">
-            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded-lg">
-              <Clock className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-              <span className="text-gray-700 dark:text-gray-300 font-medium">
-                {formatSessionDateTime(session.startTime)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 px-3 py-2 rounded-lg">
-              <Video className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-              <span className="text-gray-700 dark:text-gray-300 font-medium">{durationText}</span>
-            </div>
-          </div>
+    const { cardClasses, iconClasses, textClasses } = stylingClasses;
 
-          {/* Rating and Feedback for history sessions */}
-          {isHistory && session.averageCourseRating !== undefined && (
-            <div className="flex items-center gap-2 mb-3">
-              <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Đánh giá trung bình: {session.averageCourseRating}/5
-              </span>
-            </div>
-          )}
-
-          {/* Feedbacks for history sessions */}
-          {isHistory && session.feedbacks && session.feedbacks.length > 0 && (
-            <div className="space-y-2 mb-4">
-              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Phản hồi:</h4>
-              {session.feedbacks.map((feedback) => (
-                <div
-                  key={feedback.feedbackId}
-                  className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-3 w-3 ${
-                            i < feedback.tutorRating
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {feedback.tutorRating}/5
+    return (
+      <EBMotionCard
+        variants={smoothCardVariants}
+        className={`${cardClasses} hover:cursor-pointer`}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+      >
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="flex-1">
+            <div className="flex items-start gap-3 sm:gap-4">
+              {/* Avatar - Square with rounded corners */}
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-2xl overflow-hidden">
+                {session.avatarUrl ? (
+                  <Image
+                    src={session.avatarUrl}
+                    alt={displayName || "Avatar"}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                    <span className="text-gray-600 dark:text-gray-400 font-bold text-lg sm:text-2xl">
+                      {(displayName || "?").charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  {feedback.comment && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-                      &ldquo;{feedback.comment}&rdquo;
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="ml-6 flex-shrink-0">
-          {isHistory ? (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm font-medium">Hoàn thành</span>
+                )}
               </div>
+              <div className="flex-1 space-y-2">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                  {session.courseTitle}
+                </h3>
 
-              {/* Feedback button for students */}
-              {userType === "student" && (
-                <FeedbackButton
-                  courseId={session.courseId}
-                  hasFeedbacks={hasFeedbacks}
-                  onViewFeedback={onViewFeedback}
-                />
-              )}
+                {/* User info - Fixed position */}
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-gray-500" />
+                  <span className="text-gray-600 dark:text-gray-400 text-sm">
+                    {displayLabel}: {displayName}
+                  </span>
+                </div>
 
-              {/* View feedback button for tutors */}
-              {userType === "tutor" && (
-                <button
-                  onClick={() => onViewFeedback?.(session.courseId)}
-                  disabled={!hasFeedbacks}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-                    hasFeedbacks
-                      ? "bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900 dark:hover:bg-blue-800 dark:text-blue-300"
-                      : "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
-                  }`}
-                >
-                  <Eye className="h-4 w-4" />
-                  <span>{hasFeedbacks ? "Xem phản hồi" : "Chưa có phản hồi"}</span>
-                </button>
-              )}
+                {/* Rating - show for all sessions if available */}
+                {/* {session.averageCourseRating != null && session.averageCourseRating > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Đánh giá trung bình: {session.averageCourseRating.toFixed(1)}/5
+                    </span>
+                  </div>
+                )} */}
+              </div>
             </div>
-          ) : (
-            onJoinSession && (
-              <button
-                onClick={() => onJoinSession(session.sessionId)}
-                className="group/btn flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <Video className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
-                <span>Tham gia</span>
-              </button>
-            )
-          )}
-        </div>
-      </div>
+          </div>
 
-      {/* Decorative elements */}
-      <div
-        className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-blue-400" : "bg-gray-400"} rounded-full opacity-60`}
-      ></div>
-      <div
-        className={`absolute bottom-4 left-4 w-1 h-1 ${isHistory ? "bg-blue-300" : "bg-gray-300"} rounded-full opacity-40`}
-      ></div>
-    </div>
-  );
-};
+          <div className="lg:ml-6 flex-shrink-0 w-full lg:w-auto">
+            {isHistory ? (
+              <div className="flex flex-col gap-3 lg:items-end">
+                {/* Time info - Above status badge */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {formatSessionDateTime(session.startTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Video className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {durationText}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary rounded-lg self-start lg:self-end">
+                  <span className="text-xs font-medium">{t("labels.completed")}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 lg:items-end">
+                {/* Time info for upcoming sessions */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Clock className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {formatSessionDateTime(session.startTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-lg">
+                    <Video className="h-3.5 w-3.5 text-gray-600 dark:text-gray-400" />
+                    <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">
+                      {durationText}
+                    </span>
+                  </div>
+                </div>
+                {onJoinSession && (
+                  <button
+                    onClick={() => onJoinSession(session.sessionId)}
+                    className="group/btn flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto self-start lg:self-end"
+                  >
+                    <Video className="h-4 w-4 sm:h-5 sm:w-5 group-hover/btn:scale-110 transition-transform" />
+                    <span className="text-sm sm:text-base">{t("labels.join")}</span>
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Decorative elements */}
+        <div
+          className={`absolute top-4 right-4 w-2 h-2 ${isHistory ? "bg-primary" : "bg-gray-400"} rounded-full opacity-60`}
+        ></div>
+      </EBMotionCard>
+    );
+  }
+);
+
+SessionCard.displayName = "SessionCard";
 
 export default SessionCard;

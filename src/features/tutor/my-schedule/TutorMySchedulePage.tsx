@@ -1,17 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import {
+  buildMeetingRoute,
+  buildTutorFeedbackDetailRoute,
+} from "@/common/constants/route.constant";
 import { useTutorMySchedule } from "./hooks/useTutorMySchedule";
 import { useGetTutorHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { useRefetchSessions } from "@/hooks/useRefetchSessions";
+import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
+import { MotionContainer, MotionItem } from "@/components/motion";
+import { EBMotionCard } from "@/components/motion";
+import { SchedulePageSkeleton } from "./components/skeletons";
 
 const TutorMySchedulePage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [activeTab, setActiveTab] = useState<"upcoming" | "history">("upcoming");
+  const t = useTranslations("tutor.schedules");
 
   const {
     sessions: upcomingSessions,
@@ -24,90 +34,134 @@ const TutorMySchedulePage: React.FC = () => {
 
   // Get user ID using the existing hook
   const { userId: tutorId, isLoading: isLoadingUserId } = useUserId();
+  const { refetchAllSessions } = useRefetchSessions();
 
-  const { data: historyData, isLoading: historyLoading } = useGetTutorHistorySessionsQuery(
-    { tutorId: tutorId || "" },
-    { skip: !tutorId }
-  );
+  const {
+    data: historyData,
+    isLoading: historyLoading,
+    refetch: refetchHistory,
+  } = useGetTutorHistorySessionsQuery({ tutorId: tutorId || "" }, { skip: !tutorId });
 
   const historySessions = historyData?.data || [];
 
   const isPageLoading = upcomingLoading || isLoadingUserId;
 
-  const handleJoinSession = (sessionId: string) => {
-    router.push(`/meeting/${sessionId}`);
-  };
+  const handleJoinSession = useCallback(
+    (sessionId: string) => {
+      push(buildMeetingRoute(sessionId));
+    },
+    [push]
+  );
 
-  const handleViewFeedback = (courseId: string) => {
-    router.push(`/tutor/feedback/${courseId}`);
-  };
+  const handleViewFeedback = useCallback(
+    (courseId: string) => {
+      push(buildTutorFeedbackDetailRoute(courseId));
+    },
+    [push]
+  );
 
+  // Memoize stats data to prevent unnecessary re-renders
+  const statsData = useMemo(
+    () => ({
+      todaySessions,
+      thisWeekSessions,
+      uniqueStudents,
+    }),
+    [todaySessions, thisWeekSessions, uniqueStudents]
+  );
+
+  // Refetch data when returning from feedback page
+  useEffect(() => {
+    const handleFocus = () => {
+      refetchAllSessions();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, [refetchAllSessions]);
+
+  // NOTE: loading will replace by skeleton
   if (isPageLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải lịch dạy..." size="lg" />
-      </div>
-    );
+    return <SchedulePageSkeleton />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8 px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Lịch dạy của tôi
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Xem lịch dạy và quản lý các buổi học sắp tới
-          </p>
+    <MotionContainer className="min-h-screen">
+      {/* Header */}
+      <MotionItem>
+        <div className="space-y-4 mb-8">
+          <h1 className="text-4xl font-bold text-foreground">{t("page.title")}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">{t("page.subtitle")}</p>
         </div>
+      </MotionItem>
 
-        {/* Stats Cards */}
+      {/* Stats Cards */}
+      <MotionItem>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi dạy hôm nay
+                <p className="text-sm font-medium text-muted-foreground">
+                  {t("stats.todaySessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{todaySessions}</p>
+                <p className="text-2xl font-bold text-foreground">{statsData.todaySessions}</p>
               </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+              <Calendar className="h-8 w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi dạy tuần này
+                <p className="text-sm font-medium text-muted-foreground">
+                  {t("stats.thisWeekSessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {thisWeekSessions}
-                </p>
+                <p className="text-2xl font-bold text-foreground">{statsData.thisWeekSessions}</p>
               </div>
-              <Clock className="h-8 w-8 text-green-500" />
+              <Clock className="h-8 w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Học sinh</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueStudents}</p>
+                <p className="text-sm font-medium text-muted-foreground">{t("stats.students")}</p>
+                <p className="text-2xl font-bold text-foreground">{statsData.uniqueStudents}</p>
               </div>
-              <Users className="h-8 w-8 text-orange-500" />
+              <Users className="h-8 w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
         </div>
+      </MotionItem>
 
-        {/* Schedule Content */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+      {/* Schedule Content */}
+      <MotionItem>
+        <div className="bg-card rounded-3xl shadow-lg border border-border overflow-hidden">
           <div className="p-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lịch dạy</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-2">{t("schedule.title")}</h2>
               </div>
             </div>
             {/* Tabs */}
@@ -122,7 +176,7 @@ const TutorMySchedulePage: React.FC = () => {
 
             {activeTab === "upcoming" ? (
               upcomingLoading ? (
-                <EBLoadingSpinner message="Đang tải lịch sắp tới..." size="md" />
+                <SessionCardSkeleton count={3} />
               ) : (
                 <UpcomingSessionList
                   sessions={upcomingSessions}
@@ -130,7 +184,7 @@ const TutorMySchedulePage: React.FC = () => {
                 />
               )
             ) : historyLoading ? (
-              <EBLoadingSpinner message="Đang tải lịch sử..." size="md" />
+              <SessionCardSkeleton count={3} />
             ) : (
               <HistorySessionList
                 sessions={historySessions}
@@ -140,8 +194,8 @@ const TutorMySchedulePage: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

@@ -1,0 +1,15 @@
+{
+  "title": "Biểu đồ giao dịch",
+  "subtitle": "Tổng quan giao dịch hàng tháng",
+  "loading": "Đang tải dữ liệu giao dịch...",
+  "error": "Không thể tải dữ liệu giao dịch",
+  "empty": {
+    "title": "Chưa có thu nhập",
+    "description": "Dữ liệu giao dịch sẽ xuất hiện ở đây"
+  },
+  "growth": {
+    "positive": "Thu nhập tăng {percentage}% trong tháng này",
+    "negative": "Thu nhập giảm {percentage}% trong tháng này"
+  },
+  "footer": "Hiển thị tổng thu nhập trong 6 tháng gần đây"
+}

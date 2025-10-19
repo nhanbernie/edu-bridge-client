@@ -1,0 +1,52 @@
+{
+  "title": "Bộ lọc nâng cao",
+  "priceRange": {
+    "title": "Khoảng giá (VND/giờ)",
+    "from": "Từ",
+    "to": "Đến",
+    "fromPlaceholder": "100,000",
+    "toPlaceholder": "500,000"
+  },
+  "subjects": {
+    "title": "Môn học",
+    "all": "Tất cả môn học",
+    "loading": "Đang tải danh sách môn học...",
+    "empty": "Không có môn học nào"
+  },
+  "gradeLevel": {
+    "title": "Cấp độ",
+    "all": "Tất cả cấp độ"
+  },
+  "rating": {
+    "title": "Đánh giá tối thiểu"
+  },
+  "sessionDuration": {
+    "title": "Thời lượng buổi học",
+    "all": "Tất cả thời lượng"
+  },
+  "actions": {
+    "reset": "Đặt lại",
+    "cancel": "Hủy",
+    "apply": "Áp dụng"
+  },
+  "options": {
+    "all": "Tất cả",
+    "rating_desc": "Đánh giá cao nhất",
+    "price_asc": "Giá thấp nhất",
+    "price_desc": "Giá cao nhất",
+    "experience_desc": "Kinh nghiệm nhiều",
+    "online": "Online"
+  },
+  "button": "Bộ lọc",
+  "quickFilters": {
+    "highRating": "⭐ Đánh giá cao"
+  },
+  "tags": {
+    "highestRating": "Đánh giá cao nhất",
+    "newest": "Mới nhất",
+    "price": "Giá",
+    "rating": "Đánh giá",
+    "duration": "Thời lượng",
+    "hours": "giờ"
+  }
+}

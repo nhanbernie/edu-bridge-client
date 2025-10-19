@@ -24,7 +24,7 @@ interface TimeSlot {
   extendedProps?: {
     blockId?: string;
     slotIndex?: number;
-    isBooked?: boolean;
+    status?: string; // AVAILABLE/BOOKED/RESERVED
     originalSlot?: any;
   };
 }
@@ -81,14 +81,29 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
             id: `${block.blockId}-slot-${slotIndex}`,
             start: startTime,
             end: endTime,
-            title: slot.isBooked ? "Đã đặt" : "Rảnh",
-            backgroundColor: slot.isBooked ? "#f97316" : "#10b981",
-            borderColor: slot.isBooked ? "#ea580c" : "#059669",
+            title:
+              slot.status === "BOOKED"
+                ? "Đã đặt"
+                : slot.status === "RESERVED"
+                  ? "Đang giữ"
+                  : "Rảnh",
+            backgroundColor:
+              slot.status === "BOOKED"
+                ? "#f43f5e" // rose-500
+                : slot.status === "RESERVED"
+                  ? "#eab308" // amber-500
+                  : "#10b981", // emerald-500
+            borderColor:
+              slot.status === "BOOKED"
+                ? "#e11d48" // rose-600
+                : slot.status === "RESERVED"
+                  ? "#d97706" // amber-600
+                  : "#059669", // emerald-600
             isTemp: false,
             extendedProps: {
               blockId: block.blockId,
               slotIndex: slotIndex,
-              isBooked: slot.isBooked,
+              status: slot.status,
               originalSlot: slot,
             },
           };
@@ -186,8 +201,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
           start: event.start.toISOString(),
           end: event.end.toISOString(),
           title: event.title,
-          backgroundColor: "#3b82f6",
-          borderColor: "#2563eb",
+          backgroundColor: "#3b82f6", // blue-500
+          borderColor: "#2563eb", // blue-600
           isTemp: true,
         };
 
@@ -230,8 +245,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
           start: event.start.toISOString(),
           end: event.end.toISOString(),
           title: event.title,
-          backgroundColor: "#3b82f6",
-          borderColor: "#2563eb",
+          backgroundColor: "#3b82f6", // blue-500
+          borderColor: "#2563eb", // blue-600
           isTemp: true,
         };
 
@@ -268,8 +283,8 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
       start: `${data.date}T${data.startTime}:00`,
       end: `${data.date}T${data.endTime}:00`,
       title: data.title,
-      backgroundColor: "#3b82f6",
-      borderColor: "#2563eb",
+      backgroundColor: "#3b82f6", // blue-500
+      borderColor: "#2563eb", // blue-600
       isTemp: true,
     };
 
@@ -353,7 +368,7 @@ export const useAvailabilityCalendar = (onSave?: () => void) => {
         const timeRanges = slots.map((slot) => ({
           startTime: slot.start.replace("T", " ").substring(0, 16),
           endTime: slot.end.replace("T", " ").substring(0, 16),
-          isBooked: false,
+          status: "AVAILABLE",
         }));
 
         await handleCreateBlock({

@@ -2,15 +2,30 @@
 
 import React, { useState } from "react";
 import { Calendar, Clock, Users } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import {
+  buildMeetingRoute,
+  buildStudentFeedbackDetailRoute,
+} from "@/common/constants/route.constant";
 import { useStudentMySchedule } from "./hooks/useStudentMySchedule";
 import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
 import { SessionTabs, UpcomingSessionList, HistorySessionList } from "./components";
 import { useUserId } from "@/hooks/useUserId";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { SessionCardSkeleton, EBPageLoading } from "@/components/common/skeletons";
+import {
+  PAGE_CONTAINER,
+  CONTENT_WRAPPER,
+  PAGE_HEADER,
+  PAGE_TITLE,
+  PAGE_SUBTITLE,
+} from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
+import { EBMotionCard } from "@/components/motion";
+import { SchedulePageSkeleton } from "./components/skeletons";
 
 const StudentMySchedulePage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
+  const t = useTranslations("student.mySchedule");
   const [activeTab, setActiveTab] = useState<"upcoming" | "history">("upcoming");
 
   const {
@@ -32,87 +47,102 @@ const StudentMySchedulePage: React.FC = () => {
   const historySessions = historyData?.data || [];
 
   const handleJoinSession = (sessionId: string) => {
-    router.push(`/meeting/${sessionId}`);
+    push(buildMeetingRoute(sessionId));
   };
 
   const handleViewFeedback = (courseId: string) => {
-    router.push(`/student/feedback/${courseId}`);
+    push(buildStudentFeedbackDetailRoute(courseId));
   };
 
   // Only show page loading for initial data
   const isPageLoading = isLoadingUpcoming || isLoadingUserId || isLoadingHistory;
 
   if (isPageLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải lịch học..." size="lg" />
-      </div>
-    );
+    return <SchedulePageSkeleton />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Lịch học của tôi
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Xem lịch học và quản lý các buổi học sắp tới
-          </p>
+        <div className={PAGE_HEADER}>
+          <h1 className={PAGE_TITLE}>{t("title")}</h1>
+          <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi học hôm nay
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                  {t("stats.todaySessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{todaySessions}</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{todaySessions}</p>
               </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+              <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Buổi học tuần này
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                  {t("stats.weekSessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {thisWeekSessions}
-                </p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{thisWeekSessions}</p>
               </div>
-              <Clock className="h-8 w-8 text-green-500" />
+              <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Gia sư</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueTutors}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                  {t("stats.tutors")}
+                </p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{uniqueTutors}</p>
               </div>
-              <Users className="h-8 w-8 text-orange-500" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
         </div>
 
         {/* Schedule Content */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
-          <div className="p-8">
-            <div className="flex items-center justify-between mb-8">
+        <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border overflow-hidden">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lịch học</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+                  {t("scheduleTitle")}
+                </h2>
               </div>
             </div>
 
             {/* Session Tabs */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
               <SessionTabs
                 activeTab={activeTab}
                 onTabChange={setActiveTab}

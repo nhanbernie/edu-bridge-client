@@ -1,0 +1,35 @@
+{
+  "loading": "Đang tải thông tin gia sư...",
+  "error": {
+    "message": "Không thể tải thông tin gia sư",
+    "retry": "Thử lại"
+  },
+  "header": {
+    "verified": "Verified",
+    "tutor": "Gia sư",
+    "reviews": "đánh giá",
+    "notUpdated": "Chưa cập nhật",
+    "students": "học sinh",
+    "years": "năm",
+    "courses": "khóa học",
+    "favorited": "Đã yêu thích",
+    "favorite": "Yêu thích"
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "aboutMe": "Về tôi",
+    "noInfo": "Chưa có thông tin giới thiệu",
+    "education": "Học vấn",
+    "noEducation": "Chưa cập nhật thông tin học vấn",
+    "specialties": "Chuyên môn",
+    "noSpecialties": "Chưa cập nhật chuyên môn",
+    "languages": "Ngôn ngữ",
+    "noLanguages": "Chưa cập nhật ngôn ngữ"
+  },
+  "tabs": {
+    "courses": "Khóa học",
+    "schedule": "Lịch dạy",
+    "reviews": "Đánh giá",
+    "awards": "Chứng chỉ"
+  }
+}

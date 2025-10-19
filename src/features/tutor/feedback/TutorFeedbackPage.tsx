@@ -1,117 +1,117 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, BookOpen, User, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import RatingSummary from "@/components/common/RatingSummary";
-import { useGetTutorHistorySessionsQuery } from "@/services/classSession/classSession.service";
-import { useUserId } from "@/hooks/useUserId";
-import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/SessionInfoCard";
+import RatingSummary from "@/components/common/EBRatingSummary";
+import EBFeedbackCard from "@/components/common/EBFeedbackCard";
+import { useGetCourseFeedbacksQuery } from "@/services/feedback";
+import { MotionContainer, MotionItem } from "@/components/motion";
+import { TutorFeedbackSkeleton } from "./skeleton";
+import { EBButtonAction } from "@/components/motion";
 
 interface TutorFeedbackPageProps {
   courseId: string;
 }
 
 const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
-  const router = useRouter();
-  const { userId: tutorId } = useUserId();
+  const t = useTranslations("tutor.feedback.detail");
+  const { push } = useLocaleRouter();
 
-  // Get session data for tutor
-  const { data: historyData, isLoading: isLoadingSession } = useGetTutorHistorySessionsQuery(
-    { tutorId: tutorId || "" },
-    { skip: !tutorId }
-  );
+  // Get course feedbacks
+  const { data: feedbacksData, isLoading: isLoadingFeedbacks } = useGetCourseFeedbacksQuery({
+    courseId,
+  });
 
-  const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
+  // Get course info (getCourse endpoint requires tutorId, not courseId)
+  // For now, we'll just use the course title from feedbacks
+  // const { data: courseData, isLoading: isLoadingCourse } = useGetCourseQuery({ tutorId: "xxx" });
 
-  if (isLoadingSession) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải thông tin buổi học..." size="lg" />
-      </div>
-    );
+  if (isLoadingFeedbacks) {
+    return <TutorFeedbackSkeleton />;
   }
 
-  if (!currentSession) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Không tìm thấy buổi học</h2>
-          <p className="text-gray-600 mb-6">Buổi học này không tồn tại hoặc đã bị xóa.</p>
-          <Button onClick={() => router.push("/tutor/my-schedule")}>Quay lại lịch dạy</Button>
-        </div>
-      </div>
-    );
-  }
+  const feedbacks = feedbacksData?.data?.feedbacks || [];
+  const averageRating = feedbacksData?.data?.averageCourseRating || 0;
+  const totalFeedbacks = feedbacksData?.data?.totalFeedbacks || 0;
+  const ratingCounts = feedbacksData?.data?.ratingCounts;
+  const courseTitle = feedbacks.length > 0 ? feedbacks[0].courseTitle : "Khóa học";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/tutor/my-schedule")}
-            className="mb-4"
+    <MotionContainer className="min-h-screen space-y-6 lg:space-y-8">
+      {/* Header */}
+      <MotionItem>
+        <div className="mb-6 lg:mb-8">
+          {/* NOTE: return button */}
+          <EBButtonAction
+            enableIconAnimation={true}
+            enableTextAnimation={true}
+            onClick={() => push(ROUTES.TUTOR_FEEDBACK)}
+            className="mb-4 text-muted-foreground hover:bg-muted flex items-center gap-2"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại lịch dạy
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Xem đánh giá</h1>
-          <p className="text-gray-600 dark:text-gray-400">Xem đánh giá từ học sinh</p>
+            <ArrowLeft className="h-4 w-4" />
+            <span className="font-medium text-sm whitespace-nowrap">{t("backButton")}</span>
+          </EBButtonAction>
+          <div className="flex items-center gap-3 mb-3 lg:mb-4">
+            {/* <Star className="h-8 w-8 text-primary" /> */}
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground break-words">
+              {courseTitle}
+            </h1>
+          </div>
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
+            {t("subtitle")}
+          </p>
         </div>
+      </MotionItem>
 
-        {/* Session Info - Secondary Display */}
-        <div className="mb-8">
-          <SessionInfoCard
-            courseTitle={currentSession.courseTitle}
-            studentName={currentSession.studentName}
-            startTime={currentSession.startTime}
-            endTime={currentSession.endTime}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Rating Summary (View Mode) */}
-          <div>
+      <MotionItem>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          {/* Left Column - Rating Summary */}
+          <div className="order-2 lg:order-1">
             <RatingSummary
               type="view"
-              averageRating={currentSession.averageCourseRating}
-              totalReviews={currentSession.feedbacks?.length || 0}
+              averageRating={averageRating}
+              totalReviews={totalFeedbacks}
+              ratingCounts={ratingCounts}
             />
           </div>
 
-          {/* Right Column - Feedbacks */}
-          <div>
-            {currentSession.feedbacks && currentSession.feedbacks.length > 0 ? (
-              <div className="space-y-4">
-                {currentSession.feedbacks.map((feedback) => (
-                  <RatingSummary
+          {/* Right Column - All Feedbacks */}
+          <div className="space-y-4 sm:space-y-6 order-1 lg:order-2">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">
+              {t("allFeedbacks")} ({totalFeedbacks})
+            </h2>
+            {feedbacks.length > 0 ? (
+              <div className="space-y-4 sm:space-y-6">
+                {feedbacks.map((feedback) => (
+                  <EBFeedbackCard
                     key={feedback.feedbackId}
-                    type="view"
-                    reviewerName={feedback.studentName}
-                    tutorRatingValue={feedback.tutorRating}
-                    courseRatingValue={feedback.courseRating}
-                    existingComment={feedback.comment}
+                    studentName={feedback.studentName}
+                    courseTitle={feedback.courseTitle}
+                    tutorRating={feedback.tutorRating}
+                    courseRating={feedback.courseRating}
+                    comment={feedback.comment}
+                    createdAt={feedback.createdAt}
                   />
                 ))}
               </div>
             ) : (
               <Card className="border-0 shadow-sm">
-                <CardContent className="p-6">
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Chưa có đánh giá nào</p>
+                <CardContent className="p-4 sm:p-6">
+                  <div className="text-center py-4">
+                    <p className="text-sm sm:text-base text-muted-foreground">{t("noFeedbacks")}</p>
                   </div>
                 </CardContent>
               </Card>
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

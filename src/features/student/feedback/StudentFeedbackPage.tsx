@@ -1,131 +1,195 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, User, BookOpen, Clock } from "lucide-react";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import RatingSummary from "@/components/common/RatingSummary";
+import RatingSummary from "@/components/common/EBRatingSummary";
+import EBFeedbackCard from "@/components/common/EBFeedbackCard";
 import { useCreateFeedback } from "./hooks/useCreateFeedback";
-import { useGetStudentHistorySessionsQuery } from "@/services/classSession/classSession.service";
+import { useGetCourseFeedbacksQuery } from "@/services/feedback";
+import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
+import { useRefetchSessions } from "@/hooks/useRefetchSessions";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
-import SessionInfoCard from "@/components/common/SessionInfoCard";
+import { FeedbackCardSkeleton } from "@/components/common/skeletons";
+import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 interface StudentFeedbackPageProps {
   courseId: string;
 }
 
 const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
+  const t = useTranslations("student.feedback.detail");
   const { userId: studentId } = useUserId();
   const { createFeedback, isLoading } = useCreateFeedback();
+  const { refetchAllSessions } = useRefetchSessions();
 
-  const { data: historyData, isLoading: isLoadingSession } = useGetStudentHistorySessionsQuery(
+  // Get course feedbacks
+  const {
+    data: feedbacksData,
+    isLoading: isLoadingFeedbacks,
+    refetch: refetchFeedbacks,
+  } = useGetCourseFeedbacksQuery({ courseId });
+
+  // Get enrollments to check completedSessions
+  const { data: enrollmentsData, isLoading: isLoadingEnrollments } = useGetStudentEnrollmentsQuery(
     { studentId: studentId || "" },
     { skip: !studentId }
   );
 
-  const currentSession = historyData?.data?.find((session) => session.courseId === courseId);
-
-  // Check if student already has feedback for this course
-  const existingFeedback = currentSession?.feedbacks?.find(
-    (feedback) => feedback.courseId === courseId
-  );
-
-  const hasExistingFeedback = Boolean(existingFeedback);
+  const enrollment = enrollmentsData?.data?.find((e) => e.courseId === courseId);
+  const canCreateFeedback = enrollment && enrollment.completedSessions > 1;
 
   const handleSubmitFeedback = async (
     tutorRating: number,
     courseRating: number,
     comment: string
   ) => {
-    if (!currentSession) return;
-
     const result = await createFeedback({
-      courseId: currentSession.courseId,
+      courseId: courseId,
       tutorRating: tutorRating,
       courseRating: courseRating,
       comment: comment,
     });
 
     if (result.success) {
-      router.push("/student/my-schedule");
+      // Refetch feedbacks and sessions
+      await refetchFeedbacks();
+      await refetchAllSessions();
     }
   };
 
-  if (isLoadingSession) {
+  if (isLoadingFeedbacks || isLoadingEnrollments) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EBLoadingSpinner message="Đang tải thông tin buổi học..." size="lg" />
-      </div>
-    );
-  }
+      <div className={PAGE_CONTAINER}>
+        <div className={CONTENT_WRAPPER}>
+          <div className="space-y-4 mb-8 animate-pulse">
+            <div className="h-8 sm:h-10 bg-muted rounded w-48 sm:w-64"></div>
+            <div className="h-5 sm:h-6 bg-muted rounded w-64 sm:w-96"></div>
+          </div>
 
-  if (!currentSession) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Không tìm thấy buổi học</h2>
-          <p className="text-gray-600 mb-6">Buổi học này không tồn tại hoặc đã bị xóa.</p>
-          <Button onClick={() => router.push("/student/my-schedule")}>Quay lại lịch học</Button>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            <div>
+              <div className="bg-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border h-48 sm:h-64 animate-pulse" />
+            </div>
+            <div className="space-y-4">
+              <FeedbackCardSkeleton count={3} />
+            </div>
+          </div>
         </div>
       </div>
     );
   }
+
+  if (!enrollment) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">{t("notFound")}</h2>
+          <p className="text-sm sm:text-base text-muted-foreground mb-6">{t("notFoundMessage")}</p>
+          <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>{t("backButton")}</Button>
+        </div>
+      </div>
+    );
+  }
+
+  const feedbacks = feedbacksData?.data?.feedbacks || [];
+  const averageRating = feedbacksData?.data?.averageCourseRating || 0;
+  const totalFeedbacks = feedbacksData?.data?.totalFeedbacks || 0;
+  const ratingCounts = feedbacksData?.data?.ratingCounts;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className={PAGE_CONTAINER}>
+      <div className={CONTENT_WRAPPER}>
         {/* Header */}
-        <div className="mb-8">
-          <Button
-            variant="ghost"
-            onClick={() => router.push("/student/my-schedule")}
-            className="mb-4"
-          >
+        <div className="space-y-4 mb-8">
+          {/* NOTE: return button */}
+          <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Quay lại lịch học
+            {t("backButton")}
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Đánh giá gia sư</h1>
-          <p className="text-gray-600 dark:text-gray-400">Chia sẻ trải nghiệm học tập của bạn</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+            {enrollment.courseTitle}
+          </h1>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
+            {t("tutorInfo", {
+              tutorName: enrollment.tutorName,
+              completedSessions: enrollment.completedSessions,
+              totalSessions: enrollment.totalSessionsBooked,
+            })}
+          </p>
         </div>
 
-        {/* Session Info - Secondary Display */}
-        <div className="mb-8">
-          <SessionInfoCard
-            courseTitle={currentSession.courseTitle}
-            tutorName={currentSession.tutorName}
-            startTime={currentSession.startTime}
-            endTime={currentSession.endTime}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Rating Summary (View Mode) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          {/* Left Column - Rating Summary */}
           <div>
             <RatingSummary
               type="view"
-              averageRating={currentSession.averageCourseRating}
-              totalReviews={currentSession.feedbacks?.length || 0}
+              averageRating={averageRating}
+              totalReviews={totalFeedbacks}
+              ratingCounts={ratingCounts}
             />
           </div>
 
-          {/* Right Column - Feedback Form or View */}
-          <div>
-            {hasExistingFeedback && existingFeedback ? (
-              <RatingSummary
-                type="view"
-                reviewerName={existingFeedback.studentName}
-                tutorRatingValue={existingFeedback.tutorRating}
-                courseRatingValue={existingFeedback.courseRating}
-                existingComment={existingFeedback.comment}
-              />
+          {/* Right Column - All Feedbacks */}
+          <div className="space-y-4">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">
+              {t("allFeedbacks")} ({totalFeedbacks})
+            </h2>
+            {feedbacks.length > 0 ? (
+              <div className="space-y-4">
+                {feedbacks.map((feedback) => (
+                  <EBFeedbackCard
+                    key={feedback.feedbackId}
+                    studentName={feedback.studentName}
+                    courseTitle={feedback.courseTitle}
+                    tutorRating={feedback.tutorRating}
+                    courseRating={feedback.courseRating}
+                    comment={feedback.comment}
+                    createdAt={feedback.createdAt}
+                  />
+                ))}
+              </div>
             ) : (
-              <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
+              <Card className="border-0 shadow-sm bg-card">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="text-center py-4">
+                    <p className="text-sm sm:text-base text-muted-foreground">{t("noFeedbacks")}</p>
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>
+
+        {/* Create Feedback Section */}
+        {canCreateFeedback ? (
+          <div className="mt-6 sm:mt-8">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-4">
+              {t("create.title")}
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />
+            </div>
+          </div>
+        ) : (
+          <div className="mt-6 sm:mt-8">
+            <Card className="border-0 shadow-sm bg-yellow-50 dark:bg-yellow-900/20">
+              <CardContent className="p-4 sm:p-6">
+                <div className="text-center">
+                  <p className="text-sm sm:text-base text-yellow-800 dark:text-yellow-200">
+                    {t("cannotCreateMessage")}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
