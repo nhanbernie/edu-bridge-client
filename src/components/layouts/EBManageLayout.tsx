@@ -7,8 +7,10 @@ import { EBLogo } from "@/components/common";
 import { EBManageLayoutThemeToggle } from "./components";
 import EBSidebarButton from "@/components/layouts/components/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
-import { Search, Bell, Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Bell, Settings, ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
 import { EBUserMenu } from "@/components/common";
+import { useVerifyQRCodeQuery } from "@/services/payment";
+import { useAppSelector } from "@/redux/hooks";
 import {
   EBSidebarItem,
   EBActionButton,
@@ -27,6 +29,7 @@ interface EBManageLayoutProps {
   actionButtons?: EBActionButton[];
   showSearch?: boolean;
   showNotifications?: boolean;
+  onVerifyBankAccount?: () => void;
 }
 
 const EBManageLayout: React.FC<EBManageLayoutProps> = ({
@@ -35,16 +38,49 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   actionButtons,
   showSearch = true,
   showNotifications = true,
+  onVerifyBankAccount,
 }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [showVerifyButton, setShowVerifyButton] = useState(false);
   const pathname = usePathname();
   const { getCurrentLocale } = useLocaleRouter();
   const { currentLocale } = useLanguageToggle();
   const t = useTranslations();
+  const user = useAppSelector((state) => state.auth.user);
+
+  // Check if user is tutor and bank account is not verified
+  const isTutor = user?.role === "TUTOR";
+  const isBankVerified = user?.tutor?.isBankAccountVerified;
+  const shouldCheckQR = isTutor && !isBankVerified;
+
+  // Call API only when needed
+  const { data: qrData, isLoading: qrLoading } = useVerifyQRCodeQuery(undefined, {
+    skip: !shouldCheckQR,
+    refetchOnMountOrArgChange: false,
+    refetchOnFocus: false,
+    refetchOnReconnect: false,
+  });
 
   // Use provided items or default with translations
   const finalSidebarItems = sidebarItems || getDefaultTutorSidebarItems(t);
   const finalActionButtons = actionButtons || getDefaultTutorActionButtons(t);
+
+  // Effect to show verify button based on QR data
+  useEffect(() => {
+    if (shouldCheckQR && qrData && !qrLoading) {
+      // Only show button if QR code is available and user hasn't verified
+      setShowVerifyButton(qrData.success && !!qrData.data);
+    } else {
+      setShowVerifyButton(false);
+    }
+  }, [shouldCheckQR, qrData, qrLoading]);
+
+  // Handle verify QR code click
+  const handleVerifyQRCode = () => {
+    if (onVerifyBankAccount) {
+      onVerifyBankAccount();
+    }
+  };
 
   // Check if route is active (handle locale in pathname)
   const isRouteActive = (href: string) => {
@@ -136,6 +172,19 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
 
           {/* Bottom controls */}
           <div className="py-4 space-y-2">
+            {/* Verify QR Code Button - Only for unverified tutors */}
+            {showVerifyButton && (
+              <EBSidebarButton
+                icon={CreditCard}
+                label={t("sidebar.verifyBankAccount")}
+                href="#"
+                isActive={false}
+                isExpanded={sidebarExpanded}
+                onClick={handleVerifyQRCode}
+                className="bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20"
+              />
+            )}
+
             {/* Action Buttons */}
             {finalActionButtons.map((button) => (
               <EBSidebarButton

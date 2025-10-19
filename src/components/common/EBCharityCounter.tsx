@@ -44,7 +44,7 @@ const EBCharityCounter: React.FC = () => {
 
   return (
     <TooltipProvider>
-      <Tooltip delayDuration={200}>
+      <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
           <div
             className="fixed bottom-8 right-8 z-40 flex items-center gap-2 px-4 py-3
@@ -65,7 +65,7 @@ const EBCharityCounter: React.FC = () => {
                 ease: "easeInOut",
               }}
             >
-              <Heart className="w-5 h-5 text-primary fill-primary" />
+                <Heart className="w-5 h-5 text-red-500 fill-red-500 drop-shadow-sm" />
             </motion.div>
 
             {/* Amount */}
@@ -78,7 +78,8 @@ const EBCharityCounter: React.FC = () => {
 
         <TooltipContent
           side="left"
-          className="border border-border shadow-2xl px-4 py-3 backdrop-blur-xl bg-card/95 max-w-xs"
+          align="end"
+          className="border border-border rounded-4xl shadow-2xl px-4 py-3 backdrop-blur-xl bg-card/95 max-w-xs animate-in fade-in-0 zoom-in-95 slide-in-from-right-2 duration-300"
         >
           <div className="text-center space-y-2">
             <p className="text-xs font-medium text-muted-foreground">{t("title")}</p>

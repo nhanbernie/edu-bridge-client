@@ -22,25 +22,16 @@ const CharityPage = () => {
       label: t("donation.raised"),
       value: `${formatFullAmount(totalAmount)}`,
       unit: "VND",
-      color: "text-green-600 dark:text-green-400",
-      bgColor: "bg-green-50 dark:bg-green-900/20",
-      borderColor: "border-green-200 dark:border-green-800",
     },
     {
       label: t("donation.goal"),
       value: "50.000.000",
       unit: "VND",
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
-      borderColor: "border-blue-200 dark:border-blue-800",
     },
     {
       label: t("donation.contributors"),
       value: "1,247",
       unit: t("donation.people"),
-      color: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      borderColor: "border-purple-200 dark:border-purple-800",
     },
   ];
 
@@ -49,36 +40,26 @@ const CharityPage = () => {
       icon: Library,
       title: t("goals.libraries.title"),
       description: t("goals.libraries.description"),
-      color: "text-teal-600 dark:text-teal-400",
-      bgColor: "bg-teal-50 dark:bg-teal-900/20",
     },
     {
       icon: BookOpen,
       title: t("goals.scholarships.title"),
       description: t("goals.scholarships.description"),
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
     },
     {
       icon: GraduationCap,
       title: t("goals.courses.title"),
       description: t("goals.courses.description"),
-      color: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
     },
     {
       icon: Award,
       title: t("goals.workshops.title"),
       description: t("goals.workshops.description"),
-      color: "text-pink-600 dark:text-pink-400",
-      bgColor: "bg-pink-50 dark:bg-pink-900/20",
     },
     {
       icon: Users,
       title: t("goals.training.title"),
       description: t("goals.training.description"),
-      color: "text-orange-600 dark:text-orange-400",
-      bgColor: "bg-orange-50 dark:bg-orange-900/20",
     },
   ];
 
@@ -152,43 +133,93 @@ const CharityPage = () => {
               {t("donation.title")}
             </h2>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-              {donationStats.map((stat, index) => (
-                <div
-                  key={index}
-                  className={`p-4 rounded-xl border ${stat.borderColor} ${stat.bgColor}`}
-                >
-                  <p className="text-sm text-muted-foreground mb-2">{stat.label}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>
-                      {stat.value}
-                    </span>
-                    <span className="text-sm text-muted-foreground">{stat.unit}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+             {/* Stats Cards - Clean Design */}
+             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+               {donationStats.map((stat, index) => (
+                 <motion.div
+                   key={index}
+                   className="group relative p-6 rounded-2xl bg-card border border-border hover:border-primary/20 transition-all duration-300"
+                   initial={{ opacity: 0, y: 20 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   whileHover={{ 
+                     y: -4,
+                     scale: 1.02,
+                     boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+                   }}
+                   transition={{ 
+                     duration: 0.5, 
+                     delay: index * 0.1,
+                     type: "spring",
+                     stiffness: 100
+                   }}
+                   viewport={{ once: true, margin: "-50px" }}
+                 >
+                   {/* Subtle gradient overlay */}
+                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                   
+                   <div className="relative z-10">
+                     <p className="text-sm text-muted-foreground mb-3 group-hover:text-foreground transition-colors duration-300">
+                       {stat.label}
+                     </p>
+                     <div className="flex items-baseline gap-2">
+                       <motion.span 
+                         className="text-2xl sm:text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-300"
+                         initial={{ scale: 0.8 }}
+                         whileInView={{ scale: 1 }}
+                         transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+                       >
+                         {stat.value}
+                       </motion.span>
+                       <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                         {stat.unit}
+                       </span>
+                     </div>
+                   </div>
+                   
+                   {/* Subtle corner accent */}
+                   <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                 </motion.div>
+               ))}
+             </div>
 
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-foreground">
-                  {progressPercentage.toFixed(1)}% {t("donation.completed")}
-                </span>
-                <span className="text-muted-foreground">
-                  {t("donation.remaining")}: {formatFullAmount(50000000 - (totalAmount || 0))} VND
-                </span>
-              </div>
-              <div className="h-3 bg-muted rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPercentage}%` }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full"
-                />
-              </div>
-            </div>
+             {/* Progress Bar - Enhanced */}
+             <div className="space-y-4">
+               <div className="flex items-center justify-between text-sm">
+                 <span className="font-medium text-foreground">
+                   {progressPercentage.toFixed(1)}% {t("donation.completed")}
+                 </span>
+                 <span className="text-muted-foreground">
+                   {t("donation.remaining")}: {formatFullAmount(50000000 - (totalAmount || 0))} VND
+                 </span>
+               </div>
+               
+               <div className="relative">
+                 <div className="h-4 bg-muted rounded-full overflow-hidden">
+                   <motion.div
+                     initial={{ width: 0 }}
+                     animate={{ width: `${progressPercentage}%` }}
+                     transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+                     className="relative h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
+                   >
+                     {/* Shimmer effect */}
+                     <motion.div
+                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                       animate={{ x: ["-100%", "100%"] }}
+                       transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                     />
+                   </motion.div>
+                 </div>
+                 
+                 {/* Progress indicator dot */}
+                 <motion.div
+                   className="absolute top-0 w-4 h-4 bg-primary rounded-full shadow-lg"
+                   style={{ left: `${Math.min(progressPercentage, 98)}%` }}
+                   initial={{ scale: 0 }}
+                   animate={{ scale: 1 }}
+                   transition={{ duration: 0.5, delay: 1 }}
+                 />
+               </div>
+             </div>
           </EBMotionCard>
         </motion.div>
 
@@ -225,27 +256,53 @@ const CharityPage = () => {
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-6 text-center">
             {t("goals.title")}
           </h2>
-          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {programGoals.map((goal, index) => (
-              <MotionItem key={index}>
-                <EBMotionCard
-                  variant="base"
-                  className="p-6 h-full hover:shadow-xl transition-shadow"
-                  whileHover={{ y: -5 }}
-                >
-                  <div
-                    className={`w-12 h-12 ${goal.bgColor} rounded-xl flex items-center justify-center mb-4`}
-                  >
-                    <goal.icon className={`w-6 h-6 ${goal.color}`} />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{goal.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {goal.description}
-                  </p>
-                </EBMotionCard>
-              </MotionItem>
-            ))}
-          </MotionContainer>
+           <MotionContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+             {programGoals.map((goal, index) => (
+               <MotionItem key={index}>
+                 <motion.div
+                   className="group relative p-6 h-full bg-card border border-border rounded-2xl hover:border-primary/20 transition-all duration-300 overflow-hidden"
+                   initial={{ opacity: 0, y: 20, rotateX: -10 }}
+                   whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                   whileHover={{ 
+                     y: -8, 
+                     rotateY: 5,
+                     scale: 1.02,
+                     boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+                   }}
+                   transition={{ 
+                     duration: 0.6,
+                     delay: index * 0.1,
+                     type: "spring",
+                     stiffness: 100
+                   }}
+                   viewport={{ once: true, margin: "-50px" }}
+                 >
+                   {/* Background gradient */}
+                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                   
+                   <div className="relative z-10">
+                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                       <goal.icon className="w-6 h-6 text-primary group-hover:text-primary/80 transition-colors duration-300" />
+                     </div>
+                     
+                     <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                       {goal.title}
+                     </h3>
+                     
+                     <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-300">
+                       {goal.description}
+                     </p>
+                   </div>
+                   
+                   {/* Corner accent */}
+                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                   
+                   {/* Subtle border glow */}
+                   <div className="absolute inset-0 rounded-2xl border border-primary/0 group-hover:border-primary/20 transition-colors duration-300" />
+                 </motion.div>
+               </MotionItem>
+             ))}
+           </MotionContainer>
         </motion.div>
 
         {/* Milestones */}
@@ -258,39 +315,94 @@ const CharityPage = () => {
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6">
               {t("milestones.title")}
             </h2>
-            <div className="space-y-4">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`p-4 rounded-xl border transition-all ${
-                    milestone.checked
-                      ? "border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20"
-                      : "border-border bg-muted/30"
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                        milestone.checked
-                          ? "bg-green-500 text-white"
-                          : "bg-muted border-2 border-border"
-                      }`}
-                    >
-                      {milestone.checked && <CheckCircle2 className="w-5 h-5" />}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-foreground">{milestone.title}</h3>
-                        <span className="text-sm font-medium text-muted-foreground">
-                          {milestone.amount} VND
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{milestone.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+             <div className="space-y-4">
+               {milestones.map((milestone, index) => (
+                 <motion.div
+                   key={index}
+                   className={`group relative p-6 rounded-2xl border transition-all duration-300 ${
+                     milestone.checked
+                       ? "border-primary/30 bg-primary/5 hover:border-primary/50"
+                       : "border-border bg-card hover:border-primary/20"
+                   }`}
+                   initial={{ opacity: 0, x: -20 }}
+                   whileInView={{ opacity: 1, x: 0 }}
+                   whileHover={{ 
+                     scale: 1.02,
+                     y: -2,
+                     boxShadow: milestone.checked 
+                       ? "0 10px 30px rgba(59, 130, 246, 0.15)"
+                       : "0 10px 30px rgba(0,0,0,0.1)"
+                   }}
+                   transition={{ 
+                     duration: 0.5, 
+                     delay: index * 0.1,
+                     type: "spring",
+                     stiffness: 100
+                   }}
+                   viewport={{ once: true, margin: "-50px" }}
+                 >
+                   {/* Background gradient for completed milestones */}
+                   {milestone.checked && (
+                     <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5 rounded-2xl" />
+                   )}
+                   
+                   <div className="relative z-10">
+                     <div className="flex items-start gap-4">
+                       <motion.div
+                         className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                           milestone.checked
+                             ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                             : "bg-muted border-2 border-border group-hover:border-primary/30"
+                         }`}
+                         whileHover={{ scale: 1.1, rotate: 5 }}
+                         transition={{ duration: 0.2 }}
+                       >
+                         {milestone.checked && (
+                           <motion.div
+                             initial={{ scale: 0 }}
+                             animate={{ scale: 1 }}
+                             transition={{ duration: 0.3, delay: 0.2 }}
+                           >
+                             <CheckCircle2 className="w-5 h-5" />
+                           </motion.div>
+                         )}
+                       </motion.div>
+                       
+                       <div className="flex-1">
+                         <div className="flex items-center justify-between mb-2">
+                           <h3 className={`font-bold transition-colors duration-300 ${
+                             milestone.checked 
+                               ? "text-primary" 
+                               : "text-foreground group-hover:text-primary"
+                           }`}>
+                             {milestone.title}
+                           </h3>
+                           <span className={`text-sm font-medium transition-colors duration-300 ${
+                             milestone.checked 
+                               ? "text-primary/80" 
+                               : "text-muted-foreground group-hover:text-foreground"
+                           }`}>
+                             {milestone.amount} VND
+                           </span>
+                         </div>
+                         <p className={`text-sm transition-colors duration-300 ${
+                           milestone.checked 
+                             ? "text-primary/70" 
+                             : "text-muted-foreground group-hover:text-foreground"
+                         }`}>
+                           {milestone.description}
+                         </p>
+                       </div>
+                     </div>
+                   </div>
+                   
+                   {/* Corner accent for completed milestones */}
+                   {milestone.checked && (
+                     <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-primary/20 to-transparent rounded-bl-2xl" />
+                   )}
+                 </motion.div>
+               ))}
+             </div>
           </EBMotionCard>
         </motion.div>
       </div>
