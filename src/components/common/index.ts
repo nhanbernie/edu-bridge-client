@@ -17,6 +17,7 @@ export { default as BookingGuideModal } from "../../features/student/booking/com
 export { default as TransactionStatsCard } from "./transactions/TransactionStatsCard";
 export { default as TransactionStatusBadge } from "./transactions/TransactionStatusBadge";
 export { default as TransactionList } from "./transactions/TransactionList";
+export { default as UserTransactionList } from "./transactions/UserTransactionList";
 export { default as TransactionHeader } from "./transactions/TransactionHeader";
 
 // Export types

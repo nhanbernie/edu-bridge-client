@@ -2,7 +2,7 @@
 import React from "react";
 import EBMaketingHeader from "./EBMaketingHeader";
 import EBFooter from "./EBFooter";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { BuildHeaderFunction } from "./types";
 
 interface LandingLayoutProps {
@@ -11,10 +11,10 @@ interface LandingLayoutProps {
 }
 
 const EBLandingLayout = ({ children, buildHeader }: LandingLayoutProps) => {
-  const router = useRouter();
-  
-  const go = (path: string) => router.push(path);
-  
+  const { push } = useLocaleRouter();
+
+  const go = (path: string) => push(path);
+
   const headerConfig = buildHeader ? buildHeader({ go }) : undefined;
 
   return (

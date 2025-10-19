@@ -4,7 +4,7 @@ import { AvailabilityBlockDto, SlotDto } from "@/services/availability-block/typ
 export interface TimeSlot {
   start: string;
   end: string;
-  isBooked?: boolean;
+  status?: string; // AVAILABLE/BOOKED/RESERVED
   date?: string;
 }
 
@@ -84,7 +84,7 @@ export const transformAvailabilityBlocksToSchedule = (
     const timeSlots: TimeSlot[] = slots.map((slot) => ({
       start: formatTime(slot.startTime),
       end: formatTime(slot.endTime),
-      isBooked: slot.isBooked,
+      status: slot.status,
       date: dateKey,
     }));
 
@@ -159,7 +159,7 @@ export const transformToCurrentWeekSchedule = (
         timeSlots.push({
           start: formatTime(slot.startTime),
           end: formatTime(slot.endTime),
-          isBooked: slot.isBooked,
+          status: slot.status,
           date: dateKey,
         });
       });
@@ -193,9 +193,9 @@ export const getScheduleSummary = (availabilityBlocks: AvailabilityBlockDto[]) =
     if (block.slots) {
       block.slots.forEach((slot) => {
         totalSlots++;
-        if (slot.isBooked) {
+        if (slot.status === "BOOKED") {
           bookedSlots++;
-        } else {
+        } else if (slot.status === "AVAILABLE") {
           availableSlots++;
         }
       });

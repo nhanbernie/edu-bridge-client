@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useSearchTutorsQuery, useLazySearchTutorsQuery } from "@/services/tutor";
+import { useFilterTutorsQuery, useLazyFilterTutorsQuery } from "@/services/tutor";
 import type { TutorSearchRequest, TutorSearchDto, TutorCardData } from "@/services/tutor/type";
 import {
   selectTutors,
@@ -79,12 +79,12 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
     isLoading: isApiLoading,
     error: apiError,
     refetch,
-  } = useSearchTutorsQuery(finalSearchParams, {
+  } = useFilterTutorsQuery(finalSearchParams, {
     skip: !enabled,
   });
 
   // Lazy search for manual triggers
-  const [triggerSearch, { isLoading: isSearching }] = useLazySearchTutorsQuery();
+  const [triggerSearch, { isLoading: isSearching }] = useLazyFilterTutorsQuery();
 
   // Sync API response to Redux
   useEffect(() => {
@@ -197,7 +197,7 @@ export const useTutorSearch = ({ searchParams, enabled = true }: UseTutorSearchP
 
 // Hook for search with filters
 export const useTutorSearchWithFilters = () => {
-  const [triggerSearch, { data, isLoading, error }] = useLazySearchTutorsQuery();
+  const [triggerSearch, { data, isLoading, error }] = useLazyFilterTutorsQuery();
 
   const searchWithFilters = useCallback(
     async (filters: {

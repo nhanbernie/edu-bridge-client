@@ -14,6 +14,7 @@ import {
   uploadMediaEndpoint,
   getMediaEndpoint,
   updateMediaEndpoint,
+  updateUserProfileEndpoint,
 } from "./endpoints/index";
 import { getSubjectsEndpoint } from "@/services/common";
 
@@ -36,8 +37,7 @@ export const userApi = createApi({
     uploadMedia: uploadMediaEndpoint(builder),
     getMedia: getMediaEndpoint(builder),
     updateMedia: updateMediaEndpoint(builder),
-    // TODO: Implement these endpoints when needed
-    // updateProfile: updateProfileEndpoint(builder),
+    updateUserProfile: updateUserProfileEndpoint(builder),
     // getProfile: getProfileEndpoint(builder),
     // deleteAccount: deleteAccountEndpoint(builder),
   }),
@@ -60,4 +60,5 @@ export const {
   useGetMediaQuery,
   useLazyGetMediaQuery,
   useUpdateMediaMutation,
+  useUpdateUserProfileMutation,
 } = userApi;

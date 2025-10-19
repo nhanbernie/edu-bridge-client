@@ -30,7 +30,10 @@ const getBodyFromArgs = (arg: any): any => {
 
 const redirectToLogin = (): void => {
   if (typeof window !== "undefined") {
-    window.location.href = "/login";
+    // Get current locale from URL or default to 'en'
+    const currentPath = window.location.pathname;
+    const locale = currentPath.split("/")[1] || "en";
+    window.location.href = `/${locale}/login`;
   }
 };
 const createBaseQuery = (accessToken?: string) => {

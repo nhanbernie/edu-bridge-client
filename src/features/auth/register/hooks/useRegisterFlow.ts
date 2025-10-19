@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useAppDispatch } from "@/redux/hooks";
 import {
   useRegisterMutation,
@@ -8,13 +8,14 @@ import {
 } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
 import { toast } from "sonner";
+import { ROUTES } from "@/common/constants/route.constant";
 
 type RegisterStep = "register" | "verifyEmail";
 
 const useRegisterFlow = () => {
   const [step, setStep] = useState<RegisterStep>("register");
   const [email, setEmail] = useState<string>("");
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   const dispatch = useAppDispatch();
   const [registerMutation] = useRegisterMutation();
@@ -71,7 +72,7 @@ const useRegisterFlow = () => {
           toast.success(
             result.message || "Xác thực email thành công. Bây giờ bạn có thể đăng nhập."
           );
-          router.push("/login");
+          push(ROUTES.LOGIN);
         } else {
           throw new Error(result.message || "Xác thực email thất bại");
         }
@@ -84,7 +85,7 @@ const useRegisterFlow = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, verifyOtpRegisterMutation, router]
+    [dispatch, verifyOtpRegisterMutation, push]
   );
 
   // Resend OTP

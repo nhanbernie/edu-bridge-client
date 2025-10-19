@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,7 +18,7 @@ interface TutorFeedbackPageProps {
 }
 
 const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   // Get course feedbacks
   const { data: feedbacksData, isLoading: isLoadingFeedbacks } = useGetCourseFeedbacksQuery({
@@ -58,7 +59,7 @@ const TutorFeedbackPage: React.FC<TutorFeedbackPageProps> = ({ courseId }) => {
     <div className="min-h-screen">
       {/* Header */}
       <div className={PAGE_HEADER}>
-        <Button variant="ghost" onClick={() => router.push("/tutor/feedback")} className="mb-4">
+        <Button variant="ghost" onClick={() => push(ROUTES.TUTOR_FEEDBACK)} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Quay lại danh sách
         </Button>

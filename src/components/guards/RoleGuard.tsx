@@ -53,7 +53,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
     };
 
     checkAccess();
-  }, []);
+  }, [allowedRoles, checkRoleAccess, guardRoute, redirectTo, requiredStatus]);
 
   return <>{children}</>;
 };

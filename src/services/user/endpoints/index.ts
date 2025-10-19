@@ -11,3 +11,4 @@ export { uploadAvatarEndpoint } from "./uploadAvatar";
 export { uploadMediaEndpoint } from "./uploadMedia";
 export { getMediaEndpoint } from "./getMedia";
 export { updateMediaEndpoint } from "./updateMedia";
+export { updateUserProfileEndpoint } from "./updateUserProfile";

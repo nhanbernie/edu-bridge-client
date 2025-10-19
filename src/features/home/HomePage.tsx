@@ -2,7 +2,7 @@
 
 import { EBMainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBMotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
 import { BookOpen, GraduationCap, Users, Eye } from "lucide-react";
 import { EBLogo } from "@/components/common";
@@ -11,7 +11,7 @@ import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 const HomeFeature = () => {
   const { user, logout } = useAuth();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
@@ -22,9 +22,9 @@ const HomeFeature = () => {
 
   useEffect(() => {
     if (user?.status === "APPROVED" && user?.role === "STUDENT") {
-      router.push("/student");
+      push("/student");
     }
-  }, [user?.status, user?.role, router]);
+  }, [user?.status, user?.role, push]);
 
   return (
     <EBMainLayout footer={true}>
@@ -47,7 +47,7 @@ const HomeFeature = () => {
               <MotionItem>
                 <EBMotionCard
                   variants={choiceCardVariants}
-                  onClick={() => router.push("/onboarding/student")}
+                  onClick={() => push("/onboarding/student")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
                             hover:shadow-xl hover:shadow-emerald-100/50
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
@@ -82,7 +82,7 @@ const HomeFeature = () => {
               <MotionItem>
                 <EBMotionCard
                   variants={choiceCardVariants}
-                  onClick={() => router.push("/onboarding/tutor")}
+                  onClick={() => push("/onboarding/tutor")}
                   className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
                             hover:shadow-xl hover:shadow-emerald-100/50
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
@@ -122,7 +122,7 @@ const HomeFeature = () => {
                 title="Hồ sơ đang được xem xét"
                 description="Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn."
                 currentStep="review"
-                onGoToDashboard={() => router.push("/tutor/dashboard")}
+                onGoToDashboard={() => push("/tutor/dashboard")}
                 className="bg-transparent p-0"
               />
             </div>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { buildAdminTutorDetailRoute } from "@/common/constants/route.constant";
 import { toast } from "sonner";
 import {
   useGetUserQuery,
@@ -12,7 +13,7 @@ import {
 import { UserDto, TutorType } from "@/services/api/type";
 
 export const useAdminActions = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [verifyAllDocuments] = useVerifyAllDocumentsMutation();
   const [deleteUser] = useDeleteUserMutation();
 
@@ -20,10 +21,10 @@ export const useAdminActions = () => {
   const handleViewTutorDetail = useCallback(
     (user: UserDto) => {
       if (user.role === "TUTOR" || user.role === "STUDENT") {
-        router.push(`/admin/user/${user.userId}`);
+        push(buildAdminTutorDetailRoute(user.userId));
       }
     },
-    [router]
+    [push]
   );
 
   // View verification documents (modal)

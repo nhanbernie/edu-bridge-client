@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import EBMediaCard from "@/components/common/EBMediaCard";
 import EBEmptyState from "@/components/common/EBEmptyState";
@@ -9,7 +10,7 @@ import { EBPageLoading } from "@/components/common";
 import EBTutorProfileForm from "./components/EBTutorProfileForm";
 import MediaUploadModal from "./components/MediaUploadModal";
 import ImageViewModal from "@/features/tutor/profile/components/ImageViewModal";
-import { useTutorProfile } from "@/hooks/useTutorProfile";
+import { useTutorProfile } from "@/features/tutor/profile/hooks/useTutorProfile";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 
 interface TutorProfileFormData {
@@ -25,6 +26,8 @@ interface TutorProfileFormData {
 }
 
 const TutorProfilePage = () => {
+  const t = useTranslations("tutor.profile");
+
   const {
     userData,
     videoIntro,
@@ -44,6 +47,7 @@ const TutorProfilePage = () => {
     isImageViewOpen,
     selectedImage,
     handleAvatarUpload,
+    handleUpdateProfile,
     openMediaModal,
     closeMediaModal,
     handleMediaUpload,
@@ -52,20 +56,7 @@ const TutorProfilePage = () => {
   } = useTutorProfile();
 
   const handleSubmit = async (data: TutorProfileFormData) => {
-    setIsSaving(true);
-    try {
-      // TODO: Call update profile API here
-      console.log("Profile data to save:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setIsEditing(false);
-    } catch (error) {
-      console.error("Error saving profile:", error);
-    } finally {
-      setIsSaving(false);
-    }
+    await handleUpdateProfile(data);
   };
 
   const handleAvatarChange = async (file: File) => {
@@ -73,15 +64,15 @@ const TutorProfilePage = () => {
   };
 
   if (isLoading) {
-    return <EBPageLoading message="Đang tải thông tin..." />;
+    return <EBPageLoading message={t("loading")} />;
   }
 
   return (
     <div className="min-h-screen">
       {/* Header */}
       <div className={PAGE_HEADER}>
-        <h1 className={PAGE_TITLE}>Hồ sơ gia sư</h1>
-        <p className={PAGE_SUBTITLE}>Quản lý thông tin cá nhân và hồ sơ của bạn</p>
+        <h1 className={PAGE_TITLE}>{t("title")}</h1>
+        <p className={PAGE_SUBTITLE}>{t("subtitle")}</p>
       </div>
 
       {/* 2 Column Layout */}

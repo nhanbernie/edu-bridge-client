@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { buildStudentFeedbackDetailRoute, ROUTES } from "@/common/constants/route.constant";
 import { BookOpen, GraduationCap } from "lucide-react";
 import { useGetStudentEnrollmentsQuery } from "@/services/course";
 import { useUserId } from "@/hooks/useUserId";
@@ -14,9 +15,11 @@ import {
   PAGE_TITLE,
   PAGE_SUBTITLE,
 } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 const StudentFeedbackListPage: React.FC = () => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
+  const t = useTranslations("student.feedback");
   const { userId: studentId } = useUserId();
 
   const {
@@ -25,7 +28,7 @@ const StudentFeedbackListPage: React.FC = () => {
     error,
   } = useGetStudentEnrollmentsQuery({ studentId: studentId || "" }, { skip: !studentId });
 
-  const enrollments = enrollmentsData?.data || [];
+  const enrollments = useMemo(() => enrollmentsData?.data || [], [enrollmentsData?.data]);
 
   // Separate completed and in-progress courses
   const { completedCourses, inProgressCourses } = useMemo(() => {
@@ -36,7 +39,7 @@ const StudentFeedbackListPage: React.FC = () => {
 
   const handleViewDetails = (courseId: string) => {
     // Navigate to feedback page for the course
-    router.push(`/student/feedback/${courseId}`);
+    push(buildStudentFeedbackDetailRoute(courseId));
   };
 
   // Show skeleton only on initial load (no data yet)
@@ -45,8 +48,8 @@ const StudentFeedbackListPage: React.FC = () => {
       <div className={PAGE_CONTAINER}>
         <div className={CONTENT_WRAPPER}>
           <div className={PAGE_HEADER}>
-            <h1 className={PAGE_TITLE}>Khóa học đã tham gia</h1>
-            <p className={PAGE_SUBTITLE}>Xem lại và đánh giá các khóa học bạn đã tham gia</p>
+            <h1 className={PAGE_TITLE}>{t("list.title")}</h1>
+            <p className={PAGE_SUBTITLE}>{t("list.subtitle")}</p>
           </div>
 
           <EnrolledCourseCardSkeleton count={4} />
@@ -73,10 +76,8 @@ const StudentFeedbackListPage: React.FC = () => {
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
         <div className={PAGE_HEADER}>
-          <h1 className={PAGE_TITLE}>Khóa học đã tham gia</h1>
-          <p className={PAGE_SUBTITLE}>
-            Xem lại các khóa học bạn đã đăng ký và theo dõi tiến độ học tập
-          </p>
+          <h1 className={PAGE_TITLE}>{t("list.title")}</h1>
+          <p className={PAGE_SUBTITLE}>{t("list.subtitle")}</p>
         </div>
 
         {/* Stats Cards */}
@@ -85,7 +86,7 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Tổng khóa học
+                  {t("list.stats.totalCourses")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {enrollments.length}
@@ -98,7 +99,9 @@ const StudentFeedbackListPage: React.FC = () => {
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Đang học</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {t("list.stats.completedCourses")}
+                </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {inProgressCourses.length}
                 </p>
@@ -111,7 +114,7 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Đã hoàn thành
+                  {t("list.stats.canCreateFeedback")}
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {completedCourses.length}
@@ -128,13 +131,13 @@ const StudentFeedbackListPage: React.FC = () => {
             <div className="text-center">
               <BookOpen className="h-16 w-16 mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Chưa có khóa học nào
+                {t("list.noCourses")}
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 Bạn chưa tham gia khóa học nào. Hãy tìm gia sư phù hợp và bắt đầu học ngay!
               </p>
               <button
-                onClick={() => router.push("/student")}
+                onClick={() => push(ROUTES.STUDENT)}
                 className="px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors"
               >
                 Tìm gia sư

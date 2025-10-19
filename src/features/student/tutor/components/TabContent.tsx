@@ -12,13 +12,13 @@ import type { useManageCourses } from "@/features/tutor/courses/hooks/useManageC
 import type { useAvailabilityBlock } from "@/hooks/useAvailabilityBlock";
 import { transformToCurrentWeekSchedule } from "@/utils/scheduleTransform";
 import { useTutorFeedbacksData } from "../hooks/useTutorFeedbacks";
-import { useTutorProfile } from "@/hooks/useTutorProfile";
+import { useTutorProfile } from "@/features/tutor/profile/hooks/useTutorProfile";
 import { useState } from "react";
 
 interface TimeSlot {
   start: string;
   end: string;
-  isBooked?: boolean;
+  status?: string; // AVAILABLE/BOOKED/RESERVED
 }
 
 interface DaySchedule {

@@ -24,7 +24,7 @@ import { vi } from "date-fns/locale";
 interface TimeSlot {
   start: string;
   end: string;
-  isBooked?: boolean;
+  status?: string; // AVAILABLE/BOOKED/RESERVED
   date?: string;
 }
 
@@ -115,8 +115,10 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
   const schedule = scheduleData || [];
 
   const getTimeSlotStyle = (slot: TimeSlot) => {
-    if (slot.isBooked) {
-      return "bg-orange-100 text-orange-800 border border-orange-200";
+    if (slot.status === "BOOKED") {
+      return "bg-red-100 text-red-800 border border-red-200";
+    } else if (slot.status === "RESERVED") {
+      return "bg-yellow-100 text-yellow-800 border border-yellow-200";
     }
     return "bg-green-100 text-green-800 border border-green-200";
   };
@@ -172,7 +174,13 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                     <div
                       key={index}
                       className={`text-xs p-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
-                      title={slot.isBooked ? "Đã có lịch dạy" : "Lịch rảnh"}
+                      title={
+                        slot.status === "BOOKED"
+                          ? "Đã có lịch dạy"
+                          : slot.status === "RESERVED"
+                            ? "Đang được giữ"
+                            : "Lịch rảnh"
+                      }
                       onClick={() => handleSlotClick(slot, finalDayData)}
                     >
                       {slot.start}-{slot.end}
@@ -209,7 +217,13 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                   <div
                     key={index}
                     className={`text-xs px-2 py-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
-                    title={slot.isBooked ? "Đã có lịch dạy" : "Lịch rảnh"}
+                    title={
+                      slot.status === "BOOKED"
+                        ? "Đã có lịch dạy"
+                        : slot.status === "RESERVED"
+                          ? "Đang được giữ"
+                          : "Lịch rảnh"
+                    }
                     onClick={() => handleSlotClick(slot, dayData)}
                   >
                     {slot.start}-{slot.end}
@@ -286,7 +300,13 @@ const EBSchedule: React.FC<EBScheduleProps> = ({
                     <div
                       key={index}
                       className={`text-xs p-1 rounded transition-colors cursor-pointer hover:opacity-80 ${getTimeSlotStyle(slot)}`}
-                      title={slot.isBooked ? "Đã có lịch dạy" : "Lịch rảnh"}
+                      title={
+                        slot.status === "BOOKED"
+                          ? "Đã có lịch dạy"
+                          : slot.status === "RESERVED"
+                            ? "Đang được giữ"
+                            : "Lịch rảnh"
+                      }
                       onClick={() => handleSlotClick(slot, finalDayData)}
                     >
                       {slot.start}-{slot.end}

@@ -1,29 +1,35 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 const TutorDashboardPage = () => {
+  const t = useTranslations("tutor.dashboard");
+
   return (
     <div className="max-w-8xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Tutor Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t("title")}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold mb-2">My Students</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("stats.students")}</h3>
           <p className="text-3xl font-bold text-emerald-600">24</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Active students</p>
         </div>
 
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold mb-2">Classes Today</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("stats.courses")}</h3>
           <p className="text-3xl font-bold text-blue-600">3</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Scheduled lessons</p>
         </div>
 
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold mb-2">Rating</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("stats.rating")}</h3>
           <p className="text-3xl font-bold text-yellow-600">4.9</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">Average rating</p>
         </div>
 
         <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold mb-2">Earnings</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("stats.earnings")}</h3>
           <p className="text-3xl font-bold text-green-600">$2,350</p>
           <p className="text-sm text-gray-600 dark:text-gray-400">This month</p>
         </div>

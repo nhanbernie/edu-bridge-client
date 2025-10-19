@@ -1,0 +1,22 @@
+{
+  "title": "Lịch học của tôi",
+  "subtitle": "Xem lịch học và quản lý các buổi học sắp tới",
+  "loading": "Đang tải lịch học...",
+  "stats": {
+    "todaySessions": "Buổi học hôm nay",
+    "weekSessions": "Buổi học tuần này",
+    "tutors": "Gia sư"
+  },
+  "scheduleTitle": "Lịch học",
+  "tabs": {
+    "upcoming": "Sắp tới",
+    "history": "Lịch sử"
+  },
+  "session": {
+    "join": "Tham gia",
+    "viewFeedback": "Xem đánh giá",
+    "noSessions": "Không có buổi học nào",
+    "noUpcomingSessions": "Không có buổi học sắp tới",
+    "noHistorySessions": "Không có lịch sử buổi học"
+  }
+}

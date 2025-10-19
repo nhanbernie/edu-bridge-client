@@ -1,181 +1,152 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  Video,
-  Mic,
-  MicOff,
-  VideoOff,
-  Phone,
-  PhoneOff,
-  Users,
-  Settings,
-  MessageSquare,
-  Loader2,
-} from "lucide-react";
-import { useMeeting } from "./hooks/useMeeting";
-import { Whiteboard, ChatPanel, VideoPanel } from "./components";
+import { useTranslations } from "next-intl";
+import { useUserId } from "@/hooks/useUserId";
+import ChatPanel from "./components/ChatPanel";
+import WhiteboardPanel from "./components/WhiteboardPanel";
+import UserLoading from "./components/UserLoading";
+import { useSignalR } from "./hooks/useSignalR";
+
+import { VideoGrid, MediaControls } from "./components";
+import { useWebRTC } from "./hooks";
 
 interface MeetingPageProps {
   sessionId: string;
 }
 
 const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId }) => {
-  const {
-    isJoined,
-    isVideoOn,
-    isMicOn,
-    messages,
-    localStream,
-    remoteStreams,
-    isLoading,
-    userId,
-    userRole,
-    handleJoinMeeting,
-    handleLeaveMeeting,
-    handleSendMessage,
-    toggleVideo,
-    toggleMic,
-    setupEditorListener,
-  } = useMeeting({ sessionId });
+  const { userId, userRole } = useUserId();
+  const t = useTranslations("meeting");
+  const [isHandRaised, setIsHandRaised] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [lastReadMessageCount, setLastReadMessageCount] = useState(0);
 
-  if (isLoading) {
+  const {
+    isConnected,
+    messages,
+    peerId: signalRPeerId,
+    joined,
+    isJoining,
+    sendChatMessage,
+    joinSession,
+    handleMount,
+    sendPeerId,
+    onReceivePeerId,
+  } = useSignalR({
+    userId: userId || "",
+    userRole: userRole || "",
+    sessionId,
+  });
+
+  const {
+    localStream,
+    micOn,
+    camOn,
+    toggleMic,
+    toggleCamera,
+    participants,
+    isReady: isWebRTCReady,
+    callPeer,
+    peerId: webRTCPeerId,
+  } = useWebRTC({
+    sessionId,
+    userId: userId || "",
+    autoStartMedia: true,
+  });
+
+  useEffect(() => {
+    if (webRTCPeerId && joined) {
+      sendPeerId(webRTCPeerId);
+    }
+  }, [webRTCPeerId, joined, sendPeerId]);
+
+  useEffect(() => {
+    onReceivePeerId((remotePeerId, remoteUserId) => {
+      callPeer(remotePeerId, remoteUserId);
+    });
+  }, [onReceivePeerId, callPeer]);
+
+  // Track unread messages when chat is closed
+  useEffect(() => {
+    if (isChatOpen) {
+      // Chat is open, mark all as read
+      setLastReadMessageCount(messages.length);
+      setUnreadMessages(0);
+    } else {
+      // Chat is closed, count new messages
+      const newMessages = messages.length - lastReadMessageCount;
+      if (newMessages > 0) {
+        setUnreadMessages(newMessages);
+      }
+    }
+  }, [messages.length, isChatOpen, lastReadMessageCount]);
+
+  // Auto join session when connected
+  useEffect(() => {
+    if (isConnected && !joined && !isJoining) {
+      joinSession(sessionId);
+    }
+  }, [isConnected, joined, isJoining, sessionId, joinSession]);
+
+  // Loading state - AFTER all hooks
+  if (!isConnected) {
     return (
-      <div className="min-h-screen bg-white text-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-blue-500" />
-          <p className="text-lg">Đang khởi tạo phòng học...</p>
-          <p className="text-sm text-gray-600 mt-2">Vui lòng chờ trong giây lát</p>
-        </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <UserLoading userType="tutor" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Header */}
-      <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900">Meeting Room</h1>
-            <p className="text-sm text-gray-600">Session ID: {sessionId}</p>
-            <p className="text-xs text-gray-500">
-              User: {userId} ({userRole})
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white overflow-hidden">
+      {/* Main Content Area */}
+      <main className="relative h-screen w-full flex">
+        <div className="flex-1 relative flex flex-col">
+          <div className="flex-1 relative">
+            <VideoGrid
+              localStream={localStream}
+              participants={participants}
+              userId={userId || ""}
+              micOn={micOn}
+              camOn={camOn}
+              layout="grid"
+              showLocalPreview={true}
+            >
+              <WhiteboardPanel onMount={handleMount} />
+            </VideoGrid>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-gray-200 rounded-lg text-gray-700">
-              <Settings className="h-5 w-5" />
-            </button>
-            <button className="p-2 hover:bg-gray-200 rounded-lg text-gray-700">
-              <Users className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)]">
-        {/* Video Area */}
-        <div className="flex-1 flex flex-col">
-          {!isJoined ? (
-            // Pre-join screen
-            <div className="flex-1 flex items-center justify-center bg-gray-50">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Video className="h-16 w-16 text-gray-600" />
-                </div>
-                <h2 className="text-2xl font-bold mb-4 text-gray-900">Sẵn sàng tham gia?</h2>
-                <p className="text-gray-600 mb-6">
-                  Kiểm tra camera và microphone trước khi tham gia
-                </p>
-                <button
-                  onClick={handleJoinMeeting}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-                >
-                  Tham gia ngay
-                </button>
-              </div>
-            </div>
-          ) : (
-            // Meeting screen - Show both video and whiteboard
-            <div className="flex-1 bg-gray-50 relative flex">
-              {/* Video Panel - Left side */}
-              <div className="flex-1">
-                <VideoPanel
-                  localStream={localStream}
-                  remoteStreams={remoteStreams}
-                  isVideoOn={isVideoOn}
-                  isMicOn={isMicOn}
-                  onToggleVideo={toggleVideo}
-                  onToggleMic={toggleMic}
-                  isJoined={isJoined}
-                />
-              </div>
-
-              {/* Whiteboard Panel - Right side */}
-              <div className="w-1/2 border-l border-gray-200">
-                <Whiteboard onMount={setupEditorListener} isJoined={isJoined} />
-              </div>
-            </div>
-          )}
-
-          {/* Controls */}
-          <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div className="flex items-center justify-center gap-4">
-              <button
-                onClick={toggleMic}
-                disabled={!isJoined}
-                className={`p-3 rounded-full transition-colors ${
-                  isMicOn
-                    ? "bg-gray-200 hover:bg-gray-300 text-gray-700"
-                    : "bg-red-500 hover:bg-red-600 text-white"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {isMicOn ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
-              </button>
-
-              <button
-                onClick={toggleVideo}
-                disabled={!isJoined}
-                className={`p-3 rounded-full transition-colors ${
-                  isVideoOn
-                    ? "bg-gray-200 hover:bg-gray-300 text-gray-700"
-                    : "bg-red-500 hover:bg-red-600 text-white"
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {isVideoOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
-              </button>
-
-              {isJoined ? (
-                <button
-                  onClick={handleLeaveMeeting}
-                  className="p-3 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
-                >
-                  <PhoneOff className="h-5 w-5" />
-                </button>
-              ) : (
-                <button
-                  onClick={handleJoinMeeting}
-                  className="p-3 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors"
-                >
-                  <Phone className="h-5 w-5" />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">
-          <ChatPanel
-            messages={messages}
-            onSendMessage={handleSendMessage}
-            currentUserId={userId || "unknown"}
-            isJoined={isJoined}
+          <MediaControls
+            micOn={micOn}
+            camOn={camOn}
+            isHandRaised={isHandRaised}
+            unreadMessages={unreadMessages}
+            onToggleMic={toggleMic}
+            onToggleCamera={toggleCamera}
+            onToggleHand={() => setIsHandRaised(!isHandRaised)}
+            onToggleChat={() => setIsChatOpen(!isChatOpen)}
+            onEndCall={() => {
+              // TODO: Implement end call logic
+            }}
+            disabled={!joined || !isWebRTCReady}
           />
         </div>
-      </div>
+
+        {/* Chat Panel - Sidebar */}
+        {isChatOpen && (
+          <div className="w-80 border-l border-gray-200 dark:border-gray-700">
+            <ChatPanel
+              isOpen={isChatOpen}
+              onClose={() => setIsChatOpen(false)}
+              messages={messages}
+              onSendMessage={sendChatMessage}
+              currentUserId={userId || ""}
+            />
+          </div>
+        )}
+      </main>
     </div>
   );
 };

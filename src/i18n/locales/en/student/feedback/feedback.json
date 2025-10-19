@@ -1,0 +1,36 @@
+{
+  "title": "Course Feedback",
+  "subtitle": "View and create feedback for your courses",
+  "loading": "Loading feedback...",
+  "create": {
+    "title": "Create New Feedback",
+    "subtitle": "Share your experience about this course",
+    "tutorRating": "Tutor Rating",
+    "courseRating": "Course Rating",
+    "comment": "Comment",
+    "commentPlaceholder": "Share your experience...",
+    "submit": "Submit Feedback",
+    "cancel": "Cancel"
+  },
+  "list": {
+    "title": "Enrolled Courses",
+    "subtitle": "View and review your enrolled courses",
+    "viewFeedback": "View Feedback",
+    "createFeedback": "Create Feedback",
+    "noCourses": "No courses yet",
+    "stats": {
+      "totalCourses": "Total Courses",
+      "completedCourses": "In Progress",
+      "canCreateFeedback": "Completed"
+    }
+  },
+  "detail": {
+    "title": "Course Feedback",
+    "subtitle": "View all feedback for this course",
+    "summary": "Summary",
+    "allFeedbacks": "All Feedbacks",
+    "noFeedbacks": "No feedback yet",
+    "averageRating": "Average Rating",
+    "totalFeedbacks": "Total Feedbacks"
+  }
+}

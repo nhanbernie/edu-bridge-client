@@ -4,6 +4,7 @@ import React from "react";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EBButton from "./EBButton";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 
 interface EBSidebarButtonProps {
   icon: LucideIcon;
@@ -24,12 +25,14 @@ const EBSidebarButton: React.FC<EBSidebarButtonProps> = ({
   onClick,
   className,
 }) => {
+  const { push } = useLocaleRouter();
+
   const handleClick = () => {
     if (onClick) {
       onClick();
     } else {
-      // Default navigation behavior
-      window.location.href = href;
+      // Navigate with locale
+      push(href);
     }
   };
 

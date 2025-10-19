@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES } from "@/common/constants/route.constant";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,13 +22,15 @@ import {
   PAGE_TITLE,
   PAGE_SUBTITLE,
 } from "@/common/constants/className.constant";
+import { useTranslations } from "next-intl";
 
 interface StudentFeedbackPageProps {
   courseId: string;
 }
 
 const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
+  const t = useTranslations("student.feedback");
   const { userId: studentId } = useUserId();
   const { createFeedback, isLoading } = useCreateFeedback();
   const { refetchAllSessions } = useRefetchSessions();
@@ -72,8 +75,8 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
       <div className={PAGE_CONTAINER}>
         <div className={CONTENT_WRAPPER}>
           <div className={PAGE_HEADER}>
-            <h1 className={PAGE_TITLE}>Đánh giá khóa học</h1>
-            <p className={PAGE_SUBTITLE}>Xem và viết đánh giá cho khóa học</p>
+            <h1 className={PAGE_TITLE}>{t("detail.title")}</h1>
+            <p className={PAGE_SUBTITLE}>{t("detail.subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -97,9 +100,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
             Không tìm thấy khóa học
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">Bạn chưa đăng ký khóa học này.</p>
-          <Button onClick={() => router.push("/student/feedback")}>
-            Quay lại danh sách khóa học
-          </Button>
+          <Button onClick={() => push(ROUTES.STUDENT_FEEDBACK)}>Quay lại danh sách khóa học</Button>
         </div>
       </div>
     );
@@ -115,7 +116,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
       <div className={CONTENT_WRAPPER}>
         {/* Header */}
         <div className={PAGE_HEADER}>
-          <Button variant="ghost" onClick={() => router.push("/student/feedback")} className="mb-4">
+          <Button variant="ghost" onClick={() => push(ROUTES.STUDENT_FEEDBACK)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Quay lại danh sách khóa học
           </Button>
@@ -140,7 +141,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
           {/* Right Column - All Feedbacks */}
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              Đánh giá từ học sinh ({totalFeedbacks})
+              {t("detail.allFeedbacks")} ({totalFeedbacks})
             </h2>
             {feedbacks.length > 0 ? (
               <div className="space-y-4">
@@ -160,7 +161,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
               <Card className="border-0 shadow-sm">
                 <CardContent className="p-6">
                   <div className="text-center py-4">
-                    <p className="text-gray-500 dark:text-gray-400">Chưa có đánh giá nào</p>
+                    <p className="text-gray-500 dark:text-gray-400">{t("detail.noFeedbacks")}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -172,7 +173,7 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
         {canCreateFeedback ? (
           <div className="mt-8">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Đánh giá của bạn
+              {t("create.title")}
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <RatingSummary type="create" onSubmit={handleSubmitFeedback} isLoading={isLoading} />

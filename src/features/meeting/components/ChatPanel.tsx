@@ -1,121 +1,117 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { MessageSquare, Send } from "lucide-react";
-
-interface ChatMessage {
-  userId: string;
-  message: string;
-  timestamp: string;
-}
+import { X, Send } from "lucide-react";
 
 interface ChatPanelProps {
-  messages: ChatMessage[];
+  isOpen: boolean;
+  onClose: () => void;
+  messages: { userId: string; message: string }[];
   onSendMessage: (message: string) => void;
   currentUserId: string;
-  isJoined: boolean;
 }
 
 const ChatPanel: React.FC<ChatPanelProps> = ({
+  isOpen,
+  onClose,
   messages,
   onSendMessage,
   currentUserId,
-  isJoined,
 }) => {
-  const [newMessage, setNewMessage] = useState("");
+  const [message, setMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() && isJoined) {
-      onSendMessage(newMessage.trim());
-      setNewMessage("");
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString("vi-VN", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  if (!isOpen) return null;
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
-      {/* Chat Header */}
-      <div className="flex items-center gap-2 p-4 border-b border-gray-200">
-        <MessageSquare className="h-5 w-5 text-gray-600" />
-        <h3 className="font-semibold text-gray-900">Chat</h3>
-        <span className="text-sm text-gray-600">({messages?.length || 0})</span>
+    <div className="w-80 h-full bg-white dark:bg-gray-900 shadow-xl flex flex-col pl-4">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Messages</h3>
+        <button
+          onClick={onClose}
+          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        >
+          <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+        </button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {!messages || !Array.isArray(messages) || messages.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">
-            <MessageSquare className="h-12 w-12 mx-auto mb-2 opacity-50" />
-            <p>Chưa có tin nhắn nào</p>
-            <p className="text-sm">Hãy bắt đầu cuộc trò chuyện!</p>
+      {/* Messages Area - Takes remaining space */}
+      <div className="flex-1 px-4 py-4 overflow-y-auto space-y-3">
+        {messages.length === 0 ? (
+          /* Empty State */
+          <div className="flex flex-col items-center justify-center h-full text-center">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-3">
+              <span className="text-2xl">💬</span>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">No messages yet</p>
+            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Start a conversation</p>
           </div>
         ) : (
-          messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${msg.userId === currentUserId ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-xs px-3 py-2 rounded-lg ${
-                  msg.userId === currentUserId
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-900 border border-gray-200"
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-medium">
-                    {msg.userId === currentUserId ? "Bạn" : msg.userId}
-                  </span>
-                  <span className="text-xs opacity-70">{formatTime(msg.timestamp)}</span>
+          /* Messages List */
+          <>
+            {messages.map((msg, index) => {
+              const isCurrentUser = msg.userId === currentUserId;
+
+              return (
+                <div
+                  key={index}
+                  className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+                      isCurrentUser
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                    }`}
+                  >
+                    {!isCurrentUser && (
+                      <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">
+                        Participant
+                      </div>
+                    )}
+                    <div className="text-sm break-words">{msg.message}</div>
+                  </div>
                 </div>
-                <p className="text-sm">{msg.message}</p>
-              </div>
-            </div>
-          ))
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
-      {/* Message Input */}
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex gap-2">
+      {/* Message Input - Fixed at bottom with clean design */}
+      <div className="px-4 pb-6 pt-4">
+        <div className="relative flex items-center bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden shadow-sm">
           <input
             type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={isJoined ? "Nhập tin nhắn..." : "Tham gia phòng để chat"}
-            disabled={!isJoined}
-            className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && message.trim()) {
+                onSendMessage(message.trim());
+                setMessage("");
+              }
+            }}
+            placeholder="Send a message"
+            className="flex-1 px-5 py-3 bg-transparent focus:outline-none text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
           />
           <button
-            onClick={handleSendMessage}
-            disabled={!isJoined || !newMessage.trim()}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center gap-2"
+            onClick={() => {
+              if (message.trim()) {
+                onSendMessage(message.trim());
+                setMessage("");
+              }
+            }}
+            className="mr-2 p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gray-400"
+            disabled={!message.trim()}
           >
-            <Send className="h-4 w-4" />
+            <Send className="w-5 h-5" />
           </button>
         </div>
       </div>

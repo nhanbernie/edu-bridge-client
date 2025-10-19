@@ -2,12 +2,12 @@ import { useCallback } from "react";
 import { useAppDispatch } from "@/redux/hooks";
 import { useForgotPasswordMutation } from "@/services/auth/auth.service";
 import { setLoading } from "@/redux/slices/auth.slice";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { toast } from "sonner";
-
+import { ROUTES } from "@/common/constants/route.constant";
 const useForgotPasswordSubmit = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [forgotPasswordMutation] = useForgotPasswordMutation();
 
   return useCallback(
@@ -18,6 +18,7 @@ const useForgotPasswordSubmit = () => {
 
         if (result.success) {
           toast.success(result.message || "OTP đã được gửi đến email của bạn");
+          push(ROUTES.LOGIN);
         } else {
           throw new Error(result.message || "Không thể gửi OTP");
         }
@@ -30,7 +31,7 @@ const useForgotPasswordSubmit = () => {
         dispatch(setLoading(false));
       }
     },
-    [dispatch, forgotPasswordMutation]
+    [dispatch, forgotPasswordMutation, push]
   );
 };
 

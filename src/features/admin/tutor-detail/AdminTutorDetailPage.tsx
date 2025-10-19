@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+
 import {
   useGetUserQuery,
   useGetVerificationDocsQuery,
@@ -51,13 +52,14 @@ import {
 } from "@/components/ui/dialog";
 import { TutorType } from "@/services/api/type";
 import { vi } from "date-fns/locale";
+import { ROUTES } from "@/common/constants/route.constant";
 
 interface AdminTutorDetailPageProps {
   tutorId: string;
 }
 
 const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const [selectedTutorType, setSelectedTutorType] = useState<TutorType>("VERIFIED");
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -177,7 +179,7 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
               The requested tutor could not be found.
             </p>
           </div>
-          <Button onClick={() => router.back()} variant="outline">
+          <Button onClick={() => push(ROUTES.ADMIN)} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
           </Button>
@@ -196,7 +198,7 @@ const AdminTutorDetailPage: React.FC<AdminTutorDetailPageProps> = ({ tutorId }) 
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => router.back()}
+                onClick={() => push(ROUTES.ADMIN)}
                 className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />

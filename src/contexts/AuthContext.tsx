@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setUser, clearUser, setLoading } from "@/redux/slices/auth.slice";
 import { StorageService } from "@/services/storage/secureStorage.service";
@@ -32,13 +33,18 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useAppDispatch();
   const { user, isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
-  const router = useRouter();
+  const { push } = useLocaleRouter();
   const pathname = usePathname();
   const [hasInitialized, setHasInitialized] = React.useState(false);
   const { getDefaultRouteForRole } = useRoleGuard();
 
   const publicRoutes = ["/login", "/register", "/forgot-password", "/"];
-  const isPublicRoute = publicRoutes.includes(pathname);
+  // Check if current pathname (with locale) matches any public route
+  const isPublicRoute = publicRoutes.some((route) => {
+    // Remove locale from pathname for comparison (e.g., /en/login -> /login)
+    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "");
+    return pathWithoutLocale === route;
+  });
 
   const checkAuthStatus = React.useCallback(async () => {
     try {
@@ -69,18 +75,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           user.role as UserRole,
           user.status as UserStatus
         );
-        router.replace(defaultRoute);
+        push(defaultRoute);
       } else if (pathname === "/") {
         // Redirect to appropriate route based on user role and status
         const defaultRoute = getDefaultRouteForRole(
           user.role as UserRole,
           user.status as UserStatus
         );
-        router.replace(defaultRoute);
+        push(defaultRoute);
       }
     } else {
       if (!isPublicRoute) {
-        router.replace("/login");
+        push("/login");
       }
     }
   }, [
@@ -88,7 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading,
     isPublicRoute,
     pathname,
-    router,
+    push,
     hasInitialized,
     user,
     getDefaultRouteForRole,
@@ -113,14 +119,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       userData.role as UserRole,
       userData.status as UserStatus
     );
-    router.replace(defaultRoute);
+    push(defaultRoute);
   };
 
   const logout = async () => {
     try {
       await StorageService.clearAuthData();
       dispatch(clearUser());
-      router.replace("/login");
+      push("/login");
     } catch (error) {
       // Ignore error
     }

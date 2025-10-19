@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
     UPLOAD_MEDIA: "/api/user/tutor/{tutorId}/media",
     GET_MEDIA: "/api/user/tutor/{tutorId}/media",
     UPDATE_MEDIA: "/api/user/tutor/{tutorId}/media/{mediaId}",
+    UPDATE_USER_PROFILE: "/api/user/{userId}",
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",
@@ -85,6 +86,7 @@ export const API_ENDPOINTS = {
   },
   PAYMENT: {
     CHARITY: "/api/payment/charity",
+    VERIFY_QR: "/api/payment/tutor/verify-qr",
   },
 } as const;
 

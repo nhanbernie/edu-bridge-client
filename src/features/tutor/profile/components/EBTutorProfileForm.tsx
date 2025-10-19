@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBFormProvider from "@/components/form/EBFormProvider";
@@ -108,7 +108,7 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
     email: userData?.email || "",
     phone: userData?.phone || "",
     location: userData?.location || "",
-    educationLevel: userData?.tutor?.educationLevel || "",
+    educationLevel: userData?.tutor?.educationLevel || EDUCATION_LEVEL_OPTIONS[0]?.value || "",
     yearsOfExperience: userData?.tutor?.yearsOfExperience || 0,
     bio: userData?.tutor?.bio || "",
     subjects: userData?.tutor?.subjects || [],
@@ -187,6 +187,7 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
         </div>
 
         <EBFormProvider
+          key={userData?.userId || "default"} // Force re-render when userData changes
           validationSchema={tutorProfileValidationSchema}
           formType="tutorProfileForm"
           defaultValues={defaultValues}
@@ -264,6 +265,16 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
                 options={SUBJECT_OPTIONS}
                 disabled={!isEditing}
               />
+
+              {/* Existing subjects display - moved below subjects field */}
+              {userData?.tutor?.subjects && userData.tutor.subjects.length > 0 && (
+                <div className="mt-1">
+                  <span className="text-xs text-gray-600">Các môn hiện tại: </span>
+                  <span className="text-xs text-gray-800 ">
+                    {userData.tutor.subjects.join(", ")}
+                  </span>
+                </div>
+              )}
 
               <EBMultipleSelect
                 allowCustom

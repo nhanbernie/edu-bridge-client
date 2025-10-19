@@ -6,6 +6,8 @@ export const studentProfileValidationSchema = yup.object().shape({
   email: yup.string().email("Email không hợp lệ").required("Vui lòng nhập email"),
   phone: yup.string().nullable(),
   location: yup.string().nullable(),
+  grade: yup.string().required("Vui lòng chọn lớp học"),
+  learningGoal: yup.string().required("Vui lòng nhập mục tiêu học tập"),
 });
 
 // Tutor profile validation schema

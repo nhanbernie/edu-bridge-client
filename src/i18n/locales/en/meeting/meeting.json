@@ -1,0 +1,15 @@
+{
+  "title": "Online Meeting Room",
+  "subtitle": "Preparing the meeting room...",
+  "sessionInfo": {
+    "sessionId": "Session ID",
+    "userId": "User ID",
+    "role": "Role"
+  },
+  "actions": {
+    "startVideo": "Start Video",
+    "chat": "Chat",
+    "whiteboard": "Whiteboard"
+  },
+  "loading": "Loading user information..."
+}

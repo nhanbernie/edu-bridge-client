@@ -29,6 +29,7 @@ export interface TutorDto {
   currency?: string;
   hourlyRate?: number;
   verifiedStatus?: "VERIFIED" | "TRUSTED_BEGINNER" | "PENDING";
+  isBankAccountVerified?: boolean;
   totalStudents?: number;
   totalCourses?: number;
   totalFeedbacks?: number;

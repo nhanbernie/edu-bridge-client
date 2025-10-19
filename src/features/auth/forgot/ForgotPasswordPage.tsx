@@ -4,8 +4,10 @@ import React from "react";
 import EBAuthLayout from "@/components/layouts/EBAuthLayout";
 import AuthForm from "@/components/form/auth/AuthForm";
 import useForgotPasswordFlow from "./hooks/useForgotPasswordFlow";
+import { useTranslations } from "next-intl";
 
 const ForgotPasswordFeature = () => {
+  const t = useTranslations("auth");
   const {
     step,
     email,
@@ -20,32 +22,32 @@ const ForgotPasswordFeature = () => {
     switch (step) {
       case "email":
         return {
-          title: "Quên mật khẩu?",
-          description: "Nhập email của bạn để nhận mã OTP đặt lại mật khẩu",
+          title: t("forgotPassword.title"),
+          description: t("forgotPassword.subtitle"),
           formType: "forgotPassword" as const,
           onSubmit: handleEmailSubmit,
           showResendButton: false,
         };
       case "otp":
         return {
-          title: "Xác thực OTP",
-          description: "Nhập mã OTP đã được gửi đến email của bạn",
+          title: t("verifyOTP.title"),
+          description: t("verifyOTP.subtitle"),
           formType: "verifyOTP" as const,
           onSubmit: handleOtpSubmit,
           showResendButton: true,
         };
       case "reset":
         return {
-          title: "Đặt lại mật khẩu",
-          description: "Nhập mật khẩu mới cho tài khoản của bạn",
+          title: t("resetPassword.title"),
+          description: t("resetPassword.subtitle"),
           formType: "resetPassword" as const,
           onSubmit: handleResetSubmit,
           showResendButton: false,
         };
       default:
         return {
-          title: "Quên mật khẩu?",
-          description: "Nhập email của bạn để nhận mã OTP đặt lại mật khẩu",
+          title: t("forgotPassword.title"),
+          description: t("forgotPassword.subtitle"),
           formType: "forgotPassword" as const,
           onSubmit: handleEmailSubmit,
           showResendButton: false,
@@ -64,8 +66,8 @@ const ForgotPasswordFeature = () => {
             <p className="text-gray-600 text-sm">{stepContent.description}</p>
           </div>
 
-          <AuthForm 
-            type={stepContent.formType} 
+          <AuthForm
+            type={stepContent.formType}
             onSubmit={stepContent.onSubmit}
             email={step === "otp" || step === "reset" ? email : undefined}
           />

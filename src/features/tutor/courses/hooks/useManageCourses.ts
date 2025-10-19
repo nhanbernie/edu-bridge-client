@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { ROUTES, buildTutorCoursesEditRoute } from "@/common/constants/route.constant";
 import { toast } from "sonner";
 import {
   useGetCourseQuery,
@@ -30,7 +31,7 @@ const mapCourseToCardData = (course: CourseDto, packages: PackageDto[] = []): Co
 };
 
 export const useManageCourses = (tutorId: string, courseId?: string) => {
-  const router = useRouter();
+  const { push } = useLocaleRouter();
 
   // API queries - skip if no tutorId
   const {
@@ -64,14 +65,14 @@ export const useManageCourses = (tutorId: string, courseId?: string) => {
 
   // Handle navigation
   const handleCreateCourse = useCallback(() => {
-    router.push("/tutor/courses/create");
-  }, [router]);
+    push(ROUTES.TUTOR_COURSES_CREATE);
+  }, [push]);
 
   const handleEditCourse = useCallback(
     (courseId: string) => {
-      router.push(`/tutor/courses/edit/${courseId}`);
+      push(buildTutorCoursesEditRoute(courseId));
     },
-    [router]
+    [push]
   );
 
   // Handle delete course
