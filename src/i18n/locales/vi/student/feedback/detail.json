@@ -6,6 +6,7 @@
   "noFeedbacks": "Chưa có đánh giá nào",
   "notFound": "Không tìm thấy khóa học",
   "notFoundMessage": "Bạn chưa đăng ký khóa học này.",
+  "tutorInfo": "Gia sư: {tutorName} • {completedSessions}/{totalSessions} buổi đã hoàn thành",
   "create": {
     "title": "Để lại đánh giá của bạn"
   },

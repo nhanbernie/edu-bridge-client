@@ -6,6 +6,7 @@
   "noFeedbacks": "No feedback yet",
   "notFound": "Course not found",
   "notFoundMessage": "You haven't enrolled in this course.",
+  "tutorInfo": "Tutor: {tutorName} • {completedSessions}/{totalSessions} sessions completed",
   "create": {
     "title": "Leave Your Feedback"
   },

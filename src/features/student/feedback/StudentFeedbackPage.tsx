@@ -117,8 +117,11 @@ const StudentFeedbackPage: React.FC<StudentFeedbackPageProps> = ({ courseId }) =
             {enrollment.courseTitle}
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
-            Gia sư: {enrollment.tutorName} • {enrollment.completedSessions}/
-            {enrollment.totalSessionsBooked} buổi đã hoàn thành
+            {t("tutorInfo", {
+              tutorName: enrollment.tutorName,
+              completedSessions: enrollment.completedSessions,
+              totalSessions: enrollment.totalSessionsBooked,
+            })}
           </p>
         </div>
 
