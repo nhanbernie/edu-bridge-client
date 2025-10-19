@@ -1,0 +1,21 @@
+{
+  "title": "Course Preview",
+  "labels": {
+    "courseName": "Course Name",
+    "subjects": "Subjects",
+    "description": "Description",
+    "duration": "Duration",
+    "price": "Price",
+    "students": "Students",
+    "popular": "Popular"
+  },
+  "placeholders": {
+    "courseName": "Course Name",
+    "description": "Course description will be displayed here...",
+    "duration": "2 hours",
+    "price": "100,000 VND"
+  },
+  "badges": {
+    "popular": "Popular"
+  }
+}

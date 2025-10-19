@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
 import { Loader2, Package } from "lucide-react";
 import type { PackageDto } from "@/services/course/type";
+import { useTranslations } from "next-intl";
 
 // Format Vietnamese currency
 const formatVNDPrice = (price: number): string => {
@@ -25,16 +26,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   packages: apiPackages,
   isLoading,
 }) => {
+  const t = useTranslations("student.booking.packageSelector");
+
   // Helper function to get package type name
   const getPackageTypeName = (packageType: string): string => {
-    const typeNames: Record<string, string> = {
-      TRIAL: "Buổi học thử",
-      SINGLE: "Gói cơ bản",
-      FOUR: "Gói 4 buổi",
-      EIGHT: "Gói 8 buổi",
-      TWELVE: "Gói 12 buổi",
-    };
-    return typeNames[packageType] || "Gói học";
+    return t(`packageTypes.${packageType}` as any) || t("packageTypes.SINGLE");
   };
 
   // Transform API packages to display format
@@ -42,7 +38,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
     apiPackages?.map((pkg) => ({
       id: pkg.packageId,
       name: getPackageTypeName(pkg.packageType as string),
-      description: `${pkg.numberOfSessions} buổi học`,
+      description: `${pkg.numberOfSessions} ${t("sessions")}`,
       sessions: pkg.numberOfSessions,
       price: pkg.price,
       originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
@@ -66,11 +62,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
         variants={slideUpVariants}
       >
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
         </div>
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải gói học...</span>
+          <span className="ml-2">{t("loading")}</span>
         </div>
       </EBMotionCard>
     );
@@ -84,12 +80,12 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
         variants={slideUpVariants}
       >
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
         </div>
         <div className="text-center py-12">
           <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có gói học nào</h3>
-          <p className="text-gray-500">Khóa học này chưa có gói học nào được tạo.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("empty.title")}</h3>
+          <p className="text-gray-500">{t("empty.description")}</p>
         </div>
       </EBMotionCard>
     );
@@ -101,7 +97,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
       variants={slideUpVariants}
     >
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
       </div>
       <div className="space-y-4">
         {sortedPackages.map((pkg) => (
@@ -111,7 +107,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
             className={cn(
               "relative p-4 pt-6 rounded-xl border-2 cursor-pointer transition-all",
               pkg.isTrial
-                ? "border-transparent bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 shadow-lg overflow-hidden"
+                ? "border-transparent bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-rose-900/30 dark:via-pink-900/30 dark:to-purple-900/30 shadow-lg overflow-hidden"
                 : selectedPackage === pkg.id
                   ? "border-primary bg-primary/5 shadow-md"
                   : "border-border hover:border-primary/50 hover:shadow-sm"
@@ -120,19 +116,19 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
             {/* Animated border for TRIAL package */}
             {pkg.isTrial && (
               <div className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
-                <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-[length:200%_100%] animate-border-flow" />
-                <div className="absolute inset-[2px] rounded-[10px] bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50" />
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 dark:from-rose-500 dark:via-pink-500 dark:to-purple-500 bg-[length:200%_100%] animate-border-flow" />
+                <div className="absolute inset-[2px] rounded-[10px] bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 dark:from-rose-900/30 dark:via-pink-900/30 dark:to-purple-900/30" />
               </div>
             )}
 
             {pkg.isTrial && (
-              <Badge className="absolute -top-0.5 left-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white text-xs px-3 py-1 shadow-md z-10">
-                🎁 Học thử miễn phí
+              <Badge className="absolute -top-0.5 left-4 bg-gradient-to-r from-rose-400 to-pink-500 dark:from-rose-500 dark:to-pink-600 text-white text-xs px-3 py-1 shadow-md z-10">
+                {t("trialBadge")}
               </Badge>
             )}
             {pkg.popular && !pkg.isTrial && (
               <Badge className="absolute -top-2 left-4 bg-blue-600 text-white text-xs px-2 py-1">
-                Phổ biến nhất
+                {t("popularBadge")}
               </Badge>
             )}
 
@@ -141,7 +137,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <h3
                   className={cn(
                     "font-semibold text-base",
-                    pkg.isTrial ? "text-rose-900" : "text-foreground"
+                    pkg.isTrial ? "text-rose-900 dark:text-rose-200" : "text-foreground"
                   )}
                 >
                   {pkg.name}
@@ -149,14 +145,14 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <p
                   className={cn(
                     "text-xs mt-1",
-                    pkg.isTrial ? "text-rose-700" : "text-muted-foreground"
+                    pkg.isTrial ? "text-rose-700 dark:text-rose-400" : "text-muted-foreground"
                   )}
                 >
-                  {pkg.sessions} buổi học trong tháng
+                  {pkg.sessions} {t("sessionsPerMonth")}
                 </p>
                 {pkg.isTrial && (
-                  <p className="text-[11px] text-pink-600 mt-1.5 font-medium leading-tight">
-                    💝 Ủng hộ trực tiếp người khó khăn
+                  <p className="text-[11px] text-pink-600 dark:text-pink-300 mt-1.5 font-medium leading-tight">
+                    {t("charitySupport")}
                   </p>
                 )}
               </div>
@@ -167,7 +163,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                     <span
                       className={cn(
                         "text-lg font-bold",
-                        pkg.isTrial ? "text-pink-600" : "text-primary"
+                        pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-primary"
                       )}
                     >
                       {formatVNDPrice(pkg.price)}đ
@@ -181,10 +177,10 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                   <div
                     className={cn(
                       "text-xs",
-                      pkg.isTrial ? "text-pink-600" : "text-muted-foreground"
+                      pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-muted-foreground"
                     )}
                   >
-                    {pkg.sessions} buổi
+                    {pkg.sessions} {t("sessions")}
                   </div>
                 </div>
               </div>
@@ -196,7 +192,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 "absolute top-3 right-3 w-5 h-5 rounded-full border-2 transition-all z-10",
                 selectedPackage === pkg.id
                   ? pkg.isTrial
-                    ? "border-pink-500 bg-pink-500"
+                    ? "border-pink-500 dark:border-pink-300 bg-pink-500 dark:bg-pink-300"
                     : "border-primary bg-primary"
                   : "border-muted-foreground/30 bg-background"
               )}
@@ -205,7 +201,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <div
                   className={cn(
                     "w-full h-full rounded-full flex items-center justify-center",
-                    pkg.isTrial ? "bg-pink-500" : "bg-primary"
+                    pkg.isTrial ? "bg-pink-500 dark:bg-pink-300" : "bg-primary"
                   )}
                 >
                   <div className="w-2 h-2 rounded-full bg-white" />

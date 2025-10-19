@@ -19,10 +19,10 @@ const ResetPasswordFeature = ({ searchParams }: ResetPasswordPageProps) => {
     return (
       <EBAuthLayout>
         <div className="w-full max-w-md">
-          <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+          <div className="bg-card/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-border">
             <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Lỗi</h3>
-              <p className="text-gray-600">Email không hợp lệ. Vui lòng thử lại.</p>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Lỗi</h3>
+              <p className="text-muted-foreground">Email không hợp lệ. Vui lòng thử lại.</p>
             </div>
           </div>
         </div>
@@ -33,21 +33,15 @@ const ResetPasswordFeature = ({ searchParams }: ResetPasswordPageProps) => {
   return (
     <EBAuthLayout>
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20">
+        <div className="bg-card/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-border">
           {/* EBHeader */}
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Đặt lại mật khẩu</h3>
-            <p className="text-gray-600 text-sm">
-              Nhập mật khẩu mới cho tài khoản của bạn
-            </p>
+            <h3 className="text-2xl font-bold text-foreground mb-2">Đặt lại mật khẩu</h3>
+            <p className="text-muted-foreground text-sm">Nhập mật khẩu mới cho tài khoản của bạn</p>
           </div>
 
           {/* Auth Form with resetPassword type */}
-          <AuthForm 
-            type="resetPassword" 
-            onSubmit={handleResetPasswordSubmit} 
-            email={email}
-          />
+          <AuthForm type="resetPassword" onSubmit={handleResetPasswordSubmit} email={email} />
         </div>
       </div>
     </EBAuthLayout>

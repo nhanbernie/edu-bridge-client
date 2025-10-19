@@ -5,6 +5,7 @@ import { EBMotionCard } from "@/components/motion/EBMotionCard";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, X } from "lucide-react";
 import { slideUpVariants } from "@/components/motion";
+import { useTranslations } from "next-intl";
 
 interface SelectedSession {
   date: Date;
@@ -23,6 +24,8 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
   onRemoveSession,
   onEditSession,
 }) => {
+  const t = useTranslations("student.booking.selectedSchedule");
+
   if (sessions.length === 0) {
     return null;
   }
@@ -32,7 +35,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
   };
 
   const getDayName = (date: Date) => {
-    const days = ["Chủ Nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+    const days = t.raw("dayNames") as string[];
     return days[date.getDay()];
   };
 
@@ -40,7 +43,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
     <EBMotionCard className="bg-card text-card-foreground" variants={slideUpVariants}>
       <div className="flex items-center gap-2 mb-4">
         <Calendar className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-semibold text-foreground">Lịch học đã chọn</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
       </div>
 
       <div className="space-y-3">
@@ -51,7 +54,9 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
           >
             <div className="flex-1">
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <span>Buổi {session.sessionNumber}:</span>
+                <span>
+                  {t("session")} {session.sessionNumber}:
+                </span>
                 <span>{formatDate(session.date)}</span>
                 <span>-</span>
                 <span>{getDayName(session.date)}</span>
@@ -69,7 +74,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
                 onClick={() => onEditSession(session.sessionNumber)}
                 className="text-primary hover:text-primary hover:bg-primary/10"
               >
-                Sửa
+                {t("edit")}
               </Button>
               <Button
                 variant="ghost"
@@ -87,7 +92,7 @@ const SelectedSchedule: React.FC<SelectedScheduleProps> = ({
       {sessions.length < 4 && (
         <div className="mt-4 p-3 bg-muted/50 rounded-lg border-2 border-dashed border-border">
           <p className="text-sm text-muted-foreground text-center">
-            Còn lại {4 - sessions.length} buổi học chưa chọn
+            {t("remaining", { count: 4 - sessions.length })}
           </p>
         </div>
       )}

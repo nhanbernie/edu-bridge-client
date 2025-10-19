@@ -1,0 +1,46 @@
+{
+  "videoIntro": {
+    "title": "Introduction Video",
+    "edit": "Edit",
+    "upload": "Upload Introduction Video",
+    "placeholder": "Your introduction video will appear here",
+    "noSupport": "Your browser does not support video."
+  },
+  "certificates": {
+    "title": "Certificates & Awards",
+    "add": "Add New",
+    "empty": {
+      "title": "No certificates yet",
+      "description": "Add certificates to increase your credibility",
+      "action": "Add First Certificate"
+    }
+  },
+  "modal": {
+    "editVideo": "Edit Introduction Video",
+    "editCertificate": "Edit Certificate",
+    "uploadVideo": "Upload Introduction Video",
+    "addCertificate": "Add Certificate",
+    "titleLabel": "Title",
+    "titlePlaceholder": "e.g., Introduction Video",
+    "certificatePlaceholder": "e.g., TESOL Certificate",
+    "fileLabel": "File",
+    "fileOptional": "(Optional - Leave blank if not changing)",
+    "fileRequired": "(Required)",
+    "selectFile": "Click to select {type}",
+    "supportedFormats": "{formats} (max {size}MB)",
+    "videoFormats": "MP4, MOV, AVI",
+    "imageFormats": "JPG, PNG, GIF",
+    "buttons": {
+      "cancel": "Cancel",
+      "upload": "Upload",
+      "update": "Update",
+      "uploading": "Uploading...",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "fileSizeError": "File size must not exceed {size}MB",
+      "fileRequired": "Please select a file",
+      "titleRequired": "Please enter a title"
+    }
+  }
+}

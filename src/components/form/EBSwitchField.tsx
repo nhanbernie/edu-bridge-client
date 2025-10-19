@@ -25,8 +25,10 @@ const EBSwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, c
     <div className={cn("w-full mb-5", className)}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          {label && <label className="block text-sm font-medium text-gray-800 mb-1">{label}</label>}
-          {description && <p className="text-sm text-gray-600">{description}</p>}
+          {label && (
+            <label className="block text-sm font-medium text-foreground mb-1">{label}</label>
+          )}
+          {description && <p className="text-sm text-muted-foreground">{description}</p>}
         </div>
 
         <button
@@ -35,8 +37,8 @@ const EBSwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, c
           aria-checked={value}
           onClick={() => onChange(!value)}
           className={cn(
-            "relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2",
-            value ? "bg-emerald-600" : "bg-gray-200"
+            "relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+            value ? "bg-primary" : "bg-muted"
           )}
         >
           <span
@@ -48,7 +50,7 @@ const EBSwitchField: React.FC<SwitchFieldProps> = ({ name, label, description, c
         </button>
       </div>
 
-      {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
+      {error && <p className="mt-1 text-sm text-destructive">{error.message}</p>}
     </div>
   );
 };

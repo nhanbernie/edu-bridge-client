@@ -4,9 +4,6 @@ import { useTutorMySchedule } from "@/features/tutor/my-schedule/hooks/useTutorM
 export const useScheduleData = () => {
   const { sessions, isLoading, sessionsError } = useTutorMySchedule();
 
-  // Debug log
-  console.log("useScheduleData - sessions:", sessions);
-
   // Get all upcoming sessions (for testing, show all sessions)
   const todaySessions = useMemo(() => {
     return sessions

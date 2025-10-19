@@ -1,0 +1,14 @@
+{
+  "verified": "Đã xác thực",
+  "rating": {
+    "default": "5.0"
+  },
+  "stats": {
+    "students": "Học sinh",
+    "courses": "Khóa học",
+    "years": "Năm"
+  },
+  "actions": {
+    "learnNow": "Học ngay"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Manage Courses",
+  "subtitle": "Manage all your courses",
+  "buttons": {
+    "create": "Create New Course",
+    "refresh": "Refresh",
+    "edit": "Edit",
+    "delete": "Delete Course"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "empty": {
+    "title": "No courses yet",
+    "description": "Create your first course to start teaching",
+    "actionLabel": "Create New Course",
+    "action": "Create New Course"
+  },
+  "loading": {
+    "message": "Loading courses..."
+  },
+  "dialog": {
+    "deleteTitle": "Confirm Delete Course",
+    "deleteDescription": "Are you sure you want to delete the course \"{courseTitle}\"? This action cannot be undone.",
+    "confirmLabel": "Delete Course"
+  },
+  "delete": {
+    "title": "Confirm Delete Course",
+    "description": "Are you sure you want to delete the course \"{title}\"? This action cannot be undone.",
+    "confirm": "Delete Course",
+    "success": "Course deleted successfully",
+    "error": "Unable to delete course. Please try again."
+  },
+  "duration": {
+    "perSession": "hours/session"
+  },
+  "tutorName": "Tutor",
+  "error": {
+    "loadFailed": "Unable to load course list. Please try again."
+  },
+  "messages": {
+    "authenticating": "Authenticating information..."
+  }
+}

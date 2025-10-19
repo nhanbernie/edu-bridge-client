@@ -44,6 +44,9 @@ export interface TutorSearchDto {
 // Response type
 export type TutorSearchResponse = ApiResponse<TutorSearchDto[]>;
 
+// Tutor subjects response
+export type TutorSubjectsResponse = ApiResponse<string[]>;
+
 // Transformed tutor interface for TutorCard component
 export interface TutorCardData {
   id: string;

@@ -1,13 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import {
-  CARD_BASE,
-  CARD_COLORS,
-  ROUNDED,
-  SHADOW,
-  CARD_TEXT,
-} from "@/common/constants/css/card.constant";
+import { MotionContainer, MotionItem } from "@/components/motion";
 import { TransactionChart } from "./components/TransactionChart";
 import Schedules from "./components/Schedules";
 import Review from "./components/Review";
@@ -17,33 +11,41 @@ const TutorDashboardPage = () => {
   const t = useTranslations("tutor.dashboard");
 
   return (
-    <div className="max-w-8xl mx-auto space-y-8">
-      {/* First Row: [A][C] */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        {/* A: Header - spans 3 columns */}
-        <div className="lg:col-span-3">
-          <TransactionChart />
+    <MotionContainer className="max-w-8xl mx-auto space-y-6 lg:space-y-8 p-4 sm:p-6">
+      {/* Header Section */}
+      {/* <MotionItem className="mb-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-foreground">{t("welcome")} 👋</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("subtitle")}</p>
         </div>
+      </MotionItem> */}
 
-        {/* C: Schedule - 2 columns */}
-        <div className="lg:col-span-2">
-          <Schedules />
-        </div>
-      </div>
+      {/* First Row - Chart and Schedules */}
+      <MotionItem>
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 lg:gap-8">
+          <div className="xl:col-span-3">
+            <TransactionChart />
+          </div>
 
-      {/* Second Row: [B][D] */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* B: My Courses - 2 columns */}
-        <div className="lg:col-span-2">
-          <MyCourses />
+          <div className="xl:col-span-2">
+            <Schedules />
+          </div>
         </div>
+      </MotionItem>
 
-        {/* D: Reviews - spans 1 column */}
-        <div className="lg:col-span-1">
-          <Review />
+      {/* Second Row - Courses and Reviews */}
+      <MotionItem>
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+          <div className="xl:col-span-2">
+            <MyCourses />
+          </div>
+
+          <div className="xl:col-span-1">
+            <Review />
+          </div>
         </div>
-      </div>
-    </div>
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

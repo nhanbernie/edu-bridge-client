@@ -1,0 +1,21 @@
+{
+  "title": "Xem trước khóa học",
+  "labels": {
+    "courseName": "Tên khóa học",
+    "subjects": "Môn học",
+    "description": "Mô tả",
+    "duration": "Thời lượng",
+    "price": "Giá",
+    "students": "Học viên",
+    "popular": "Phổ biến"
+  },
+  "placeholders": {
+    "courseName": "Tên khóa học",
+    "description": "Mô tả khóa học sẽ hiển thị ở đây...",
+    "duration": "2 giờ",
+    "price": "100.000 VNĐ"
+  },
+  "badges": {
+    "popular": "Phổ biến"
+  }
+}

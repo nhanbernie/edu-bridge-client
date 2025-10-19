@@ -39,6 +39,9 @@ export const API_ENDPOINTS = {
   },
   TUTOR: {
     GET_SUBJECTS: "/api/tutor/{tutorId}/subjects",
+    GET_ALL_SUBJECTS: "/api/tutor/subjects",
+    FILTER_TUTORS: "/api/tutor/filter",
+    SEARCH_TUTORS: "/api/tutor/search",
   },
   COURSE: {
     GET_COURSE: "/api/course",

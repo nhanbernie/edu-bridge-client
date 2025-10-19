@@ -1,0 +1,42 @@
+{
+  "title": "Thông tin cơ bản",
+  "subtitle": "Hãy cho chúng tôi biết về trình độ và kinh nghiệm của bạn",
+  "fields": {
+    "educationLevel": {
+      "label": "Trình độ học vấn",
+      "placeholder": "Chọn trình độ học vấn của bạn"
+    },
+    "yearsOfExperience": {
+      "label": "Số năm kinh nghiệm dạy học",
+      "placeholder": "Nhập số năm kinh nghiệm"
+    },
+    "location": {
+      "label": "Địa điểm",
+      "placeholder": "Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+    },
+    "bio": {
+      "label": "Mô tả về bản thân",
+      "placeholder": "Hãy chia sẻ về phong cách dạy học, thành tích và kinh nghiệm của bạn..."
+    },
+    "subjects": {
+      "label": "Môn học dạy (có thể chọn nhiều)",
+      "placeholder": "Chọn hoặc thêm môn học"
+    },
+    "languages": {
+      "label": "Ngôn ngữ (có thể chọn nhiều)",
+      "placeholder": "Chọn hoặc thêm ngôn ngữ"
+    }
+  },
+  "buttons": {
+    "next": "Tiếp theo"
+  },
+  "validation": {
+    "educationLevelRequired": "Vui lòng chọn trình độ học vấn",
+    "yearsOfExperienceRequired": "Vui lòng nhập số năm kinh nghiệm",
+    "yearsOfExperienceInvalid": "Số năm kinh nghiệm phải từ 0 đến 80",
+    "locationRequired": "Vui lòng nhập địa điểm của bạn",
+    "bioRequired": "Vui lòng mô tả về bản thân",
+    "subjectsRequired": "Vui lòng chọn ít nhất một môn học",
+    "languagesRequired": "Vui lòng chọn ít nhất một ngôn ngữ"
+  }
+}

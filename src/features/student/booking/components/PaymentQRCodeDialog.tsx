@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 interface PaymentQRCodeDialogProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
   onClose,
   paymentData,
 }) => {
+  const t = useTranslations("student.booking.paymentQR");
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -44,26 +47,26 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast.success("Đã tải xuống QR code");
+    toast.success(t("downloaded"));
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-hidden rounded-3xl border-0 shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-center text-xl font-bold text-gray-900">
-            Thanh toán qua chuyển khoản
+          <DialogTitle className="text-center text-xl font-bold text-foreground">
+            {t("title")}
           </DialogTitle>
         </DialogHeader>
 
         <ScrollArea className="max-h-[70vh] pr-4">
           <div className="space-y-6">
             {/* Payment Info */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+            <div className="bg-muted rounded-xl p-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Số tiền:</span>
-                  <span className="font-semibold text-lg text-emerald-600">
+                  <span className="text-muted-foreground">{t("amount")}:</span>
+                  <span className="font-semibold text-lg text-primary">
                     {formatCurrency(paymentData.payment.amount)}
                   </span>
                 </div>
@@ -72,36 +75,34 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
 
             {/* QR Code */}
             <div className="text-center">
-              <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-300 inline-block">
+              <div className="bg-background p-4 rounded-xl border-2 border-dashed border-border inline-block">
                 <img
                   src={paymentData.qrCodeBase64}
                   alt="QR Code for payment"
                   className="w-40 h-40 sm:w-48 sm:h-48 mx-auto"
                 />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                Quét mã QR để chuyển khoản
-              </p>
+              <p className="text-sm text-muted-foreground mt-2">{t("scanQR")}</p>
             </div>
 
             {/* Action Buttons */}
             <div className="text-center">
               <Button variant="outline" onClick={handleDownloadQR} className="w-full sm:w-auto">
                 <Download className="w-4 h-4 mr-2" />
-                Tải QR
+                {t("downloadQR")}
               </Button>
             </div>
 
             {/* Instructions */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
               <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                Hướng dẫn thanh toán:
+                {t("instructions.title")}
               </h4>
               <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                <li>1. Mở ứng dụng ngân hàng trên điện thoại</li>
-                <li>2. Quét mã QR ở trên</li>
-                <li>3. Kiểm tra thông tin và xác nhận chuyển khoản</li>
-                <li>4. Hệ thống sẽ tự động cập nhật trạng thái</li>
+                <li>1. {t("instructions.step1")}</li>
+                <li>2. {t("instructions.step2")}</li>
+                <li>3. {t("instructions.step3")}</li>
+                <li>4. {t("instructions.step4")}</li>
               </ol>
             </div>
           </div>
@@ -109,7 +110,7 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
 
         <div className="flex justify-end gap-2 pt-4 border-t">
           <Button variant="outline" onClick={onClose}>
-            Đóng
+            {t("note.close")}
           </Button>
         </div>
       </DialogContent>

@@ -1,38 +1,35 @@
 import { Variants } from "motion/react";
 
-// Card animation variants
+// Card animation variants - Optimized for performance
 export const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 20,
-    scale: 0.95,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.4,
+      duration: 0.2,
       ease: "easeOut",
     },
   },
   hover: {
-    y: -5,
-    scale: 1.02,
+    y: -2,
     transition: {
-      duration: 0.2,
-      ease: "easeInOut",
+      duration: 0.15,
+      ease: "easeOut",
     },
   },
   tap: {
-    scale: 0.98,
+    scale: 0.99,
     transition: {
       duration: 0.1,
     },
   },
 };
 
-// Fade in animation
+// Fade in animation - Optimized
 export const fadeInVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -40,50 +37,50 @@ export const fadeInVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      duration: 0.3,
+      duration: 0.15,
     },
   },
 };
 
-// Slide up animation
+// Slide up animation - Optimized
 export const slideUpVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 30,
+    y: 15,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.2,
       ease: "easeOut",
     },
   },
 };
 
-// Scale animation
+// Scale animation - Optimized
 export const scaleVariants: Variants = {
   hidden: {
     opacity: 0,
-    scale: 0.8,
+    scale: 0.95,
   },
   visible: {
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.4,
+      duration: 0.2,
       ease: "easeOut",
     },
   },
   hover: {
-    scale: 1.05,
+    scale: 1.02,
     transition: {
-      duration: 0.2,
+      duration: 0.15,
     },
   },
 };
 
-// Stagger children animation
+// Stagger children animation - Optimized
 export const containerVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -91,8 +88,8 @@ export const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
     },
   },
 };
@@ -100,81 +97,71 @@ export const containerVariants: Variants = {
 // Default card animation (main one for cards)
 export const DEFAULT_CARD_ANIMATION = cardVariants;
 
-// Enhanced choice card variants (for homepage cards)
+// Enhanced choice card variants (for homepage cards) - Optimized
 export const choiceCardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 30,
-    scale: 0.9,
+    y: 15,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.25,
       ease: "easeOut",
     },
   },
   hover: {
-    y: -8,
-    scale: 1.02,
+    y: -3,
     transition: {
-      duration: 0.3,
+      duration: 0.15,
       ease: "easeOut",
     },
   },
   tap: {
-    scale: 0.98,
+    scale: 0.99,
     transition: {
       duration: 0.1,
-      ease: "easeInOut",
     },
   },
 };
 
-// Premium card variants with smooth transitions
+// Premium card variants with smooth transitions - Optimized
 export const premiumCardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 20,
-    scale: 0.95,
-    rotateX: 10,
+    y: 10,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    rotateX: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      duration: 0.2,
+      ease: "easeOut",
     },
   },
   hover: {
-    y: -12,
-    scale: 1.03,
-    rotateX: -2,
+    y: -2,
     transition: {
-      duration: 0.4,
+      duration: 0.15,
       ease: "easeOut",
     },
   },
   tap: {
-    scale: 0.97,
+    scale: 0.99,
     transition: {
-      duration: 0.15,
+      duration: 0.1,
     },
   },
 };
 
-// Animation transition configs
+// Animation transition configs - Optimized for performance
 export const MOTION_CONFIG = {
-  type: "spring",
-  stiffness: 300,
-  damping: 30,
+  type: "tween",
+  duration: 0.2,
+  ease: "easeOut",
 } as const;
 
 export const EASE_CONFIG = {
-  ease: [0.25, 0.46, 0.45, 0.94],
+  ease: "easeOut",
 } as const;

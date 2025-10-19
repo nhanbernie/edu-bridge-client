@@ -37,7 +37,7 @@ const EBLoadingSpinner: React.FC<EBLoadingSpinnerProps> = ({
   const variantConfig = {
     default: "flex items-center justify-center",
     minimal: "flex items-center gap-2",
-    card: "flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700",
+    card: "flex items-center justify-center bg-card rounded-lg p-6 shadow-sm border border-border",
   };
 
   const currentSize = sizeConfig[size];
@@ -46,8 +46,8 @@ const EBLoadingSpinner: React.FC<EBLoadingSpinnerProps> = ({
   if (variant === "minimal") {
     return (
       <div className={`${currentVariant} ${className}`}>
-        <Loader2 className={`${currentSize.spinner} animate-spin text-gray-600`} />
-        <span className={`${currentSize.text} text-gray-600`}>{message}</span>
+        <Loader2 className={`${currentSize.spinner} animate-spin text-muted-foreground`} />
+        <span className={`${currentSize.text} text-muted-foreground`}>{message}</span>
       </div>
     );
   }
@@ -55,8 +55,10 @@ const EBLoadingSpinner: React.FC<EBLoadingSpinnerProps> = ({
   return (
     <div className={`${currentVariant} ${currentSize.container} ${className}`}>
       <div className="text-center">
-        <Loader2 className={`${currentSize.spinner} animate-spin mx-auto mb-4 text-gray-600`} />
-        <p className={`${currentSize.text} text-gray-600`}>{message}</p>
+        <Loader2
+          className={`${currentSize.spinner} animate-spin mx-auto mb-4 text-muted-foreground`}
+        />
+        <p className={`${currentSize.text} text-muted-foreground`}>{message}</p>
       </div>
     </div>
   );

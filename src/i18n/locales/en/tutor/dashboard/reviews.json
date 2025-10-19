@@ -1,0 +1,13 @@
+{
+  "title": "Recent Reviews",
+  "loading": "Loading reviews...",
+  "error": "Unable to load reviews",
+  "empty": "No reviews yet",
+  "timeAgo": {
+    "oneDay": "1 day ago",
+    "days": "{count} days ago",
+    "oneWeek": "1 week ago",
+    "weeks": "{count} weeks ago",
+    "months": "{count} months ago"
+  }
+}

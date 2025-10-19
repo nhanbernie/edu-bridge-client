@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { useTranslations } from "next-intl";
 
 interface StepProps {
   steps: string[];
@@ -8,6 +9,8 @@ interface StepProps {
 }
 
 const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
+  const t = useTranslations("tutor.onboard.steps");
+
   return (
     <div className="w-full mb-12">
       {/* Progress EBHeader */}
@@ -18,7 +21,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Đăng ký làm gia sư
+          {t("title")}
         </motion.h1>
         <motion.p
           className="text-muted-foreground"
@@ -26,7 +29,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Bước {currentStep + 1} / {steps.length}
+          {t("stepProgress", { current: currentStep + 1, total: steps.length })}
         </motion.p>
       </div>
 
@@ -37,7 +40,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
 
         {/* Progress Line */}
         <motion.div
-          className="absolute top-6 left-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full"
+          className="absolute top-6 left-0 h-1 bg-gradient-to-r from-primary to-secondary rounded-full"
           initial={{ width: "0%" }}
           animate={{
             width: `${(currentStep / (steps.length - 1)) * 100}%`,
@@ -69,9 +72,9 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                   className={cn(
                     "relative flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all duration-300 backdrop-blur-sm",
                     isCompleted &&
-                      "bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-500/25",
+                      "bg-gradient-to-br from-primary to-secondary border-primary text-primary-foreground shadow-lg shadow-primary/25",
                     isCurrent &&
-                      "bg-white border-emerald-500 text-emerald-600 shadow-lg ring-4 ring-emerald-500/20",
+                      "bg-card border-primary text-primary shadow-lg ring-4 ring-primary/20",
                     isPending && "bg-card border-border text-muted-foreground"
                   )}
                   whileHover={{ scale: 1.05 }}
@@ -112,7 +115,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                   {/* Pulse effect for current step */}
                   {isCurrent && (
                     <motion.div
-                      className="absolute inset-0 rounded-full border-2 border-emerald-400"
+                      className="absolute inset-0 rounded-full border-2 border-primary/60"
                       animate={{
                         scale: [1, 1.2, 1],
                         opacity: [0.7, 0, 0.7],
@@ -136,8 +139,8 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                   <div
                     className={cn(
                       "text-sm font-medium transition-colors duration-300",
-                      isCompleted && "text-emerald-600",
-                      isCurrent && "text-emerald-700 font-semibold",
+                      isCompleted && "text-primary",
+                      isCurrent && "text-primary font-semibold",
                       isPending && "text-muted-foreground"
                     )}
                   >
@@ -145,17 +148,17 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                   </div>
                   {isCurrent && (
                     <motion.div
-                      className="mt-1 text-xs text-emerald-600 font-medium"
+                      className="mt-1 text-xs text-primary font-medium"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.5 }}
                     >
-                      Đang thực hiện
+                      {t("status.inProgress")}
                     </motion.div>
                   )}
                   {isCompleted && (
                     <motion.div
-                      className="mt-1 text-xs text-emerald-600 font-medium flex items-center justify-center gap-1"
+                      className="mt-1 text-xs text-primary font-medium flex items-center justify-center gap-1"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 }}
@@ -167,7 +170,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      Hoàn thành
+                      {t("status.completed")}
                     </motion.div>
                   )}
                 </motion.div>
@@ -186,9 +189,9 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="inline-flex items-center px-4 py-2 bg-emerald-50 dark:bg-emerald-950 rounded-full border border-emerald-200 dark:border-emerald-800">
+        <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
           <motion.div
-            className="w-2 h-2 bg-emerald-500 rounded-full mr-2"
+            className="w-2 h-2 bg-primary rounded-full mr-2"
             animate={{
               scale: [1, 1.2, 1],
             }}
@@ -198,9 +201,7 @@ const TutorOnboardingSteps: React.FC<StepProps> = ({ steps, currentStep }) => {
               ease: "easeInOut",
             }}
           />
-          <span className="text-sm text-emerald-700 dark:text-emerald-300 font-medium">
-            {steps[currentStep]}
-          </span>
+          <span className="text-sm text-primary font-medium">{steps[currentStep]}</span>
         </div>
       </motion.div>
     </div>

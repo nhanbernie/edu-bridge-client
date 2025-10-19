@@ -1,0 +1,44 @@
+{
+  "title": "Hồ sơ cá nhân",
+  "subtitle": "Quản lý thông tin cá nhân và học tập của bạn",
+  "sections": {
+    "personalInfo": "Thông tin cá nhân",
+    "learningInfo": "Thông tin học tập"
+  },
+  "fields": {
+    "fullName": {
+      "label": "Họ và tên",
+      "placeholder": "Nhập họ và tên của bạn"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email không thể thay đổi"
+    },
+    "phone": {
+      "label": "Số điện thoại",
+      "placeholder": "Nhập số điện thoại"
+    },
+    "location": {
+      "label": "Địa điểm",
+      "placeholder": "Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+    },
+    "grade": {
+      "label": "Lớp học"
+    },
+    "learningGoal": {
+      "label": "Mục tiêu học tập",
+      "placeholder": "Hãy chia sẻ về mục tiêu học tập và định hướng của bạn..."
+    }
+  },
+  "buttons": {
+    "edit": "Chỉnh sửa hồ sơ",
+    "save": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "changeAvatar": "Thay đổi ảnh đại diện"
+  },
+  "messages": {
+    "loading": "Đang tải thông tin hồ sơ...",
+    "defaultName": "Học sinh"
+  }
+}

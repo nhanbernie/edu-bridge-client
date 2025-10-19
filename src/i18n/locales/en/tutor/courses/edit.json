@@ -1,0 +1,11 @@
+{
+  "title": "Edit Course",
+  "subtitle": "Update your course information",
+  "buttons": {
+    "back": "Back"
+  },
+  "messages": {
+    "authenticating": "Authenticating information...",
+    "loading": "Loading course information..."
+  }
+}

@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { FormProvider, useForm } from "react-hook-form";
 import { EBSelectField, EBTextField } from "@/components/form";
 import type { TutorSearchRequest } from "@/services/tutor/type";
+import { useTranslations } from "next-intl";
 
 interface AdvancedFilterProps {
   isOpen: boolean;
   onClose: () => void;
   onApplyFilters: (filters: TutorSearchRequest) => void;
   currentFilters?: TutorSearchRequest;
+  subjectOptions: string[];
+  isLoadingSubjects?: boolean;
 }
 
 interface FilterFormData {
@@ -30,7 +33,10 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
   onClose,
   onApplyFilters,
   currentFilters = {},
+  subjectOptions,
+  isLoadingSubjects = false,
 }) => {
+  const t = useTranslations("student.home.filter");
   const methods = useForm<FilterFormData>({
     defaultValues: {
       minPrice: currentFilters.MinHourlyRate?.toString() || "",
@@ -43,19 +49,6 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
   });
 
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(currentFilters.Subjects || []);
-
-  const subjectOptions = [
-    "Toán học",
-    "Vật lý",
-    "Hóa học",
-    "Sinh học",
-    "Văn học",
-    "Tiếng Anh",
-    "Lịch sử",
-    "Địa lý",
-    "Tin học",
-    "Âm nhạc",
-  ];
 
   const gradeOptions = [
     { value: "Lớp 1-5", label: "Lớp 1-5" },
@@ -117,7 +110,7 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border">
           <DialogTitle className="flex items-center space-x-2">
             <Filter className="w-5 h-5 text-primary" />
-            <span>Bộ lọc nâng cao</span>
+            <span>{t("title")}</span>
           </DialogTitle>
         </DialogHeader>
 
@@ -126,28 +119,42 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
             <form className="space-y-6 px-2">
               {/* Mức giá */}
               <div>
-                <h3 className="font-semibold text-foreground mb-3">Mức giá (VNĐ/giờ)</h3>
+                <h3 className="font-semibold text-foreground mb-3">{t("priceRange.title")}</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <EBTextField name="minPrice" type="number" placeholder="100,000" label="Từ" />
-                  <EBTextField name="maxPrice" type="number" placeholder="500,000" label="Đến" />
+                  <EBTextField name="minPrice" type="number" placeholder={t("priceRange.fromPlaceholder")} label={t("priceRange.from")} />
+                  <EBTextField name="maxPrice" type="number" placeholder={t("priceRange.toPlaceholder")} label={t("priceRange.to")} />
                 </div>
               </div>
 
               {/* Môn học */}
               <div className="">
-                <h3 className="font-semibold text-foreground mb-3">Môn học</h3>
+                <h3 className="font-semibold text-foreground mb-3">{t("subjects.title")}</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {subjectOptions.map((subject) => (
-                    <Button
-                      key={subject}
-                      type="button"
-                      onClick={() => handleSubjectToggle(subject)}
-                      variant={selectedSubjects.includes(subject) ? "default" : "secondary"}
-                      className="text-sm font-medium"
-                    >
-                      {subject}
-                    </Button>
-                  ))}
+                  {isLoadingSubjects ? (
+                    <div className="col-span-full text-center py-4 text-muted-foreground">
+                      {t("subjects.loading")}
+                    </div>
+                  ) : subjectOptions.length === 0 ? (
+                    <div className="col-span-full text-center py-4 text-muted-foreground">
+                      {t("subjects.empty")}
+                    </div>
+                  ) : (
+                    subjectOptions.map((subject) => (
+                      <Button
+                        key={subject}
+                        type="button"
+                        onClick={() => handleSubjectToggle(subject)}
+                        variant={selectedSubjects.includes(subject) ? "default" : "secondary"}
+                        className={`text-sm font-semibold transition-all duration-200 ${
+                          selectedSubjects.includes(subject)
+                            ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 shadow-md shadow-cyan-500/30"
+                            : ""
+                        }`}
+                      >
+                        {subject}
+                      </Button>
+                    ))
+                  )}
                 </div>
               </div>
 
@@ -155,15 +162,15 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
               <div>
                 <EBSelectField
                   name="grades"
-                  label="Cấp độ"
-                  placeholder="Tất cả cấp độ"
+                  label={t("gradeLevel.title")}
+                  placeholder={t("gradeLevel.all")}
                   options={gradeOptions}
                 />
               </div>
 
               {/* Đánh giá */}
               <div>
-                <h3 className="font-semibold text-foreground mb-3">Đánh giá tối thiểu</h3>
+                <h3 className="font-semibold text-foreground mb-3">{t("rating.title")}</h3>
                 <div className="flex flex-wrap gap-2">
                   {[3, 3.5, 4, 4.5, 5].map((rating) => (
                     <Button
@@ -173,7 +180,11 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
                         setSelectedRating(selectedRating === rating ? undefined : rating)
                       }
                       variant={selectedRating === rating ? "default" : "secondary"}
-                      className="text-sm font-medium"
+                      className={`text-sm font-semibold transition-all duration-200 ${
+                        selectedRating === rating
+                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 shadow-md shadow-cyan-500/30"
+                          : ""
+                      }`}
                     >
                       {rating}+ ⭐
                     </Button>
@@ -185,8 +196,8 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
               <div>
                 <EBSelectField
                   name="hoursPerSession"
-                  label="Thời lượng buổi học"
-                  placeholder="Tất cả thời lượng"
+                  label={t("sessionDuration.title")}
+                  placeholder={t("sessionDuration.all")}
                   options={sessionOptions}
                 />
               </div>
@@ -198,16 +209,21 @@ const AdvancedFilter: React.FC<AdvancedFilterProps> = ({
               type="button"
               onClick={handleReset}
               variant="ghost"
-              className="text-muted-foreground"
+              className="text-muted-foreground hover:text-foreground font-semibold"
             >
-              Đặt lại
+              {t("actions.reset")}
             </Button>
             <div className="flex space-x-3">
-              <Button type="button" onClick={onClose} variant="outline">
-                Hủy
+              <Button type="button" onClick={onClose} variant="outline" className="font-semibold">
+                {t("actions.cancel")}
               </Button>
-              <Button type="button" onClick={handleApply}>
-                Áp dụng
+              <Button
+                type="button"
+                onClick={handleApply}
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600
+                           shadow-lg shadow-cyan-500/30 font-semibold"
+              >
+                {t("actions.apply")}
               </Button>
             </div>
           </div>

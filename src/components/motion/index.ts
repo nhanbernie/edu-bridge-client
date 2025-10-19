@@ -1,6 +1,7 @@
 // Motion Components
 export { EBMotionCard } from "./EBMotionCard";
 export { MotionContainer, MotionItem } from "./MotionContainer";
+export { EBButtonAction } from "./EBButtonMotion";
 
 // Re-export motion constants for convenience
 export {

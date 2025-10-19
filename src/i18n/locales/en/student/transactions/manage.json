@@ -1,0 +1,38 @@
+{
+  "loading": "Loading transaction history...",
+  "header": {
+    "title": "Transaction History",
+    "description": "View all your transactions and payments"
+  },
+  "stats": {
+    "totalSpent": {
+      "title": "Total Spent",
+      "description": "Money paid out"
+    },
+    "totalReceived": {
+      "title": "Total Received",
+      "description": "Money received"
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Successful transactions"
+    },
+    "pending": {
+      "title": "Pending",
+      "description": "Awaiting processing"
+    }
+  },
+  "list": {
+    "title": "Transaction List",
+    "empty": {
+      "title": "No transactions yet",
+      "description": "Your transactions will appear here"
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "unknown": "Unknown"
+  }
+}

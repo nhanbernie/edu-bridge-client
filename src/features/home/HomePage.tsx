@@ -1,6 +1,5 @@
 "use client";
 
-import { EBMainLayout } from "@/components/layouts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { EBMotionCard, MotionContainer, MotionItem, choiceCardVariants } from "@/components/motion";
@@ -10,12 +9,14 @@ import { useEffect, useState } from "react";
 import ProfileUnderReview from "./ProfileUnderReview";
 import { useGetAndStoreUser } from "@/hooks/useGetAndStoreUser";
 import EBLoadingSpinner from "@/components/common/EBLoadingSpinner";
+import { useTranslations } from "next-intl";
 
 const HomeFeature = () => {
   const { user, logout } = useAuth();
   const { push } = useLocaleRouter();
   const [isCheckingStatus, setIsCheckingStatus] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
+  const t = useTranslations("home");
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
@@ -47,118 +48,117 @@ const HomeFeature = () => {
 
   if (isCheckingStatus) {
     return (
-      <EBMainLayout footer={false}>
-        <div className="min-h-screen flex items-center justify-center">
-          <EBLoadingSpinner size="lg" message="Đang kiểm tra trạng thái tài khoản..." />
-        </div>
-      </EBMainLayout>
+      <div className="min-h-screen flex items-center justify-center">
+        <EBLoadingSpinner size="lg" message={t("checkingStatus")} />
+      </div>
     );
   }
 
   return (
-    <EBMainLayout footer={true}>
-      <div className="min-h-screen bg-gray-50 relative overflow-hidden pt-32">
-        {/* Logo and Title Section */}
-        <div className="max-w-6xl mx-auto p-8 text-center">
+    <MotionContainer className="min-h-screen bg-background relative overflow-hidden pt-32">
+      {/* Logo and Title Section */}
+      <MotionItem className="max-w-6xl mx-auto p-8 text-center">
+        {!shouldShowUserInfo && (
           <div className="mb-16">
             <div className="flex justify-center mb-6">
               <EBLogo imageSize={60} textClassName="text-2xl" />
             </div>
             <h2 className="text-2xl md:text-5xl font-semibold text-foreground mb-2">
-              How would you like to use EduBridge?
+              {t("title")}
             </h2>
           </div>
-
-          {/* Choice Cards - Only show for PENDING status and PENDING role */}
-          {shouldShowChoiceCards && (
-            <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-3xl mx-auto mb-12">
-              {/* I want to learn Card */}
-              <MotionItem>
-                <EBMotionCard
-                  variants={choiceCardVariants}
-                  onClick={() => handleNavigateToOnboarding("/onboarding/student")}
-                  className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
-                            hover:shadow-xl hover:shadow-emerald-100/50
+        )}
+        {/* Choice Cards - Only show for PENDING status and PENDING role */}
+        {shouldShowChoiceCards && (
+          <MotionContainer className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-3xl mx-auto mb-12">
+            {/* I want to learn Card */}
+            <MotionItem>
+              <EBMotionCard
+                variants={choiceCardVariants}
+                onClick={() => handleNavigateToOnboarding("/onboarding/student")}
+                className="group p-10 text-center border-0 bg-card rounded-2xl shadow-lg
+                            hover:shadow-xl hover:shadow-primary/20
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
-                >
-                  <div className="flex flex-col items-center">
-                    <div
-                      className="bg-emerald-600 text-white p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
-                                   shadow-md group-hover:shadow-lg group-hover:shadow-emerald-600/25 transition-all duration-300 group-hover:scale-105"
-                    >
-                      <BookOpen size={32} />
-                    </div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300">
-                      I want to learn
-                    </h3>
-                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                      Find qualified tutors and book personalized lessons
-                    </p>
+              >
+                <div className="flex flex-col items-center">
+                  <div
+                    className="bg-primary text-primary-foreground p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
+                                   shadow-md group-hover:shadow-lg group-hover:shadow-primary/25 transition-all duration-300 group-hover:scale-105"
+                  >
+                    <BookOpen size={32} />
                   </div>
-                  <div className="flex items-center justify-start gap-4 mt-10">
-                    <div className="flex flex-col items-start -space-y-1">
-                      <span className="text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300">
-                        10,000+
-                      </span>
-                      <span className="text-sm text-gray-600">Students</span>
-                    </div>
-                    <div className="text-gray-400 text-xl ml-auto">&gt;</div>
+                  <h3 className="text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                    {t("choiceCards.learn.title")}
+                  </h3>
+                  <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                    {t("choiceCards.learn.description")}
+                  </p>
+                </div>
+                <div className="flex items-center justify-start gap-4 mt-10">
+                  <div className="flex flex-col items-start -space-y-1">
+                    <span className="text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
+                      {t("choiceCards.learn.stats.count")}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("choiceCards.learn.stats.label")}
+                    </span>
                   </div>
-                </EBMotionCard>
-              </MotionItem>
+                  <div className="text-muted-foreground text-xl ml-auto">&gt;</div>
+                </div>
+              </EBMotionCard>
+            </MotionItem>
 
-              {/* I want to teach Card */}
-              <MotionItem>
-                <EBMotionCard
-                  variants={choiceCardVariants}
-                  onClick={() => handleNavigateToOnboarding("/onboarding/tutor")}
-                  className="group p-10 text-center border-0 bg-white rounded-2xl shadow-lg
-                            hover:shadow-xl hover:shadow-emerald-100/50
+            {/* I want to teach Card */}
+            <MotionItem>
+              <EBMotionCard
+                variants={choiceCardVariants}
+                onClick={() => handleNavigateToOnboarding("/onboarding/tutor")}
+                className="group p-10 text-center border-0 bg-card rounded-2xl shadow-lg
+                            hover:shadow-xl hover:shadow-primary/20
                             transition-all duration-300 ease-out cursor-pointer flex flex-col"
-                >
-                  <div className="flex flex-col items-center">
-                    <div
-                      className="bg-emerald-600 text-white p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
-                                   shadow-md group-hover:shadow-lg group-hover:shadow-emerald-600/25 transition-all duration-300 group-hover:scale-105"
-                    >
-                      <GraduationCap size={32} />
-                    </div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300">
-                      I want to teach
-                    </h3>
-                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                      Share your knowledge and earn money teaching students
-                    </p>
+              >
+                <div className="flex flex-col items-center">
+                  <div
+                    className="bg-primary text-primary-foreground p-6 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center
+                                   shadow-md group-hover:shadow-lg group-hover:shadow-primary/25 transition-all duration-300 group-hover:scale-105"
+                  >
+                    <GraduationCap size={32} />
                   </div>
-                  <div className="flex items-center justify-start gap-4 mt-10">
-                    <div className="flex flex-col items-start -space-y-1">
-                      <span className="text-2xl font-bold text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300">
-                        500+
-                      </span>
-                      <span className="text-sm text-gray-600">Expert Tutors</span>
-                    </div>
-                    <div className="text-gray-400 text-xl ml-auto">&gt;</div>
+                  <h3 className="text-3xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                    {t("choiceCards.teach.title")}
+                  </h3>
+                  <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                    {t("choiceCards.teach.description")}
+                  </p>
+                </div>
+                <div className="flex items-center justify-start gap-4 mt-10">
+                  <div className="flex flex-col items-start -space-y-1">
+                    <span className="text-2xl font-bold text-primary group-hover:text-primary/80 transition-colors duration-300">
+                      {t("choiceCards.teach.stats.count")}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("choiceCards.teach.stats.label")}
+                    </span>
                   </div>
-                </EBMotionCard>
-              </MotionItem>
-            </MotionContainer>
-          )}
+                  <div className="text-muted-foreground text-xl ml-auto">&gt;</div>
+                </div>
+              </EBMotionCard>
+            </MotionItem>
+          </MotionContainer>
+        )}
 
-          {/* User Info - Only show for PENDING status and TUTOR role */}
-          {shouldShowUserInfo && (
-            <div className="max-w-2xl mx-auto mb-8">
-              <ProfileUnderReview
-                title="Hồ sơ đang được xem xét"
-                description="Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn."
-                currentStep="review"
-                onGoToDashboard={() => push("/tutor/dashboard")}
-                className="bg-transparent p-0"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </EBMainLayout>
+        {/* User Info - Only show for PENDING status and TUTOR role */}
+        {shouldShowUserInfo && (
+          <MotionItem className="max-w-2xl mx-auto mb-8">
+            <ProfileUnderReview
+              currentStep="review"
+              onGoToDashboard={() => push("/tutor/dashboard")}
+              className=""
+            />
+          </MotionItem>
+        )}
+      </MotionItem>
+    </MotionContainer>
   );
 };
 

@@ -1,0 +1,45 @@
+{
+  "title": "Quản lý khóa học",
+  "subtitle": "Quản lý tất cả các khóa học của bạn",
+  "buttons": {
+    "create": "Tạo khóa học mới",
+    "refresh": "Làm mới",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa khóa học"
+  },
+  "actions": {
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa"
+  },
+  "empty": {
+    "title": "Chưa có khóa học nào",
+    "description": "Tạo khóa học đầu tiên của bạn để bắt đầu giảng dạy",
+    "actionLabel": "Tạo khóa học mới",
+    "action": "Tạo khóa học mới"
+  },
+  "loading": {
+    "message": "Đang tải khóa học..."
+  },
+  "dialog": {
+    "deleteTitle": "Xác nhận xóa khóa học",
+    "deleteDescription": "Bạn có chắc chắn muốn xóa khóa học \"{courseTitle}\"? Hành động này không thể hoàn tác.",
+    "confirmLabel": "Xóa khóa học"
+  },
+  "delete": {
+    "title": "Xác nhận xóa khóa học",
+    "description": "Bạn có chắc chắn muốn xóa khóa học \"{title}\"? Hành động này không thể hoàn tác.",
+    "confirm": "Xóa khóa học",
+    "success": "Xóa khóa học thành công",
+    "error": "Không thể xóa khóa học. Vui lòng thử lại."
+  },
+  "duration": {
+    "perSession": "giờ/buổi"
+  },
+  "tutorName": "Gia sư",
+  "error": {
+    "loadFailed": "Không thể tải danh sách khóa học. Vui lòng thử lại."
+  },
+  "messages": {
+    "authenticating": "Đang xác thực thông tin..."
+  }
+}

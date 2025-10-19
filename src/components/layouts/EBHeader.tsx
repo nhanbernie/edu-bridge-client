@@ -1,19 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Search, MessageSquare, Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 import EBMobileMenu from "./components/EBMobileMenu";
 import Logo from "../common/EBLogo";
 import {
-  navigationItems,
+  getNavigationItems,
   NavItem,
   defaultHeaderActionButtons,
-} from "@/constants/navigate.constant";
+} from "@/common/constants/navigate.constant";
 import EBNavigation from "./components/EBNavigation";
 import { motion } from "motion/react";
 import { EBThemeToggle, EBUserMenu, EBChangeLanguage } from "@/components/common/";
 import { EBButtonAction } from "../motion/EBButtonMotion";
 import { HeaderItem, HeaderCTA, HeaderConfig, HeaderActionButton } from "./types";
+import { useTranslations } from "next-intl";
+import { SUPPORTED_LOCALES } from "@/i18n/config";
 
 interface ActionButtonsProps {
   onMobileMenuToggle: () => void;
@@ -68,19 +71,19 @@ const ActionButtons = ({
     {/* Mobile menu button - always show */}
     <button
       onClick={onMobileMenuToggle}
-      className="md:hidden p-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-slate-700"
+      className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
     >
       <Menu size={20} />
     </button>
   </div>
 );
 
-// Convert HeaderItem[] to NavItem[] for EBNavigation
-const convertToNavItems = (items: HeaderItem[]): NavItem[] => {
+// Convert HeaderItem[] to NavItem[] for EBNavigation with active state
+const convertToNavItems = (items: HeaderItem[], currentPath: string): NavItem[] => {
   return items.map((item) => ({
     label: item.label,
     href: item.href || "#",
-    active: false,
+    active: currentPath === (item.href || "#"),
   }));
 };
 
@@ -88,7 +91,7 @@ const convertToNavItems = (items: HeaderItem[]): NavItem[] => {
 const CTAButton = ({ cta }: { cta: HeaderCTA }) => (
   <button
     onClick={cta.onClick}
-    className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+    className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors duration-200"
   >
     {cta.label}
   </button>
@@ -104,6 +107,22 @@ const EBHeader = ({
 }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const t = useTranslations();
+  const pathname = usePathname();
+
+  // Get current path without locale prefix (e.g., /en/student -> /student)
+  const currentPath = useMemo(() => {
+    const segments = pathname.split("/");
+    const locale = segments[1];
+
+    // Check if first segment is a locale
+    if (locale && SUPPORTED_LOCALES.includes(locale as any)) {
+      // Remove locale from pathname
+      return "/" + segments.slice(2).join("/");
+    }
+
+    return pathname;
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,6 +131,7 @@ const EBHeader = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -128,7 +148,7 @@ const EBHeader = ({
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
           isScrolled
-            ? "bg-gradient-to-br from-card/60 via-card/40 to-card/60 backdrop-blur-xl shadow-lg shadow-primary/5"
+            ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
             : "bg-transparent"
         }`}
       >
@@ -139,7 +159,11 @@ const EBHeader = ({
             {/* EBNavigation - Use headerConfig if provided, otherwise use default */}
             <nav className="hidden md:flex items-center gap-8">
               <EBNavigation
-                items={headerConfig ? convertToNavItems(headerConfig.items) : navigationItems}
+                items={
+                  headerConfig
+                    ? convertToNavItems(headerConfig.items, currentPath)
+                    : getNavigationItems(t, currentPath)
+                }
               />
             </nav>
 
@@ -164,7 +188,7 @@ const EBHeader = ({
       <EBMobileMenu
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
-        navigationItems={navigationItems}
+        navigationItems={getNavigationItems(t, currentPath)}
       />
     </>
   );

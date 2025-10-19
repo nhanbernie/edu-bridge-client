@@ -1,0 +1,28 @@
+{
+  "title": "Transaction History",
+  "subtitle": "Track your earnings and transactions",
+  "buttons": {
+    "refresh": "Refresh"
+  },
+  "stats": {
+    "totalEarnings": {
+      "title": "Total Earnings",
+      "description": "Money received"
+    },
+    "totalSpent": {
+      "title": "Total Spent",
+      "description": "Money transferred"
+    },
+    "completed": {
+      "title": "Completed",
+      "description": "Successful transactions"
+    },
+    "pending": {
+      "title": "Pending",
+      "description": "Awaiting processing"
+    }
+  },
+  "list": {
+    "title": "Transaction List"
+  }
+}

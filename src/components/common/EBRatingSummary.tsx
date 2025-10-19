@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
   onSubmit,
   isLoading = false,
 }) => {
+  const t = useTranslations("components.ratingSummary");
   const { formatFeedbackDate } = useSessionUtils();
   const [tutorRating, setTutorRating] = useState(0);
   const [courseRating, setCourseRating] = useState(0);
@@ -76,11 +78,11 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
     return (
       <Card className="border-0 shadow-sm">
         <CardContent className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Đánh giá gia sư</h3>
+          <h3 className="text-lg font-semibold mb-4">{t("create.title")}</h3>
 
           {/* Tutor Rating */}
           <div className="mb-6">
-            <p className="text-sm font-medium mb-3">Đánh giá gia sư:</p>
+            <p className="text-sm font-medium mb-3">{t("create.tutorRating")}</p>
             <div className="flex items-center gap-2">
               {[...Array(5)].map((_, i) => (
                 <button
@@ -95,13 +97,15 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
               ))}
             </div>
             {tutorRating > 0 && (
-              <p className="text-sm text-gray-600 mt-2">Bạn đã chọn {tutorRating} sao cho gia sư</p>
+              <p className="text-sm text-gray-600 mt-2">
+                {t("create.tutorRatingSelected", { rating: tutorRating })}
+              </p>
             )}
           </div>
 
           {/* Course Rating */}
           <div className="mb-6">
-            <p className="text-sm font-medium mb-3">Đánh giá khóa học:</p>
+            <p className="text-sm font-medium mb-3">{t("create.courseRating")}</p>
             <div className="flex items-center gap-2">
               {[...Array(5)].map((_, i) => (
                 <button
@@ -117,18 +121,18 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
             </div>
             {courseRating > 0 && (
               <p className="text-sm text-gray-600 mt-2">
-                Bạn đã chọn {courseRating} sao cho khóa học
+                {t("create.courseRatingSelected", { rating: courseRating })}
               </p>
             )}
           </div>
 
           {/* Comment */}
           <div className="mb-6">
-            <label className="text-sm font-medium mb-2 block">Nhận xét (tùy chọn):</label>
+            <label className="text-sm font-medium mb-2 block">{t("create.comment")}</label>
             <Textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Chia sẻ trải nghiệm học tập của bạn..."
+              placeholder={t("create.commentPlaceholder")}
               className="min-h-[100px]"
             />
           </div>
@@ -142,12 +146,12 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
             {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 animate-spin border-2 border-white border-t-transparent rounded-full" />
-                <span>Đang gửi...</span>
+                <span>{t("create.submitting")}</span>
               </div>
             ) : (
               <div className="flex items-center gap-2">
                 <Send className="h-4 w-4" />
-                <span>Gửi đánh giá</span>
+                <span>{t("create.submitButton")}</span>
               </div>
             )}
           </Button>
@@ -182,7 +186,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
           <div className="flex flex-col gap-2 mb-4">
             {/* Tutor Rating */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-600">Tutor:</span>
+              <span className="text-sm font-medium text-gray-600">{t("view.tutor")}</span>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -197,7 +201,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
 
             {/* Course Rating */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-600">Course:</span>
+              <span className="text-sm font-medium text-gray-600">{t("view.course")}</span>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -274,7 +278,7 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
   return (
     <Card className="border-0 shadow-sm w-full ">
       <CardContent className="p-4">
-        <h3 className="text-lg font-semibold mb-4">Tổng quan đánh giá</h3>
+        <h3 className="text-lg font-semibold mb-4">{t("view.summary")}</h3>
         <div className="text-center mb-6">
           <div className="text-4xl font-bold text-primary mb-2">{displayRating}</div>
           <div className="flex items-center justify-center gap-1 mb-2">
@@ -291,7 +295,9 @@ const RatingSummary: React.FC<RatingSummaryProps> = ({
               );
             })}
           </div>
-          <div className="text-sm text-muted-foreground">{displayTotal} đánh giá</div>
+          <div className="text-sm text-muted-foreground">
+            {t("view.totalReviews", { count: displayTotal })}
+          </div>
         </div>
 
         {/* Rating breakdown */}

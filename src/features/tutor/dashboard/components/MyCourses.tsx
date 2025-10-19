@@ -1,26 +1,25 @@
-import { CARD_BASE, ROUNDED } from "@/common/constants/css/card.constant";
+// Removed constants import - using theme system instead
 import { useMyCoursesData } from "@/features/tutor/dashboard/hooks/useMyCoursesData";
+import { EBMotionCard } from "@/components/motion";
+import { useTranslations } from "next-intl";
+import { DashboardSkeleton } from "@/features/tutor/dashboard/components/skeletons";
+import { elegantCardVariants } from "@/common/constants/motion/cardMotion.constant";
 
 const MyCourses = () => {
   const { courseItems, isLoading, courseError, hasCourses } = useMyCoursesData();
+  const t = useTranslations("tutor.dashboard.myCourses");
+  const tCommon = useTranslations("tutor.dashboard");
 
   if (isLoading) {
-    return (
-      <div className={`${CARD_BASE} ${ROUNDED.XL} p-6`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Khóa học của tôi</h3>
-        <div className="flex items-center justify-center h-32">
-          <div className="text-gray-500">Đang tải khóa học...</div>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton title={t("title")} />;
   }
 
   if (courseError) {
     return (
-      <div className={`${CARD_BASE} ${ROUNDED.XL} p-6`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Khóa học của tôi</h3>
+      <div className="bg-card rounded-3xl shadow-lg p-6">
+        <h3 className="text-xl font-bold text-foreground mb-6">{t("title")}</h3>
         <div className="flex items-center justify-center h-32">
-          <div className="text-red-500">Không thể tải khóa học</div>
+          <div className="text-destructive">{t("error")}</div>
         </div>
       </div>
     );
@@ -28,37 +27,42 @@ const MyCourses = () => {
 
   if (!hasCourses) {
     return (
-      <div className={`${CARD_BASE} ${ROUNDED.XL} p-6`}>
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Khóa học của tôi</h3>
+      <div className="bg-card rounded-3xl shadow-lg p-6">
+        <h3 className="text-xl font-bold text-foreground mb-6">{t("title")}</h3>
         <div className="flex items-center justify-center h-32">
-          <div className="text-gray-500">Chưa có khóa học nào</div>
+          <div className="text-muted-foreground">{t("empty")}</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`${CARD_BASE} ${ROUNDED.XL} p-6`}>
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Khóa học của tôi</h3>
+    <div className="bg-card rounded-3xl shadow-lg p-6">
+      <h3 className="text-xl font-bold text-foreground mb-6">{t("title")}</h3>
       <div className="space-y-4">
         {courseItems.map((course) => (
-          <div
+          <EBMotionCard
             key={course.id}
-            className={`p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/20 dark:to-gray-700/20 ${ROUNDED.LG} border-l-4 border-gray-400`}
+            variants={elegantCardVariants}
+            className="p-4 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl border-l-4 border-primary"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{course.title}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {course.studentCount} học sinh đang học
+                <p className="font-semibold text-foreground">{course.title}</p>
+                <p className="text-sm text-muted-foreground">
+                  {course.studentCount} {t("students")}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-600">{course.status}</p>
-                <p className="text-xs text-gray-500">{course.rating}★</p>
+                <p className="text-sm font-medium text-primary">{course.status}</p>
+                <p className="text-xs text-muted-foreground">{course.rating}★</p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
         ))}
       </div>
     </div>
