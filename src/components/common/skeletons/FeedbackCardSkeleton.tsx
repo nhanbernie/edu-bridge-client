@@ -1,5 +1,6 @@
 import React from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { EBMotionCard } from "@/components/motion";
+import { CardContent } from "@/components/ui/card";
 
 interface FeedbackCardSkeletonProps {
   count?: number;
@@ -9,40 +10,52 @@ const FeedbackCardSkeleton: React.FC<FeedbackCardSkeletonProps> = ({ count = 3 }
   return (
     <>
       {Array.from({ length: count }).map((_, index) => (
-        <div
+        <EBMotionCard
           key={index}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700"
+          className="border-0 shadow-lg animate-pulse"
+          initial={undefined}
+          animate={undefined}
+          whileHover={undefined}
+          whileTap={undefined}
         >
-          <div className="space-y-4">
-            {/* Header - Student name and date */}
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <Skeleton className="w-12 h-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-5 w-32" />
-                  <Skeleton className="h-3 w-24" />
+          <CardContent className="">
+            {/* Student Name Skeleton */}
+            <div className="h-5 w-32 bg-muted/70 rounded mb-1"></div>
+
+            {/* Course Title and Date Skeleton */}
+            <div className="h-4 w-48 bg-muted/60 rounded mb-3"></div>
+
+            {/* Ratings Skeleton */}
+            <div className="space-y-2 mb-3">
+              {/* Tutor Rating */}
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-12 bg-muted/60 rounded"></div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-4 h-4 bg-muted/50 rounded-full"></div>
+                  ))}
                 </div>
               </div>
-              <Skeleton className="h-4 w-20" />
+
+              {/* Course Rating */}
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-12 bg-muted/60 rounded"></div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-4 h-4 bg-muted/50 rounded-full"></div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Course title skeleton */}
-            <Skeleton className="h-4 w-3/4" />
-
-            {/* Ratings skeleton */}
-            <div className="flex items-center gap-6">
-              <Skeleton className="h-5 w-28" />
-              <Skeleton className="h-5 w-28" />
-            </div>
-
-            {/* Comment skeleton */}
+            {/* Comment Skeleton */}
             <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-2/3" />
+              <div className="h-4 w-full bg-muted/60 rounded"></div>
+              <div className="h-4 w-full bg-muted/60 rounded"></div>
+              <div className="h-4 w-2/3 bg-muted/60 rounded"></div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </EBMotionCard>
       ))}
     </>
   );

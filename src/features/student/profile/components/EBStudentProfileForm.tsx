@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBFormProvider from "@/components/form/EBFormProvider";
@@ -42,10 +43,11 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
   onCancel,
   onAvatarChange,
 }) => {
+  const t = useTranslations("student.profile.form");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getInitials = (name?: string | null) => {
-    if (!name) return "HS";
+    if (!name) return t("messages.defaultName").slice(0, 2).toUpperCase();
     return name
       .split(" ")
       .map((n) => n[0])
@@ -75,8 +77,8 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
   };
 
   return (
-    <Card className="border-0 shadow-lg h-fit">
-      <CardContent className="p-6">
+    <Card className="border-0 shadow-lg rounded-2xl sm:rounded-3xl h-fit">
+      <CardContent className="p-4 sm:p-6">
         {/* Hidden file input */}
         <input
           ref={fileInputRef}
@@ -87,22 +89,22 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
         />
 
         {/* Avatar Section */}
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b bg-gray-100 p-5 rounded-4xl">
+        <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-border bg-muted p-4 sm:p-5 rounded-2xl sm:rounded-3xl">
           <div className="relative">
             {isUploadingAvatar && (
-              <div className="absolute inset-0 w-24 h-24 rounded-full bg-black/50 flex items-center justify-center z-10">
-                <Loader2 className="w-6 h-6 text-white animate-spin" />
+              <div className="absolute inset-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/50 flex items-center justify-center z-10">
+                <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 text-white animate-spin" />
               </div>
             )}
             {userData?.avatarUrl ? (
               <img
                 src={userData.avatarUrl}
                 alt={userData.fullName || "Student"}
-                className="w-24 h-24 rounded-full object-cover border-4 border-gray-100"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-background"
               />
             ) : (
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center border-4 border-gray-100">
-                <span className="text-2xl font-bold text-white">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center border-4 border-background">
+                <span className="text-xl sm:text-2xl font-bold text-white">
                   {getInitials(userData?.fullName)}
                 </span>
               </div>
@@ -110,15 +112,17 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingAvatar}
-              className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Thay đổi ảnh đại diện"
+              className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-card rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+              title={t("buttons.changeAvatar")}
             >
-              <Camera className="w-4 h-4 text-gray-700 hover:cursor-pointer" />
+              <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-foreground hover:cursor-pointer" />
             </button>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{userData?.fullName || "Học sinh"}</h2>
-            <p className="text-gray-600">{userData?.email}</p>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground truncate">
+              {userData?.fullName || t("messages.defaultName")}
+            </h2>
+            <p className="text-sm sm:text-base text-muted-foreground truncate">{userData?.email}</p>
           </div>
         </div>
 
@@ -129,54 +133,58 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
           defaultValues={defaultValues}
           onSubmit={onSubmit}
         >
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Personal Info */}
-            <h4 className="text-lg font-medium text-gray-900">Thông tin cá nhân</h4>
+            <h4 className="text-base sm:text-lg font-medium text-foreground">
+              {t("sections.personalInfo")}
+            </h4>
             <EBTextField
               name="fullName"
-              label="Họ và tên"
-              placeholder="Nhập họ và tên của bạn"
+              label={t("fields.fullName.label")}
+              placeholder={t("fields.fullName.placeholder")}
               disabled={!isEditing}
             />
             <div>
               <EBTextField
                 name="email"
-                label="Email"
+                label={t("fields.email.label")}
                 type="email"
-                placeholder="example@email.com"
+                placeholder={t("fields.email.placeholder")}
                 disabled={true}
               />
-              <p className="text-xs text-muted-foreground mt-1">Email không thể thay đổi</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("fields.email.note")}</p>
             </div>
             <EBTextField
               name="phone"
-              label="Số điện thoại"
-              placeholder="Nhập số điện thoại"
+              label={t("fields.phone.label")}
+              placeholder={t("fields.phone.placeholder")}
               disabled={!isEditing}
             />
             <EBTextField
               name="location"
-              label="Địa điểm"
-              placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+              label={t("fields.location.label")}
+              placeholder={t("fields.location.placeholder")}
               disabled={!isEditing}
             />
 
             {/* Student Info */}
-            <div className="space-y-6">
-              <h4 className="text-lg font-medium text-gray-900 pt-4 border-t">Thông tin học tập</h4>
+            <div className="space-y-4 sm:space-y-6">
+              <h4 className="text-base sm:text-lg font-medium text-foreground pt-4 border-t border-border">
+                {t("sections.learningInfo")}
+              </h4>
 
               <EBSelectField
                 allowCustom
                 name="grade"
-                label="Lớp học"
+                label={t("fields.grade.label")}
                 options={GRADE_OPTIONS}
                 disabled={!isEditing}
               />
 
               <EBTextAreaField
                 name="learningGoal"
-                label="Mục tiêu học tập"
-                placeholder="Hãy chia sẻ về mục tiêu học tập và định hướng của bạn..."
+                label={t("fields.learningGoal.label")}
+                placeholder={t("fields.learningGoal.placeholder")}
                 rows={4}
                 disabled={!isEditing}
               />
@@ -189,9 +197,9 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                 variant="default"
                 size="lg"
                 onClick={onEdit}
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2.5 sm:py-3"
               >
-                Chỉnh sửa hồ sơ
+                {t("buttons.edit")}
               </EBButton>
             ) : (
               <div className="flex gap-3 pt-4">
@@ -200,9 +208,9 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                   variant="default"
                   size="lg"
                   loading={isSaving}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-2.5 sm:py-3"
                 >
-                  Lưu thay đổi
+                  {t("buttons.save")}
                 </EBButton>
                 <EBButton
                   type="button"
@@ -210,9 +218,9 @@ const EBStudentProfileForm: React.FC<EBStudentProfileFormProps> = ({
                   size="lg"
                   onClick={onCancel}
                   disabled={isSaving}
-                  className="flex-1"
+                  className="flex-1 bg-muted hover:bg-muted/80 text-foreground py-2.5 sm:py-3"
                 >
-                  Hủy
+                  {t("buttons.cancel")}
                 </EBButton>
               </div>
             )}

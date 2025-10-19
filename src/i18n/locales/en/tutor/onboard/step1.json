@@ -1,0 +1,42 @@
+{
+  "title": "Basic Information",
+  "subtitle": "Tell us about your qualifications and experience",
+  "fields": {
+    "educationLevel": {
+      "label": "Education Level",
+      "placeholder": "Select your education level"
+    },
+    "yearsOfExperience": {
+      "label": "Years of Teaching Experience",
+      "placeholder": "Enter number of years"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "e.g., Hanoi, Ho Chi Minh City, Da Nang..."
+    },
+    "bio": {
+      "label": "About Yourself",
+      "placeholder": "Share your teaching style, achievements, and experience..."
+    },
+    "subjects": {
+      "label": "Subjects You Teach (Multiple Selection)",
+      "placeholder": "Select or add subjects"
+    },
+    "languages": {
+      "label": "Languages (Multiple Selection)",
+      "placeholder": "Select or add languages"
+    }
+  },
+  "buttons": {
+    "next": "Next"
+  },
+  "validation": {
+    "educationLevelRequired": "Please select an education level",
+    "yearsOfExperienceRequired": "Please enter years of experience",
+    "yearsOfExperienceInvalid": "Years of experience must be between 0 and 80",
+    "locationRequired": "Please enter your location",
+    "bioRequired": "Please tell us about yourself",
+    "subjectsRequired": "Please select at least one subject",
+    "languagesRequired": "Please select at least one language"
+  }
+}

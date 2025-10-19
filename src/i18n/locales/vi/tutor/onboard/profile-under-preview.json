@@ -1,0 +1,15 @@
+{
+  "title": "Hồ sơ đang được xem xét",
+  "description": "Cảm ơn bạn đã gửi hồ sơ gia sư! Đội ngũ của chúng tôi đang xem xét hồ sơ và tài liệu của bạn.",
+  "steps": {
+    "submitted": "Đã gửi hồ sơ",
+    "review": "Đang xem xét",
+    "pending": "Chờ phê duyệt"
+  },
+  "nextSteps": {
+    "title": "Điều gì sẽ xảy ra tiếp theo?",
+    "review": "Đội ngũ của chúng tôi sẽ xem xét hồ sơ trong vòng 24-48 giờ",
+    "email": "Bạn sẽ nhận được email thông báo khi hồ sơ được phê duyệt",
+    "contact": "Chúng tôi có thể liên hệ nếu cần thêm thông tin"
+  }
+}

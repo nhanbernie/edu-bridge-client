@@ -1,0 +1,38 @@
+{
+  "welcome": "Chào mừng trở lại!",
+  "subtitle": "Quản lý khóa học, lịch dạy và theo dõi thu nhập của bạn",
+  "transactionChart": {
+    "title": "Biểu đồ giao dịch",
+    "subtitle": "Tổng quan giao dịch hàng tháng",
+    "loading": "Đang tải dữ liệu giao dịch...",
+    "error": "Không thể tải dữ liệu giao dịch",
+    "empty": {
+      "title": "Chưa có thu nhập",
+      "description": "Dữ liệu giao dịch sẽ hiển thị ở đây"
+    },
+    "growth": {
+      "positive": "Thu nhập tăng {percentage}% tháng này",
+      "negative": "Thu nhập giảm {percentage}% tháng này"
+    },
+    "footer": "Hiển thị tổng thu nhập trong 6 tháng gần nhất"
+  },
+  "schedules": {
+    "title": "Lịch dạy hôm nay",
+    "loading": "Đang tải lịch trình...",
+    "error": "Không thể tải lịch trình",
+    "empty": "Không có lịch trình hôm nay"
+  },
+  "myCourses": {
+    "title": "Khóa học của tôi",
+    "loading": "Đang tải khóa học...",
+    "error": "Không thể tải khóa học",
+    "empty": "Chưa có khóa học nào",
+    "students": "học sinh đang học"
+  },
+  "reviews": {
+    "title": "Đánh giá gần đây",
+    "loading": "Đang tải đánh giá...",
+    "error": "Không thể tải đánh giá",
+    "empty": "Chưa có đánh giá nào"
+  }
+}

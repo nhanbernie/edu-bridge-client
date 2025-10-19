@@ -1,0 +1,46 @@
+{
+  "title": "Set up Student Profile",
+  "subtitle": "Help us understand your learning goals",
+  "form": {
+    "grade": {
+      "label": "Current Grade",
+      "placeholder": "Select your grade"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "e.g. Hanoi, Ho Chi Minh City, Da Nang..."
+    },
+    "learningGoal": {
+      "label": "Learning Goals",
+      "placeholder": "e.g. Improve math and physics scores, prepare for university entrance exam..."
+    },
+    "submit": {
+      "loading": "Processing...",
+      "default": "Complete Setup"
+    }
+  },
+  "validation": {
+    "grade": {
+      "required": "Please select your grade"
+    },
+    "learningGoal": {
+      "required": "This field is required",
+      "minLength": "Learning goals must be at least 10 characters",
+      "maxLength": "Learning goals cannot exceed 300 characters"
+    },
+    "location": {
+      "required": "Please enter your location",
+      "minLength": "Location must be at least 2 characters",
+      "maxLength": "Location cannot exceed 100 characters"
+    }
+  },
+  "gradeOptions": {
+    "6": "Grade 6",
+    "7": "Grade 7",
+    "8": "Grade 8",
+    "9": "Grade 9",
+    "10": "Grade 10",
+    "11": "Grade 11",
+    "12": "Grade 12"
+  }
+}

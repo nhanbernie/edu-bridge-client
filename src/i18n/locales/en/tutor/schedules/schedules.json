@@ -1,0 +1,15 @@
+{
+  "page": {
+    "title": "My Schedule",
+    "subtitle": "View your schedule and manage upcoming sessions",
+    "loading": "Loading schedule..."
+  },
+  "stats": {
+    "todaySessions": "Today's Sessions",
+    "thisWeekSessions": "This Week's Sessions",
+    "students": "Students"
+  },
+  "schedule": {
+    "title": "Schedule"
+  }
+}

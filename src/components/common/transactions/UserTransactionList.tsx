@@ -23,26 +23,26 @@ const UserTransactionList: React.FC<UserTransactionListProps> = ({
     switch (status.toLowerCase()) {
       case "thành công":
       case "completed":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800";
       case "đang chờ":
       case "pending":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800";
       case "thất bại":
       case "failed":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-muted text-muted-foreground border-border";
     }
   };
 
   const getFlowTypeIcon = (flowType: string) => {
     switch (flowType.toUpperCase()) {
       case FlowType.OUTGOING:
-        return <ArrowUpRight className="w-4 h-4 text-red-500" />;
+        return <ArrowUpRight className="w-4 h-4 text-red-600 dark:text-red-400" />;
       case FlowType.INCOMING:
-        return <ArrowDownLeft className="w-4 h-4 text-green-500" />;
+        return <ArrowDownLeft className="w-4 h-4 text-green-600 dark:text-green-400" />;
       default:
-        return <DollarSign className="w-4 h-4 text-gray-500" />;
+        return <DollarSign className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -60,21 +60,21 @@ const UserTransactionList: React.FC<UserTransactionListProps> = ({
   const getAmountColor = (flowType: string) => {
     switch (flowType.toUpperCase()) {
       case FlowType.OUTGOING:
-        return "text-red-600";
+        return "text-red-600 dark:text-red-400";
       case FlowType.INCOMING:
-        return "text-green-600";
+        return "text-green-600 dark:text-green-400";
       default:
-        return "text-gray-900";
+        return "text-foreground";
     }
   };
 
   return (
-    <Card className="bg-white border-gray-200">
-      <CardHeader className="border-b border-gray-100">
-        <CardTitle className="flex items-center gap-3 text-lg text-gray-800">
-          <Calendar className="w-5 h-5 text-gray-600" />
+    <Card className="bg-card rounded-4xl shadow-2xl border-border">
+      <CardHeader className="border-b border-border">
+        <CardTitle className="flex items-center gap-3 text-lg text-foreground">
+          <Calendar className="w-5 h-5 text-muted-foreground" />
           {t("title")}
-          <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
+          <Badge variant="outline" className="bg-muted text-muted-foreground border-border">
             {transactions.length}
           </Badge>
         </CardTitle>
@@ -82,18 +82,18 @@ const UserTransactionList: React.FC<UserTransactionListProps> = ({
       <CardContent className="p-0">
         {transactions.length === 0 ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <DollarSign className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+              <DollarSign className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">{t("empty.title")}</h3>
-            <p className="text-gray-500">{t("empty.description")}</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">{t("empty.title")}</h3>
+            <p className="text-muted-foreground">{t("empty.description")}</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-border">
             {transactions.map((transaction) => (
               <div
                 key={transaction.transactionId}
-                className="p-6 hover:bg-gray-50 transition-colors duration-200"
+                className="p-6 hover:bg-muted/50 transition-colors duration-200"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -112,18 +112,18 @@ const UserTransactionList: React.FC<UserTransactionListProps> = ({
                       </Badge>
                     </div>
 
-                    <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                    <p className="text-foreground mb-4 text-sm leading-relaxed">
                       {transaction.description}
                     </p>
 
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <div className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
                         <Calendar className="w-3 h-3" />
                         {format(new Date(transaction.date), "dd/MM/yyyy HH:mm", {
                           locale: vi,
                         })}
                       </div>
-                      <div className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded">
+                      <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded">
                         {getFlowTypeIcon(transaction.flowType)}
                         {getFlowTypeText(transaction.flowType)}
                       </div>

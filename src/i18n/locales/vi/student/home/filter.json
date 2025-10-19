@@ -8,7 +8,10 @@
     "toPlaceholder": "500,000"
   },
   "subjects": {
-    "title": "Môn học"
+    "title": "Môn học",
+    "all": "Tất cả môn học",
+    "loading": "Đang tải danh sách môn học...",
+    "empty": "Không có môn học nào"
   },
   "gradeLevel": {
     "title": "Cấp độ",
@@ -35,8 +38,15 @@
     "online": "Online"
   },
   "button": "Bộ lọc",
+  "quickFilters": {
+    "highRating": "⭐ Đánh giá cao"
+  },
   "tags": {
     "highestRating": "Đánh giá cao nhất",
-    "newest": "Mới nhất"
+    "newest": "Mới nhất",
+    "price": "Giá",
+    "rating": "Đánh giá",
+    "duration": "Thời lượng",
+    "hours": "giờ"
   }
 }

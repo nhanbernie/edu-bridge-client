@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Camera, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import EBFormProvider from "@/components/form/EBFormProvider";
@@ -8,7 +9,7 @@ import EBTextField from "@/components/form/EBTextField";
 import EBTextAreaField from "@/components/form/EBTextAreaField";
 import EBSelectField from "@/components/form/EBSelectField";
 import EBMultipleSelect from "@/components/form/EBMultipleSelect";
-import EBButton from "@/components/common/EBButton";
+import { EBButtonAction } from "@/components/motion";
 import { tutorProfileValidationSchema } from "@/lib/validator/profileValidator";
 import {
   EDUCATION_LEVEL_OPTIONS,
@@ -50,10 +51,11 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
   onCancel,
   onAvatarChange,
 }) => {
+  const t = useTranslations("tutor.profile.form");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getInitials = (name?: string | null) => {
-    if (!name) return "TT";
+    if (!name) return t("messages.defaultName").slice(0, 2).toUpperCase();
     return name
       .split(" ")
       .map((n) => n[0])
@@ -69,23 +71,23 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
     let text = "";
     switch (userData.tutor.verifiedStatus) {
       case "VERIFIED":
-        colorClass = "bg-green-100 text-green-800";
-        text = "Đã xác minh";
+        colorClass = "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400";
+        text = t("verification.verified");
         break;
       case "TRUSTED_BEGINNER":
-        colorClass = "bg-blue-100 text-blue-800";
-        text = "Người mới uy tín";
+        colorClass = "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400";
+        text = t("verification.trustedBeginner");
         break;
       case "PENDING":
-        colorClass = "bg-yellow-100 text-yellow-800";
-        text = "Đang chờ xác minh";
+        colorClass = "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400";
+        text = t("verification.pending");
         break;
       default:
         return null;
     }
     return (
       <span
-        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${colorClass}`}
+        className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${colorClass}`}
       >
         {text}
       </span>
@@ -116,8 +118,8 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
   };
 
   return (
-    <Card className="border-0 shadow-lg h-fit">
-      <CardContent className="p-6">
+    <Card className="border-0 shadow-lg rounded-2xl sm:rounded-3xl h-fit">
+      <CardContent className="p-4 sm:p-6">
         {/* Hidden file input */}
         <input
           ref={fileInputRef}
@@ -128,22 +130,22 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
         />
 
         {/* Avatar Section */}
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b bg-gray-100 p-5 rounded-4xl">
+        <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-border bg-muted p-4 sm:p-5 rounded-2xl sm:rounded-3xl">
           <div className="relative">
             {isUploadingAvatar && (
-              <div className="absolute inset-0 w-24 h-24 rounded-full bg-black/50 flex items-center justify-center z-10">
-                <Loader2 className="w-6 h-6 text-white animate-spin" />
+              <div className="absolute inset-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/50 flex items-center justify-center z-10">
+                <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 text-white animate-spin" />
               </div>
             )}
             {userData?.avatarUrl ? (
               <img
                 src={userData.avatarUrl}
                 alt={userData.fullName || "Tutor"}
-                className="w-24 h-24 rounded-full object-cover border-4 border-gray-100"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-background"
               />
             ) : (
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center border-4 border-gray-100">
-                <span className="text-2xl font-bold text-white">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center border-4 border-background">
+                <span className="text-xl sm:text-2xl font-bold text-white">
                   {getInitials(userData?.fullName)}
                 </span>
               </div>
@@ -151,38 +153,40 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploadingAvatar}
-              className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Thay đổi ảnh đại diện"
+              className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-card rounded-full shadow-lg flex items-center justify-center hover:bg-muted transition-colors border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+              title={t("buttons.changeAvatar")}
             >
-              <Camera className="w-4 h-4 text-gray-700 hover:cursor-pointer" />
+              <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-foreground hover:cursor-pointer" />
             </button>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{userData?.fullName || "Gia sư"}</h2>
-            <p className="text-gray-600">{userData?.email}</p>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground truncate">
+              {userData?.fullName || t("messages.defaultName")}
+            </h2>
+            <p className="text-sm sm:text-base text-muted-foreground truncate">{userData?.email}</p>
             <div className="mt-2">{getVerificationBadge()}</div>
           </div>
         </div>
 
         {/* Tutor Stats */}
-        <div className="grid grid-cols-3 gap-4 text-center mb-8 pb-8 border-b">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 text-center mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-border">
           <div className="flex flex-col items-center">
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-xl sm:text-2xl font-bold text-primary">
               {userData?.tutor?.totalStudents || 0}
             </span>
-            <span className="text-sm text-muted-foreground">Học sinh</span>
+            <span className="text-xs sm:text-sm text-muted-foreground">{t("stats.students")}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-xl sm:text-2xl font-bold text-primary">
               {userData?.tutor?.totalCourses || 0}
             </span>
-            <span className="text-sm text-muted-foreground">Khóa học</span>
+            <span className="text-xs sm:text-sm text-muted-foreground">{t("stats.courses")}</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-2xl font-bold text-primary">
+            <span className="text-xl sm:text-2xl font-bold text-primary">
               {userData?.tutor?.averageTutorRating?.toFixed(1) || "0.0"}
             </span>
-            <span className="text-sm text-muted-foreground">Đánh giá</span>
+            <span className="text-xs sm:text-sm text-muted-foreground">{t("stats.rating")}</span>
           </div>
         </div>
 
@@ -193,57 +197,59 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
           defaultValues={defaultValues}
           onSubmit={onSubmit}
         >
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Personal Info */}
-            <h4 className="text-lg font-medium text-gray-900">Thông tin cá nhân</h4>
+            <h4 className="text-base sm:text-lg font-medium text-foreground">
+              {t("sections.personalInfo")}
+            </h4>
             <EBTextField
               name="fullName"
-              label="Họ và tên"
-              placeholder="Nhập họ và tên của bạn"
+              label={t("fields.fullName.label")}
+              placeholder={t("fields.fullName.placeholder")}
               disabled={!isEditing}
             />
             <div>
               <EBTextField
                 name="email"
-                label="Email"
+                label={t("fields.email.label")}
                 type="email"
-                placeholder="example@email.com"
+                placeholder={t("fields.email.placeholder")}
                 disabled={true}
               />
-              <p className="text-xs text-muted-foreground mt-1">Email không thể thay đổi</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("fields.email.note")}</p>
             </div>
             <EBTextField
               name="phone"
-              label="Số điện thoại"
-              placeholder="Nhập số điện thoại"
+              label={t("fields.phone.label")}
+              placeholder={t("fields.phone.placeholder")}
               disabled={!isEditing}
             />
             <EBTextField
               name="location"
-              label="Địa điểm"
-              placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+              label={t("fields.location.label")}
+              placeholder={t("fields.location.placeholder")}
               disabled={!isEditing}
             />
 
             {/* Teaching Info */}
-            <div className="space-y-6">
-              <h4 className="text-lg font-medium text-gray-900 pt-4 border-t">
-                Thông tin giảng dạy
+            <div className="space-y-4 sm:space-y-6">
+              <h4 className="text-base sm:text-lg font-medium text-foreground pt-4 border-t border-border">
+                {t("sections.teachingInfo")}
               </h4>
 
               <EBSelectField
                 allowCustom
                 name="educationLevel"
-                label="Trình độ học vấn"
+                label={t("fields.educationLevel.label")}
                 options={EDUCATION_LEVEL_OPTIONS}
                 disabled={!isEditing}
               />
 
               <EBTextField
                 name="yearsOfExperience"
-                label="Số năm kinh nghiệm dạy học"
+                label={t("fields.yearsOfExperience.label")}
                 type="number"
-                placeholder="Nhập số năm kinh nghiệm"
+                placeholder={t("fields.yearsOfExperience.placeholder")}
                 min="0"
                 max="80"
                 step="1"
@@ -252,8 +258,8 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
 
               <EBTextAreaField
                 name="bio"
-                label="Mô tả về bản thân"
-                placeholder="Hãy chia sẻ về phong cách dạy học, thành tích và kinh nghiệm của bạn..."
+                label={t("fields.bio.label")}
+                placeholder={t("fields.bio.placeholder")}
                 rows={4}
                 disabled={!isEditing}
               />
@@ -261,7 +267,7 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
               <EBMultipleSelect
                 allowCustom
                 name="subjects"
-                label="Môn học dạy (có thể chọn nhiều)"
+                label={t("fields.subjects.label")}
                 options={SUBJECT_OPTIONS}
                 disabled={!isEditing}
               />
@@ -269,8 +275,10 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
               {/* Existing subjects display - moved below subjects field */}
               {userData?.tutor?.subjects && userData.tutor.subjects.length > 0 && (
                 <div className="mt-1">
-                  <span className="text-xs text-gray-600">Các môn hiện tại: </span>
-                  <span className="text-xs text-gray-800 ">
+                  <span className="text-xs text-muted-foreground">
+                    {t("fields.subjects.currentSubjects")}{" "}
+                  </span>
+                  <span className="text-xs text-foreground">
                     {userData.tutor.subjects.join(", ")}
                   </span>
                 </div>
@@ -279,7 +287,7 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
               <EBMultipleSelect
                 allowCustom
                 name="languages"
-                label="Ngôn ngữ (có thể chọn nhiều)"
+                label={t("fields.languages.label")}
                 options={LANGUAGE_OPTIONS}
                 disabled={!isEditing}
               />
@@ -287,36 +295,37 @@ const EBTutorProfileForm: React.FC<EBTutorProfileFormProps> = ({
 
             {/* Action Buttons */}
             {!isEditing ? (
-              <EBButton
+              <EBButtonAction
                 type="button"
-                variant="default"
-                size="lg"
                 onClick={onEdit}
-                className="w-full bg-emerald-600 hover:bg-emerald-700"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2.5 sm:py-3"
               >
-                Chỉnh sửa hồ sơ
-              </EBButton>
+                {t("buttons.edit")}
+              </EBButtonAction>
             ) : (
               <div className="flex gap-3 pt-4">
-                <EBButton
+                <EBButtonAction
                   type="submit"
-                  variant="default"
-                  size="lg"
-                  loading={isSaving}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                  disabled={isSaving}
+                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-2.5 sm:py-3"
                 >
-                  Lưu thay đổi
-                </EBButton>
-                <EBButton
+                  {isSaving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t("buttons.saving")}
+                    </>
+                  ) : (
+                    t("buttons.save")
+                  )}
+                </EBButtonAction>
+                <EBButtonAction
                   type="button"
-                  variant="outline"
-                  size="lg"
                   onClick={onCancel}
                   disabled={isSaving}
-                  className="flex-1"
+                  className="flex-1 bg-muted hover:bg-muted/80 text-foreground py-2.5 sm:py-3"
                 >
-                  Hủy
-                </EBButton>
+                  {t("buttons.cancel")}
+                </EBButtonAction>
               </div>
             )}
           </div>

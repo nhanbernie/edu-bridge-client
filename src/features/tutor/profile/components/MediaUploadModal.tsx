@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import EBButton from "@/components/common/EBButton";
-import { Upload, X } from "lucide-react";
+import { EBButtonAction } from "@/components/motion";
+import { Upload, X, Loader2 } from "lucide-react";
 import { MediaType } from "@/services/user/types/media.type";
 
 interface MediaUploadModalProps {
@@ -25,6 +26,7 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onUpload,
   isUploading = false,
 }) => {
+  const t = useTranslations("tutor.profile.media");
   const [title, setTitle] = useState(existingTitle || "");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -91,41 +93,43 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-card border-border">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-foreground">
             {isEditMode
               ? isVideo
-                ? "Chỉnh sửa Video giới thiệu"
-                : "Chỉnh sửa Chứng chỉ"
+                ? t("modal.editVideo")
+                : t("modal.editCertificate")
               : isVideo
-                ? "Tải lên Video giới thiệu"
-                : "Thêm Chứng chỉ"}
+                ? t("modal.uploadVideo")
+                : t("modal.addCertificate")}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           {/* Title Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tiêu đề <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t("modal.titleLabel")} <span className="text-destructive">*</span>
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder={isVideo ? "VD: Video giới thiệu" : "VD: Chứng chỉ TESOL"}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              placeholder={
+                isVideo ? t("modal.titlePlaceholder") : t("modal.certificatePlaceholder")
+              }
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder:text-muted-foreground"
               disabled={isUploading}
             />
           </div>
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              File {!isEditMode && <span className="text-red-500">*</span>}
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {t("modal.fileLabel")} {!isEditMode && <span className="text-destructive">*</span>}
               {isEditMode && (
-                <span className="text-gray-500 text-xs">(Tùy chọn - Để trống nếu không đổi)</span>
+                <span className="text-muted-foreground text-xs">({t("modal.fileOptional")})</span>
               )}
             </label>
             <input
@@ -140,20 +144,23 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
-                className="w-full py-8 border-2 border-dashed border-gray-300 rounded-lg hover:border-emerald-500 hover:bg-emerald-50 transition-colors disabled:opacity-50"
+                className="w-full py-8 border-2 border-dashed border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
               >
-                <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-600">
-                  Click để chọn {isVideo ? "video" : "hình ảnh"}
+                <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm text-foreground">
+                  {t("modal.selectFile", { type: isVideo ? "video" : "hình ảnh" })}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {isVideo ? "MP4, MOV, AVI" : "JPG, PNG, GIF"} (tối đa {maxSize}MB)
+                <p className="text-xs text-muted-foreground mt-1">
+                  {t("modal.supportedFormats", {
+                    formats: isVideo ? t("modal.videoFormats") : t("modal.imageFormats"),
+                    size: maxSize,
+                  })}
                 </p>
               </button>
             ) : (
               <div className="relative">
                 {/* Preview */}
-                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                <div className="aspect-video bg-muted rounded-lg overflow-hidden">
                   {isVideo ? (
                     <video src={preview || ""} className="w-full h-full object-cover" />
                   ) : (
@@ -162,18 +169,18 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                 </div>
 
                 {/* File Info */}
-                <div className="mt-2 flex items-center justify-between p-2 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-700 truncate">{selectedFile.name}</span>
+                <div className="mt-2 flex items-center justify-between p-2 bg-muted rounded">
+                  <span className="text-sm text-foreground truncate">{selectedFile.name}</span>
                   <button
                     onClick={() => {
                       setSelectedFile(null);
                       setPreview(null);
                       if (fileInputRef.current) fileInputRef.current.value = "";
                     }}
-                    className="ml-2 p-1 hover:bg-gray-200 rounded"
+                    className="ml-2 p-1 hover:bg-muted/80 rounded"
                     disabled={isUploading}
                   >
-                    <X className="w-4 h-4 text-gray-600" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 </div>
               </div>
@@ -183,22 +190,29 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
 
         {/* Actions */}
         <div className="flex gap-3">
-          <EBButton
-            variant="outline"
+          <EBButtonAction
             onClick={handleClose}
             disabled={isUploading}
-            className="flex-1"
+            className="flex-1 bg-muted hover:bg-muted/80 text-foreground py-2.5"
           >
-            Hủy
-          </EBButton>
-          <EBButton
+            {t("modal.buttons.cancel")}
+          </EBButtonAction>
+          <EBButtonAction
             onClick={handleSubmit}
             disabled={(!isEditMode && !selectedFile) || !title.trim() || isUploading}
-            loading={isUploading}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-2.5"
           >
-            {isEditMode ? "Cập nhật" : "Tải lên"}
-          </EBButton>
+            {isUploading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                {isEditMode ? t("modal.buttons.updating") : t("modal.buttons.uploading")}
+              </>
+            ) : isEditMode ? (
+              t("modal.buttons.update")
+            ) : (
+              t("modal.buttons.upload")
+            )}
+          </EBButtonAction>
         </div>
       </DialogContent>
     </Dialog>

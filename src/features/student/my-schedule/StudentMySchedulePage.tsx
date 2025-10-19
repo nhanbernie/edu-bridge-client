@@ -20,6 +20,8 @@ import {
   PAGE_SUBTITLE,
 } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
+import { EBMotionCard } from "@/components/motion";
+import { SchedulePageSkeleton } from "./components/skeletons";
 
 const StudentMySchedulePage: React.FC = () => {
   const { push } = useLocaleRouter();
@@ -56,7 +58,7 @@ const StudentMySchedulePage: React.FC = () => {
   const isPageLoading = isLoadingUpcoming || isLoadingUserId || isLoadingHistory;
 
   if (isPageLoading) {
-    return <EBPageLoading message={t("loading")} />;
+    return <SchedulePageSkeleton />;
   }
 
   return (
@@ -69,59 +71,78 @@ const StudentMySchedulePage: React.FC = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   {t("stats.todaySessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{todaySessions}</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{todaySessions}</p>
               </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+              <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   {t("stats.weekSessions")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {thisWeekSessions}
-                </p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{thisWeekSessions}</p>
               </div>
-              <Clock className="h-8 w-8 text-green-500" />
+              <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <EBMotionCard
+            variant="base"
+            className="p-4 sm:p-6"
+            initial={undefined}
+            animate={undefined}
+            whileHover={undefined}
+            whileTap={undefined}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   {t("stats.tutors")}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{uniqueTutors}</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{uniqueTutors}</p>
               </div>
-              <Users className="h-8 w-8 text-orange-500" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             </div>
-          </div>
+          </EBMotionCard>
         </div>
 
         {/* Schedule Content */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
-          <div className="p-8">
-            <div className="flex items-center justify-between mb-8">
+        <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border overflow-hidden">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
                   {t("scheduleTitle")}
                 </h2>
               </div>
             </div>
 
             {/* Session Tabs */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
               <SessionTabs
                 activeTab={activeTab}
                 onTabChange={setActiveTab}

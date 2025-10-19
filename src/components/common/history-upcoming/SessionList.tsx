@@ -1,6 +1,7 @@
 import React, { memo, useMemo } from "react";
 import { Calendar, History, BookOpen, Clock } from "lucide-react";
 import { ClassSessionDto } from "@/services/classSession/type";
+import { useTranslations } from "next-intl";
 import SessionCard from "./SessionCard";
 
 interface SessionListProps {
@@ -13,6 +14,7 @@ interface SessionListProps {
 
 const SessionList: React.FC<SessionListProps> = memo(
   ({ sessions, userType, sessionType, onJoinSession, onViewFeedback }) => {
+    const t = useTranslations("components.sessionList");
     const isHistory = sessionType === "history";
 
     // Memoize empty state to prevent re-renders
@@ -25,16 +27,14 @@ const SessionList: React.FC<SessionListProps> = memo(
             <Calendar className="h-12 w-12 mx-auto text-gray-400 mb-4" />
           )}
           <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-            {isHistory ? "Chưa có lịch sử" : "Chưa có lịch sắp tới"}
+            {isHistory ? t("empty.history.title") : t("empty.upcoming.title")}
           </h3>
           <p className="text-gray-500 dark:text-gray-400">
-            {isHistory
-              ? "Bạn chưa có buổi học nào đã hoàn thành."
-              : "Bạn chưa có buổi học nào sắp tới."}
+            {isHistory ? t("empty.history.description") : t("empty.upcoming.description")}
           </p>
         </div>
       ),
-      [isHistory]
+      [isHistory, t]
     );
 
     if (sessions.length === 0) {
