@@ -12,7 +12,6 @@ import * as Yup from "yup";
 
 interface TutorStep2Props {
   onSubmit: (uploadResults: any[]) => void;
-  onBack: () => void;
   isLoading?: boolean;
 }
 
@@ -93,8 +92,8 @@ const FileUploadInput = ({
       {/* Upload Area */}
       <div
         className={`relative border-2 border-dashed rounded-xl p-4 transition-all duration-200 ${file
-            ? "border-primary/50 bg-primary/10"
-            : "border-border bg-muted/50 hover:border-primary/60 hover:bg-primary/5"
+          ? "border-primary/50 bg-primary/10"
+          : "border-border bg-muted/50 hover:border-primary/60 hover:bg-primary/5"
           }`}
       >
         <input
@@ -176,11 +175,9 @@ const FileUploadInput = ({
 
 const VerificationForm = ({
   verificationOptions,
-  onBack,
   isUploading,
 }: {
   verificationOptions: { value: string; label: string }[];
-  onBack: () => void;
   isUploading: boolean;
 }) => {
   const t = useTranslations("tutor.onboard.step2");
@@ -388,23 +385,14 @@ const VerificationForm = ({
         </div>
       )}
 
-      <div className="flex justify-between pt-6 border-t gap-5">
-        <EBButton
-          type="button"
-          variant="outline"
-          size="lg"
-          onClick={onBack}
-          className="flex-1 font-semibold py-4 border-1 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-        >
-          {t("buttons.back")}
-        </EBButton>
+      <div className="flex justify-center pt-6 border-t">
         <EBButton
           type="submit"
           variant="default"
           size="lg"
           loading={isUploading}
           disabled={!verificationType || isUploading}
-          className="flex-1 font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          className="w-full max-w-md font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
         >
           {isUploading ? t("buttons.uploading") : t("buttons.submit")}
         </EBButton>
@@ -413,7 +401,7 @@ const VerificationForm = ({
   );
 };
 
-const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = false }) => {
+const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, isLoading = false }) => {
   const t = useTranslations("tutor.onboard.step2");
   const { uploadDocuments, isLoading: isUploading } = useDocumentUpload();
 
@@ -482,7 +470,6 @@ const TutorStep2: React.FC<TutorStep2Props> = ({ onSubmit, onBack, isLoading = f
       >
         <VerificationForm
           verificationOptions={verificationOptions}
-          onBack={onBack}
           isUploading={isUploading}
         />
       </EBFormProvider>

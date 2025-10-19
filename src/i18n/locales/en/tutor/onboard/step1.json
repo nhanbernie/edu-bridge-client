@@ -38,5 +38,14 @@
     "bioRequired": "Please tell us about yourself",
     "subjectsRequired": "Please select at least one subject",
     "languagesRequired": "Please select at least one language"
+  },
+  "confirmation": {
+    "title": "Confirm Information",
+    "description": "Are you sure the information above is correct? After verification, you will not be able to return to step 1.",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "processing": "Processing..."
+    }
   }
 }
