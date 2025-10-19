@@ -160,8 +160,8 @@ const EBHeader = ({
               extension="png"
               height={56}
               alt="EduBridge Logo"
-              navigateTo="/tutor"
-              clickable={true}
+              // navigateTo="/tutor"
+              // clickable={true}
               objectFit="contain"
             />
 

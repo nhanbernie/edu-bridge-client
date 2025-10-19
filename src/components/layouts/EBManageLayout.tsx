@@ -130,14 +130,12 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
             <div
               className={`flex items-center ${sidebarExpanded ? "justify-start" : "justify-center w-full"}`}
             >
-              <EBLogoLayout 
+              <EBLogoLayout
                 imageFolder="/logo"
                 imageName={sidebarExpanded ? "edubridge-logo-text" : "edubridge-logo-only"}
                 extension="png"
                 height={sidebarExpanded ? 56 : 56}
                 alt="EduBridge Logo"
-                navigateTo="/tutor"
-                clickable={true}
                 objectFit="contain"
               />
             </div>

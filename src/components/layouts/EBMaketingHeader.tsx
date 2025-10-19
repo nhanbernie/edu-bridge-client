@@ -57,8 +57,8 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isScrolled
-            ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
-            : "bg-transparent"
+          ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
+          : "bg-transparent"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +69,6 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               extension="png"
               height={56}
               alt="EduBridge Logo"
-              navigateTo="/tutor"
               clickable={true}
               objectFit="contain"
             />
@@ -197,8 +196,8 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                     push(item.href);
                   }}
                   className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${item.active
-                      ? "bg-primary/10 text-primary border border-primary/20"
-                      : "text-muted-foreground hover:text-primary hover:bg-muted"
+                    ? "bg-primary/10 text-primary border border-primary/20"
+                    : "text-muted-foreground hover:text-primary hover:bg-muted"
                     }`}
                 >
                   {item.label}

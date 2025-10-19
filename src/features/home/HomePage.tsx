@@ -67,7 +67,7 @@ const HomeFeature = () => {
                 extension="png"
                 height={100}
                 alt="EduBridge Logo"
-                navigateTo="/tutor"
+                // navigateTo="/tutor"
                 clickable={true}
                 objectFit="contain"
               />

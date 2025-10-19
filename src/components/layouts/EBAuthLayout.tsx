@@ -5,6 +5,7 @@ import { StatsCard } from "@/features/marketing/components";
 import React from "react";
 import { EBLogo, EBThemeToggle } from "@/components/common";
 import { useTranslations } from "next-intl";
+import EBLogoLayout from "./components/EBLogoLayout";
 
 const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("marketing.auth");
@@ -23,7 +24,18 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
             {/* Left Side - Marketing Content */}
 
             <div className="space-y-8">
-              <EBLogo />
+              <div className="flex justify-start">
+                <EBLogoLayout
+                  imageFolder="/logo"
+                  imageName="edubridge-logo-text"
+                  extension="png"
+                  height={100}
+                  alt="EduBridge Logo"
+                  clickable={true}
+                  objectFit="contain"
+                  className="mr-auto"
+                />
+              </div>
               {/* Main Headline */}
               <div className="space-y-4">
                 <h2 className="text-4xl lg:text-5xl font-bold text-foreground leading-tight">
