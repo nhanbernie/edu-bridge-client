@@ -79,6 +79,7 @@ const getMessages = cache(async (locale: string) => {
       ebMediaCard,
       ebVideoUploadPlaceholder,
       tutorCard,
+      tutorBankVerification,
       validationAuth,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
@@ -154,6 +155,8 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/components/eb-media-card.json`),
       import(`@/i18n/locales/${locale}/components/eb-video-upload-placeholder.json`),
       import(`@/i18n/locales/${locale}/components/tutor-card.json`),
+      // Tutor components translations
+      import(`@/i18n/locales/${locale}/tutor/components/bank-verification.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
     ]);
@@ -211,6 +214,9 @@ const getMessages = cache(async (locale: string) => {
         feedback: {
           list: tutorFeedbackList.default,
           detail: tutorFeedbackDetail.default,
+        },
+        components: {
+          bankVerification: tutorBankVerification.default,
         },
       },
       auth: auth.default,

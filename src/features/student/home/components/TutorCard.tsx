@@ -186,8 +186,9 @@ const TutorCard: React.FC<TutorCardProps> = ({
         <EBButtonAction
           onClick={handleContact}
           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground
-                     py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base
-                     shadow-lg hover:shadow-xl transition-all duration-300 hover:cursor-pointer"
+                     py-2.5 sm:py-3 rounded-xl sm:rounded-2xl  text-sm sm:text-base
+                      hover:shadow-xl transition-all duration-300 hover:cursor-pointer bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600
+                           shadow-lg shadow-cyan-500/30 font-semibold"
         >
           {t("actions.learnNow")}
         </EBButtonAction>

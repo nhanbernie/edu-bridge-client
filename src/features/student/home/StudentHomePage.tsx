@@ -443,6 +443,8 @@ const StudentHomePage = () => {
         onClose={() => setIsAdvancedFilterOpen(false)}
         onApplyFilters={handleAdvancedFilterApply}
         currentFilters={advancedFilters}
+        subjectOptions={subjectOptions}
+        isLoadingSubjects={isLoadingSubjects}
       />
 
       {/* Charity Counter - Fixed bottom right */}

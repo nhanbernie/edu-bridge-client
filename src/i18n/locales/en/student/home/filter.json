@@ -9,7 +9,9 @@
   },
   "subjects": {
     "title": "Subjects",
-    "all": "All Subjects"
+    "all": "All Subjects",
+    "loading": "Loading subjects...",
+    "empty": "No subjects available"
   },
   "gradeLevel": {
     "title": "Grade Level",
