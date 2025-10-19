@@ -108,7 +108,8 @@
     },
     "note": {
       "title": "Note:",
-      "content": "After successful payment, the system will automatically update your booking status. If you have any issues, please contact support."
+      "content": "After successful payment, the system will automatically update your booking status. If you have any issues, please contact support.",
+      "close": "Close"
     }
   },
   "bookingGuide": {
@@ -132,4 +133,3 @@
     "gotIt": "Got it!"
   }
 }
-

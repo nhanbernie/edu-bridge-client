@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { slideUpVariants } from "@/components/motion";
 import { Loader2, Package } from "lucide-react";
 import type { PackageDto } from "@/services/course/type";
+import { useTranslations } from "next-intl";
 
 // Format Vietnamese currency
 const formatVNDPrice = (price: number): string => {
@@ -25,16 +26,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   packages: apiPackages,
   isLoading,
 }) => {
+  const t = useTranslations("student.booking.packageSelector");
+
   // Helper function to get package type name
   const getPackageTypeName = (packageType: string): string => {
-    const typeNames: Record<string, string> = {
-      TRIAL: "Buổi học thử",
-      SINGLE: "Gói cơ bản",
-      FOUR: "Gói 4 buổi",
-      EIGHT: "Gói 8 buổi",
-      TWELVE: "Gói 12 buổi",
-    };
-    return typeNames[packageType] || "Gói học";
+    return t(`packageTypes.${packageType}` as any) || t("packageTypes.SINGLE");
   };
 
   // Transform API packages to display format
@@ -42,7 +38,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
     apiPackages?.map((pkg) => ({
       id: pkg.packageId,
       name: getPackageTypeName(pkg.packageType as string),
-      description: `${pkg.numberOfSessions} buổi học`,
+      description: `${pkg.numberOfSessions} ${t("sessions")}`,
       sessions: pkg.numberOfSessions,
       price: pkg.price,
       originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
@@ -66,11 +62,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
         variants={slideUpVariants}
       >
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
         </div>
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Đang tải gói học...</span>
+          <span className="ml-2">{t("loading")}</span>
         </div>
       </EBMotionCard>
     );
@@ -84,12 +80,12 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
         variants={slideUpVariants}
       >
         <div className="mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
         </div>
         <div className="text-center py-12">
           <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có gói học nào</h3>
-          <p className="text-gray-500">Khóa học này chưa có gói học nào được tạo.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t("empty.title")}</h3>
+          <p className="text-gray-500">{t("empty.description")}</p>
         </div>
       </EBMotionCard>
     );
@@ -101,7 +97,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
       variants={slideUpVariants}
     >
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-foreground">Chọn gói học</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("title")}</h3>
       </div>
       <div className="space-y-4">
         {sortedPackages.map((pkg) => (
@@ -127,12 +123,12 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
 
             {pkg.isTrial && (
               <Badge className="absolute -top-0.5 left-4 bg-gradient-to-r from-rose-400 to-pink-500 dark:from-rose-500 dark:to-pink-600 text-white text-xs px-3 py-1 shadow-md z-10">
-                🎁 Học thử miễn phí
+                {t("trialBadge")}
               </Badge>
             )}
             {pkg.popular && !pkg.isTrial && (
               <Badge className="absolute -top-2 left-4 bg-blue-600 text-white text-xs px-2 py-1">
-                Phổ biến nhất
+                {t("popularBadge")}
               </Badge>
             )}
 
@@ -152,11 +148,11 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                     pkg.isTrial ? "text-rose-700 dark:text-rose-400" : "text-muted-foreground"
                   )}
                 >
-                  {pkg.sessions} buổi học trong tháng
+                  {pkg.sessions} {t("sessionsPerMonth")}
                 </p>
                 {pkg.isTrial && (
                   <p className="text-[11px] text-pink-600 dark:text-pink-300 mt-1.5 font-medium leading-tight">
-                    💝 Ủng hộ trực tiếp người khó khăn
+                    {t("charitySupport")}
                   </p>
                 )}
               </div>
@@ -184,7 +180,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                       pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-muted-foreground"
                     )}
                   >
-                    {pkg.sessions} buổi
+                    {pkg.sessions} {t("sessions")}
                   </div>
                 </div>
               </div>

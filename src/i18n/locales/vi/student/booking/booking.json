@@ -108,7 +108,8 @@
     },
     "note": {
       "title": "Lưu ý:",
-      "content": "Sau khi thanh toán thành công, hệ thống sẽ tự động cập nhật trạng thái đặt lịch của bạn. Nếu có vấn đề, vui lòng liên hệ hỗ trợ."
+      "content": "Sau khi thanh toán thành công, hệ thống sẽ tự động cập nhật trạng thái đặt lịch của bạn. Nếu có vấn đề, vui lòng liên hệ hỗ trợ.",
+      "close": "Đóng"
     }
   },
   "bookingGuide": {
@@ -132,4 +133,3 @@
     "gotIt": "Đã hiểu!"
   }
 }
-

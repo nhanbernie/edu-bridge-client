@@ -4,6 +4,7 @@ import React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Package, Calendar, Clock, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
 
 interface BookingGuideModalProps {
@@ -12,25 +13,26 @@ interface BookingGuideModalProps {
 }
 
 const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }) => {
+  const t = useTranslations("student.booking.bookingGuide");
+
   const steps = [
     {
       icon: Package,
       number: 1,
-      title: "Chọn gói học",
-      description: "Chọn gói học phù hợp với nhu cầu của bạn. Mỗi gói sẽ có số buổi học khác nhau.",
+      title: t("steps.step1.title"),
+      description: t("steps.step1.description"),
     },
     {
       icon: Calendar,
       number: 2,
-      title: "Chọn ngày học",
-      description: "Chọn ngày bạn muốn học. Các ngày có sẵn lịch sẽ được đánh dấu màu xanh.",
+      title: t("steps.step2.title"),
+      description: t("steps.step2.description"),
     },
     {
       icon: Clock,
       number: 3,
-      title: "Chọn khung giờ",
-      description:
-        "Chọn khung giờ phù hợp. Bạn có thể thêm nhiều buổi học cho đến khi đủ số buổi trong gói.",
+      title: t("steps.step3.title"),
+      description: t("steps.step3.description"),
     },
   ];
 
@@ -57,10 +59,8 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
             <div className="w-14 h-14 mx-auto mb-4 bg-white/20 rounded-xl flex items-center justify-center">
               <Package className="w-7 h-7" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Hướng dẫn đặt lịch học</h2>
-            <p className="text-sm text-white/90">
-              Làm theo 3 bước đơn giản để đặt lịch học với gia sư
-            </p>
+            <h2 className="text-2xl font-bold mb-2">{t("title")}</h2>
+            <p className="text-sm text-white/90">{t("subtitle")}</p>
           </motion.div>
         </div>
 
@@ -86,7 +86,9 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-semibold text-primary">BƯỚC {step.number}</span>
+                    <span className="text-xs font-semibold text-primary">
+                      {t("stepLabel")} {step.number}
+                    </span>
                   </div>
                   <h3 className="text-base font-semibold text-foreground mb-1">{step.title}</h3>
                   <p className="text-sm text-muted-foreground">{step.description}</p>
@@ -111,7 +113,7 @@ const BookingGuideModal: React.FC<BookingGuideModalProps> = ({ isOpen, onClose }
               onClick={onClose}
               className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-5 text-base"
             >
-              Bắt đầu đặt lịch
+              {t("gotIt")}
             </Button>
           </motion.div>
         </div>
