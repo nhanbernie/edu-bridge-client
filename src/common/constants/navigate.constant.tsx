@@ -33,8 +33,8 @@ export interface NavItem {
 // Navigation items with translation keys
 export const getNavigationItems = (t: any, currentPath?: string): NavItem[] => [
   { label: t("router.navigation.home"), href: "/home", active: currentPath === "/home" },
-  { label: t("router.navigation.findTutors"), href: "/home", active: currentPath === "/home" },
-  { label: t("router.navigation.findStudents"), href: "/home", active: currentPath === "/home" },
+  // { label: t("router.navigation.findTutors"), href: "/home", active: currentPath === "/home" },
+  // { label: t("router.navigation.findStudents"), href: "/home", active: currentPath === "/home" },
 ];
 
 export const getNavigateMarketItems = (t: any, currentPath?: string): NavItem[] => [

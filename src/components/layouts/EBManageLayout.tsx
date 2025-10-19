@@ -52,6 +52,9 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   const isTutor = user?.role === "TUTOR";
   const isBankVerified = user?.tutor?.isBankAccountVerified;
   const shouldCheckQR = isTutor && !isBankVerified;
+  
+  // Check if user role is USER (hide actions for basic users)
+  const isBasicUser = user?.role === "USER";
 
   // Call API only when needed
   const { data: qrData, isLoading: qrLoading } = useVerifyQRCodeQuery(undefined, {
@@ -173,7 +176,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
           {/* Bottom controls */}
           <div className="py-4 space-y-2">
             {/* Verify QR Code Button - Only for unverified tutors */}
-            {showVerifyButton && (
+            {showVerifyButton && !isBasicUser && (
               <EBSidebarButton
                 icon={CreditCard}
                 label={t("sidebar.verifyBankAccount")}
@@ -185,8 +188,8 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
               />
             )}
 
-            {/* Action Buttons */}
-            {finalActionButtons.map((button) => (
+            {/* Action Buttons - Hidden for basic users */}
+            {!isBasicUser && finalActionButtons.map((button) => (
               <EBSidebarButton
                 key={button.label}
                 icon={button.icon}

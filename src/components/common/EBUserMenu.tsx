@@ -59,20 +59,25 @@ const EBUserMenu = () => {
     push("/charity");
   };
 
+  // Check if user role is USER (hide profile and settings for basic users)
+  const isBasicUser = (displayUser?.role || user?.role) === "USER";
+
   const userActions: ActionItem[] = [
-    {
+    // Only show Profile for non-basic users
+    ...(isBasicUser ? [] : [{
       label: "Profile",
       icon: User,
       onClick: handleProfileClick,
-    },
-    {
+    }]),
+    // Only show Settings for non-basic users
+    ...(isBasicUser ? [] : [{
       label: "Settings",
       icon: Settings,
       onClick: () => {
         // TODO: Navigate to settings page
         console.log("Settings clicked");
       },
-    },
+    }]),
     {
       label: "Charity",
       icon: Heart,
