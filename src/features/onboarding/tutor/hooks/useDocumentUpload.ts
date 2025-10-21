@@ -52,10 +52,7 @@ export const useDocumentUpload = () => {
 
         try {
           await checkVerification({ tutorId: userData.userId });
-          console.log("Verification check completed");
-        } catch (err) {
-          console.log("Verification check failed silently:", err);
-        }
+        } catch (err) {}
       }
 
       return { success: true, results: uploadResults };

@@ -4,7 +4,14 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 import { TutorOnboardingSteps, TutorStep1, TutorStep2 } from "./components";
@@ -34,7 +41,6 @@ const TutorOnboardingContent = () => {
     }
   }, [searchParams]);
 
-
   // Step 1: Show confirmation dialog first
   const handleStep1Next = (data: TutorFormData) => {
     setPendingData(data);
@@ -55,9 +61,7 @@ const TutorOnboardingContent = () => {
         setStep1Completed(true);
         setCurrentStep(1);
       }
-    } catch (error) {
-      console.error("Error in step 1:", error);
-    }
+    } catch (error) {}
   };
 
   // Cancel confirmation
@@ -73,8 +77,6 @@ const TutorOnboardingContent = () => {
 
   // Step 2: Upload documents
   const handleStep2Submit = async (documents: any[]) => {
-    // Only redirect to home after completing step 2
-    console.log("Step 2 completed, redirecting to home");
     push(ROUTES.HOME);
   };
 
@@ -100,10 +102,7 @@ const TutorOnboardingContent = () => {
 
             {currentStep === 1 && (
               <div className="p-8">
-                <TutorStep2
-                  onSubmit={handleStep2Submit}
-                  isLoading={false}
-                />
+                <TutorStep2 onSubmit={handleStep2Submit} isLoading={false} />
               </div>
             )}
           </div>
@@ -135,7 +134,9 @@ const TutorOnboardingContent = () => {
               disabled={isLoading}
               className="flex-1 sm:flex-none bg-primary hover:bg-primary/90"
             >
-              {isLoading ? tStep1("confirmation.buttons.processing") : tStep1("confirmation.buttons.confirm")}
+              {isLoading
+                ? tStep1("confirmation.buttons.processing")
+                : tStep1("confirmation.buttons.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -147,7 +148,9 @@ const TutorOnboardingContent = () => {
 // Component chính với Suspense boundary
 const TutorOnboardingPage = () => {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense
+      fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}
+    >
       <TutorOnboardingContent />
     </Suspense>
   );

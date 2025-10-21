@@ -64,20 +64,27 @@ const EBUserMenu = () => {
 
   const userActions: ActionItem[] = [
     // Only show Profile for non-basic users
-    ...(isBasicUser ? [] : [{
-      label: "Profile",
-      icon: User,
-      onClick: handleProfileClick,
-    }]),
+    ...(isBasicUser
+      ? []
+      : [
+          {
+            label: "Profile",
+            icon: User,
+            onClick: handleProfileClick,
+          },
+        ]),
     // Only show Settings for non-basic users
-    ...(isBasicUser ? [] : [{
-      label: "Settings",
-      icon: Settings,
-      onClick: () => {
-        // TODO: Navigate to settings page
-        console.log("Settings clicked");
-      },
-    }]),
+    ...(isBasicUser
+      ? []
+      : [
+          {
+            label: "Settings",
+            icon: Settings,
+            onClick: () => {
+              // TODO: Navigate to settings page
+            },
+          },
+        ]),
     {
       label: "Charity",
       icon: Heart,

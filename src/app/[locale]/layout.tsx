@@ -276,7 +276,6 @@ const getMessages = cache(async (locale: string) => {
       },
     };
   } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error);
     notFound();
   }
 });

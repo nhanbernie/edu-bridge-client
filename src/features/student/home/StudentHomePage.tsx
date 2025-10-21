@@ -12,7 +12,11 @@ import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
-import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery, useGetTutorSubjectsQuery } from "@/services/tutor";
+import {
+  useLazyFilterTutorsQuery,
+  useLazySearchTutorsQuery,
+  useGetTutorSubjectsQuery,
+} from "@/services/tutor";
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
@@ -81,10 +85,10 @@ const StudentHomePage = () => {
 
   // Process subjects data from API
   const allSubjects = subjectsData?.data || [];
-  
+
   // Subject options for dropdown (all subjects)
   const subjectOptions = allSubjects;
-  
+
   // Quick filter subjects - only show first 4 items
   const quickFilterSubjects = allSubjects.slice(0, 4);
 
@@ -106,7 +110,6 @@ const StudentHomePage = () => {
         setIsSearchMode(false);
       }
     } catch (err) {
-      console.error("Error loading tutors:", err);
     } finally {
       setIsInitialLoading(false);
     }
@@ -142,9 +145,7 @@ const StudentHomePage = () => {
           setAllTutors(tutors);
           setHasMore(tutors.length >= PAGE_SIZE);
         }
-      } catch (err) {
-        console.error("Error searching tutors:", err);
-      }
+      } catch (err) {}
     };
 
     performSearch();
@@ -180,7 +181,6 @@ const StudentHomePage = () => {
         setHasMore(newTutors.length >= PAGE_SIZE);
       }
     } catch (err) {
-      console.error("Error loading more tutors:", err);
     } finally {
       isLoadingRef.current = false;
     }
@@ -273,9 +273,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying quick filter:", err);
-    }
+    } catch (err) {}
   };
 
   const handleSubjectFilterToggle = async (subject: string) => {
@@ -316,9 +314,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying subject filter:", err);
-    }
+    } catch (err) {}
   };
 
   const handleAdvancedFilterApply = async (filters: TutorSearchRequest) => {
@@ -341,9 +337,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying filters:", err);
-    }
+    } catch (err) {}
   };
 
   return (

@@ -56,7 +56,6 @@ export const CustomTutorLayout: React.FC<{ children: React.ReactNode }> = ({ chi
       {
         label: "Custom Action",
         icon: BookOpen,
-        onClick: () => console.log("Custom action clicked"),
       },
     ],
   });

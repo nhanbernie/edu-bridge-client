@@ -30,7 +30,6 @@ export const useUploadAvatar = () => {
         return null;
       }
     } catch (error: any) {
-      console.error("Upload avatar error:", error);
       toast.error(error?.data?.message || "Có lỗi xảy ra khi tải ảnh lên");
       return null;
     }

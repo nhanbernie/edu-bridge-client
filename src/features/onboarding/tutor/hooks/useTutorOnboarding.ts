@@ -83,7 +83,6 @@ export const useTutorOnboarding = () => {
               needsRefresh: true,
             };
           } catch (fetchError) {
-            console.error("Failed to fetch updated user data:", fetchError);
             // Vẫn return success vì role đã update, chỉ việc fetch data bị lỗi
           }
         }
