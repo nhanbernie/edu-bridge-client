@@ -7,7 +7,7 @@ import { EBLogo } from "@/components/common";
 import { EBLogoLayout, EBManageLayoutThemeToggle } from "./components";
 import EBSidebarButton from "@/components/layouts/components/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
-import { Search, Bell, Settings, ChevronLeft, ChevronRight, CreditCard } from "lucide-react";
+import { Search, Bell, Settings, ChevronLeft, ChevronRight, CreditCard, Menu, X } from "lucide-react";
 import { EBUserMenu } from "@/components/common";
 import { useVerifyQRCodeQuery } from "@/services/payment";
 import { useAppSelector } from "@/redux/hooks";
@@ -41,6 +41,7 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   onVerifyBankAccount,
 }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showVerifyButton, setShowVerifyButton] = useState(false);
   const pathname = usePathname();
   const { getCurrentLocale } = useLocaleRouter();
@@ -101,6 +102,16 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
     window.location.href = newPathname;
   };
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Close mobile menu when clicking on sidebar item
+  const handleSidebarItemClick = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="h-screen flex relative overflow-hidden">
       {/* Background with gradient - using theme colors */}
@@ -116,17 +127,130 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
         ></div>
       </div>
 
+      {/* Mobile Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        ></div>
+      )}
+
+      {/* Mobile Sidebar - Outside main container for proper z-index */}
+      <aside
+        className={`
+        fixed lg:hidden flex flex-col bg-card/95 backdrop-blur-xl transition-all duration-300 py-6 px-4 h-screen overflow-y-auto overflow-x-hidden z-[110] shadow-2xl
+        w-64
+        ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
+      >
+        {/* Logo and Close Button - Mobile */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-start">
+            <EBLogoLayout
+              imageFolder="/logo"
+              imageName="edubridge-logo-text"
+              extension="png"
+              height={56}
+              alt="EduBridge Logo"
+              objectFit="contain"
+            />
+          </div>
+          {/* Close button for mobile */}
+          <EBButton
+            variant="ghost"
+            size="icon"
+            icon={X}
+            iconSize={20}
+            onClick={() => setMobileMenuOpen(false)}
+            className="w-8 h-8 bg-muted/80 text-muted-foreground hover:bg-muted backdrop-blur-sm border border-border/50 shadow-sm rounded-lg transition-all duration-200"
+            title="Close Menu"
+          />
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1">
+          <div className="space-y-2">
+            {finalSidebarItems.map((item) => {
+              const isActive = isRouteActive(item.href);
+              return (
+                <EBSidebarButton
+                  key={item.label}
+                  icon={item.icon}
+                  label={item.label}
+                  href={item.href}
+                  isActive={isActive}
+                  isExpanded={true}
+                  onClick={handleSidebarItemClick}
+                />
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Bottom controls */}
+        <div className="py-4 space-y-2">
+          {/* Verify QR Code Button - Only for unverified tutors */}
+          {showVerifyButton && !isBasicUser && (
+            <EBSidebarButton
+              icon={CreditCard}
+              label={t("sidebar.verifyBankAccount")}
+              href="#"
+              isActive={false}
+              isExpanded={true}
+              onClick={() => {
+                handleVerifyQRCode();
+                handleSidebarItemClick();
+              }}
+              className="bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20"
+            />
+          )}
+
+          {/* Action Buttons - Hidden for basic users */}
+          {!isBasicUser &&
+            finalActionButtons.map((button) => (
+              <EBSidebarButton
+                key={button.label}
+                icon={button.icon}
+                label={button.label}
+                href={button.href || "#"}
+                isActive={false}
+                isExpanded={true}
+                onClick={() => {
+                  button.onClick?.();
+                  handleSidebarItemClick();
+                }}
+              />
+            ))}
+
+          {/* Language Toggle */}
+          <EBSidebarButton
+            icon={Globe}
+            label={`${LOCALE_FLAGS[currentLocale]} ${currentLocale.toUpperCase()}`}
+            href="#"
+            isActive={false}
+            isExpanded={true}
+            onClick={() => {
+              handleLanguageToggle();
+              handleSidebarItemClick();
+            }}
+          />
+
+          {/* Theme Toggle */}
+          <EBManageLayoutThemeToggle isExpanded={true} />
+        </div>
+      </aside>
+
       {/* Main glassmorphism container */}
       <div className="relative z-10 flex w-full h-screen bg-card/20 backdrop-blur-xl backdrop-saturate-150 border border-border/20 overflow-hidden shadow-2xl shadow-black/10">
-        {/* Sidebar - Fixed */}
+        {/* Desktop Sidebar */}
         <aside
           className={`
-          relative flex flex-col bg-transparent transition-all duration-300 py-6 px-4 h-screen overflow-y-auto overflow-x-hidden
+          hidden lg:flex flex-col bg-transparent transition-all duration-300 py-6 px-4 h-screen overflow-y-auto overflow-x-hidden
           ${sidebarExpanded ? "w-64" : "w-20"}
         `}
         >
-          {/* Logo - Always visible */}
-          <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center justify-between mb-4">
             <div
               className={`flex items-center ${sidebarExpanded ? "justify-start" : "justify-center w-full"}`}
             >
@@ -134,14 +258,14 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
                 imageFolder="/logo"
                 imageName={sidebarExpanded ? "edubridge-logo-text" : "edubridge-logo-only"}
                 extension="png"
-                height={sidebarExpanded ? 56 : 56}
+                height={56}
                 alt="EduBridge Logo"
                 objectFit="contain"
               />
             </div>
           </div>
 
-          {/* Toggle Button - Always visible */}
+          {/* Toggle Button - Desktop */}
           <div
             className={`flex items-center mb-8 ${sidebarExpanded ? "justify-end" : "justify-center"}`}
           >
@@ -222,9 +346,22 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
         {/* Main content */}
         <div className="flex-1 flex flex-col h-screen">
           {/* Header - Fixed */}
-          <header className="h-20 flex items-center justify-end px-6 lg:px-8 flex-shrink-0 bg-transparent">
+          <header className="h-20 flex items-center justify-between px-4 lg:px-8 flex-shrink-0 bg-transparent">
+            {/* Left side - Mobile Menu Button */}
+            <div className="lg:hidden">
+              <EBButton
+                variant="ghost"
+                size="icon"
+                icon={Menu}
+                iconSize={24}
+                onClick={() => setMobileMenuOpen(true)}
+                className="w-10 h-10 bg-card/30 backdrop-blur-sm text-foreground hover:bg-muted/50 border border-border/20 rounded-xl transition-all duration-200"
+                title="Open Menu"
+              />
+            </div>
+
             {/* Right side - Search, Notifications, User */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 ml-auto">
               {/* Search */}
               {showSearch && (
                 <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-card/30 backdrop-blur-sm rounded-2xl border border-border/20 min-w-[300px]">

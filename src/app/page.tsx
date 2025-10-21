@@ -5,6 +5,7 @@ import MarketingFeature from "@/features/marketing/MarketingFeature";
 import { SEOPage, generateOrganizationSchema, generateFAQSchema } from "@/components/seo";
 import { NextIntlClientProvider } from "next-intl";
 import { DEFAULT_LOCALE } from "@/i18n/config";
+import { ENV } from "@/utils/env";
 
 export default function MainPage() {
   // Load messages for default locale
@@ -35,11 +36,13 @@ export default function MainPage() {
     );
   }
 
+  const siteUrl = ENV.SITE.URL;
+
   // SEO Data
   const organizationData = {
     name: "EduBridge",
-    url: "https://edubridge.com",
-    logo: "https://edubridge.com/logo/edubridge-logo-text.png",
+    url: siteUrl,
+    logo: `${siteUrl}/logo/edubridge-logo-text.png`,
     description:
       "Nền tảng kết nối học viên với gia sư chất lượng cao. Học tập hiệu quả với các khóa học được thiết kế riêng cho từng học viên.",
     address: {
@@ -52,7 +55,7 @@ export default function MainPage() {
     contactPoint: {
       telephone: "+84-375-613-793",
       contactType: "customer service",
-      email: "support@edubridge.com",
+      email: "support@edubridge.edu.vn",
     },
     sameAs: ["https://www.facebook.com/edubridge.sv/", "https://www.tiktok.com/@edubridge.tt"],
   };
@@ -93,8 +96,8 @@ export default function MainPage() {
         type="website"
         locale="vi_VN"
         alternateLocales={[
-          { locale: "en", url: "https://edubridge.com/en" },
-          { locale: "vi", url: "https://edubridge.com/vi" },
+          { locale: "en", url: `${siteUrl}/en` },
+          { locale: "vi", url: `${siteUrl}/vi` },
         ]}
         structuredData={structuredData}
       >
