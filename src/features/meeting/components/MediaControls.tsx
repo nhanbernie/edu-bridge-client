@@ -8,6 +8,7 @@ interface MediaControlsProps {
   micOn: boolean;
   camOn: boolean;
   isScreenSharing?: boolean;
+  isSomeoneElseSharing?: boolean; // Có người khác đang share màn hình
   isHandRaised?: boolean;
   unreadMessages?: number;
 
@@ -41,6 +42,7 @@ export const MediaControls: React.FC<MediaControlsProps> = ({
   micOn,
   camOn,
   isScreenSharing = false,
+  isSomeoneElseSharing = false,
   isHandRaised = false,
   unreadMessages = 0,
   onToggleMic,
@@ -52,6 +54,10 @@ export const MediaControls: React.FC<MediaControlsProps> = ({
   className,
   disabled = false,
 }) => {
+  // Chỉ cho phép toggle screen share nếu:
+  // - Chính mình đang share (để stop)
+  // - Không ai đang share (để start)
+  const canToggleScreenShare = isScreenSharing || !isSomeoneElseSharing;
   return (
     <div
       className={cn(
@@ -101,14 +107,27 @@ export const MediaControls: React.FC<MediaControlsProps> = ({
           size="sm"
           variant="ghost"
           onClick={onToggleScreenShare}
-          disabled={disabled}
+          disabled={disabled || !canToggleScreenShare}
           className={cn(
             "rounded-full w-10 h-10 p-0 transition-all shadow-lg",
             isScreenSharing
               ? "bg-blue-500/90 hover:bg-blue-500 text-white border border-blue-400/50"
-              : "bg-white/90 dark:bg-white/20 hover:bg-white dark:hover:bg-white/30 backdrop-blur-xl text-gray-700 dark:text-white border border-gray-200 dark:border-white/30"
+              : isSomeoneElseSharing
+                ? "bg-gray-400/50 text-gray-500 border border-gray-300/50 cursor-not-allowed"
+                : "bg-white/90 dark:bg-white/20 hover:bg-white dark:hover:bg-white/30 backdrop-blur-xl text-gray-700 dark:text-white border border-gray-200 dark:border-white/30"
           )}
-          aria-label={isScreenSharing ? "Stop sharing" : "Share screen"}
+          aria-label={
+            isScreenSharing
+              ? "Stop sharing"
+              : isSomeoneElseSharing
+                ? "Someone else is sharing"
+                : "Share screen"
+          }
+          title={
+            isSomeoneElseSharing && !isScreenSharing
+              ? "Someone else is sharing their screen"
+              : undefined
+          }
         >
           <Monitor className="w-4 h-4" />
         </Button>

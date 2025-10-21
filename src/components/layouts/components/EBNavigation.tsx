@@ -8,6 +8,30 @@ const EBNavigation = ({ items }: { items: any[] }) => {
   const { push } = useLocaleRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const smoothScrollTo = (element: Element) => {
+    const headerOffset = 64; // Offset for fixed header (h-16 = 64px)
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  };
+
+  const handleNavigation = (href: string) => {
+    // Check if it's a hash link (scroll navigation)
+    if (href.startsWith("#")) {
+      const element = document.querySelector(href);
+      if (element) {
+        smoothScrollTo(element);
+      }
+    } else {
+      // Regular router navigation
+      push(href);
+    }
+  };
+
   return (
     <>
       {items.map((item, index) => (
@@ -18,7 +42,7 @@ const EBNavigation = ({ items }: { items: any[] }) => {
           transition={{ delay: index * 0.05, duration: 0.2 }}
         >
           <button
-            onClick={() => push(item.href)}
+            onClick={() => handleNavigation(item.href)}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
             className={`relative text-sm font-medium transition-colors hover:text-primary hover:cursor-pointer ${item.active ? "text-primary" : "text-muted-foreground"

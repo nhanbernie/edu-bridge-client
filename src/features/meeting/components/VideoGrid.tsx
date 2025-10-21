@@ -16,12 +16,15 @@ export interface Participant {
 interface VideoGridProps {
   // Streams
   localStream: MediaStream | null;
+  screenStream?: MediaStream | null; // Screen share stream
   participants: Map<string, Participant>;
   userId: string;
+  remoteScreenShareUserId?: string | null; // User ID đang share màn hình
 
   // Local user state
   micOn: boolean;
   camOn: boolean;
+  isScreenSharing?: boolean;
 
   // Layout
   layout?: "grid" | "sidebar" | "fullscreen";
@@ -33,10 +36,13 @@ interface VideoGridProps {
 }
 export const VideoGrid: React.FC<VideoGridProps> = ({
   localStream,
+  screenStream,
   participants,
   userId,
+  remoteScreenShareUserId,
   micOn,
   camOn,
+  isScreenSharing = false,
   layout = "grid",
   showLocalPreview = true,
   children,
@@ -44,12 +50,74 @@ export const VideoGrid: React.FC<VideoGridProps> = ({
 }) => {
   const participantCount = participants.size;
 
+  // Tìm remote participant đang share màn hình
+  const remoteScreenShareParticipant = remoteScreenShareUserId
+    ? Array.from(participants.values()).find((p) => p.userId === remoteScreenShareUserId)
+    : null;
+
+  // Kiểm tra xem có ai đang share màn hình không
+  const hasScreenShare = isScreenSharing || !!remoteScreenShareParticipant;
+
   // Grid layout: All participants in a grid, local preview in corner
   if (layout === "grid") {
     return (
       <div className={cn("relative w-full h-full", className)}>
-        {/* Background layer - Whiteboard or other content */}
-        {children && <div className="absolute inset-0 z-0">{children}</div>}
+        {/*
+          PRIORITY RENDERING:
+          1. Screen Share (nếu có) - z-10
+          2. Whiteboard (nếu không có screen share) - z-0
+          3. Remote participants (draggable) - z-30
+          4. Local preview (PiP) - z-20
+        */}
+
+        {/* Whiteboard - CHỈ hiển thị khi KHÔNG có screen share */}
+        {!hasScreenShare && children && <div className="absolute inset-0 z-0">{children}</div>}
+
+        {/* Local Screen Share - Hiển thị màn hình share của chính mình */}
+        {isScreenSharing && screenStream && (
+          <div className="absolute inset-0 z-10 bg-black flex items-center justify-center">
+            <video
+              ref={(el) => {
+                if (el && screenStream) {
+                  el.srcObject = screenStream;
+                  el.play().catch(console.error);
+                }
+              }}
+              autoPlay
+              playsInline
+              className="w-full h-full object-contain"
+            />
+            {/* Screen share indicator */}
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-blue-500/90 text-white px-4 py-2 rounded-lg shadow-lg z-30 flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold">You are sharing your screen</span>
+            </div>
+          </div>
+        )}
+
+        {/* Remote Screen Share - Hiển thị màn hình share của người khác */}
+        {!isScreenSharing && remoteScreenShareParticipant && (
+          <div className="absolute inset-0 z-10 bg-black flex items-center justify-center">
+            <video
+              ref={(el) => {
+                if (el && remoteScreenShareParticipant.stream) {
+                  el.srcObject = remoteScreenShareParticipant.stream;
+                  el.play().catch(console.error);
+                }
+              }}
+              autoPlay
+              playsInline
+              className="w-full h-full object-contain"
+            />
+            {/* Remote screen share indicator */}
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-500/90 text-white px-4 py-2 rounded-lg shadow-lg z-30 flex items-center gap-2">
+              <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold">
+                {remoteScreenShareParticipant.userId} is sharing their screen
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Remote participants - Draggable (1:1 mode) */}
         <DraggableRemoteVideo participants={participants} defaultPosition={{ x: 16, y: 96 }} />

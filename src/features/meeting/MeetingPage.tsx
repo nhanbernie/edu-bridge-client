@@ -37,6 +37,8 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [participants, setParticipants] = useState<Map<string, Participant>>(new Map());
+  const [localStreamVersion, setLocalStreamVersion] = useState(0); // Force re-render khi stream change
+  const [remoteScreenShareUserId, setRemoteScreenShareUserId] = useState<string | null>(null);
 
   // -------- constants --------
   const API_BASE = ENV.API.BASE_URL;
@@ -122,13 +124,36 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     }
   }, [micOn]);
 
-  const toggleCamera = useCallback(() => {
-    if (localStreamRef.current) {
-      const videoTracks = localStreamRef.current.getVideoTracks();
+  const toggleCamera = useCallback(async () => {
+    if (!localStreamRef.current) return;
+
+    const videoTracks = localStreamRef.current.getVideoTracks();
+
+    if (camOn) {
       videoTracks.forEach((track) => {
-        track.enabled = !camOn;
+        track.enabled = false;
       });
-      setCamOn(!camOn);
+      setCamOn(false);
+      console.log("Camera disabled");
+    } else {
+      videoTracks.forEach((track) => {
+        track.enabled = true;
+      });
+
+      // Force re-render để video element cập nhật
+      setLocalStreamVersion((v) => {
+        console.log("Incrementing localStreamVersion:", v + 1);
+        return v + 1;
+      });
+
+      setCamOn(true);
+      console.log("Camera enabled");
+
+      // Kiểm tra track có còn hoạt động không sau 100ms
+      setTimeout(() => {
+        const tracks = localStreamRef.current?.getVideoTracks();
+        console.log("Track check after enable:", tracks?.[0]?.readyState, tracks?.[0]?.enabled);
+      }, 100);
     }
   }, [camOn]);
 
@@ -161,6 +186,13 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
       }
 
       setIsScreenSharing(true);
+
+      // Broadcast screen share status qua SignalR
+      if (connectionRef.current && sessionRef.current.sessionId) {
+        connectionRef.current
+          .invoke("BroadcastScreenShareStatus", sessionRef.current.sessionId, userIdInput, true)
+          .catch((err) => console.error("BroadcastScreenShareStatus failed", err));
+      }
 
       // Auto-stop when user ends sharing from browser UI
       const vTrack = scr.getVideoTracks()[0];
@@ -204,6 +236,13 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
 
       screenStreamRef.current = null;
       setIsScreenSharing(false);
+
+      // Broadcast screen share stopped qua SignalR
+      if (connectionRef.current && sessionRef.current.sessionId) {
+        connectionRef.current
+          .invoke("BroadcastScreenShareStatus", sessionRef.current.sessionId, userIdInput, false)
+          .catch((err) => console.error("BroadcastScreenShareStatus failed", err));
+      }
     } catch (e) {
       console.error("stopScreenShare failed:", e);
     }
@@ -250,13 +289,22 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     conn.on("UserJoined", (uid, role) => console.log("UserJoined:", uid, role));
 
     conn.on("UserLeft", (leftPeerId, uid) => {
+      console.log("UserLeft:", leftPeerId, uid);
+
+      // Xóa participant khỏi state
       setParticipants((prev) => {
         const newMap = new Map(prev);
         newMap.delete(leftPeerId);
         return newMap;
       });
+
+      // Đóng peer connection
       if (callsRef.current[leftPeerId]) {
-        callsRef.current[leftPeerId].close();
+        try {
+          callsRef.current[leftPeerId].close();
+        } catch (e) {
+          console.error("Error closing call:", e);
+        }
         delete callsRef.current[leftPeerId];
       }
     });
@@ -295,19 +343,40 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     });
 
     conn.on("ReceiveMessage", (uid, message) => {
-      setMessages((prev) => [...prev, { userId: uid, message }]);
-      if (!isChatOpen) {
-        setUnreadMessages((count) => count + 1);
+      console.log("ReceiveMessage from:", uid, "Message:", message);
+      // Chỉ thêm tin nhắn từ người khác, không thêm tin nhắn của chính mình
+      // (vì đã thêm optimistically khi gửi)
+      if (uid !== userIdRef.current) {
+        setMessages((prev) => [...prev, { userId: uid, message }]);
+        if (!isChatOpen) {
+          setUnreadMessages((count) => count + 1);
+        }
+      }
+    });
+
+    conn.on("ReceiveScreenShareStatus", (userId: string, isSharing: boolean) => {
+      console.log("ReceiveScreenShareStatus:", userId, isSharing);
+      if (userId !== userIdRef.current) {
+        setRemoteScreenShareUserId(isSharing ? userId : null);
       }
     });
 
     conn.on("ReceivePeerId", (newPeerId, remoteUserId) => {
+      console.log("ReceivePeerId:", newPeerId, remoteUserId);
       if (!localStreamRef.current || !peerRef.current) return;
       if (newPeerId === peerIdRef.current) return;
+
+      // Tránh tạo duplicate call - chỉ người join sau gọi đến người join trước
+      if (callsRef.current[newPeerId]) {
+        console.log("Call already exists for peerId:", newPeerId);
+        return;
+      }
+
       const call = peerRef.current.call(newPeerId, localStreamRef.current);
       callsRef.current[newPeerId] = call;
 
       call.on("stream", (remoteStream: MediaStream) => {
+        console.log("Received remote stream from:", newPeerId);
         setParticipants((prev) => {
           const newMap = new Map(prev);
           newMap.set(newPeerId, {
@@ -321,8 +390,14 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         });
       });
 
-      call.on("close", () => console.log("Call closed:", newPeerId));
-      call.on("error", (e: any) => console.error("Call error:", e));
+      call.on("close", () => {
+        console.log("Call closed:", newPeerId);
+        delete callsRef.current[newPeerId];
+      });
+      call.on("error", (e: any) => {
+        console.error("Call error:", e);
+        delete callsRef.current[newPeerId];
+      });
     });
 
     conn
@@ -350,10 +425,21 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         });
 
         peer.on("call", (call) => {
+          console.log("Incoming call from:", call.peer);
           if (!localStreamRef.current) return;
+
+          // Tránh answer duplicate call
+          if (callsRef.current[call.peer]) {
+            console.log("Call already exists, closing duplicate:", call.peer);
+            call.close();
+            return;
+          }
+
           call.answer(localStreamRef.current);
           callsRef.current[call.peer] = call;
+
           call.on("stream", (remoteStream: MediaStream) => {
+            console.log("Received remote stream in answer from:", call.peer);
             setParticipants((prev) => {
               const newMap = new Map(prev);
               newMap.set(call.peer, {
@@ -365,6 +451,15 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
               });
               return newMap;
             });
+          });
+
+          call.on("close", () => {
+            console.log("Answered call closed:", call.peer);
+            delete callsRef.current[call.peer];
+          });
+          call.on("error", (e: any) => {
+            console.error("Answered call error:", e);
+            delete callsRef.current[call.peer];
           });
         });
 
@@ -487,6 +582,10 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     async (message: string) => {
       if (!message || !sessionRef.current.sessionId) return;
       try {
+        // Thêm tin nhắn vào UI ngay lập tức (optimistic update)
+        setMessages((prev) => [...prev, { userId: userIdInput, message }]);
+
+        // Gửi tin nhắn lên server
         await connectionRef.current?.invoke(
           "SendMessage",
           sessionRef.current.sessionId,
@@ -495,6 +594,8 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         );
       } catch (e) {
         console.error("SendMessage failed", e);
+        // Nếu lỗi, có thể rollback message (optional)
+        // setMessages((prev) => prev.filter((m) => !(m.userId === userIdInput && m.message === message)));
       }
     },
     [userIdInput]
@@ -537,7 +638,12 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         peerIdRef.current
       ) {
         connectionRef.current
-          .invoke("LeaveSession", sessionRef.current.sessionId, peerIdRef.current, userIdRef.current)
+          .invoke(
+            "LeaveSession",
+            sessionRef.current.sessionId,
+            peerIdRef.current,
+            userIdRef.current
+          )
           .catch(() => { });
       }
       if (localStreamRef.current) localStreamRef.current.getTracks().forEach((t) => t.stop());
@@ -560,11 +666,15 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         <div className="flex-1 relative flex flex-col">
           <div className="flex-1 relative">
             <VideoGrid
+              key={`video-grid-${localStreamVersion}`}
               localStream={localStreamRef.current}
+              screenStream={screenStreamRef.current}
               participants={participants}
               userId={userIdInput || ""}
+              remoteScreenShareUserId={remoteScreenShareUserId}
               micOn={micOn}
               camOn={camOn}
+              isScreenSharing={isScreenSharing}
               layout="grid"
               showLocalPreview={true}
             >
@@ -578,6 +688,7 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
             isScreenSharing={isScreenSharing}
             isHandRaised={isHandRaised}
             unreadMessages={unreadMessages}
+            isSomeoneElseSharing={!!remoteScreenShareUserId}
             onToggleMic={toggleMic}
             onToggleCamera={toggleCamera}
             onToggleScreenShare={() => (isScreenSharing ? stopScreenShare() : startScreenShare())}

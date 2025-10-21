@@ -14,19 +14,12 @@ export default function MainPage() {
   React.useEffect(() => {
     const loadMessages = async () => {
       try {
-        const common = await import(`@/i18n/locales/${DEFAULT_LOCALE}/common.json`);
-        const tutor = await import(`@/i18n/locales/${DEFAULT_LOCALE}/tutor.json`);
-        const auth = await import(`@/i18n/locales/${DEFAULT_LOCALE}/auth.json`);
-        const marketing = await import(`@/i18n/locales/${DEFAULT_LOCALE}/marketing.json`);
-
-        setMessages({
-          common: common.default,
-          tutor: tutor.default,
-          auth: auth.default,
-          marketing: marketing.default,
-        });
+        // Load TẤT CẢ messages từ index.ts (bao gồm router, sidebar, v.v.)
+        const messagesModule = await import(`@/i18n/locales/${DEFAULT_LOCALE}/index.ts`);
+        setMessages(messagesModule.default);
         setMessagesLoaded(true);
       } catch (error) {
+        console.error("Failed to load messages:", error);
         setMessagesLoaded(true);
       }
     };

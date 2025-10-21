@@ -89,21 +89,23 @@ export const DraggableRemoteVideo: React.FC<DraggableRemoteVideoProps> = ({
   return (
     <div
       ref={containerRef}
-      className={cn("fixed z-30 p-2", isDragging ? "cursor-grabbing" : "cursor-grab")}
+      className={cn("fixed z-30", isDragging ? "cursor-grabbing" : "cursor-grab")}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
+        width: "fit-content",
+        height: "fit-content",
       }}
       onMouseDown={handleMouseDown}
     >
       {/* Wrapper with rounded corners and shadow */}
       <div className="rounded-2xl overflow-hidden shadow-2xl bg-black/80 backdrop-blur-xl">
         {/* Header - Drag handle + Controls */}
-        <div className="drag-handle bg-black/70 backdrop-blur-xl px-3 py-2 flex items-center justify-between">
+        <div className="drag-handle bg-black/70 backdrop-blur-xl px-3 py-2 flex items-center justify-between select-none">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-500/50"></div>
             <span className="text-xs font-semibold text-white/90">
-              Remote ({participants.size})
+              Remote ({participants.size > 0 ? participants.size : "Waiting..."})
             </span>
           </div>
 
