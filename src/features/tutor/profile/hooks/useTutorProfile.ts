@@ -135,7 +135,6 @@ export const useTutorProfile = (props?: UseTutorProfileProps) => {
         toast.error(result.message || "Có lỗi xảy ra khi cập nhật hồ sơ");
       }
     } catch (error: any) {
-      console.error("Error updating profile:", error);
       toast.error(error?.data?.message || "Có lỗi xảy ra khi cập nhật hồ sơ");
     } finally {
       setIsSaving(false);
