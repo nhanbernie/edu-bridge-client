@@ -32,7 +32,6 @@ export const useCreateFeedback = () => {
         return { success: false, error: response.message };
       }
     } catch (error: any) {
-      console.error("Create feedback error:", error);
       toast.error("Có lỗi xảy ra khi gửi đánh giá");
       return { success: false, error: error.message };
     } finally {

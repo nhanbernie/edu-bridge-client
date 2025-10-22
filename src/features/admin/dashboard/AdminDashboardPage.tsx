@@ -109,7 +109,6 @@ const AdminDashboardPage = () => {
         tutorType: "TRUSTED_BEGINNER", // Default tutorType for rejected tutors
       }).unwrap();
       // TODO: Replace with toast notification
-      console.log("Tutor rejected successfully!");
       setShowRejectDialog(false);
       setSelectedUser(null);
     } catch (error) {

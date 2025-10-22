@@ -28,11 +28,13 @@ const EBSidebarButton: React.FC<EBSidebarButtonProps> = ({
   const { push } = useLocaleRouter();
 
   const handleClick = () => {
+    // If href is not a placeholder, navigate
+    if (href && href !== "#") {
+      push(href);
+    }
+    // Always call onClick if provided
     if (onClick) {
       onClick();
-    } else {
-      // Navigate with locale
-      push(href);
     }
   };
 

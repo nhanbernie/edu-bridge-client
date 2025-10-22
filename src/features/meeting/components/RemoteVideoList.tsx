@@ -1,6 +1,6 @@
 import React from "react";
 import { VideoTile } from "./VideoTile";
-import { Participant } from "../hooks/useWebRTC";
+import { Participant } from "./VideoGrid";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +36,7 @@ export const RemoteVideoList: React.FC<RemoteVideoListProps> = ({
           "flex flex-col items-center justify-center",
           "bg-black/60 backdrop-blur-xl rounded-2xl shadow-2xl",
           "border border-white/10",
-          "w-[280px] h-[210px]",
+          "w-[320px] h-[240px]",
           className
         )}
       >
@@ -47,27 +47,18 @@ export const RemoteVideoList: React.FC<RemoteVideoListProps> = ({
     );
   }
 
-  // Grid layout - Responsive grid based on participant count
+  // Grid layout - Fixed size for 1:1 video call (student & tutor only)
   if (layout === "grid") {
-    const gridCols =
-      count === 1
-        ? "grid-cols-1"
-        : count === 2
-          ? "grid-cols-2"
-          : count <= 4
-            ? "grid-cols-2"
-            : "grid-cols-3";
-
     return (
-      <div className={cn("grid gap-4", gridCols, "auto-rows-fr", className)}>
-        {participantArray.map((participant) => (
+      <div className={cn("flex flex-col gap-3 p-3", className)}>
+        {participantArray.slice(0, 1).map((participant) => (
           <VideoTile
             key={participant.peerId}
             stream={participant.stream}
             userId={participant.userId}
             isMuted={participant.isMuted}
             isVideoOff={participant.isVideoOff}
-            className="aspect-video"
+            className="w-[320px] h-[240px]"
           />
         ))}
       </div>

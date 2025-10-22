@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 interface BankVerificationDialogProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: () => void | Promise<void>;
 }
 
 const BankVerificationDialog: React.FC<BankVerificationDialogProps> = ({ isOpen, onClose }) => {
@@ -17,6 +17,10 @@ const BankVerificationDialog: React.FC<BankVerificationDialogProps> = ({ isOpen,
   const { data, isLoading } = useVerifyQRCodeQuery(undefined, {
     skip: !isOpen,
   });
+
+  const handleClose = async () => {
+    await onClose();
+  };
 
   const generateErrorHTML = () => `
     <div class="w-48 h-48 flex items-center justify-center bg-red-50 dark:bg-red-900/20 rounded-lg">
@@ -31,7 +35,7 @@ const BankVerificationDialog: React.FC<BankVerificationDialogProps> = ({ isOpen,
   `;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-md rounded-3xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
@@ -94,7 +98,7 @@ const BankVerificationDialog: React.FC<BankVerificationDialogProps> = ({ isOpen,
           )}
 
           <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose} className="flex-1 rounded-3xl">
+            <Button variant="outline" onClick={handleClose} className="flex-1 rounded-3xl">
               {t("actions.later")}
             </Button>
           </div>

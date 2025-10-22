@@ -13,7 +13,7 @@ interface UseGetAndStoreUserReturn {
   isLoading: boolean;
   isError: boolean;
   error: any;
-  refetch: () => void;
+  refetch: () => Promise<void>;
 }
 
 export const useGetAndStoreUser = ({
@@ -37,25 +37,24 @@ export const useGetAndStoreUser = ({
   );
 
   useEffect(() => {
-    console.log("useGetAndStoreUser - Response updated:", {
-      success: response?.success,
-      hasData: !!response?.data,
-      userId: response?.data?.userId,
-      role: response?.data?.role,
-      status: response?.data?.status,
-      verifiedStatus: response?.data?.tutor?.verifiedStatus
-    });
-
     if (response?.success && response.data) {
       saveUserDataOnly(response.data);
     }
   }, [response, saveUserDataOnly]);
+
+  const refetchAndWait = async () => {
+    const result = await refetch();
+    // Wait for the data to be processed
+    if (result.data?.success && result.data.data) {
+      await saveUserDataOnly(result.data.data);
+    }
+  };
 
   return {
     user: response?.data || undefined,
     isLoading,
     isError,
     error,
-    refetch,
+    refetch: refetchAndWait,
   };
 };

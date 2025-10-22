@@ -1,11 +1,12 @@
 {
   "title": "Edit Course",
-  "subtitle": "Update your course information",
+  "subtitle": "Update your course information and settings",
   "buttons": {
-    "back": "Back"
+    "back": "Back to Courses",
+    "submit": "Save Changes"
   },
-  "messages": {
-    "authenticating": "Authenticating information...",
-    "loading": "Loading course information..."
+  "loading": {
+    "auth": "Loading...",
+    "course": "Loading course information..."
   }
 }

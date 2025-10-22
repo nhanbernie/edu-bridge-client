@@ -7,6 +7,7 @@ import { slideUpVariants } from "@/components/motion";
 import { Loader2, Package } from "lucide-react";
 import type { PackageDto } from "@/services/course/type";
 import { useTranslations } from "next-intl";
+import { usePackageDiscount } from "../hooks";
 
 // Format Vietnamese currency
 const formatVNDPrice = (price: number): string => {
@@ -27,6 +28,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
   isLoading,
 }) => {
   const t = useTranslations("student.booking.packageSelector");
+  const { getOriginalPrice } = usePackageDiscount();
 
   // Helper function to get package type name
   const getPackageTypeName = (packageType: string): string => {
@@ -41,7 +43,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
       description: `${pkg.numberOfSessions} ${t("sessions")}`,
       sessions: pkg.numberOfSessions,
       price: pkg.price,
-      originalPrice: (pkg.packageType as string) === "EIGHT" ? pkg.price * 1.15 : null,
+      originalPrice: getOriginalPrice(pkg.packageType as string, pkg.price),
       popular: (pkg.packageType as string) === "EIGHT",
       isTrial: (pkg.packageType as string) === "TRIAL",
       packageType: pkg.packageType as string,
@@ -134,14 +136,21 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
 
             <div className="flex justify-between items-start pr-8 relative z-10">
               <div className="flex-1 min-w-0">
-                <h3
-                  className={cn(
-                    "font-semibold text-base",
-                    pkg.isTrial ? "text-rose-900 dark:text-rose-200" : "text-foreground"
+                <div className="flex items-center gap-2">
+                  <h3
+                    className={cn(
+                      "font-semibold text-base",
+                      pkg.isTrial ? "text-rose-900 dark:text-rose-200" : "text-foreground"
+                    )}
+                  >
+                    {pkg.name}
+                  </h3>
+                  {pkg.originalPrice && !pkg.isTrial && (
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary">
+                      -{Math.round(((pkg.originalPrice - pkg.price) / pkg.originalPrice) * 100)}%
+                    </Badge>
                   )}
-                >
-                  {pkg.name}
-                </h3>
+                </div>
                 <p
                   className={cn(
                     "text-xs mt-1",

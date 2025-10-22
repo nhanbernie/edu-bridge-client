@@ -26,5 +26,8 @@
     "error": "An error occurred",
     "no_data": "No data available",
     "confirm_delete": "Are you sure you want to delete this item?"
-  }
+  },
+  "settings": "Settings",
+  "theme": "Theme",
+  "language": "Language"
 }

@@ -64,7 +64,6 @@ const tutorActionButtons: EBActionButton[] = [
     icon: HelpCircle,
     onClick: () => {
       // Open help modal or navigate to help page
-      console.log("Open help");
     },
   },
 ];

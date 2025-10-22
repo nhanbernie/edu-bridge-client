@@ -1,8 +1,15 @@
 const createEnvConfig = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const timeout = Number(process.env.NEXT_PUBLIC_API_TIMEOUT) || 10000;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+    (typeof window !== 'undefined' ? window.location.origin : 'https://edubridge.edu.vn');
+  
   return {
     API: { BASE_URL: baseUrl, TIMEOUT: timeout },
+    SITE: {
+      URL: siteUrl,
+      DOMAIN: siteUrl.replace(/^https?:\/\//, ''),
+    },
     PEER: {
       HOST: process.env.NEXT_PUBLIC_PEER_HOST || "localhost",
       PORT: Number(process.env.NEXT_PUBLIC_PEER_PORT) || 9000,
