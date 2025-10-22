@@ -31,7 +31,6 @@
 
 export const useSignalRFeedback = () => {
   // TODO: Implement SignalR connection and event handling
-  console.log("TODO: Implement SignalR feedback integration");
 
   return {
     // TODO: Return connection status, methods, etc.

@@ -39,7 +39,7 @@ export const LocalVideoPreview: React.FC<LocalVideoPreviewProps> = ({
   };
 
   return (
-    <div className={cn("relative", sizeClasses[size], className)}>
+    <div className={cn("relative flex-shrink-0", sizeClasses[size], className)}>
       <VideoTile
         stream={stream}
         userId={userId}

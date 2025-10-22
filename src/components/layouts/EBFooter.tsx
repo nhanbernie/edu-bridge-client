@@ -185,7 +185,7 @@ const EBFooter = () => {
         {/* Copyright */}
         <div className="border-t border-border pt-6 sm:pt-8">
           <p className="text-center text-muted-foreground text-xs sm:text-sm">
-            © 2024 EduBridge. Tất cả quyền được bảo lưu.
+            © 2025 EduBridge. Tất cả quyền được bảo lưu.
           </p>
         </div>
       </div>

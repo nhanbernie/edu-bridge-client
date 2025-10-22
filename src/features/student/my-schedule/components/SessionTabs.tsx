@@ -1,5 +1,6 @@
 import React from "react";
 import { Calendar, History } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface SessionTabsProps {
   activeTab: "upcoming" | "history";
@@ -14,6 +15,8 @@ const SessionTabs: React.FC<SessionTabsProps> = ({
   upcomingCount,
   historyCount,
 }) => {
+  const t = useTranslations("components.sessionTabs");
+  
   return (
     <div className="flex space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
       <button
@@ -26,7 +29,7 @@ const SessionTabs: React.FC<SessionTabsProps> = ({
       >
         <div className="flex items-center gap-2">
           <Calendar className="h-4 w-4" />
-          Sắp tới ({upcomingCount})
+          {t("tabs.upcoming")} ({upcomingCount})
         </div>
       </button>
       <button
@@ -39,7 +42,7 @@ const SessionTabs: React.FC<SessionTabsProps> = ({
       >
         <div className="flex items-center gap-2">
           <History className="h-4 w-4" />
-          Lịch sử ({historyCount})
+          {t("tabs.history")} ({historyCount})
         </div>
       </button>
     </div>

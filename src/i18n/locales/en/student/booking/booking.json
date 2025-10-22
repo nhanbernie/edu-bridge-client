@@ -85,6 +85,7 @@
     "info": {
       "created": "• Your booking has been created successfully",
       "timeLimit": "• You have 30 minutes to complete payment",
+      "timeout": "• You have 30 minutes to complete payment",
       "confirmation": "• After payment, the tutor will confirm your schedule",
       "notification": "• You will receive notifications via email and SMS"
     },

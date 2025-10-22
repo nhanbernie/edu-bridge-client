@@ -54,10 +54,10 @@ const PaymentConfirmDialog: React.FC<PaymentConfirmDialogProps> = ({
                 {t("importantInfo")}
               </p>
               <ul className="text-blue-800 dark:text-blue-200 space-y-1">
-                <li>• {t("info.created")}</li>
-                <li>• {t("info.timeout")}</li>
-                <li>• {t("info.confirmation")}</li>
-                <li>• {t("info.notification")}</li>
+                <li>{t("info.created")}</li>
+                <li>{t("info.timeout")}</li>
+                <li>{t("info.confirmation")}</li>
+                <li>{t("info.notification")}</li>
               </ul>
             </div>
           </div>

@@ -21,29 +21,24 @@ const HomeFeature = () => {
 
   const shouldShowChoiceCards = user?.status === "PENDING" && user?.role === "USER";
 
-  const shouldShowUserInfo = user?.status === "PENDING" && user?.role === "TUTOR" && user?.tutor?.verifiedStatus === "PENDING";
+  const shouldShowUserInfo =
+    user?.status === "PENDING" &&
+    user?.role === "TUTOR" &&
+    user?.tutor?.verifiedStatus === "PENDING";
 
   const { refetch: refetchUser } = useGetAndStoreUser({
     userId: user?.userId,
-    enabled: true
+    enabled: true,
   });
 
   // Force refresh user data when coming to home page
   useEffect(() => {
     if (user?.userId) {
-      console.log("Force refreshing user data on home page");
       refetchUser();
     }
   }, [user?.userId, refetchUser]);
 
   useEffect(() => {
-    console.log("HomePage useEffect - User data:", {
-      status: user?.status,
-      role: user?.role,
-      verifiedStatus: user?.tutor?.verifiedStatus,
-      isNavigating
-    });
-
     if (!user || isNavigating) {
       setIsCheckingStatus(true);
       return;
@@ -51,16 +46,8 @@ const HomeFeature = () => {
 
     // Add small delay to ensure state is fully updated
     const timeoutId = setTimeout(() => {
-      console.log("HomePage useEffect - After delay, User data:", {
-        status: user?.status,
-        role: user?.role,
-        verifiedStatus: user?.tutor?.verifiedStatus,
-        isNavigating
-      });
-
       // Case 1: Approved users - redirect to dashboard
       if (user?.status === "APPROVED") {
-        console.log("Case 1: Approved user, redirecting to dashboard");
         if (user?.role === "STUDENT") {
           push("/student");
         } else if (user?.role === "TUTOR") {
@@ -70,19 +57,20 @@ const HomeFeature = () => {
       }
 
       // Case 2: PENDING TUTOR with verifiedStatus === "NONE" - redirect to step 2
-      if (user?.role === "TUTOR" && user?.tutor?.verifiedStatus === "NONE" && user?.status === "PENDING") {
-        console.log("Case 2: PENDING TUTOR with NONE status, redirecting to step 2");
+      if (
+        user?.role === "TUTOR" &&
+        user?.tutor?.verifiedStatus === "NONE" &&
+        user?.status === "PENDING"
+      ) {
         push("/onboarding/tutor?step=2");
         return;
       }
 
       // Case 3: All other PENDING users - show appropriate UI
-      console.log("Case 3: Showing UI for PENDING user");
       setIsCheckingStatus(false);
     }, 1500);
 
     return () => clearTimeout(timeoutId);
-
   }, [user?.status, user?.role, user?.tutor?.verifiedStatus, push, user, isNavigating]);
 
   const handleNavigateToOnboarding = (path: string) => {

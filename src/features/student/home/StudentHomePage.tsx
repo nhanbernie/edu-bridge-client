@@ -1,18 +1,22 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useInView } from "react-intersection-observer";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { MotionContainer, MotionItem } from "@/components/motion";
 import TutorCard from "./components/TutorCard";
 import AdvancedFilter from "./components/AdvancedFilter";
 import { TutorFilterSection } from "./components/TutorFilterSection";
-import { useTutorInfiniteScroll } from "./hooks";
 import type { TutorCardData, TutorSearchRequest, TutorSearchDto } from "@/services/tutor/type";
 import { EBCharityCounter } from "@/components/common";
 import { TutorCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_HEADER, PAGE_TITLE, PAGE_SUBTITLE } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
-import { useLazyFilterTutorsQuery, useLazySearchTutorsQuery, useGetTutorSubjectsQuery } from "@/services/tutor";
+import {
+  useLazyFilterTutorsQuery,
+  useLazySearchTutorsQuery,
+  useGetTutorSubjectsQuery,
+} from "@/services/tutor";
 import { toggleFavoriteTutor } from "@/redux/slices/tutor.slice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useDebounce } from "@/hooks";
@@ -81,10 +85,10 @@ const StudentHomePage = () => {
 
   // Process subjects data from API
   const allSubjects = subjectsData?.data || [];
-  
+
   // Subject options for dropdown (all subjects)
   const subjectOptions = allSubjects;
-  
+
   // Quick filter subjects - only show first 4 items
   const quickFilterSubjects = allSubjects.slice(0, 4);
 
@@ -106,7 +110,6 @@ const StudentHomePage = () => {
         setIsSearchMode(false);
       }
     } catch (err) {
-      console.error("Error loading tutors:", err);
     } finally {
       setIsInitialLoading(false);
     }
@@ -142,9 +145,7 @@ const StudentHomePage = () => {
           setAllTutors(tutors);
           setHasMore(tutors.length >= PAGE_SIZE);
         }
-      } catch (err) {
-        console.error("Error searching tutors:", err);
-      }
+      } catch (err) {}
     };
 
     performSearch();
@@ -180,7 +181,6 @@ const StudentHomePage = () => {
         setHasMore(newTutors.length >= PAGE_SIZE);
       }
     } catch (err) {
-      console.error("Error loading more tutors:", err);
     } finally {
       isLoadingRef.current = false;
     }
@@ -207,14 +207,18 @@ const StudentHomePage = () => {
     dispatch(toggleFavoriteTutor(tutorId));
   };
 
-  // Infinite scroll hook with optimized settings (after loadMoreTutors is defined)
-  const { observerTarget } = useTutorInfiniteScroll({
-    hasMore,
-    isLoading: isLoadingMore,
-    onLoadMore: loadMoreTutors,
+  // Infinite scroll with react-intersection-observer
+  const { ref: loadMoreRef, inView } = useInView({
     rootMargin: "300px", // Trigger 300px before reaching element (fixes footer issue)
     threshold: 0.1, // Trigger when 10% visible (more sensitive)
   });
+
+  // Auto load more when element is in view
+  useEffect(() => {
+    if (inView && hasMore && !isLoadingMore && !isLoadingRef.current) {
+      loadMoreTutors();
+    }
+  }, [inView, hasMore, isLoadingMore, loadMoreTutors]);
 
   const filteredTutors: TutorCardData[] = allTutors
     .filter((tutor: TutorCardData) => {
@@ -273,9 +277,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying quick filter:", err);
-    }
+    } catch (err) {}
   };
 
   const handleSubjectFilterToggle = async (subject: string) => {
@@ -316,9 +318,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying subject filter:", err);
-    }
+    } catch (err) {}
   };
 
   const handleAdvancedFilterApply = async (filters: TutorSearchRequest) => {
@@ -341,9 +341,7 @@ const StudentHomePage = () => {
         setAllTutors(tutors);
         setHasMore(tutors.length >= PAGE_SIZE);
       }
-    } catch (err) {
-      console.error("Error applying filters:", err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -424,14 +422,16 @@ const StudentHomePage = () => {
               ))}
             </MotionContainer>
 
-            {hasMore && (
-              <div ref={observerTarget} className="min-h-[100px]">
-                {isLoadingMore && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <TutorCardSkeleton count={6} />
-                  </div>
-                )}
+            {/* Loading more skeleton */}
+            {isLoadingMore && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+                <TutorCardSkeleton count={6} />
               </div>
+            )}
+
+            {/* Load more trigger element (invisible) */}
+            {hasMore && !isLoadingMore && (
+              <div ref={loadMoreRef} className="h-10 w-full" aria-hidden="true" />
             )}
           </>
         )}

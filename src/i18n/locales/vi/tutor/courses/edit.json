@@ -1,11 +1,12 @@
 {
   "title": "Chỉnh sửa khóa học",
-  "subtitle": "Cập nhật thông tin khóa học của bạn",
+  "subtitle": "Cập nhật thông tin và cài đặt khóa học của bạn",
   "buttons": {
-    "back": "Quay lại"
+    "back": "Quay lại danh sách",
+    "submit": "Lưu thay đổi"
   },
-  "messages": {
-    "authenticating": "Đang xác thực thông tin...",
-    "loading": "Đang tải thông tin khóa học..."
+  "loading": {
+    "auth": "Đang tải...",
+    "course": "Đang tải thông tin khóa học..."
   }
 }

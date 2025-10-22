@@ -11,7 +11,7 @@ const EBAuthLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("marketing.auth");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 relative overflow-hidden pb-5">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-full blur-3xl"></div>

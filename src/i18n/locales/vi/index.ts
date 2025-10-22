@@ -19,6 +19,7 @@ import sessionList from "./components/session-list.json";
 import sessionTabs from "./components/session-tabs.json";
 import tutorCard from "./components/tutor-card.json";
 import tutorCourseCard from "./components/tutor-course-card.json";
+import userMenu from "./components/user-menu.json";
 
 // Home
 import home from "./home/home.json";
@@ -92,6 +93,7 @@ const messages = {
     sessionTabs,
     tutorCard,
     tutorCourseCard,
+    userMenu,
   },
   home,
   meeting,

@@ -50,11 +50,11 @@ export const useStudentProfile = (props?: UseStudentProfileProps) => {
       const updateData = {
         userId: effectiveUserId,
         fullName: formData.fullName,
-        phone: formData.phone,
-        location: formData.location,
         student: {
           grade: formData.grade,
           learningGoal: formData.learningGoal,
+          location: formData.location,
+          phone: formData.phone,
         },
       };
 
@@ -68,7 +68,6 @@ export const useStudentProfile = (props?: UseStudentProfileProps) => {
         toast.error(result.message || "Có lỗi xảy ra khi cập nhật hồ sơ");
       }
     } catch (error: any) {
-      console.error("Error updating profile:", error);
       toast.error(error?.data?.message || "Có lỗi xảy ra khi cập nhật hồ sơ");
     } finally {
       setIsSaving(false);

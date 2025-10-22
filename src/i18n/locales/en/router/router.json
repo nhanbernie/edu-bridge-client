@@ -4,6 +4,7 @@
     "findTutors": "Find Tutors",
     "findStudents": "Find Students",
     "teachers": "Teachers",
+    "features": "Features",
     "contact": "Contact"
   },
   "sidebar": {
@@ -20,7 +21,6 @@
     "tutors": "Tutors",
     "payments": "Payments",
     "users": "Users",
-    "tutors": "Tutors",
     "analytics": "Analytics",
     "reports": "Reports"
   },

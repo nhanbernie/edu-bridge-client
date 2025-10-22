@@ -81,7 +81,6 @@ export const useTutorMedia = (tutorId: string, filterType?: MediaType) => {
         return null;
       }
     } catch (error: any) {
-      console.error("Upload media error:", error);
       toast.error(error?.data?.message || "Có lỗi xảy ra khi tải file lên");
       return null;
     }
@@ -140,7 +139,6 @@ export const useTutorMedia = (tutorId: string, filterType?: MediaType) => {
         return null;
       }
     } catch (error: any) {
-      console.error("Update media error:", error);
       toast.error(error?.data?.message || "Có lỗi xảy ra khi cập nhật");
       return null;
     }

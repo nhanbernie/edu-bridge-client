@@ -25,7 +25,19 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
   const { push } = useLocaleRouter();
   const pathname = usePathname();
   const t = useTranslations("marketing.header");
-  const tRouter = useTranslations();
+  const tRouter = useTranslations("router");
+
+  // Smooth scroll helper with header offset
+  const smoothScrollTo = (element: Element) => {
+    const headerOffset = 64; // Offset for fixed header (h-16 = 64px)
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  };
 
   // Get current path without locale prefix (e.g., /en/student -> /student)
   const currentPath = useMemo(() => {
@@ -56,7 +68,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-out ${isScrolled
           ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
           : "bg-transparent"
           }`}
@@ -140,14 +152,18 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
               )}
 
               {/* Mobile Menu Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </motion.button>
+              {!isMobileMenuOpen && (
+                <motion.button
+                  initial={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsMobileMenuOpen(true)}
+                  className="md:hidden p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                >
+                  <Menu className="w-5 h-5" />
+                </motion.button>
+              )}
             </div>
           </div>
         </div>
@@ -161,7 +177,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           x: isMobileMenuOpen ? "0%" : "100%",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-40 md:hidden ${isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
+        className={`fixed top-0 right-0 h-full w-80 bg-card border-l border-border shadow-2xl z-[110] md:hidden ${isMobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
           }`}
       >
         <div className="p-6 space-y-6">
@@ -193,7 +209,15 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    push(item.href);
+                    // Handle scroll navigation for hash links
+                    if (item.href.startsWith("#")) {
+                      const element = document.querySelector(item.href);
+                      if (element) {
+                        smoothScrollTo(element);
+                      }
+                    } else {
+                      push(item.href);
+                    }
                   }}
                   className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors ${item.active
                     ? "bg-primary/10 text-primary border border-primary/20"
@@ -256,7 +280,7 @@ const EBMaketingHeader = ({ headerConfig }: MaketingHeaderProps) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setIsMobileMenuOpen(false)}
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[105] md:hidden"
         />
       )}
     </>

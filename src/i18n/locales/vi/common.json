@@ -26,5 +26,8 @@
     "error": "Đã xảy ra lỗi",
     "no_data": "Không có dữ liệu",
     "confirm_delete": "Bạn có chắc chắn muốn xóa mục này?"
-  }
+  },
+  "settings": "Cài đặt",
+  "theme": "Giao diện",
+  "language": "Ngôn ngữ"
 }

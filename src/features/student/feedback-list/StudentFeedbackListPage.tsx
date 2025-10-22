@@ -10,6 +10,7 @@ import { EnrolledCourseCard } from "./components";
 import { EnrolledCourseCardSkeleton } from "@/components/common/skeletons";
 import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
+import { EBMotionCard } from "@/components/motion";
 
 const StudentFeedbackListPage: React.FC = () => {
   const { push } = useLocaleRouter();
@@ -100,7 +101,7 @@ const StudentFeedbackListPage: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-primary/10 rounded-lg sm:rounded-xl">
                 <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -114,9 +115,9 @@ const StudentFeedbackListPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-orange-100 dark:bg-orange-900/20 rounded-lg sm:rounded-xl">
                 <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600 dark:text-orange-400" />
@@ -130,9 +131,9 @@ const StudentFeedbackListPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
 
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-green-100 dark:bg-green-900/20 rounded-lg sm:rounded-xl">
                 <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 dark:text-green-400" />
@@ -146,12 +147,12 @@ const StudentFeedbackListPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
         </div>
 
         {/* Empty State */}
         {enrollments.length === 0 ? (
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-8 sm:p-12">
+          <EBMotionCard variant="base" className="p-8 sm:p-12">
             <div className="text-center">
               <BookOpen className="h-12 w-12 sm:h-16 sm:w-16 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">
@@ -167,7 +168,7 @@ const StudentFeedbackListPage: React.FC = () => {
                 {t("findTutor")}
               </button>
             </div>
-          </div>
+          </EBMotionCard>
         ) : (
           <>
             {/* In Progress Courses */}
