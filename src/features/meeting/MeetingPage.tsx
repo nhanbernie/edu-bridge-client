@@ -250,6 +250,9 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
 
   // -------- SignalR: init ONCE, reconnect-safe --------
   useEffect(() => {
+    // Prevent duplicate connections
+    if (connectionRef.current) return;
+
     const conn = new signalR.HubConnectionBuilder()
       .withUrl(`${API_BASE}/chatHub`, {
         skipNegotiation: true,
@@ -286,9 +289,11 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     });
 
     // hub handlers
-    conn.on("UserJoined", (uid, role) => console.log("UserJoined:", uid, role));
+    const handleUserJoined = (uid: string, role: string) => {
+      console.log("UserJoined:", uid, role);
+    };
 
-    conn.on("UserLeft", (leftPeerId, uid) => {
+    const handleUserLeft = (leftPeerId: string, uid: string) => {
       console.log("UserLeft:", leftPeerId, uid);
 
       // Xóa participant khỏi state
@@ -307,9 +312,9 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         }
         delete callsRef.current[leftPeerId];
       }
-    });
+    };
 
-    conn.on("ReceiveWhiteboardUpdate", (snapshotJson, meta) => {
+    const handleReceiveWhiteboardUpdate = (snapshotJson: any, meta: any) => {
       const me = userIdRef.current;
       if (meta && meta.ClientId === me) return;
       if (meta?.Version <= currentVersionRef.current) return;
@@ -321,9 +326,9 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
       } catch (e) {
         console.error("ReceiveWhiteboardUpdate error:", e);
       }
-    });
+    };
 
-    conn.on("ReceiveShapeUpdate", (shapeData, meta) => {
+    const handleReceiveShapeUpdate = (shapeData: any, meta: any) => {
       const me = userIdRef.current;
       if (meta && meta.ClientId === me) return;
       try {
@@ -340,28 +345,27 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
       } catch (e) {
         console.error("ReceiveShapeUpdate error:", e);
       }
-    });
+    };
 
-    conn.on("ReceiveMessage", (uid, message) => {
+    const handleReceiveMessage = (uid: string, message: string) => {
       console.log("ReceiveMessage from:", uid, "Message:", message);
-      // Chỉ thêm tin nhắn từ người khác, không thêm tin nhắn của chính mình
-      // (vì đã thêm optimistically khi gửi)
-      if (uid !== userIdRef.current) {
-        setMessages((prev) => [...prev, { userId: uid, message }]);
-        if (!isChatOpen) {
-          setUnreadMessages((count) => count + 1);
-        }
+      // Thêm TẤT CẢ tin nhắn từ server (kể cả của chính mình)
+      // Không dùng optimistic update nữa
+      setMessages((prev) => [...prev, { userId: uid, message }]);
+      // Chỉ tăng unread nếu là tin nhắn từ người khác
+      if (uid !== userIdRef.current && !isChatOpen) {
+        setUnreadMessages((count) => count + 1);
       }
-    });
+    };
 
-    conn.on("ReceiveScreenShareStatus", (userId: string, isSharing: boolean) => {
+    const handleReceiveScreenShareStatus = (userId: string, isSharing: boolean) => {
       console.log("ReceiveScreenShareStatus:", userId, isSharing);
       if (userId !== userIdRef.current) {
         setRemoteScreenShareUserId(isSharing ? userId : null);
       }
-    });
+    };
 
-    conn.on("ReceivePeerId", (newPeerId, remoteUserId) => {
+    const handleReceivePeerId = (newPeerId: string, remoteUserId: string) => {
       console.log("ReceivePeerId:", newPeerId, remoteUserId);
       if (!localStreamRef.current || !peerRef.current) return;
       if (newPeerId === peerIdRef.current) return;
@@ -398,15 +402,35 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         console.error("Call error:", e);
         delete callsRef.current[newPeerId];
       });
-    });
+    };
+
+    // Register handlers
+    conn.on("UserJoined", handleUserJoined);
+    conn.on("UserLeft", handleUserLeft);
+    conn.on("ReceiveWhiteboardUpdate", handleReceiveWhiteboardUpdate);
+    conn.on("ReceiveShapeUpdate", handleReceiveShapeUpdate);
+    conn.on("ReceiveMessage", handleReceiveMessage);
+    conn.on("ReceiveScreenShareStatus", handleReceiveScreenShareStatus);
+    conn.on("ReceivePeerId", handleReceivePeerId);
 
     conn
       .start()
       .then(() => console.log("SignalR connected"))
       .catch((err) => console.error("SignalR start error:", err));
+    
     connectionRef.current = conn;
+
     return () => {
+      conn.off("UserJoined", handleUserJoined);
+      conn.off("UserLeft", handleUserLeft);
+      conn.off("ReceiveWhiteboardUpdate", handleReceiveWhiteboardUpdate);
+      conn.off("ReceiveShapeUpdate", handleReceiveShapeUpdate);
+      conn.off("ReceiveMessage", handleReceiveMessage);
+      conn.off("ReceiveScreenShareStatus", handleReceiveScreenShareStatus);
+      conn.off("ReceivePeerId", handleReceivePeerId);
+      
       conn.stop().catch(() => { });
+      connectionRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // init once
@@ -582,10 +606,8 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
     async (message: string) => {
       if (!message || !sessionRef.current.sessionId) return;
       try {
-        // Thêm tin nhắn vào UI ngay lập tức (optimistic update)
-        setMessages((prev) => [...prev, { userId: userIdInput, message }]);
-
-        // Gửi tin nhắn lên server
+        // Gửi tin nhắn lên server - server sẽ broadcast về cho TẤT CẢ
+        // Tin nhắn sẽ được thêm vào UI khi nhận broadcast từ server
         await connectionRef.current?.invoke(
           "SendMessage",
           sessionRef.current.sessionId,
@@ -594,8 +616,6 @@ const MeetingPage: React.FC<MeetingPageProps> = ({ sessionId: initialSessionId }
         );
       } catch (e) {
         console.error("SendMessage failed", e);
-        // Nếu lỗi, có thể rollback message (optional)
-        // setMessages((prev) => prev.filter((m) => !(m.userId === userIdInput && m.message === message)));
       }
     },
     [userIdInput]

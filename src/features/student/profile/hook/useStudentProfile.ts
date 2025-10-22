@@ -50,11 +50,11 @@ export const useStudentProfile = (props?: UseStudentProfileProps) => {
       const updateData = {
         userId: effectiveUserId,
         fullName: formData.fullName,
-        phone: formData.phone,
-        location: formData.location,
         student: {
           grade: formData.grade,
           learningGoal: formData.learningGoal,
+          location: formData.location,
+          phone: formData.phone,
         },
       };
 

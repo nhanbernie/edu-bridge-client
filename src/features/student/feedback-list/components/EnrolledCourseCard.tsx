@@ -125,7 +125,7 @@ const EnrolledCourseCard: React.FC<EnrolledCourseCardProps> = memo(
         </div>
 
         {/* View Details Button */}
-        <div className="flex mt-4">
+        <div className="flex flex-row-reverse mt-4">
           <EBButtonAction
             onClick={() => onViewDetails?.(enrollment.courseId)}
             className="group/btn flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto self-start lg:self-end hover:cursor-pointer"
