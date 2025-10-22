@@ -41,8 +41,17 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
       "Địa lý": "geography",
     };
 
+    // Valid subject keys from translation file
+    const validKeys = ["math", "physics", "chemistry", "biology", "english", "literature", "history", "geography"];
+
     const key = subjectKeyMap[value] || value;
-    return tSubjects(key as any) || value;
+    
+    // Only use translation if key is valid, otherwise return the original value
+    if (validKeys.includes(key)) {
+      return tSubjects(key as any);
+    }
+    
+    return value;
   };
 
   return (

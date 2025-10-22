@@ -85,6 +85,7 @@
     "info": {
       "created": "• Đặt lịch của bạn đã được tạo thành công",
       "timeLimit": "• Bạn có 30 phút để hoàn tất thanh toán",
+      "timeout": "• Bạn có 30 phút để hoàn tất thanh toán",
       "confirmation": "• Sau khi thanh toán, gia sư sẽ xác nhận lịch học",
       "notification": "• Bạn sẽ nhận được thông báo qua email và SMS"
     },

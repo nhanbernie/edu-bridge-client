@@ -94,15 +94,15 @@ const PaymentQRCodeDialog: React.FC<PaymentQRCodeDialogProps> = ({
             </div>
 
             {/* Instructions */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800 mb-5">
               <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
                 {t("instructions.title")}
               </h4>
               <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                <li>1. {t("instructions.step1")}</li>
-                <li>2. {t("instructions.step2")}</li>
-                <li>3. {t("instructions.step3")}</li>
-                <li>4. {t("instructions.step4")}</li>
+                <li>{t("instructions.step1")}</li>
+                <li>{t("instructions.step2")}</li>
+                <li>{t("instructions.step3")}</li>
+                <li>{t("instructions.step4")}</li>
               </ol>
             </div>
           </div>

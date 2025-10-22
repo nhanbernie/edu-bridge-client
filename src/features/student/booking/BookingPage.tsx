@@ -29,8 +29,9 @@ interface SelectedSession {
 }
 
 const BOOKING_GUIDE_KEY = "edubridge_booking_guide_seen";
+const BOOKING_COURSE_ID_KEY = "edubridge_booking_courseId";
 
-const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
+const BookingPage = ({ tutorId, courseId: propCourseId }: BookingPageProps) => {
   const t = useTranslations("student.booking");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -38,6 +39,24 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedSessions, setSelectedSessions] = useState<SelectedSession[]>([]);
   const [showGuideModal, setShowGuideModal] = useState(false);
+
+  // Cache and retrieve courseId from sessionStorage
+  const [courseId, setCourseId] = useState<string | undefined>(() => {
+    // Try to get from props first, then from sessionStorage
+    if (propCourseId) return propCourseId;
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem(BOOKING_COURSE_ID_KEY) || undefined;
+    }
+    return undefined;
+  });
+
+  // Update cache when courseId changes
+  useEffect(() => {
+    if (propCourseId) {
+      setCourseId(propCourseId);
+      sessionStorage.setItem(BOOKING_COURSE_ID_KEY, propCourseId);
+    }
+  }, [propCourseId]);
 
   // API hooks
   const coursesHook = useManageCourses(tutorId, courseId);
@@ -55,6 +74,15 @@ const BookingPage = ({ tutorId, courseId }: BookingPageProps) => {
     if (!hasSeenGuide) {
       setShowGuideModal(true);
     }
+  }, []);
+
+  // Cleanup: clear courseId cache when component unmounts
+  useEffect(() => {
+    return () => {
+      // Optional: clear cache on unmount to avoid using stale courseId
+      // Uncomment if you want to clear cache when leaving the page
+      // sessionStorage.removeItem(BOOKING_COURSE_ID_KEY);
+    };
   }, []);
 
   // Handle close guide modal
