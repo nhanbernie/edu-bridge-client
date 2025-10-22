@@ -9,7 +9,6 @@ import EBSidebarButton from "@/components/layouts/components/EBSidebarButton";
 import EBButton from "@/components/common/EBButton";
 import { Search, Bell, Settings, ChevronLeft, ChevronRight, CreditCard, Menu, X } from "lucide-react";
 import { EBUserMenu } from "@/components/common";
-import { useVerifyQRCodeQuery } from "@/services/payment";
 import { useAppSelector } from "@/redux/hooks";
 import {
   EBSidebarItem,
@@ -42,7 +41,6 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
 }) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showVerifyButton, setShowVerifyButton] = useState(false);
   const pathname = usePathname();
   const { getCurrentLocale } = useLocaleRouter();
   const { currentLocale } = useLanguageToggle();
@@ -52,32 +50,14 @@ const EBManageLayout: React.FC<EBManageLayoutProps> = ({
   // Check if user is tutor and bank account is not verified
   const isTutor = user?.role === "TUTOR";
   const isBankVerified = user?.tutor?.isBankAccountVerified;
-  const shouldCheckQR = isTutor && !isBankVerified;
+  const showVerifyButton = isTutor && !isBankVerified;
 
   // Check if user role is USER (hide actions for basic users)
   const isBasicUser = user?.role === "USER";
 
-  // Call API only when needed
-  const { data: qrData, isLoading: qrLoading } = useVerifyQRCodeQuery(undefined, {
-    skip: !shouldCheckQR,
-    refetchOnMountOrArgChange: false,
-    refetchOnFocus: false,
-    refetchOnReconnect: false,
-  });
-
   // Use provided items or default with translations
   const finalSidebarItems = sidebarItems || getDefaultTutorSidebarItems(t);
   const finalActionButtons = actionButtons || getDefaultTutorActionButtons(t);
-
-  // Effect to show verify button based on QR data
-  useEffect(() => {
-    if (shouldCheckQR && qrData && !qrLoading) {
-      // Only show button if QR code is available and user hasn't verified
-      setShowVerifyButton(qrData.success && !!qrData.data);
-    } else {
-      setShowVerifyButton(false);
-    }
-  }, [shouldCheckQR, qrData, qrLoading]);
 
   // Handle verify QR code click
   const handleVerifyQRCode = () => {
