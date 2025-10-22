@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CourseFormData } from "@/components/form/course";
 import { useTranslations } from "next-intl";
+import { usePackageDiscount } from "@/features/student/booking/hooks";
 
 interface CoursePreviewProps {
   formData: CourseFormData | null;
@@ -12,6 +13,7 @@ interface CoursePreviewProps {
 
 const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   const t = useTranslations("tutor.courses.create.preview");
+  const { getOriginalPrice, getDiscountPercentage } = usePackageDiscount();
 
   // Default preview data
   const previewData = {
@@ -95,12 +97,26 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
           <h4 className="font-medium text-foreground mb-3">{t("packages.title")}</h4>
           <div className="space-y-3">
             {[
-              { sessions: 4, discount: 0 },
-              { sessions: 8, discount: 10 },
-              { sessions: 12, discount: 15 },
+              { sessions: 4, packageType: "FOUR" },
+              { sessions: 8, packageType: "EIGHT" },
+              { sessions: 12, packageType: "TWELVE" },
             ].map((pkg) => {
-              const originalPrice = previewData.hourlyRate * pkg.sessions;
-              const discountedPrice = originalPrice * (1 - pkg.discount / 100);
+              // Calculate base price (before discount)
+              const basePrice = previewData.hourlyRate * pkg.sessions;
+              
+              // Get discount percentage for this package
+              const discountPercentage = getDiscountPercentage(pkg.packageType);
+              
+              // Calculate discounted price
+              const discountedPrice = discountPercentage 
+                ? basePrice * (1 - discountPercentage)
+                : basePrice;
+              
+              // Get original price using hook
+              const originalPrice = getOriginalPrice(pkg.packageType, discountedPrice);
+              
+              // Calculate display discount percentage
+              const displayDiscount = discountPercentage ? Math.round(discountPercentage * 100) : 0;
 
               return (
                 <div
@@ -111,14 +127,14 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                     <span className="font-medium text-foreground">
                       {t(`packages.sessions.${pkg.sessions}`)}
                     </span>
-                    {pkg.discount > 0 && (
+                    {displayDiscount > 0 && (
                       <Badge variant="secondary" className="mt-1 text-xs w-fit">
-                        {t("packages.discount", { discount: pkg.discount })}
+                        {t("packages.discount", { discount: displayDiscount })}
                       </Badge>
                     )}
                   </div>
                   <div className="text-right flex flex-col justify-center">
-                    {pkg.discount > 0 ? (
+                    {originalPrice ? (
                       <>
                         <div className="text-primary font-semibold">
                           {discountedPrice.toLocaleString()} {t("price.currency")}
@@ -129,7 +145,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                       </>
                     ) : (
                       <div className="text-foreground font-semibold">
-                        {originalPrice.toLocaleString()} {t("price.currency")}
+                        {discountedPrice.toLocaleString()} {t("price.currency")}
                       </div>
                     )}
                   </div>
