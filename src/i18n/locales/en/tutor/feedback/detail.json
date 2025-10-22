@@ -1,0 +1,10 @@
+{
+  "title": "Course Ratings",
+  "subtitle": "View ratings from students",
+  "backButton": "Back to list",
+  "allFeedbacks": "Ratings from students",
+  "noFeedbacks": "No ratings yet",
+  "loading": "Loading ratings...",
+  "error": "An error occurred",
+  "errorMessage": "Unable to load ratings. Please try again later."
+}

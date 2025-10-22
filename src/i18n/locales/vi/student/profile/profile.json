@@ -1,0 +1,47 @@
+{
+  "loading": "Đang tải thông tin...",
+  "title": "Hồ sơ cá nhân",
+  "subtitle": "Quản lý thông tin cá nhân của bạn",
+  "avatar": {
+    "changePhoto": "Thay đổi ảnh đại diện",
+    "uploading": "Đang tải lên..."
+  },
+  "role": {
+    "student": "Học sinh"
+  },
+  "section": {
+    "personalInfo": "Thông tin cá nhân"
+  },
+  "form": {
+    "fullName": {
+      "label": "Họ và tên",
+      "placeholder": "Nhập họ và tên của bạn"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email không thể thay đổi"
+    },
+    "phone": {
+      "label": "Số điện thoại",
+      "placeholder": "Nhập số điện thoại"
+    },
+    "location": {
+      "label": "Địa điểm",
+      "placeholder": "Ví dụ: Hà Nội, TP. Hồ Chí Minh, Đà Nẵng..."
+    },
+    "grade": {
+      "label": "Lớp học",
+      "placeholder": "Ví dụ: Lớp 12"
+    },
+    "learningGoal": {
+      "label": "Mục tiêu học tập",
+      "placeholder": "Chia sẻ mục tiêu học tập của bạn..."
+    }
+  },
+  "actions": {
+    "edit": "Chỉnh sửa",
+    "save": "Lưu thay đổi",
+    "cancel": "Hủy"
+  }
+}

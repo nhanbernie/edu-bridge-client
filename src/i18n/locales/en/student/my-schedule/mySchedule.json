@@ -1,0 +1,22 @@
+{
+  "title": "My Schedule",
+  "subtitle": "View your schedule and manage upcoming sessions",
+  "loading": "Loading schedule...",
+  "stats": {
+    "todaySessions": "Today's Sessions",
+    "weekSessions": "This Week's Sessions",
+    "tutors": "Tutors"
+  },
+  "scheduleTitle": "Schedule",
+  "tabs": {
+    "upcoming": "Upcoming",
+    "history": "History"
+  },
+  "session": {
+    "join": "Join",
+    "viewFeedback": "View Feedback",
+    "noSessions": "No sessions found",
+    "noUpcomingSessions": "No upcoming sessions",
+    "noHistorySessions": "No session history"
+  }
+}

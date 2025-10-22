@@ -1,0 +1,67 @@
+{
+  "counter": {
+    "title": "Tổng tiền từ thiện",
+    "thanks": "Cảm ơn sự đóng góp của bạn! 🩵",
+    "readMore": "Đọc thêm"
+  },
+  "hero": {
+    "title": "Tri Thức Kiến Tạo Tương Lai",
+    "subtitle": "Cùng EDU BRIDGE Cánh Ước Học Tập Trẻ Em Vùng Khó Khăn. Chương trình EDU BRIDGE tạo điều kiện cho các em có cơ hội tiếp cận giáo dục chất lượng. Hiện đã hỗ trợ hơn 13 tỉnh miền núi phía Bắc với nhiều hoạt động ý nghĩa."
+  },
+  "donation": {
+    "title": "Tiến Độ Quyên Góp",
+    "raised": "Đã quyên góp",
+    "goal": "Mục tiêu",
+    "contributors": "Người đóng góp",
+    "people": "người",
+    "completed": "hoàn thành",
+    "remaining": "Còn lại"
+  },
+  "about": {
+    "title": "Về Chương Trình",
+    "description1": "Tri Thức Kiến Tạo Tương Lai là chương trình từ thiện của EDU BRIDGE nhằm mang đến cơ hội học tập cho trẻ em ở các vùng khó khăn trên khắp Việt Nam.",
+    "description2": "Chúng tôi tin tăng giá trị giáo dục là chìa khóa để thay đổi cuộc sống và tương lai của các em. Thông qua chương trình này, chúng tôi cam kết:"
+  },
+  "goals": {
+    "title": "Mục Tiêu Chương Trình",
+    "libraries": {
+      "title": "Xây dựng 05 THƯ VIỆN SỐ",
+      "description": "Miễn phí cung cấp tài sách và các vùng sâu, vùng xa, trạng bị khó khăn"
+    },
+    "scholarships": {
+      "title": "10.000 Học Bổng",
+      "description": "1,000 SUẤT HỌC BỔNG khóa học English trực tuyến. Tổ chức tài trợ 20 buổi workshop STEM"
+    },
+    "courses": {
+      "title": "1.000 Suất Học Bổng",
+      "description": "Cung cấp khóa học English trực tuyến giúp học sinh nâng cao kỹ năng ngôn ngữ"
+    },
+    "workshops": {
+      "title": "Tổ chức 20 buổi workshop STEM",
+      "description": "Tổ chức các buổi workshop STEM miễn phí cho học sinh phát triển kỹ năng thực hành"
+    },
+    "training": {
+      "title": "Đào tạo năng lực sở và kỹ năng làm việc cho giáo viên địa phương",
+      "description": "Nâng cao năng lực làm việc, NĂNG LỰC SỐ và kỹ năng cho giáo viên vùng thấp"
+    }
+  },
+  "milestones": {
+    "title": "Các Cột Mốc",
+    "first": {
+      "title": "20 học bổng đầu tiên",
+      "description": "10.000.000 VND"
+    },
+    "second": {
+      "title": "2 thư viện số",
+      "description": "25.000.000 VND"
+    },
+    "third": {
+      "title": "50 học bổng",
+      "description": "35.000.000 VND"
+    },
+    "complete": {
+      "title": "Hoàn thành chương trình",
+      "description": "50.000.000 VND"
+    }
+  }
+}

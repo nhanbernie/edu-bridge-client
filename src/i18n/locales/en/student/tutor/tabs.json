@@ -1,0 +1,38 @@
+{
+    "courses": {
+        "loading": "Loading courses...",
+        "empty": {
+            "title": "No courses available",
+            "description": "This tutor hasn't created any courses yet."
+        }
+    },
+    "schedule": {
+        "loading": "Loading schedule...",
+        "empty": {
+            "title": "No schedule available",
+            "description": {
+                "selectedCourse": "This tutor doesn't have availability for the selected course.",
+                "noSchedule": "This tutor hasn't created any schedule yet."
+            }
+        },
+        "selectedCourse": {
+            "notice": "Showing availability for selected course"
+        },
+        "title": {
+            "selectedCourse": "Course Availability",
+            "weekly": "Weekly Availability"
+        }
+    },
+    "reviews": {
+        "loading": "Loading reviews...",
+        "tutor": "Tutor",
+        "course": "Course"
+    },
+    "awards": {
+        "loading": "Loading certificates...",
+        "empty": {
+            "title": "No certificates available",
+            "description": "This tutor hasn't added any certificates or awards yet."
+        }
+    }
+}

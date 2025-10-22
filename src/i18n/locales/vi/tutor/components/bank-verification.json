@@ -1,0 +1,22 @@
+{
+  "title": "Xác thực tài khoản ngân hàng",
+  "description": {
+    "main": "🏦 Liên kết tài khoản ngân hàng để nhận thanh toán tự động từ học viên.",
+    "fee": "Chỉ mất 5,000đ phí xác thực - Hoàn lại ngay khi có thu nhập đầu tiên!"
+  },
+  "qrCode": {
+    "alt": "Mã QR xác thực ngân hàng",
+    "instruction": "Quét mã QR bằng ứng dụng ngân hàng",
+    "error": {
+      "title": "Lỗi hiển thị QR",
+      "message": "Vui lòng thử lại sau"
+    }
+  },
+  "error": {
+    "title": "Không thể tải mã QR",
+    "message": "Vui lòng đóng và thử lại sau ít phút"
+  },
+  "actions": {
+    "later": "Để sau"
+  }
+}

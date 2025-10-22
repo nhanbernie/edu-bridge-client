@@ -1,0 +1,25 @@
+{
+  "loading": "Đang tải lịch sử giao dịch...",
+  "header": {
+    "title": "Lịch sử thanh toán",
+    "description": "Theo dõi các giao dịch thanh toán của bạn"
+  },
+  "stats": {
+    "totalSpent": {
+      "title": "Tổng chi tiêu",
+      "description": "Tiền chuyển đi"
+    },
+    "totalReceived": {
+      "title": "Tổng nhận",
+      "description": "Tiền nhận vào"
+    },
+    "completed": {
+      "title": "Hoàn thành",
+      "description": "Giao dịch thành công"
+    },
+    "pending": {
+      "title": "Đang chờ",
+      "description": "Chờ xử lý"
+    }
+  }
+}

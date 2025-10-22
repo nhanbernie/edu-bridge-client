@@ -1,0 +1,44 @@
+{
+  "title": "Student Profile",
+  "subtitle": "Manage your personal and learning information",
+  "sections": {
+    "personalInfo": "Personal Information",
+    "learningInfo": "Learning Information"
+  },
+  "fields": {
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@email.com",
+      "note": "Email cannot be changed"
+    },
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number"
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "e.g., Hanoi, Ho Chi Minh City, Da Nang..."
+    },
+    "grade": {
+      "label": "Grade"
+    },
+    "learningGoal": {
+      "label": "Learning Goal",
+      "placeholder": "Share your learning goals and aspirations..."
+    }
+  },
+  "buttons": {
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "changeAvatar": "Change Avatar"
+  },
+  "messages": {
+    "loading": "Loading profile information...",
+    "defaultName": "Student"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Đánh giá gần đây",
+  "loading": "Đang tải đánh giá...",
+  "error": "Không thể tải đánh giá",
+  "empty": "Chưa có đánh giá nào",
+  "timeAgo": {
+    "oneDay": "1 ngày trước",
+    "days": "{count} ngày trước",
+    "oneWeek": "1 tuần trước",
+    "weeks": "{count} tuần trước",
+    "months": "{count} tháng trước"
+  }
+}

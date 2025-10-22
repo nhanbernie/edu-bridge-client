@@ -1,0 +1,38 @@
+{
+  "loading": "Đang tải lịch sử giao dịch...",
+  "header": {
+    "title": "Lịch sử giao dịch",
+    "description": "Xem tất cả các giao dịch và thanh toán của bạn"
+  },
+  "stats": {
+    "totalSpent": {
+      "title": "Tổng chi tiêu",
+      "description": "Tiền chuyển đi"
+    },
+    "totalReceived": {
+      "title": "Tổng nhận",
+      "description": "Tiền nhận vào"
+    },
+    "completed": {
+      "title": "Hoàn thành",
+      "description": "Giao dịch thành công"
+    },
+    "pending": {
+      "title": "Đang chờ",
+      "description": "Chờ xử lý"
+    }
+  },
+  "list": {
+    "title": "Danh sách giao dịch",
+    "empty": {
+      "title": "Chưa có giao dịch nào",
+      "description": "Các giao dịch của bạn sẽ hiển thị ở đây"
+    }
+  },
+  "status": {
+    "pending": "Đang chờ",
+    "completed": "Thành công",
+    "failed": "Thất bại",
+    "unknown": "Không xác định"
+  }
+}

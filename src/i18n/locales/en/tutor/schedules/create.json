@@ -1,0 +1,8 @@
+{
+  "title": "Create New Availability",
+  "subtitle": "Use the calendar below to create available time slots for students to book",
+  "backButton": "Back to Schedule Management",
+  "currentSchedules": "Current Availability",
+  "scheduleSummary": "{availableSlots} available, {bookedSlots} booked",
+  "loading": "Loading schedule..."
+}

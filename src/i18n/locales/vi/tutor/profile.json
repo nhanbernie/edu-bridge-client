@@ -1,0 +1,41 @@
+{
+  "title": "Hồ sơ gia sư",
+  "subtitle": "Quản lý hồ sơ và chứng chỉ của bạn",
+  "loading": "Đang tải thông tin...",
+  "personalInfo": {
+    "title": "Thông tin cá nhân",
+    "fullName": "Họ và tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "location": "Địa chỉ"
+  },
+  "education": {
+    "title": "Học vấn & Kinh nghiệm",
+    "educationLevel": "Trình độ học vấn",
+    "yearsOfExperience": "Số năm kinh nghiệm",
+    "bio": "Giới thiệu bản thân"
+  },
+  "subjects": {
+    "title": "Môn học & Ngôn ngữ",
+    "subjects": "Môn học",
+    "languages": "Ngôn ngữ"
+  },
+  "media": {
+    "title": "Media",
+    "videoIntro": "Video giới thiệu",
+    "certificates": "Chứng chỉ",
+    "uploadVideo": "Tải lên video",
+    "uploadCertificate": "Tải lên chứng chỉ"
+  },
+  "actions": {
+    "save": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa"
+  },
+  "verification": {
+    "verified": "Đã xác minh",
+    "trustedBeginner": "Người mới uy tín",
+    "pending": "Đang chờ xác minh"
+  }
+}

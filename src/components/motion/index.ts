@@ -1,0 +1,26 @@
+// Motion Components
+export { EBMotionCard } from "./EBMotionCard";
+export { MotionContainer, MotionItem } from "./MotionContainer";
+export { EBButtonAction } from "./EBButtonMotion";
+
+// Re-export motion constants for convenience
+export {
+  cardVariants,
+  choiceCardVariants,
+  premiumCardVariants,
+  fadeInVariants,
+  slideUpVariants,
+  scaleVariants,
+  containerVariants,
+  DEFAULT_CARD_ANIMATION,
+  MOTION_CONFIG,
+  EASE_CONFIG,
+} from "@/common/constants/motion/motion.constant";
+
+export {
+  simpleCardVariants,
+  tutorCardVariants,
+} from "@/common/constants/motion/cardMotion.constant";
+
+// Types
+export type { MotionCardProps } from "./EBMotionCard";

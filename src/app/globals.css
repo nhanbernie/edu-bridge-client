@@ -1,26 +1,468 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Shadow System */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 12px 24px -8px rgba(0, 0, 0, 0.22), 0 -4px 8px -4px rgba(0, 0, 0, 0.08);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* Marketing colors */
+  --color-emerald-50: oklch(0.98 0.02 155);
+  --color-emerald-400: oklch(0.7 0.13 155);
+  --color-emerald-500: oklch(0.6 0.15 155);
+  --color-emerald-600: oklch(0.5 0.15 155);
+  --color-teal-50: oklch(0.97 0.02 180);
+  --color-teal-400: oklch(0.7 0.12 180);
+  --color-teal-500: oklch(0.6 0.14 180);
+  --color-green-100: oklch(0.95 0.04 140);
+  --color-green-400: oklch(0.75 0.14 140);
+  --color-red-500: oklch(0.6 0.2 25);
+  --color-pink-500: oklch(0.65 0.15 350);
+  --color-purple-500: oklch(0.6 0.15 280);
+  --color-indigo-500: oklch(0.55 0.15 270);
+  --color-blue-500: oklch(0.55 0.12 240);
+  --color-cyan-500: oklch(0.65 0.12 200);
+  --color-yellow-400: oklch(0.85 0.15 85);
+  --color-orange-500: oklch(0.65 0.15 60);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+
+  /* Base colors - Light mode */
+  --background: #f3f4f6; /* #FAFBFC */
+  --foreground: oklch(0.19 0.01 270); /* #1A1A2E - text chính */
+
+  /* Card colors */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.01 270);
+
+  /* Popover */
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.01 270);
+
+  /* Primary - Xanh biển #1EB5E5 */
+  --primary-light: hsl(199, 61%, 62%); /* Màu chủ đạo */
+  --primary: hsl(199, 68%, 48%);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary - Xanh ngọc #06B6D4 */
+  --secondary: oklch(0.715 0.1 225);
+  --secondary-foreground: oklch(1 0 0);
+
+  /* Accent - Cam vàng #FFA726 */
+  --accent: oklch(0.78 0.13 65);
+  --accent-foreground: oklch(0.19 0.01 270);
+
+  /* Muted */
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  /* Destructive */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Border & Input */
+  --border: oklch(0.72 0.09 230 / 0.1); /* Primary với alpha */
+  --input: oklch(0.72 0.09 230 / 0.15);
+  --ring: oklch(0.72 0.09 230 / 0.5); /* Focus outline */
+
+  /* Charts - Gradient colors */
+  --chart-1: oklch(0.72 0.09 230); /* Primary */
+  --chart-2: oklch(0.715 0.1 225); /* Secondary */
+  --chart-3: oklch(0.78 0.13 65); /* Accent */
+  --chart-4: oklch(0.6 0.15 155); /* Extra 1 */
+  --chart-5: oklch(0.65 0.15 350); /* Extra 2 */
+
+  /* Sidebar */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.19 0.01 270);
+  --sidebar-primary: oklch(0.72 0.09 230);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.19 0.01 270);
+  --sidebar-border: oklch(0.72 0.09 230 / 0.1);
+  --sidebar-ring: oklch(0.72 0.09 230 / 0.5);
+}
+
+.dark {
+  /* Shadow System - Dark mode (softer shadows) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  --shadow-elevated: 0 12px 24px -8px rgba(0, 0, 0, 0.5), 0 -4px 8px -4px rgba(0, 0, 0, 0.2);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
+  /* Base colors - Dark mode */
+  --background: oklch(0.18 0.02 250); /* #0f172a - Xanh đen slate */
+  --foreground: oklch(0.98 0 0); /* #f8fafc - Trắng nhạt */
+
+  /* Card colors - Elevation layers */
+  --card: oklch(0.23 0.02 250); /* #1e293b - Slate 800 (lớp giữa) */
+  --card-foreground: oklch(0.98 0 0);
+
+  /* Popover */
+  --popover: oklch(0.23 0.02 250);
+  --popover-foreground: oklch(0.98 0 0);
+
+  /* Primary - Xanh cyan #1EB5E5 (giữ nguyên - hiệu ứng phát sáng) */
+  --primary: oklch(0.72 0.09 230);
+  --primary-foreground: oklch(0.18 0.02 250); /* Dark text on bright primary */
+
+  /* Secondary surface - Slate 700 (cao nhất) */
+  --secondary: oklch(0.31 0.02 250); /* #334155 */
+  --secondary-foreground: oklch(0.98 0 0);
+
+  /* Accent - Xanh cyan đậm #06B6D4 */
+  --accent: oklch(0.715 0.1 225);
+  --accent-foreground: oklch(0.18 0.02 250);
+
+  /* Muted */
+  --muted: oklch(0.31 0.02 250); /* #334155 - Slate 700 */
+  --muted-foreground: oklch(0.62 0.02 250); /* #94a3b8 - Xám xanh nhạt */
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25); /* #dc2626 - Đỏ đậm hơn */
+  --destructive-foreground: oklch(0.98 0 0);
+
+  /* Border & Input - Lighter in dark mode */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.72 0.09 230 / 0.5);
+
+  /* Charts */
+  --chart-1: oklch(0.72 0.09 230); /* Primary */
+  --chart-2: oklch(0.715 0.1 225); /* Secondary */
+  --chart-3: oklch(0.78 0.13 65); /* Accent */
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Sidebar */
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.72 0.09 230);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.72 0.09 230 / 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ===================================
+   SHADOW UTILITIES
+   =================================== */
+.shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+.shadow-custom-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-custom-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-custom-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-custom-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-custom-2xl {
+  box-shadow: var(--shadow-2xl);
+}
+
+.shadow-custom-inner {
+  box-shadow: var(--shadow-inner);
+}
+
+/* Hover variants */
+.hover\:shadow-elevated:hover {
+  box-shadow: var(--shadow-elevated);
+}
+
+.hover\:shadow-custom-lg:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.hover\:shadow-custom-xl:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.hover\:shadow-custom-2xl:hover {
+  box-shadow: var(--shadow-2xl);
+}
+
+/* FullCalendar Custom Styles */
+.fc {
+  font-family: inherit;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: hsl(var(--border));
+}
+
+.fc-col-header-cell {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-daygrid-day {
+  background-color: hsl(var(--background));
+}
+
+.fc-daygrid-day:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+.fc-timegrid-slot {
+  border-color: hsl(var(--border));
+}
+
+.fc-timegrid-slot:hover {
+  background-color: hsl(var(--muted) / 0.3);
+}
+
+.fc-button-primary {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.fc-button-primary:hover {
+  background-color: hsl(var(--primary) / 0.9);
+  border-color: hsl(var(--primary) / 0.9);
+}
+
+.fc-button-primary:disabled {
+  background-color: hsl(var(--muted));
+  border-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-event {
+  border-radius: 4px;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fc-event:hover {
+  opacity: 0.8;
+}
+
+.fc-highlight {
+  background-color: hsl(var(--primary) / 0.1);
+  border: 2px dashed hsl(var(--primary));
+}
+
+.fc-select-mirror {
+  background-color: hsl(var(--primary) / 0.2);
+  border: 2px solid hsl(var(--primary));
+}
+
+.fc-today {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+  margin-left: 0.5rem;
+}
+
+.fc-timegrid-axis {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-timegrid-slot-label {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Custom EBHeader Styles */
+.backdrop-blur-header {
+  backdrop-filter: blur(17px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.bg-header-glass {
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .bg-header-glass {
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glass morphism effect for better visual */
+/* .header-glass-effect {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  box-shadow:
+    0 8px 32px rgba(31, 38, 135, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+} */
+
+/* .dark .header-glass-effect {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+} */
+
+/* Animated border for TRIAL package */
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-border-flow {
+  animation: border-flow 3s ease infinite;
+}
+
+/* ===================================
+   CARD COMPONENT SYSTEM
+   =================================== */
+
+/* Base Card - Clean & Simple */
+.eb-card-base {
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Glass Card - With backdrop blur */
+.eb-card-glass {
+  @apply bg-card/70 rounded-3xl backdrop-blur-sm shadow-lg hover:shadow-xl hover:bg-card/80 border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Elevated Card - More prominent shadow */
+.eb-card-elevated {
+  @apply bg-card rounded-3xl shadow-xl hover:shadow-2xl border border-border;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Interactive Card - Clickable with hover effects */
+.eb-card-interactive {
+  @apply bg-card rounded-3xl shadow-lg hover:shadow-xl hover:scale-[1.02] cursor-pointer active:scale-[0.98];
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Card Padding Utilities */
+.eb-card-padding {
+  @apply p-6;
+}
+
+.eb-card-padding-sm {
+  @apply p-4;
+}
+
+.eb-card-padding-lg {
+  @apply p-8;
+}
+
+/* Card Header */
+.eb-card-header {
+  @apply border-b border-border pb-4 mb-4;
+}
+
+.eb-card-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+.eb-card-description {
+  @apply text-sm text-muted-foreground mt-1;
 }

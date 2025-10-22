@@ -1,0 +1,17 @@
+{
+  "days": {
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "dateTimeFormat": "{dayName}, {day}/{month}/{year} - at {hours}:{minutes}",
+  "duration": {
+    "oneHour": "1 hour",
+    "hours": "{count} hours",
+    "minutes": "{count} minutes"
+  }
+}

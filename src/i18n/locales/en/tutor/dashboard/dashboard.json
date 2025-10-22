@@ -1,0 +1,38 @@
+{
+  "welcome": "Welcome back!",
+  "subtitle": "Manage your courses, schedule, and track your earnings",
+  "transactionChart": {
+    "title": "Transaction Chart",
+    "subtitle": "Monthly transaction overview",
+    "loading": "Loading transaction data...",
+    "error": "Unable to load transaction data",
+    "empty": {
+      "title": "No earnings yet",
+      "description": "Transaction data will appear here"
+    },
+    "growth": {
+      "positive": "Earnings increased {percentage}% this month",
+      "negative": "Earnings decreased {percentage}% this month"
+    },
+    "footer": "Showing total earnings for the last 6 months"
+  },
+  "schedules": {
+    "title": "Today's Schedule",
+    "loading": "Loading schedule...",
+    "error": "Unable to load schedule",
+    "empty": "No schedule for today"
+  },
+  "myCourses": {
+    "title": "My Courses",
+    "loading": "Loading courses...",
+    "error": "Unable to load courses",
+    "empty": "No courses yet",
+    "students": "students enrolled"
+  },
+  "reviews": {
+    "title": "Recent Reviews",
+    "loading": "Loading reviews...",
+    "error": "Unable to load reviews",
+    "empty": "No reviews yet"
+  }
+}

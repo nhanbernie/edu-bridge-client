@@ -1,0 +1,10 @@
+{
+  "tutor": "Tutor:",
+  "sessions": "{completed}/{total} sessions",
+  "students": "{count} students",
+  "status": {
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "teaching": "Teaching"
+  }
+}

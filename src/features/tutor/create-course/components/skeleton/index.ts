@@ -1,0 +1,1 @@
+export { CreateCourseSkeleton } from "./CreateCourseSkeleton";

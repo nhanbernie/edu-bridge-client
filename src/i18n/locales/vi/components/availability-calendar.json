@@ -1,0 +1,24 @@
+{
+  "title": "Lịch rảnh",
+  "subtitle": "Kéo chọn để tạo lịch mới, nhấn chuột trái để xóa và nhấn chuột phải để sửa",
+  "clearAll": "Xóa tất cả",
+  "save": "Lưu ({count})",
+  "saving": "Đang lưu...",
+  "saveShort": "Lưu...",
+  "loading": "Đang tải lịch...",
+  "legend": {
+    "available": "Rảnh",
+    "booked": "Đã đặt",
+    "new": "Lịch mới"
+  },
+  "deleteDialog": {
+    "title": "Xóa lịch rảnh",
+    "description": "Bạn có chắc chắn muốn xóa lịch \"{title}\" không? Hành động này không thể hoàn tác."
+  },
+  "buttonText": {
+    "today": "Hôm nay",
+    "month": "Tháng",
+    "week": "Tuần",
+    "day": "Ngày"
+  }
+}

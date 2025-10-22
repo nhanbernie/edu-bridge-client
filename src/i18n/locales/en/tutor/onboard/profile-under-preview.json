@@ -1,0 +1,15 @@
+{
+  "title": "Profile Under Review",
+  "description": "Thank you for submitting your tutor profile! Our team is currently reviewing your profile and documents.",
+  "steps": {
+    "submitted": "Profile Submitted",
+    "review": "Under Review",
+    "pending": "Awaiting Approval"
+  },
+  "nextSteps": {
+    "title": "What happens next?",
+    "review": "Our team will review your profile within 24-48 hours",
+    "email": "You will receive an email notification when your profile is approved",
+    "contact": "We may contact you if we need additional information"
+  }
+}

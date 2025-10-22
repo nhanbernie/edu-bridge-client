@@ -1,0 +1,20 @@
+{
+  "title": "Quản lý lịch rảnh",
+  "subtitle": "Tạo và quản lý lịch rảnh để học sinh có thể đặt lịch • {totalSlots} khung giờ ({availableSlots} rảnh, {bookedSlots} đã đặt)",
+  "loading": "Đang tải lịch rảnh...",
+  "refreshButton": "Làm mới",
+  "addButton": "Thêm lịch rảnh mới",
+  "stats": {
+    "totalSlots": "Tổng khung giờ",
+    "available": "Đang rảnh",
+    "booked": "Đã đặt lịch"
+  },
+  "currentSchedules": "Lịch rảnh hiện tại",
+  "noSchedules": "Không có lịch",
+  "fullDay": "Cả ngày",
+  "slotStatus": {
+    "available": "Lịch rảnh",
+    "booked": "Đã có lịch dạy",
+    "reserved": "Đang được giữ"
+  }
+}

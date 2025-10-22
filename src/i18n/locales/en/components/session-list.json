@@ -1,0 +1,12 @@
+{
+  "empty": {
+    "history": {
+      "title": "No history yet",
+      "description": "You haven't completed any sessions yet."
+    },
+    "upcoming": {
+      "title": "No upcoming sessions",
+      "description": "You don't have any upcoming sessions."
+    }
+  }
+}

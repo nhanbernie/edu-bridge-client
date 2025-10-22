@@ -1,0 +1,135 @@
+{
+  "page": {
+    "processing": "Processing...",
+    "selectAll": "Please select all information",
+    "bookNow": "Book Now"
+  },
+  "tutorInfo": {
+    "loading": "Loading tutor information...",
+    "error": "Unable to load tutor information",
+    "retry": "Try again",
+    "tutor": "Tutor",
+    "verified": "Verified",
+    "reviews": "reviews",
+    "yearsExperience": "years of experience",
+    "quickResponse": "Quick response"
+  },
+  "packageSelector": {
+    "title": "Select Package",
+    "loading": "Loading packages...",
+    "empty": {
+      "title": "No packages available",
+      "description": "This course has no packages created yet."
+    },
+    "packageTypes": {
+      "TRIAL": "Trial Session",
+      "SINGLE": "Basic Package",
+      "FOUR": "4 Sessions Package",
+      "EIGHT": "8 Sessions Package",
+      "TWELVE": "12 Sessions Package"
+    },
+    "sessions": "sessions",
+    "sessionsPerMonth": "sessions per month",
+    "trialBadge": "🎁 Free Trial",
+    "popularBadge": "Most Popular",
+    "charitySupport": "💝 Support those in need"
+  },
+  "scheduleSelector": {
+    "title": "Select Schedule",
+    "sessionCount": "sessions",
+    "selectDate": "Select date",
+    "selectTime": "Select time",
+    "addSession": "Add Session",
+    "loading": "Loading availability...",
+    "noSlotsForDate": "No available slots for this date",
+    "selectDateFirst": "Please select a date to view available slots",
+    "availableDays": "Available days",
+    "otherDays": "other days",
+    "selectTimeSlot": "Select time slot",
+    "timeSlots": "time slots",
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "dayNames": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    "dayNamesFull": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "slotStatus": {
+      "booked": "Booked",
+      "reserved": "Reserved",
+      "conflicted": "Conflicted",
+      "selected": "✓"
+    }
+  },
+  "selectedSchedule": {
+    "title": "Selected Schedule",
+    "session": "Session",
+    "edit": "Edit",
+    "remove": "Remove",
+    "remaining": "remaining sessions not selected",
+    "dayNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  },
+  "paymentConfirm": {
+    "title": "Confirm Payment",
+    "bookingId": "Booking ID",
+    "importantInfo": "Important Information",
+    "info": {
+      "created": "• Your booking has been created successfully",
+      "timeLimit": "• You have 30 minutes to complete payment",
+      "confirmation": "• After payment, the tutor will confirm your schedule",
+      "notification": "• You will receive notifications via email and SMS"
+    },
+    "cancel": "Cancel",
+    "confirm": "Confirm Payment",
+    "processing": "Processing..."
+  },
+  "paymentQR": {
+    "title": "Payment via Bank Transfer",
+    "amount": "Amount:",
+    "scanQR": "Scan QR code to transfer",
+    "downloadQR": "Download QR",
+    "downloaded": "QR code downloaded",
+    "instructions": {
+      "title": "Payment Instructions:",
+      "step1": "1. Open your banking app on your phone",
+      "step2": "2. Scan the QR code above",
+      "step3": "3. Verify the amount and transfer information",
+      "step4": "4. Complete the transfer",
+      "step5": "5. Wait for payment confirmation (usually 1-2 minutes)"
+    },
+    "note": {
+      "title": "Note:",
+      "content": "After successful payment, the system will automatically update your booking status. If you have any issues, please contact support.",
+      "close": "Close"
+    }
+  },
+  "bookingGuide": {
+    "title": "Booking Guide",
+    "subtitle": "Follow 3 simple steps to book a session with your tutor",
+    "steps": {
+      "step1": {
+        "title": "Select Package",
+        "description": "Choose a package that suits your needs. Each package has a different number of sessions."
+      },
+      "step2": {
+        "title": "Select Date",
+        "description": "Choose the date you want to study. Available dates will be marked in green."
+      },
+      "step3": {
+        "title": "Select Time Slot",
+        "description": "Choose a suitable time slot. You can add multiple sessions until you reach the package limit."
+      }
+    },
+    "stepLabel": "STEP",
+    "gotIt": "Got it!"
+  }
+}

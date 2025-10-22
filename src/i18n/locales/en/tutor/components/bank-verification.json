@@ -1,0 +1,22 @@
+{
+  "title": "Bank Account Verification",
+  "description": {
+    "main": "🏦 Link your bank account to receive automatic payments from students.",
+    "fee": "Only 5,000đ verification fee - Refunded immediately when you earn your first income!"
+  },
+  "qrCode": {
+    "alt": "Bank Verification QR Code",
+    "instruction": "Scan QR code with your banking app",
+    "error": {
+      "title": "QR Display Error",
+      "message": "Please try again later"
+    }
+  },
+  "error": {
+    "title": "Unable to load QR code",
+    "message": "Please close and try again in a few minutes"
+  },
+  "actions": {
+    "later": "Do Later"
+  }
+}

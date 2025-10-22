@@ -1,0 +1,47 @@
+{
+  "title": "Course Information",
+  "fields": {
+    "title": {
+      "label": "Course Name *",
+      "placeholder": "e.g., Basic Mathematics Grade 10"
+    },
+    "subjects": {
+      "label": "Subjects (Multiple Selection) *",
+      "placeholder": "Select or add subjects"
+    },
+    "description": {
+      "label": "Course Description *",
+      "placeholder": "Describe the content, teaching methods in detail..."
+    },
+    "hoursPerSession": {
+      "label": "Duration / Session (hours) *",
+      "placeholder": "2"
+    },
+    "hourlyRate": {
+      "label": "Price / Session (VND) *",
+      "placeholder": "100000"
+    },
+    "isPublished": {
+      "label": "Publish Course",
+      "description": "Course is published, details can be changed later"
+    }
+  },
+  "buttons": {
+    "create": "Create Course",
+    "update": "Complete Edit",
+    "processing": "Processing..."
+  },
+  "validation": {
+    "titleRequired": "Please enter course name",
+    "titleMinLength": "Course name must be at least 5 characters",
+    "titleMaxLength": "Course name must not exceed 100 characters",
+    "subjectsRequired": "Please select at least 1 subject",
+    "descriptionRequired": "Please enter course description",
+    "descriptionMinLength": "Course description must be at least 20 characters",
+    "descriptionMaxLength": "Course description must not exceed 500 characters",
+    "hoursPerSessionRequired": "Please enter duration per session",
+    "hoursPerSessionInvalid": "Duration per session must be between 0.5 and 8 hours",
+    "hourlyRateRequired": "Please enter price per session",
+    "hourlyRateInvalid": "Price per session must be between 500 and 2,000,000 VND"
+  }
+}

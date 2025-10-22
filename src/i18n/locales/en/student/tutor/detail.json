@@ -1,0 +1,35 @@
+{
+  "loading": "Loading tutor information...",
+  "error": {
+    "message": "Unable to load tutor information",
+    "retry": "Try again"
+  },
+  "header": {
+    "verified": "Verified",
+    "tutor": "Tutor",
+    "reviews": "reviews",
+    "notUpdated": "Not updated",
+    "students": "students",
+    "years": "years",
+    "courses": "courses",
+    "favorited": "Favorited",
+    "favorite": "Favorite"
+  },
+  "about": {
+    "title": "About",
+    "aboutMe": "About me",
+    "noInfo": "No introduction available",
+    "education": "Education",
+    "noEducation": "No education information available",
+    "specialties": "Specialties",
+    "noSpecialties": "No specialties available",
+    "languages": "Languages",
+    "noLanguages": "No languages available"
+  },
+  "tabs": {
+    "courses": "Courses",
+    "schedule": "Schedule",
+    "reviews": "Reviews",
+    "awards": "Certificates"
+  }
+}
