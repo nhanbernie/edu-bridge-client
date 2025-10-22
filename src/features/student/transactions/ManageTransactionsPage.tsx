@@ -7,6 +7,7 @@ import { CreditCard, TrendingDown, Clock, CheckCircle } from "lucide-react";
 import { PAGE_CONTAINER, CONTENT_WRAPPER } from "@/common/constants/className.constant";
 import { useTranslations } from "next-intl";
 import { TransactionPageSkeleton } from "./skeletons";
+import { EBMotionCard } from "@/components/motion";
 
 const ManageTransactionsPage: React.FC = () => {
   const t = useTranslations("student.transactions");
@@ -44,8 +45,7 @@ const ManageTransactionsPage: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Total Spent */}
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-red-100 dark:bg-red-900/20 rounded-lg sm:rounded-xl">
                 <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400" />
@@ -62,10 +62,10 @@ const ManageTransactionsPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
 
           {/* Total Received */}
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg sm:rounded-xl">
                 <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400" />
@@ -82,10 +82,10 @@ const ManageTransactionsPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
 
           {/* Completed */}
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-primary/10 rounded-lg sm:rounded-xl">
                 <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -102,10 +102,10 @@ const ManageTransactionsPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
 
           {/* Pending */}
-          <div className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
+          <EBMotionCard variant="base" className="bg-card rounded-2xl sm:rounded-3xl shadow-lg border border-border p-4 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="p-2 sm:p-3 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg sm:rounded-xl">
                 <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600 dark:text-yellow-400" />
@@ -122,7 +122,7 @@ const ManageTransactionsPage: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </EBMotionCard>
         </div>
 
         {/* Transactions List */}

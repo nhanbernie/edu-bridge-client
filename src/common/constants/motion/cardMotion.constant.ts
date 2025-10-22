@@ -26,34 +26,21 @@ export const simpleCardVariants: Variants = {
 
 // Tutor card variants with smooth entrance animation
 export const tutorCardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-    scale: 0.95,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.01,
-      ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth feel
-    },
-  },
+  initial: { y: 0, rotateX: 0, rotateY: 0, scale: 1, opacity: 1 },
+  enter:   { opacity: 0, y: 8, scale: 0.98 },
+  show:    { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 160, damping: 18 } },
   hover: {
-    y: -8,
-    scale: 1.01,
+    y: -1,
+    scale: 1.005,
+    rotateX: -0.6,
+    rotateY: 0.6,
     transition: {
-      duration: 0.01,
-      ease: "easeOut",
+      type: "spring",
+      stiffness: 140,
+      damping: 20,
     },
   },
-  tap: {
-    scale: 0.9,
-    transition: {
-      duration: 0.01,
-    },
-  },
+  press:   { scale: 0.985, rotateX: 0, rotateY: 0, transition: { type: "spring", stiffness: 220, damping: 24 } },
 };
 
 export const smoothCardVariants: Variants = {
@@ -75,19 +62,7 @@ export const smoothCardVariants: Variants = {
       duration: 0.5,
     },
   },
-  hover: {
-    y: -3,
-    scale: 1.015,
-    boxShadow: "0 8px 24px -6px rgba(0,0,0,0.12)",
-    transition: {
-      duration: 0.25,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-  tap: {
-    scale: 0.985,
-    transition: { duration: 0.1 },
-  },
+ 
 };
 
 export const elegantCardVariants: Variants = {

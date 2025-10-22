@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { User, Settings, LogOut, ChevronDown, Heart } from "lucide-react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useUserId } from "@/hooks/useUserId";
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const EBUserMenu = () => {
+  const t = useTranslations("components.userMenu");
   const { logout, user } = useAuth();
   const { push } = useLocaleRouter();
   const { userId } = useUserId();
@@ -68,7 +70,7 @@ const EBUserMenu = () => {
       ? []
       : [
           {
-            label: "Profile",
+            label: t("profile"),
             icon: User,
             onClick: handleProfileClick,
           },
@@ -77,21 +79,21 @@ const EBUserMenu = () => {
     ...(isBasicUser
       ? []
       : [
-          {
-            label: "Settings",
-            icon: Settings,
-            onClick: () => {
-              // TODO: Navigate to settings page
-            },
-          },
+          // {
+          //   label: t("settings"),
+          //   icon: Settings,
+          //   onClick: () => {
+          //     // TODO: Navigate to settings page
+          //   },
+          // },
         ]),
     {
-      label: "Charity",
+      label: t("charity"),
       icon: Heart,
       onClick: handleCharityClick,
     },
     {
-      label: "Sign Out",
+      label: t("signOut"),
       icon: LogOut,
       onClick: logout,
       danger: true,
@@ -106,7 +108,7 @@ const EBUserMenu = () => {
             {avatarUrl ? (
               <Image
                 src={avatarUrl}
-                alt={displayUser?.fullName || displayUser?.name || "User"}
+                alt={displayUser?.fullName || displayUser?.name || t("user")}
                 width={36}
                 height={36}
                 className="w-full h-full rounded-full object-cover"
@@ -130,7 +132,7 @@ const EBUserMenu = () => {
                   {avatarUrl ? (
                     <Image
                       src={avatarUrl}
-                      alt={displayUser.fullName || displayUser.name || "User"}
+                      alt={displayUser.fullName || displayUser.name || t("user")}
                       width={40}
                       height={40}
                       className="w-full h-full rounded-full object-cover"
@@ -141,7 +143,7 @@ const EBUserMenu = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-foreground truncate">
-                    {displayUser.fullName || displayUser.name || "User"}
+                    {displayUser.fullName || displayUser.name || t("user")}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">{displayUser.email}</p>
                 </div>
