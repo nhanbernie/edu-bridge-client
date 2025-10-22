@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useGetUserQuery } from "@/services/user/user.service";
 import { useAuthStorage } from "./useAuthStorage";
 import { UserDto } from "@/services/api/type";
@@ -42,13 +42,13 @@ export const useGetAndStoreUser = ({
     }
   }, [response, saveUserDataOnly]);
 
-  const refetchAndWait = async () => {
+  const refetchAndWait = useCallback(async () => {
     const result = await refetch();
     // Wait for the data to be processed
     if (result.data?.success && result.data.data) {
       await saveUserDataOnly(result.data.data);
     }
-  };
+  }, [refetch, saveUserDataOnly]);
 
   return {
     user: response?.data || undefined,

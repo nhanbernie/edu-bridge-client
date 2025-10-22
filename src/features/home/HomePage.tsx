@@ -27,8 +27,8 @@ const HomeFeature = () => {
     user?.tutor?.verifiedStatus === "PENDING";
 
   const { refetch: refetchUser } = useGetAndStoreUser({
-    userId: user?.userId,
-    enabled: true,
+    userId: user?.userId || "",
+    enabled: !!user?.userId,
   });
 
   // Force refresh user data when coming to home page
@@ -36,7 +36,8 @@ const HomeFeature = () => {
     if (user?.userId) {
       refetchUser();
     }
-  }, [user?.userId, refetchUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.userId]); // Only depend on userId, not refetchUser
 
   useEffect(() => {
     if (!user || isNavigating) {
