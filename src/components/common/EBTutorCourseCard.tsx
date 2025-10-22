@@ -3,13 +3,12 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { useLocaleRouter } from "@/hooks/useLocaleRouter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Users, Info } from "lucide-react";
 import EBActionsMenu, { type ActionItem } from "./EBActionsMenu";
 import { EBMotionCard, EBButtonAction } from "@/components/motion";
-import { flashButtonVariants } from "@/common/constants/motion/button.constants";
+import { tutorCourseCardVariants } from "@/common/constants/motion/motion.constant";
 // Types
 interface CourseData {
   id: string;
@@ -54,7 +53,8 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
   return (
     <EBMotionCard
       variant="elevated"
-      className="hover:shadow-lg transition-shadow cursor-pointer"
+      variants={tutorCourseCardVariants}
+      className="hover:shadow-lg transition-shadow"
       initial={undefined}
       animate={undefined}
       whileHover={undefined}
@@ -101,12 +101,12 @@ const EBTutorCourseCard: React.FC<EBTutorCourseCardProps> = ({
               </div>
             </div>
             {mode === "user" && (
-              <Button
+              <EBButtonAction
                 className="bg-primary hover:bg-primary/90 text-primary-foreground"
                 onClick={handleBooking}
               >
                 {t("enrollButton")}
-              </Button>
+              </EBButtonAction>
             )}
           </div>
         </div>

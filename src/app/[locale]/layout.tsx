@@ -83,6 +83,7 @@ const getMessages = cache(async (locale: string) => {
       tutorBankVerification,
       sidebar,
       validationAuth,
+      userMenu,
     ] = await Promise.all([
       import(`@/i18n/locales/${locale}/common.json`),
       import(`@/i18n/locales/${locale}/common/sessionUtils.json`),
@@ -164,6 +165,7 @@ const getMessages = cache(async (locale: string) => {
       import(`@/i18n/locales/${locale}/sidebar.json`),
       // Validation translations
       import(`@/i18n/locales/${locale}/validation/auth.json`),
+      import(`@/i18n/locales/${locale}/components/user-menu.json`),
     ]);
 
     return {
@@ -269,6 +271,7 @@ const getMessages = cache(async (locale: string) => {
         ebMediaCard: ebMediaCard.default,
         ebVideoUploadPlaceholder: ebVideoUploadPlaceholder.default,
         tutorCard: tutorCard.default,
+        userMenu: userMenu.default,
       },
       sidebar: sidebar.default,
       validation: {
@@ -276,7 +279,6 @@ const getMessages = cache(async (locale: string) => {
       },
     };
   } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error);
     notFound();
   }
 });

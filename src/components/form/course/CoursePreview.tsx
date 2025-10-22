@@ -8,6 +8,7 @@ import { Clock, Users, Info, Eye } from "lucide-react";
 import { CourseFormData } from "./CourseForm";
 import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
 import { EBMotionCard } from "@/components/motion";
+import { usePackageDiscount } from "@/features/student/booking/hooks";
 
 interface CoursePreviewProps {
   formData: CourseFormData | null;
@@ -16,6 +17,7 @@ interface CoursePreviewProps {
 const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
   const t = useTranslations("tutor.courses.create.preview");
   const tSubjects = useTranslations("tutor.courses.create.subjects");
+  const { getOriginalPrice, getDiscountPercentage } = usePackageDiscount();
 
   // Default preview data
   const previewData = {
@@ -41,8 +43,17 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
       "Địa lý": "geography",
     };
 
+    // Valid subject keys from translation file
+    const validKeys = ["math", "physics", "chemistry", "biology", "english", "literature", "history", "geography"];
+
     const key = subjectKeyMap[value] || value;
-    return tSubjects(key as any) || value;
+    
+    // Only use translation if key is valid, otherwise return the original value
+    if (validKeys.includes(key)) {
+      return tSubjects(key as any);
+    }
+    
+    return value;
   };
 
   return (
@@ -119,12 +130,26 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
           <h4 className="font-medium text-foreground mb-3">{t("packages.title")}</h4>
           <div className="space-y-3">
             {[
-              { sessions: 4, discount: 0, label: t("packages.sessions.4") },
-              { sessions: 8, discount: 10, label: t("packages.sessions.8") },
-              { sessions: 12, discount: 15, label: t("packages.sessions.12") },
+              { sessions: 4, packageType: "FOUR", label: t("packages.sessions.4") },
+              { sessions: 8, packageType: "EIGHT", label: t("packages.sessions.8") },
+              { sessions: 12, packageType: "TWELVE", label: t("packages.sessions.12") },
             ].map((pkg) => {
-              const originalPrice = previewData.hourlyRate * pkg.sessions;
-              const discountedPrice = originalPrice * (1 - pkg.discount / 100);
+              // Calculate base price (before discount)
+              const basePrice = previewData.hourlyRate * pkg.sessions;
+              
+              // Get discount percentage for this package
+              const discountPercentage = getDiscountPercentage(pkg.packageType);
+              
+              // Calculate discounted price
+              const discountedPrice = discountPercentage 
+                ? basePrice * (1 - discountPercentage)
+                : basePrice;
+              
+              // Get original price using hook
+              const originalPrice = getOriginalPrice(pkg.packageType, discountedPrice);
+              
+              // Calculate display discount percentage
+              const displayDiscount = discountPercentage ? Math.round(discountPercentage * 100) : 0;
 
               return (
                 <EBMotionCard
@@ -134,14 +159,14 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                 >
                   <div className="flex flex-col justify-center">
                     <span className="font-medium text-foreground">{pkg.label}</span>
-                    {pkg.discount > 0 && (
+                    {displayDiscount > 0 && (
                       <Badge variant="secondary" className="mt-1 text-xs w-fit">
-                        {t("packages.discount", { discount: pkg.discount })}
+                        {t("packages.discount", { discount: displayDiscount })}
                       </Badge>
                     )}
                   </div>
                   <div className="text-right flex flex-col justify-center">
-                    {pkg.discount > 0 ? (
+                    {originalPrice ? (
                       <>
                         <div className="text-primary font-semibold">
                           {discountedPrice.toLocaleString()} {t("price.currency")}
@@ -152,7 +177,7 @@ const CoursePreview: React.FC<CoursePreviewProps> = ({ formData }) => {
                       </>
                     ) : (
                       <div className="text-foreground font-semibold">
-                        {originalPrice.toLocaleString()} {t("price.currency")}
+                        {discountedPrice.toLocaleString()} {t("price.currency")}
                       </div>
                     )}
                   </div>

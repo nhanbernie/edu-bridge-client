@@ -38,9 +38,9 @@ export const getNavigationItems = (t: any, currentPath?: string): NavItem[] => [
 ];
 
 export const getNavigateMarketItems = (t: any, currentPath?: string): NavItem[] => [
-  { label: t("router.navigation.home"), href: "/", active: currentPath === "/" },
-  { label: t("router.navigation.teachers"), href: "/", active: currentPath === "/" },
-  { label: t("router.navigation.contact"), href: "/", active: currentPath === "/" },
+  { label: t("navigation.home"), href: "#home", active: currentPath === "#home" },
+  { label: t("navigation.features"), href: "#features", active: currentPath === "#features" },
+  { label: t("navigation.contact"), href: "#contact", active: currentPath === "#contact" },
 ];
 
 // Default Header Action Buttons

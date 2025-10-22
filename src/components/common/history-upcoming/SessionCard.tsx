@@ -3,7 +3,7 @@ import { Clock, Users, Video, Star } from "lucide-react";
 import { ClassSessionDto } from "@/services/classSession/type";
 import { useSessionUtils } from "@/hooks/useSessionUtils";
 import { useTranslations } from "next-intl";
-import { EBMotionCard } from "@/components/motion";
+import { EBButtonAction, EBMotionCard } from "@/components/motion";
 import Image from "next/image";
 import { smoothCardVariants } from "@/common/constants/motion/cardMotion.constant";
 interface SessionCardProps {
@@ -71,7 +71,7 @@ const SessionCard: React.FC<SessionCardProps> = memo(
     return (
       <EBMotionCard
         variants={smoothCardVariants}
-        className={`${cardClasses} hover:cursor-pointer`}
+        className={`${cardClasses}`}
         initial="hidden"
         animate="visible"
         whileHover="hover"
@@ -163,13 +163,13 @@ const SessionCard: React.FC<SessionCardProps> = memo(
                   </div>
                 </div>
                 {onJoinSession && (
-                  <button
+                  <EBButtonAction
                     onClick={() => onJoinSession(session.sessionId)}
-                    className="group/btn flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto self-start lg:self-end"
+                    className="group/btn flex items-center gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 w-full sm:w-auto self-start lg:self-end hover:cursor-pointer"
                   >
                     <Video className="h-4 w-4 sm:h-5 sm:w-5 group-hover/btn:scale-110 transition-transform" />
                     <span className="text-sm sm:text-base">{t("labels.join")}</span>
-                  </button>
+                  </EBButtonAction>
                 )}
               </div>
             )}

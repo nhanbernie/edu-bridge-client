@@ -7,6 +7,7 @@ export { LocalVideoPreview } from "./LocalVideoPreview";
 export { RemoteVideoList } from "./RemoteVideoList";
 export { MediaControls } from "./MediaControls";
 export { VideoGrid } from "./VideoGrid";
+export type { Participant } from "./VideoGrid";
 export { DraggableRemoteVideo } from "./DraggableRemoteVideo";
 
 // Re-export existing components

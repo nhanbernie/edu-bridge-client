@@ -31,7 +31,6 @@ export function useStudentId(): { studentId: string | null; isLoading: boolean }
           setStudentId(storedUser.student.studentId);
         }
       } catch (error) {
-        console.error("Error initializing student ID:", error);
       } finally {
         if (mounted) {
           setLoading(false);

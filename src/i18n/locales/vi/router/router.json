@@ -4,6 +4,7 @@
     "findTutors": "Tìm gia sư",
     "findStudents": "Tìm học sinh",
     "teachers": "Giáo viên",
+    "features": "Tính năng",
     "contact": "Liên hệ"
   },
   "sidebar": {
@@ -20,7 +21,6 @@
     "tutors": "Gia sư",
     "payments": "Thanh toán",
     "users": "Người dùng",
-    "tutors": "Gia sư",
     "analytics": "Phân tích",
     "reports": "Báo cáo"
   },

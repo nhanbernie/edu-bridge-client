@@ -147,7 +147,7 @@ const EBHeader = ({
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-500 ease-out ${isScrolled
             ? "bg-card/80 backdrop-blur-xl shadow-lg border-b border-border/50"
             : "bg-transparent"
           }`}
@@ -197,7 +197,13 @@ const EBHeader = ({
       <EBMobileMenu
         isOpen={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
-        navigationItems={getNavigationItems(t, currentPath)}
+        navigationItems={
+          headerConfig
+            ? convertToNavItems(headerConfig.items, currentPath)
+            : getNavigationItems(t, currentPath)
+        }
+        showTheme={headerConfig?.showTheme ?? showTheme}
+        showLanguageToggle={headerConfig?.showLanguageToggle ?? showLanguageToggle}
       />
     </>
   );

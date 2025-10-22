@@ -1,6 +1,7 @@
 "use client";
 
 import Head from "next/head";
+import { ENV } from "@/utils/env";
 
 interface SEOHeadProps {
     title?: string;
@@ -41,9 +42,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     canonical,
     structuredData,
 }) => {
+    const siteUrl = ENV.SITE.URL;
     const fullTitle = title.includes("EduBridge") ? title : `${title} | EduBridge`;
-    const fullUrl = url ? `https://edubridge.com${url}` : "https://edubridge.com";
-    const fullImage = image.startsWith("http") ? image : `https://edubridge.com${image}`;
+    const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
+    const fullImage = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
     return (
         <Head>

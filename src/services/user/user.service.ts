@@ -21,7 +21,7 @@ import { getSubjectsEndpoint } from "@/services/common";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["UserProfile", "UserOnboarding", "UserVerification", "TutorMedia"],
+  tagTypes: ["User", "UserProfile", "UserOnboarding", "UserVerification", "TutorMedia"],
   endpoints: (builder) => ({
     getAllUsers: getAllUsersEndpoint(builder),
     getUser: getUserEndpoint(builder),
