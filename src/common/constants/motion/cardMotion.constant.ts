@@ -27,8 +27,8 @@ export const simpleCardVariants: Variants = {
 // Tutor card variants with smooth entrance animation
 export const tutorCardVariants: Variants = {
   initial: { y: 0, rotateX: 0, rotateY: 0, scale: 1, opacity: 1 },
-  enter:   { opacity: 0, y: 8, scale: 0.98 },
-  show:    { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 160, damping: 18 } },
+  enter: { opacity: 0, y: 8, scale: 0.98 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 160, damping: 18 } },
   hover: {
     y: -1,
     scale: 1.005,
@@ -40,7 +40,12 @@ export const tutorCardVariants: Variants = {
       damping: 20,
     },
   },
-  press:   { scale: 0.985, rotateX: 0, rotateY: 0, transition: { type: "spring", stiffness: 220, damping: 24 } },
+  press: {
+    scale: 0.985,
+    rotateX: 0,
+    rotateY: 0,
+    transition: { type: "spring", stiffness: 220, damping: 24 },
+  },
 };
 
 export const smoothCardVariants: Variants = {
@@ -62,7 +67,6 @@ export const smoothCardVariants: Variants = {
       duration: 0.5,
     },
   },
- 
 };
 
 export const elegantCardVariants: Variants = {
@@ -122,6 +126,39 @@ export const pressedCardVariants: Variants = {
     transition: {
       duration: 0.05, // phản hồi siêu nhanh, cảm giác thật tay
       ease: "easeOut",
+    },
+  },
+};
+
+// Subtle, transform-only smooth animation for cards
+export const subtleSmoothCardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 8,
+    scale: 0.985,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 30,
+      mass: 0.7,
+      duration: 0.42,
+    },
+  },
+  hover: {
+    y: -0.5,
+    scale: 1.004,
+    rotateX: -1,
+    rotateY: 1,
+    transition: {
+      type: "spring",
+      stiffness: 150,
+      damping: 28,
+      mass: 0.6,
     },
   },
 };
