@@ -26,7 +26,7 @@ const roleSelectValidatorSchema = {
       .required("Vui lòng nhập địa điểm"),
     bio: Yup.string()
       .min(50, "Mô tả cần ít nhất 50 ký tự")
-      .max(100, "Mô tả không được vượt quá 100 ký tự")
+      .max(500, "Mô tả không được vượt quá 500 ký tự")
       .required("Vui lòng nhập mô tả về bản thân"),
     subjects: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 môn học"),
     languages: Yup.array().of(Yup.string()).min(1, "Chọn ít nhất 1 ngôn ngữ"),

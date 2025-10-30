@@ -26,8 +26,8 @@
         "description": "Ảnh mặt trước và mặt sau CCCD rõ nét"
       },
       "selfie": {
-        "label": "Ảnh Selfie cầm CCCD",
-        "description": "Khuôn mặt và thông tin trên CCCD phải rõ ràng"
+        "label": "Ảnh Selfie",
+        "description": "Ảnh selfie của bạn"
       },
       "degree": {
         "label": "Bằng cấp (DEGREE)",

@@ -1,38 +1,42 @@
 {
-    "courses": {
-        "loading": "Đang tải khóa học...",
-        "empty": {
-            "title": "Chưa có khóa học nào",
-            "description": "Gia sư này chưa tạo khóa học nào."
-        }
-    },
-    "schedule": {
-        "loading": "Đang tải lịch rảnh...",
-        "empty": {
-            "title": "Chưa có lịch rảnh",
-            "description": {
-                "selectedCourse": "Gia sư này chưa có lịch rảnh cho khóa học đã chọn.",
-                "noSchedule": "Gia sư này chưa tạo lịch rảnh nào."
-            }
-        },
-        "selectedCourse": {
-            "notice": "Hiển thị lịch rảnh cho khóa học đã chọn"
-        },
-        "title": {
-            "selectedCourse": "Lịch rảnh cho khóa học",
-            "weekly": "Lịch rảnh trong tuần"
-        }
-    },
-    "reviews": {
-        "loading": "Đang tải đánh giá...",
-        "tutor": "Gia sư",
-        "course": "Khóa học"
-    },
-    "awards": {
-        "loading": "Đang tải chứng chỉ...",
-        "empty": {
-            "title": "Chưa có chứng chỉ nào",
-            "description": "Gia sư này chưa thêm chứng chỉ hoặc giải thưởng."
-        }
+  "courses": {
+    "loading": "Đang tải khóa học...",
+    "empty": {
+      "title": "Chưa có khóa học nào",
+      "description": "Gia sư này chưa tạo khóa học nào."
     }
+  },
+  "schedule": {
+    "loading": "Đang tải lịch rảnh...",
+    "empty": {
+      "title": "Chưa có lịch rảnh",
+      "description": {
+        "selectedCourse": "Gia sư này chưa có lịch rảnh cho khóa học đã chọn.",
+        "noSchedule": "Gia sư này chưa tạo lịch rảnh nào."
+      }
+    },
+    "selectedCourse": {
+      "notice": "Hiển thị lịch rảnh cho khóa học đã chọn"
+    },
+    "title": {
+      "selectedCourse": "Lịch rảnh cho khóa học",
+      "weekly": "Lịch rảnh trong tuần"
+    }
+  },
+  "reviews": {
+    "loading": "Đang tải đánh giá...",
+    "tutor": "Gia sư",
+    "course": "Khóa học",
+    "empty": {
+      "title": "Chưa có đánh giá nào",
+      "description": "Gia sư này chưa nhận được đánh giá nào từ học viên."
+    }
+  },
+  "awards": {
+    "loading": "Đang tải chứng chỉ...",
+    "empty": {
+      "title": "Chưa có chứng chỉ nào",
+      "description": "Gia sư này chưa thêm chứng chỉ hoặc giải thưởng."
+    }
+  }
 }
