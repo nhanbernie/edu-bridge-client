@@ -1,3 +1,4 @@
+import { TransactionStatus } from "@/common/enums";
 import { useGetAdminTransactionsQuery, useGetServiceFeesQuery } from "@/services/transactions";
 
 export const useAdminTransactions = () => {
@@ -28,9 +29,9 @@ export const useAdminTransactions = () => {
     return sum + transaction.serviceFee;
   }, 0);
 
-  const completedTransactions = transactions.filter((t) => t.status === 1).length;
-  const pendingTransactions = transactions.filter((t) => t.status === 0).length;
-  const failedTransactions = transactions.filter((t) => t.status === 2).length;
+  const completedTransactions = transactions.filter((t) => t.status === TransactionStatus.SUCCESS).length;
+  const pendingTransactions = transactions.filter((t) => t.status === TransactionStatus.PENDING).length;
+  const failedTransactions = transactions.filter((t) => t.status === TransactionStatus.FAILED).length;
 
   const refetchAll = () => {
     refetchTransactions();
