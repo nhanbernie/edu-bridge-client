@@ -139,14 +139,20 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
                 <div className="flex items-center gap-2">
                   <h3
                     className={cn(
-                      "font-semibold text-base",
+                      "font-semibold truncate min-w-0",
                       pkg.isTrial ? "text-rose-900 dark:text-rose-200" : "text-foreground"
                     )}
+                    style={{
+                      fontSize: "clamp(12px, 2.5vw, 1rem)",
+                    }}
                   >
                     {pkg.name}
                   </h3>
                   {pkg.originalPrice && !pkg.isTrial && (
-                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary">
+                    <Badge
+                      variant="secondary"
+                      className="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary"
+                    >
                       -{Math.round(((pkg.originalPrice - pkg.price) / pkg.originalPrice) * 100)}%
                     </Badge>
                   )}
@@ -167,30 +173,28 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({
               </div>
 
               <div className="text-right ml-4 min-w-fit">
-                <div className="flex flex-col items-end gap-1">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "text-lg font-bold",
-                        pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-primary"
-                      )}
-                    >
-                      {formatVNDPrice(pkg.price)}đ
-                    </span>
-                    {pkg.originalPrice && (
-                      <span className="text-sm text-muted-foreground line-through">
-                        {formatVNDPrice(pkg.originalPrice)}đ
-                      </span>
-                    )}
-                  </div>
-                  <div
+                <div className="flex flex-col gap-0.5 items-end">
+                  <span
                     className={cn(
-                      "text-xs",
-                      pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-muted-foreground"
+                      "text-lg font-bold",
+                      pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-primary"
                     )}
                   >
-                    {pkg.sessions} {t("sessions")}
-                  </div>
+                    {formatVNDPrice(pkg.price)}đ
+                  </span>
+                  {pkg.originalPrice && (
+                    <span className="text-sm text-muted-foreground line-through">
+                      {formatVNDPrice(pkg.originalPrice)}đ
+                    </span>
+                  )}
+                </div>
+                <div
+                  className={cn(
+                    "text-xs",
+                    pkg.isTrial ? "text-pink-600 dark:text-pink-300" : "text-muted-foreground"
+                  )}
+                >
+                  {pkg.sessions} {t("sessions")}
                 </div>
               </div>
             </div>

@@ -8,7 +8,7 @@ import {
   TransactionHeader,
   EBPageLoading,
 } from "@/components/common";
-import { DollarSign, TrendingUp, Clock, CheckCircle, Building2 } from "lucide-react";
+import { DollarSign, TrendingUp, Clock, CheckCircle } from "lucide-react";
 
 const ManageTransactionsPage: React.FC = () => {
   const {
@@ -45,7 +45,7 @@ const ManageTransactionsPage: React.FC = () => {
         />
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <TransactionStatsCard
             title="Tổng thu nhập"
             value={formatCurrency(totalEarnings)}
@@ -58,12 +58,12 @@ const ManageTransactionsPage: React.FC = () => {
             description="Phí dịch vụ từ giao dịch"
             icon={TrendingUp}
           />
-          <TransactionStatsCard
+          {/* <TransactionStatsCard
             title="Phí hệ thống"
             value={formatCurrency(serviceFees)}
             description="Tổng phí hệ thống"
             icon={Building2}
-          />
+          /> */}
           <TransactionStatsCard
             title="Hoàn thành"
             value={completedTransactions}

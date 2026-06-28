@@ -3,7 +3,10 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { EBMotionCard, EBButtonAction } from "@/components/motion";
-import { simpleCardVariants } from "@/common/constants/motion/cardMotion.constant";
+import {
+  simpleCardVariants,
+  subtleSmoothCardVariants,
+} from "@/common/constants/motion/cardMotion.constant";
 import { Star, Heart, Users, BookOpen, Award, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TutorCardData } from "@/services/tutor/type";
@@ -40,7 +43,7 @@ const TutorCard: React.FC<TutorCardProps> = ({
 
   return (
     <EBMotionCard
-      variants={simpleCardVariants}
+      variants={subtleSmoothCardVariants}
       onClick={handleViewDetails}
       variant="base"
       padding="sm"

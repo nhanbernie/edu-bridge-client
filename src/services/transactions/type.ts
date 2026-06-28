@@ -1,3 +1,4 @@
+import { TransactionStatus } from "@/common/enums";
 import { ApiResponse } from "../api/type";
 
 // New DTO for tutor and student
@@ -20,7 +21,7 @@ export interface TransactionDto {
   amount: number;
   serviceFee: number;
   type: number; // 0 = payment, 1 = withdrawal, etc.
-  status: number; // 0 = pending, 1 = completed, 2 = failed
+  status: TransactionStatus; // 0 = pending, 1 = completed, 2 = failed
   createdAt: string;
   updatedAt: string | null;
   description: string;

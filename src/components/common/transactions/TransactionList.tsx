@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import TransactionStatusBadge from "./TransactionStatusBadge";
 import { Calendar, User, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { useTranslations } from "next-intl";
+import { TransactionStatus } from "@/common/enums";
 
 interface Transaction {
   transactionId: string;
   amount: number;
   serviceFee: number;
-  status: number;
+  status: TransactionStatus;
   description: string;
   createdAt: string;
   updatedAt: string | null;
@@ -29,20 +31,63 @@ const TransactionList: React.FC<TransactionListProps> = ({
   userRole = "tutor",
 }) => {
   const t = useTranslations("student.transactions.list");
+  const [statusFilter, setStatusFilter] = useState<TransactionStatus | null>(null);
+
+  // Filter transactions based on selected status
+  const filteredTransactions = useMemo(() => {
+    if (!statusFilter) return transactions;
+    return transactions.filter((t) => t.status === statusFilter);
+  }, [transactions, statusFilter]);
+
+  const handleFilterClick = (status: TransactionStatus) => {
+    setStatusFilter(statusFilter === status ? null : status);
+  };
+
+  const getFilterButtonClass = (isActive: boolean) => {
+    return `text-xs transition-colors ${
+      isActive
+        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : "bg-primary/10 text-primary hover:bg-primary/20 border-primary/20"
+    }`;
+  };
+
+  const filterButtons = [
+    { label: "Tất cả", value: null, onClick: () => setStatusFilter(null) },
+    { label: "Đang chờ", value: TransactionStatus.PENDING, onClick: () => handleFilterClick(TransactionStatus.PENDING) },
+    { label: "Hoàn thành", value: TransactionStatus.SUCCESS, onClick: () => handleFilterClick(TransactionStatus.SUCCESS) },
+    { label: "Thất bại", value: TransactionStatus.FAILED, onClick: () => handleFilterClick(TransactionStatus.FAILED) },
+  ];
 
   return (
     <Card className="bg-white border-gray-200">
       <CardHeader className="border-b border-gray-100">
-        <CardTitle className="flex items-center gap-3 text-lg text-gray-800">
-          <Calendar className="w-5 h-5 text-gray-600" />
-          {t("title")}
-          <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
-            {transactions.length}
-          </Badge>
-        </CardTitle>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <CardTitle className="flex items-center gap-3 text-lg text-gray-800">
+            <Calendar className="w-5 h-5 text-gray-600" />
+            {t("title")}
+            <Badge variant="outline" className="bg-gray-50 text-gray-700 border-gray-200">
+              {filteredTransactions.length}
+            </Badge>
+          </CardTitle>
+
+          {/* Filter Buttons */}
+          <div className="flex items-center gap-2">
+            {filterButtons.map((button) => (
+              <Button
+                key={button.label}
+                variant="outline"
+                size="sm"
+                onClick={button.onClick}
+                className={getFilterButtonClass(statusFilter === button.value)}
+              >
+                {button.label}
+              </Button>
+            ))}
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="p-0">
-        {transactions.length === 0 ? (
+        {filteredTransactions.length === 0 ? (
           <div className="text-center py-16">
             <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
               <DollarSign className="w-8 h-8 text-gray-400" />
@@ -52,7 +97,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {transactions.map((transaction) => (
+            {filteredTransactions.map((transaction) => (
               <div
                 key={transaction.transactionId}
                 className="p-6 hover:bg-gray-50 transition-colors duration-200"

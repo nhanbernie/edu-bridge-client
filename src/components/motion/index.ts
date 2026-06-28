@@ -20,6 +20,7 @@ export {
 export {
   simpleCardVariants,
   tutorCardVariants,
+  subtleSmoothCardVariants,
 } from "@/common/constants/motion/cardMotion.constant";
 
 // Types

@@ -45,8 +45,8 @@
         "description": "Clear front and back photos of CCCD"
       },
       "selfie": {
-        "label": "Selfie with CCCD",
-        "description": "Face and CCCD information must be clear"
+        "label": "Selfie",
+        "description": "Your selfie"
       },
       "studentCard": {
         "label": "Student Card",
